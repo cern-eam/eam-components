@@ -1,0 +1,15 @@
+.responsiveTable td, th {
+    padding: 4px !important;
+    min-width: 50px;
+    text-align: left;
+}
+
+.eamTableSortDropdown {
+    background-color: transparent;
+    width: 100%;
+    font-size: 13px !important;
+}
+
+.eamTableSortDropdown select:focus {
+    background-color: transparent !important;
+}

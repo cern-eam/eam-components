@@ -1,0 +1,169 @@
+.leftArrow {
+    float: left;
+    height: 30px;
+    width: 30px;
+    position: absolute;
+    left: -7px;
+}
+
+.rightArrow {
+    float: right;
+    height: 30px;
+    width: 30px;
+    position: absolute;
+    right: -7px;
+}
+
+.arrowBox {
+    position: relative;
+    top: 50%;
+}
+
+.sliderItem {
+    max-width: 50px;
+    height: 50px;
+    padding: 0px;
+    float: left;
+    word-wrap: break-word;
+    margin: 2px;
+    cursor: pointer;
+}
+
+.sliderImage {
+    width: 100%;
+    height: 100%;
+    opacity: 0.5;
+    -webkit-transition: opacity 500ms;
+    -moz-transition: opacity 500ms;
+    -ms-transition: opacity 500ms;
+    -o-transition: opacity 500ms;
+    transition: opacity 500ms;
+}
+
+.sliderSelectedImage {
+    width: 100%;
+    height: 100%;
+    -webkit-transition: opacity 500ms;
+    -moz-transition: opacity 500ms;
+    -ms-transition: opacity 500ms;
+    -o-transition: opacity 500ms;
+    transition: opacity 500ms;
+}
+
+.galleriaContainer {
+    width: 100%;
+    height: 300px;
+    display: flex;
+    justify-content: space-around;
+    position: relative;
+}
+
+.galleriaDisplayedFile {
+    width: 100%;
+    height: 300px;
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-position: 50% 50%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.filmStripContainer {
+    height: 65px;
+    background-color: rgba(128, 128, 128, 0.75);
+    align-self: flex-end;
+    width: 100%;
+    position: absolute;
+    font-size: 14px;
+    float: left;
+    left: 0px;
+    bottom: 0px;
+}
+
+@media (max-width: 480px) {
+    .filmStripContainer {
+        font-size: 12px;
+    }
+}
+
+.edmsContentHeader {
+    position: absolute;
+    float: left;
+    top: -13px;
+    left: 20px;
+    font-weight: 500;
+    color: white;
+}
+
+.edmsTitle {
+    position: absolute;
+    float: left;
+    top: 15px;
+    left: 20px;
+    color: white;
+}
+
+.edmsLink {
+    text-decoration: none;
+    color: white;
+}
+
+.edmsSliderStyle {
+    color: #cccccc;
+    width: 100%;
+    max-height: 50px;
+    position: relative;
+}
+
+.edmsSliderStyleLoading {
+    color: #cccccc;
+    width: 100%;
+    max-height: 50px;
+    opacity: 0.5;
+    pointer-events: none;
+    position: relative;
+}
+
+.sliderImageContainer {
+    overflow: hidden;
+    height: 55px;
+    position: relative;
+    float: left;
+    left: 15px;
+    width: 90.5%;
+    margin-bottom: -18px;
+}
+
+.sliderImageContainerList {
+    list-style: none outside none;
+    margin: 0;
+    padding: 0;
+    width: 2340px;
+    position: absolute;
+}
+
+.sliderImageContainerElement{
+
+}
+
+
+.galleriaImage {
+    position: absolute;
+    max-height: 300px;
+    max-width: 90%;
+    height: auto;
+    width: auto;
+    margin: auto;
+    top: 0px;
+    bottom: 0px;
+    align-self: center;
+    left: 0px;
+    right: 0px;
+}
+
+.draggingFile{
+    background-color: #f4f9fc;
+    border: dashed 1px;
+    border-radius: 7px;
+    transition: background-color .15s linear;
+}
