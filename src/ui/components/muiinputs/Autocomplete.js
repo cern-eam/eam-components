@@ -23,6 +23,7 @@ function renderDefaultInput(inputProps) {
     const { classes, autoFocus, value, label, disabled, endAdornment, error, helperText, required, ...other } = inputProps;
 
     var inputAdornmentStyle = {
+        height: 20,
         whiteSpace: "nowrap",
         overflow: "hidden",
         textOverflow: "ellipsis",
