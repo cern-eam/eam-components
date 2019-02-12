@@ -166,32 +166,26 @@ var EISTable = function (_Component) {
             }
 
             //Link
-            if (_this.props.linksMap.get(propCode)['linkType'] === 'fixed') {
-                var linkValue = process.env.REACT_APP_FRONTEND + _this.props.linksMap.get(propCode)['linkValue'];
+            var link = _this.props.linksMap.get(propCode);
+            if (link.linkType === 'fixed') {
                 return _react2.default.createElement(
                     _reactRouterDom.Link,
-                    {
-                        to: { pathname: linkValue + content[propCode] } },
+                    { to: { pathname: '' + link.linkPrefix + link.linkValue + content[propCode] } },
+                    content[propCode]
+                );
+            } else if (link.linkType === 'absolute') {
+                return _react2.default.createElement(
+                    'a',
+                    { href: '' + link.linkValue + content[propCode], target: '_blank' },
                     content[propCode]
                 );
             } else {
-                if (_this.props.linksMap.get(propCode)['linkType'] === 'absolute') {
-                    var _linkValue = _this.props.linksMap.get(propCode)['linkValue'];
-                    return _react2.default.createElement(
-                        'a',
-                        { href: _linkValue + content[propCode], target: '_blank' },
-                        content[propCode]
-                    );
-                } else {
-                    /*Dynamic link*/
-                    var _linkValue2 = process.env.REACT_APP_FRONTEND + content[_this.props.linksMap.get(propCode)['linkValue']];
-                    return _react2.default.createElement(
-                        _reactRouterDom.Link,
-                        {
-                            to: { pathname: _linkValue2 } },
-                        content[propCode]
-                    );
-                }
+                /*Dynamic link*/
+                return _react2.default.createElement(
+                    _reactRouterDom.Link,
+                    { to: { pathname: '' + link.linkPrefix + link.linkValue } },
+                    content[propCode]
+                );
             }
         }, _this.renderSortByValuesMobile = function () {
             // Create list of values

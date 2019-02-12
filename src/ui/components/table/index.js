@@ -117,21 +117,15 @@ class EISTable extends Component {
         }
 
         //Link
-        if (this.props.linksMap.get(propCode)['linkType'] === 'fixed') {
-            const linkValue = process.env.REACT_APP_FRONTEND + this.props.linksMap.get(propCode)['linkValue'];
-            return (<Link
-                to={{pathname: linkValue + content[propCode]}}>{content[propCode]}</Link>);
-        } else {
-            if (this.props.linksMap.get(propCode)['linkType'] === 'absolute') {
-                const linkValue = this.props.linksMap.get(propCode)['linkValue'];
-                return (<a href={linkValue + content[propCode]} target="_blank">{content[propCode]}</a>);
-            } else {/*Dynamic link*/
-                const linkValue = process.env.REACT_APP_FRONTEND + content[this.props.linksMap.get(propCode)['linkValue']];
-                return (<Link
-                    to={{pathname: linkValue}}>{content[propCode]}</Link>);
-            }
+        const link = this.props.linksMap.get(propCode);
+        if (link.linkType === 'fixed') {
+           return (<Link to={{pathname: `${link.linkPrefix}${link.linkValue}${content[propCode]}`}}>{content[propCode]}</Link>);
+        } else if (link.linkType === 'absolute') {
+            return (<a href={`${link.linkValue}${content[propCode]}`} target="_blank">{content[propCode]}</a>);
         }
-
+        else {/*Dynamic link*/
+            return (<Link to={{pathname: `${link.linkPrefix}${link.linkValue}`}}>{content[propCode]}</Link>);
+        }
     };
 
     renderSortByValuesMobile = () => {
