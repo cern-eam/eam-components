@@ -10,6 +10,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import './EISTable.css';
 import {Link} from 'react-router-dom';
 import Checkbox from '@material-ui/core/Checkbox';
+import MenuItem from '@material-ui/core/MenuItem';
+import FilterListIcon from '@material-ui/icons/FilterList';
 import PropTypes from 'prop-types';
 
 const whiteBackground = {
@@ -36,6 +38,10 @@ class EISTable extends Component {
         data: []
     };
 
+    filterSelectStyle = {
+        fontSize: '0.8125rem'
+    }
+
     componentWillMount() {
         window.addEventListener('resize', this.onWindowSizeChange);
         //Set the data
@@ -58,6 +64,12 @@ class EISTable extends Component {
         }));
     };
 
+    resetSort = () => {
+        this.setState(() => ({
+            orderBy: -1,
+            order: 'asc',})
+        )
+    }
     createSortHandler = property => event => {
         this.handleRequestSort(event, property);
     };
@@ -143,7 +155,7 @@ class EISTable extends Component {
             <Select
                 native
                 value={this.state.orderBy}
-                onChange={this.createSortHandlerMobile} className="eamTableSortDropdown">
+                onChange={this.createSortHandlerMobile} className="eamTableDropdown">
                 <option value={-1}>Select sort column...</option>
                 {
                     listValues.map((elem, index) => <option key={index} value={index}>{elem}</option>)
@@ -152,6 +164,24 @@ class EISTable extends Component {
         );
     };
 
+    propagateFilterChange = (e) => {
+        this.resetSort();
+        this.props.handleFilterChange(e.target.value);
+    }
+
+    renderFilterByValuesMobile = () => {
+        return (
+            <Select
+                native
+                value={this.props.activeFilter}
+                onChange={this.propagateFilterChange}
+                className="eamTableDropdown">
+                {
+                    Object.keys(this.props.filters).map((key) => <option key={key} value={key}>{this.props.filters[key].text}</option>)
+                }
+            </Select>
+        );
+    }
 
     render() {
         const isMobile = this.state.windowWidth < this.props.maxMobileSize;
@@ -161,6 +191,12 @@ class EISTable extends Component {
             return (
                 <Table className="responsiveTable" style={{overflow:'visible'}}>
                     <TableHead>
+                        {this.props.filters && Object.keys(this.props.filters).length &&
+                        <TableRow>
+                            <TableCell>Filter by:</TableCell>
+                            <TableCell>{this.renderFilterByValuesMobile()}</TableCell>
+                        </TableRow>
+                        }
                         <TableRow>
                             <TableCell>Sort by:</TableCell>
                             <TableCell>{this.renderSortByValuesMobile()}</TableCell>
@@ -225,48 +261,64 @@ class EISTable extends Component {
             );
         } else {
             return (
-                <Table className="responsiveTable" style={{overflow:'visible'}}>
-                    <TableHead>
-                        <TableRow>
-                            {this.props.headers.map((header, index) => (
+                <React.Fragment>
+                    {this.props.filters && Object.keys(this.props.filters).length &&
+
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <FilterListIcon style={{ marginLeft: 'auto' }}/>
+                        <Select
+                        style={this.filterSelectStyle}
+                        value={this.props.filters[this.props.activeFilter].text}
+                        onChange={this.propagateFilterChange}
+                        renderValue={value => <span>{value}</span>}>
+                                {Object.keys(this.props.filters).map((key) => (
+                                    <MenuItem key={key} value={key}>{this.props.filters[key].text}</MenuItem>
+                                    ))}
+                            </Select>
+                    </div>
+                    }
+                    <Table className="responsiveTable" style={{overflow:'visible'}}>
+                        <TableHead>
+                            <TableRow>
+                                {this.props.headers.map((header, index) => (
                                     <TableCell key={header}
-                                               sortDirection={this.state.orderBy === index ? this.state.order : false}>
-                                        <Tooltip
-                                            title="Sort"
-                                            placement={'bottom-end'}
-                                            enterDelay={300}>
-                                            <TableSortLabel
-                                                active={this.state.orderBy === index}
-                                                direction={this.state.order}
-                                                onClick={this.createSortHandler(index)}>
-                                                {header}
-                                            </TableSortLabel>
-                                        </Tooltip>
-                                    </TableCell>
-                                )
-                            )}
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {this.state.data.map((content, index) => {
-                            let style = {};
-
-                            if (this.props.selectedRowIndexes && this.props.selectedRowIndexes.includes(index)) {
-                                style = {
-                                    ...style,
-                                    backgroundColor: "#2196f3",
+                                                sortDirection={this.state.orderBy === index ? this.state.order : false}>
+                                            <Tooltip
+                                                title="Sort"
+                                                placement={'bottom-end'}
+                                                enterDelay={300}>
+                                                <TableSortLabel
+                                                    active={this.state.orderBy === index}
+                                                    direction={this.state.order}
+                                                    onClick={this.createSortHandler(index)}>
+                                                    {header}
+                                                </TableSortLabel>
+                                            </Tooltip>
+                                        </TableCell>
+                                    )
+                                    )}
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {this.state.data.map((content, index) => {
+                                let style = {};
+                                
+                                if (this.props.selectedRowIndexes && this.props.selectedRowIndexes.includes(index)) {
+                                    style = {
+                                        ...style,
+                                        backgroundColor: "#2196f3",
+                                    }
                                 }
-                            }
-
-                            if (rowsSelectable) {
-                                style = {
-                                    ...style,
-                                    cursor: "pointer"
+                                
+                                if (rowsSelectable) {
+                                    style = {
+                                        ...style,
+                                        cursor: "pointer"
+                                    }
                                 }
-                            }
-
-                            if (this.props.stylesMap) {
-                                Object.keys(this.props.stylesMap)
+                                
+                                if (this.props.stylesMap) {
+                                    Object.keys(this.props.stylesMap)
                                     .forEach(key => {
                                         if(content[key]) {
                                             style = {
@@ -275,20 +327,21 @@ class EISTable extends Component {
                                             }
                                         }
                                     })
-                            }
-
-                            return (
-                                <TableRow key={index} style={style} onClick={rowsSelectable ? () => this.props.onRowClick(content, index) : () => {}}>
-                                    {this.props.propCodes.map(propCode =>
-                                        <TableCell key={propCode}>{
-                                            this.renderContent(propCode, content)
-                                        }</TableCell>
-                                    )}
-                                </TableRow>
-                            )
-                        })}
-                    </TableBody>
-                </Table>
+                                }
+                                
+                                return (
+                                    <TableRow key={index} style={style} onClick={rowsSelectable ? () => this.props.onRowClick(content, index) : () => {}}>
+                                        {this.props.propCodes.map(propCode =>
+                                            <TableCell key={propCode}>{
+                                                this.renderContent(propCode, content)
+                                            }</TableCell>
+                                            )}
+                                    </TableRow>
+                                )
+                            })}
+                        </TableBody>
+                    </Table>
+                </React.Fragment>
             );
         }
     }
