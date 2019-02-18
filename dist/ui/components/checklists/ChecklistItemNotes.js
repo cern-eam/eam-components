@@ -38,7 +38,13 @@ var ChecklistItemInputQuantitative = function (_Component) {
             args[_key] = arguments[_key];
         }
 
-        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = ChecklistItemInputQuantitative.__proto__ || Object.getPrototypeOf(ChecklistItemInputQuantitative)).call.apply(_ref, [this].concat(args))), _this), _this.notesStyle = {
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = ChecklistItemInputQuantitative.__proto__ || Object.getPrototypeOf(ChecklistItemInputQuantitative)).call.apply(_ref, [this].concat(args))), _this), _this.mainDivStyle = {
+            padding: 2,
+            position: "relative",
+            flexGrow: "1",
+            display: "flex",
+            alignItems: "center"
+        }, _this.notesStyle = {
             color: "rgb(117, 117, 117)",
             width: "calc(100% - 64px)",
             border: "0px solid #ebebeb",
@@ -49,7 +55,7 @@ var ChecklistItemInputQuantitative = function (_Component) {
             backgroundColor: "#fff"
         }, _this.commentIconStyle = {
             position: "absolute",
-            bottom: 5,
+            bottom: 12,
             left: 4,
             color: "#cecece"
         }, _this.handleChange = function (event) {
@@ -87,7 +93,7 @@ var ChecklistItemInputQuantitative = function (_Component) {
 
             return _react2.default.createElement(
                 'div',
-                { style: { padding: 2 } },
+                { style: this.mainDivStyle },
                 _react2.default.createElement('input', { style: this.notesStyle,
                     onChange: this.handleChange,
                     value: this.state.value || '',

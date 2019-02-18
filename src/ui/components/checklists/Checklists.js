@@ -64,42 +64,14 @@ export default class Checklists extends Component {
 
             checklistItems.push(
                 <ChecklistItem key={checklist.checkListCode}
-                               setChecklistItem={this.setChecklistItem.bind(this)}
+                               updateChecklistItem={this.props.updateChecklistItem}
                                checklistItem={checklist}
+                               handleError={this.props.handleError}
                                minFindingsDropdown={this.props.minFindingsDropdown}/>
             )
         });
 
         return checklistItems
-    }
-
-    setChecklistItem(checklistItem) {
-
-        this.props.updateChecklistItem(checklistItem)
-            .then(response => {
-                // nothing to do for the moment
-            })
-            .catch(error => {
-                this.props.handleError(error)
-            });
-
-        let activities = this.state.activities.map(activity => {
-                if (activity.activityCode === checklistItem.activityCode) {
-                    return {
-                        ...activity,
-                        checklists: activity.checklists.map(checklist => (
-                            (checklist.checkListCode === checklistItem.checkListCode) ? checklistItem : checklist)
-                        )
-                    }
-                } else {
-                    return activity;
-                }
-            }
-        );
-
-        this.setState({
-            activities
-        })
     }
 
     renderActivities() {

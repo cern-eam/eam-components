@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
-export default class ChecklistItemInputFinding extends Component {
+export default class ChecklistItemInputChecklist extends Component {
 
     mainStyle = {
         flex: "0 0 170px",

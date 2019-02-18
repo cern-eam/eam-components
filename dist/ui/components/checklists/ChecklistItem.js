@@ -50,6 +50,10 @@ var _Collapse = require('@material-ui/core/Collapse');
 
 var _Collapse2 = _interopRequireDefault(_Collapse);
 
+var _ChecklistItemFollowUp = require('./ChecklistItemFollowUp');
+
+var _ChecklistItemFollowUp2 = _interopRequireDefault(_ChecklistItemFollowUp);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -72,10 +76,17 @@ var Checklist = function (_Component) {
             args[_key] = arguments[_key];
         }
 
-        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Checklist.__proto__ || Object.getPrototypeOf(Checklist)).call.apply(_ref, [this].concat(args))), _this), _this.checkListItem = {
-            paddingTop: 5,
-            paddingBottom: 5,
-            borderBottom: "dashed 1px #d1d3d4"
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Checklist.__proto__ || Object.getPrototypeOf(Checklist)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+            detailsVisible: false,
+            blocked: false
+        }, _this.getCheckListItemStyle = function () {
+            return {
+                paddingTop: 5,
+                paddingBottom: 5,
+                borderBottom: "dashed 1px #d1d3d4",
+                opacity: _this.state.blocked ? 0.5 : 1,
+                pointerEvents: _this.state.blocked ? 'none' : 'auto'
+            };
         }, _this.firstLine = {
             display: "flex",
             alignItems: "center",
@@ -85,6 +96,13 @@ var Checklist = function (_Component) {
             float: "left",
             pointerEvents: "initial",
             color: "rgba(0, 0, 0, 0.87)"
+        }, _this.checklistDetailsStyle = {
+            marginLeft: -5,
+            marginTop: -5,
+            marginRight: -8,
+            paddingRight: 3,
+            display: "flex",
+            flexDirection: "row"
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
@@ -93,7 +111,8 @@ var Checklist = function (_Component) {
         value: function componentWillMount() {
             if (this.props.checklistItem) {
                 this.setState({
-                    notesVisible: !!this.props.checklistItem.notes
+                    checklistItem: this.props.checklistItem,
+                    detailsVisible: !!this.props.checklistItem.notes
                 });
             }
         }
@@ -102,39 +121,40 @@ var Checklist = function (_Component) {
         value: function componentWillReceiveProps(nextProps) {
             if (nextProps.checklistItem) {
                 this.setState({
-                    notesVisible: !!nextProps.checklistItem.notes
+                    checklistItem: this.props.checklistItem,
+                    detailsVisible: !!this.props.checklistItem.notes
                 });
             }
         }
-    }, {
-        key: 'notesCollapseStyle',
-
 
         /**
          * Compute the style for notes div container
          *
          * @returns {{marginLeft: number, marginTop: number, position: string, display: string}}
          */
-        value: function notesCollapseStyle() {
-            return {
-                marginLeft: -5,
-                marginTop: -5,
-                marginRight: -8,
-                paddingRight: 3,
-                position: "relative"
-            };
-        }
-
-        /**
-         *
-         * @param checklistItem
-         */
 
     }, {
         key: 'onChange',
         value: function onChange(checklistItem) {
-            // send new checklistItem to the parent
-            this.props.setChecklistItem(checklistItem);
+            var _this2 = this;
+
+            // Block the UI
+            this.setState({ blocked: true });
+            // Copy the current checklist item (will be used to restore the UI)
+            var oldChecklistItem = Object.assign({}, this.state.checklistItem);
+            //
+            this.setState({ checklistItem: checklistItem });
+            // Update the checklist Item
+            this.props.updateChecklistItem(checklistItem).then(function (response) {
+                _this2.setState({ blocked: false });
+            }).catch(function (error) {
+                _this2.props.handleError(error);
+                // Unblock the UI and restore the UI
+                _this2.setState({
+                    blocked: false,
+                    checklistItem: oldChecklistItem
+                });
+            });
         }
     }, {
         key: 'descClickHandler',
@@ -143,54 +163,54 @@ var Checklist = function (_Component) {
             //    setTimeout(() => this.notesInput.focus(), 0)
             //}
             this.setState({
-                notesVisible: !this.state.notesVisible
+                detailsVisible: !this.state.detailsVisible
             });
         }
     }, {
         key: 'renderChecklistItemInput',
         value: function renderChecklistItemInput() {
-            var _this2 = this;
+            var _this3 = this;
 
-            var checklistItem = this.props.checklistItem;
+            var checklistItem = this.state.checklistItem;
 
 
             switch (checklistItem.type) {
                 case "01":
                     return _react2.default.createElement(_ChecklistItemInputChecklist2.default, { checklistItem: checklistItem,
                         onChange: function onChange(value) {
-                            return _this2.onChange(value);
+                            return _this3.onChange(value);
                         } });
                 case "02":
                     return _react2.default.createElement(_ChecklistItemInputYesNo2.default, { checklistItem: checklistItem, onChange: function onChange(value) {
-                            return _this2.onChange(value);
+                            return _this3.onChange(value);
                         } });
                 case "03":
                     if (checklistItem.possibleFindings.length >= this.props.minFindingsDropdown) {
                         return _react2.default.createElement(_ChecklistItemInputMoreFindings2.default, { checklistItem: checklistItem,
                             onChange: function onChange(value) {
-                                return _this2.onChange(value);
+                                return _this3.onChange(value);
                             } });
                     } else {
                         switch (checklistItem.possibleFindings.length) {
                             case 1:
                                 return _react2.default.createElement(_ChecklistItemInput1Finding2.default, { checklistItem: checklistItem,
                                     onChange: function onChange(value) {
-                                        return _this2.onChange(value);
+                                        return _this3.onChange(value);
                                     } });
                             case 2:
                                 return _react2.default.createElement(_ChecklistItemInput2Findings2.default, { checklistItem: checklistItem,
                                     onChange: function onChange(value) {
-                                        return _this2.onChange(value);
+                                        return _this3.onChange(value);
                                     } });
                             case 3:
                                 return _react2.default.createElement(_ChecklistItemInput3Findings2.default, { checklistItem: checklistItem,
                                     onChange: function onChange(value) {
-                                        return _this2.onChange(value);
+                                        return _this3.onChange(value);
                                     } });
                             default:
                                 return _react2.default.createElement(_ChecklistItemInputMoreFindings2.default, { checklistItem: checklistItem,
                                     onChange: function onChange(value) {
-                                        return _this2.onChange(value);
+                                        return _this3.onChange(value);
                                     } });
                         }
                     }
@@ -198,12 +218,12 @@ var Checklist = function (_Component) {
                 case "05":
                     return _react2.default.createElement(_ChecklistItemInputQuantitative2.default, { checklistItem: checklistItem,
                         onChange: function onChange(value) {
-                            return _this2.onChange(value);
+                            return _this3.onChange(value);
                         } });
                 case "06":
                     return _react2.default.createElement(_ChecklistItemInputInspection2.default, { checklistItem: checklistItem,
                         onChange: function onChange(value) {
-                            return _this2.onChange(value);
+                            return _this3.onChange(value);
                         } });
                 default:
                     return _react2.default.createElement('div', null);
@@ -212,14 +232,14 @@ var Checklist = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
-            var _this3 = this;
+            var _this4 = this;
 
             var checklistItem = this.props.checklistItem;
 
 
             return _react2.default.createElement(
                 'div',
-                { key: checklistItem.checkListCode, style: this.checkListItem },
+                { style: this.getCheckListItemStyle() },
                 _react2.default.createElement(
                     'div',
                     { style: this.firstLine },
@@ -232,11 +252,19 @@ var Checklist = function (_Component) {
                 ),
                 _react2.default.createElement(
                     _Collapse2.default,
-                    { style: this.notesCollapseStyle(), 'in': this.state.notesVisible },
-                    _react2.default.createElement(_ChecklistItemNotes2.default, { checklistItem: checklistItem,
-                        onChange: function onChange(value) {
-                            return _this3.onChange(value);
-                        } })
+                    { 'in': this.state.detailsVisible },
+                    _react2.default.createElement(
+                        'div',
+                        { style: this.checklistDetailsStyle },
+                        _react2.default.createElement(_ChecklistItemNotes2.default, { checklistItem: this.state.checklistItem,
+                            onChange: function onChange(value) {
+                                return _this4.onChange(value);
+                            } }),
+                        _react2.default.createElement(_ChecklistItemFollowUp2.default, { checklistItem: this.state.checklistItem,
+                            onChange: function onChange(value) {
+                                return _this4.onChange(value);
+                            } })
+                    )
                 )
             );
         }

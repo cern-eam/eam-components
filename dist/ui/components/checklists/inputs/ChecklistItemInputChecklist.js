@@ -28,21 +28,21 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var ChecklistItemInputFinding = function (_Component) {
-    _inherits(ChecklistItemInputFinding, _Component);
+var ChecklistItemInputChecklist = function (_Component) {
+    _inherits(ChecklistItemInputChecklist, _Component);
 
-    function ChecklistItemInputFinding() {
+    function ChecklistItemInputChecklist() {
         var _ref;
 
         var _temp, _this, _ret;
 
-        _classCallCheck(this, ChecklistItemInputFinding);
+        _classCallCheck(this, ChecklistItemInputChecklist);
 
         for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
             args[_key] = arguments[_key];
         }
 
-        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = ChecklistItemInputFinding.__proto__ || Object.getPrototypeOf(ChecklistItemInputFinding)).call.apply(_ref, [this].concat(args))), _this), _this.mainStyle = {
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = ChecklistItemInputChecklist.__proto__ || Object.getPrototypeOf(ChecklistItemInputChecklist)).call.apply(_ref, [this].concat(args))), _this), _this.mainStyle = {
             flex: "0 0 170px",
             display: "flex",
             marginLeft: 10
@@ -53,7 +53,7 @@ var ChecklistItemInputFinding = function (_Component) {
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
-    _createClass(ChecklistItemInputFinding, [{
+    _createClass(ChecklistItemInputChecklist, [{
         key: 'render',
         value: function render() {
             var checklistItem = this.props.checklistItem;
@@ -73,7 +73,7 @@ var ChecklistItemInputFinding = function (_Component) {
         }
     }]);
 
-    return ChecklistItemInputFinding;
+    return ChecklistItemInputChecklist;
 }(_react.Component);
 
-exports.default = ChecklistItemInputFinding;
+exports.default = ChecklistItemInputChecklist;

@@ -9,13 +9,20 @@ import ChecklistItemInputChecklist from './inputs/ChecklistItemInputChecklist';
 import ChecklistItemInputInspection from './inputs/ChecklistItemInputInspection';
 import ChecklistItemNotes from './ChecklistItemNotes';
 import Collapse from '@material-ui/core/Collapse';
+import ChecklistItemFollowUp from "./ChecklistItemFollowUp";
 
 export default class Checklist extends Component {
+
+    state = {
+        detailsVisible: false,
+        blocked: false
+    }
 
     componentWillMount() {
         if (this.props.checklistItem) {
             this.setState({
-                notesVisible: !!this.props.checklistItem.notes
+                checklistItem: this.props.checklistItem,
+                detailsVisible: !!this.props.checklistItem.notes
             })
         }
     }
@@ -23,16 +30,19 @@ export default class Checklist extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.checklistItem) {
             this.setState({
-                notesVisible: !!nextProps.checklistItem.notes
+                checklistItem: this.props.checklistItem,
+                detailsVisible: !!this.props.checklistItem.notes
             })
         }
     }
 
-    checkListItem = {
+    getCheckListItemStyle = () => ({
         paddingTop: 5,
         paddingBottom: 5,
-        borderBottom: "dashed 1px #d1d3d4"
-    }
+        borderBottom: "dashed 1px #d1d3d4",
+        opacity: this.state.blocked ? 0.5 : 1,
+        pointerEvents: this.state.blocked ? 'none' : 'auto'
+    })
 
     firstLine = {
         display: "flex",
@@ -52,23 +62,36 @@ export default class Checklist extends Component {
      *
      * @returns {{marginLeft: number, marginTop: number, position: string, display: string}}
      */
-    notesCollapseStyle() {
-        return {
+    checklistDetailsStyle = {
             marginLeft: -5,
             marginTop: -5,
             marginRight: -8,
             paddingRight: 3,
-            position: "relative"
-        }
+            display: "flex",
+            flexDirection: "row"
     }
 
-    /**
-     *
-     * @param checklistItem
-     */
+
     onChange(checklistItem) {
-        // send new checklistItem to the parent
-        this.props.setChecklistItem(checklistItem)
+        // Block the UI
+        this.setState({blocked: true})
+        // Copy the current checklist item (will be used to restore the UI)
+        let oldChecklistItem = Object.assign({}, this.state.checklistItem)
+        //
+        this.setState({checklistItem})
+        // Update the checklist Item
+        this.props.updateChecklistItem(checklistItem)
+            .then(response => {
+                this.setState({blocked: false})
+            })
+            .catch(error => {
+                this.props.handleError(error)
+                // Unblock the UI and restore the UI
+                this.setState({
+                    blocked: false,
+                    checklistItem: oldChecklistItem
+                })
+            });
     }
 
     descClickHandler() {
@@ -76,12 +99,12 @@ export default class Checklist extends Component {
         //    setTimeout(() => this.notesInput.focus(), 0)
         //}
         this.setState({
-            notesVisible: !this.state.notesVisible
+            detailsVisible: !this.state.detailsVisible
         })
     }
 
     renderChecklistItemInput() {
-        let {checklistItem} = this.props
+        let {checklistItem} = this.state
 
         switch (checklistItem.type) {
             case "01":
@@ -125,7 +148,7 @@ export default class Checklist extends Component {
         let {checklistItem} = this.props;
 
         return (
-            <div key={checklistItem.checkListCode} style={this.checkListItem}>
+            <div style={this.getCheckListItemStyle()}>
 
                 <div style={this.firstLine}>
                     <div style={this.firstLineDesc} onClick={this.descClickHandler.bind(this)}>
@@ -134,9 +157,13 @@ export default class Checklist extends Component {
                     {this.renderChecklistItemInput()}
                 </div>
 
-                <Collapse style={this.notesCollapseStyle()} in={this.state.notesVisible}>
-                    <ChecklistItemNotes checklistItem={checklistItem}
-                                        onChange={value => this.onChange(value)}/>
+                <Collapse in={this.state.detailsVisible}>
+                    <div style={this.checklistDetailsStyle} >
+                        <ChecklistItemNotes checklistItem={this.state.checklistItem}
+                                            onChange={value => this.onChange(value)}/>
+                        <ChecklistItemFollowUp checklistItem={this.state.checklistItem}
+                                               onChange={value => this.onChange(value)}/>
+                    </div>
                 </Collapse>
             </div>
         )

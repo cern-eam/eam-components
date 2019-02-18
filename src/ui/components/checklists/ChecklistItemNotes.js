@@ -19,6 +19,14 @@ export default class ChecklistItemInputQuantitative extends Component {
         }
     }
 
+    mainDivStyle = {
+        padding: 2,
+        position: "relative",
+        flexGrow: "1",
+        display: "flex",
+        alignItems: "center"
+    }
+
     notesStyle = {
         color: "rgb(117, 117, 117)",
         width: "calc(100% - 64px)",
@@ -32,7 +40,7 @@ export default class ChecklistItemInputQuantitative extends Component {
 
     commentIconStyle = {
         position: "absolute",
-        bottom: 5,
+        bottom: 12,
         left: 4,
         color: "#cecece"
     }
@@ -54,7 +62,7 @@ export default class ChecklistItemInputQuantitative extends Component {
     render() {
 
         return (
-            <div style={{padding: 2}}>
+            <div style={this.mainDivStyle}>
                 <input style={this.notesStyle}
                        onChange={this.handleChange}
                        value={this.state.value || ''}

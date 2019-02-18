@@ -4,8 +4,6 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = require('react');
@@ -126,44 +124,18 @@ var Checklists = function (_Component) {
                 }
 
                 checklistItems.push(_react2.default.createElement(_ChecklistItem2.default, { key: checklist.checkListCode,
-                    setChecklistItem: _this3.setChecklistItem.bind(_this3),
+                    updateChecklistItem: _this3.props.updateChecklistItem,
                     checklistItem: checklist,
+                    handleError: _this3.props.handleError,
                     minFindingsDropdown: _this3.props.minFindingsDropdown }));
             });
 
             return checklistItems;
         }
     }, {
-        key: 'setChecklistItem',
-        value: function setChecklistItem(checklistItem) {
-            var _this4 = this;
-
-            this.props.updateChecklistItem(checklistItem).then(function (response) {
-                // nothing to do for the moment
-            }).catch(function (error) {
-                _this4.props.handleError(error);
-            });
-
-            var activities = this.state.activities.map(function (activity) {
-                if (activity.activityCode === checklistItem.activityCode) {
-                    return _extends({}, activity, {
-                        checklists: activity.checklists.map(function (checklist) {
-                            return checklist.checkListCode === checklistItem.checkListCode ? checklistItem : checklist;
-                        })
-                    });
-                } else {
-                    return activity;
-                }
-            });
-
-            this.setState({
-                activities: activities
-            });
-        }
-    }, {
         key: 'renderActivities',
         value: function renderActivities() {
-            var _this5 = this;
+            var _this4 = this;
 
             return this.state.activities.filter(function (activity) {
                 return activity.checklists && activity.checklists.length > 0;
@@ -184,7 +156,7 @@ var Checklists = function (_Component) {
                         _react2.default.createElement(
                             'div',
                             { style: { width: "100%" } },
-                            _this5.renderChecklistsForActivity(activity)
+                            _this4.renderChecklistsForActivity(activity)
                         )
                     )
                 );
