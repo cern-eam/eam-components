@@ -42,7 +42,15 @@ var ChecklistItemFollowUp = function (_Component) {
             args[_key] = arguments[_key];
         }
 
-        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = ChecklistItemFollowUp.__proto__ || Object.getPrototypeOf(ChecklistItemFollowUp)).call.apply(_ref, [this].concat(args))), _this), _this.handleChange = function (event) {
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = ChecklistItemFollowUp.__proto__ || Object.getPrototypeOf(ChecklistItemFollowUp)).call.apply(_ref, [this].concat(args))), _this), _this.mainStyle = {
+            flex: "1",
+            display: "flex",
+            marginLeft: 10
+        }, _this.followUpWOCodeStyle = {
+            paddingLeft: '8px',
+            paddingRight: '16px',
+            fontSize: '12px'
+        }, _this.handleChange = function (event) {
             _this.props.onChange(_extends({}, _this.props.checklistItem, {
                 followUp: event.target.checked
             }));
@@ -54,7 +62,6 @@ var ChecklistItemFollowUp = function (_Component) {
         value: function render() {
             var checklistItem = this.props.checklistItem;
 
-
             return _react2.default.createElement(
                 'div',
                 { style: { padding: 2 } },
@@ -62,10 +69,16 @@ var ChecklistItemFollowUp = function (_Component) {
                     'div',
                     { style: this.mainStyle },
                     _react2.default.createElement(_FormControlLabel2.default, {
-                        control: _react2.default.createElement(_Checkbox2.default, {
+                        control: checklistItem.followUpWorkOrder ? _react2.default.createElement(
+                            'div',
+                            { style: this.followUpWOCodeStyle },
+                            checklistItem.followUpWorkOrder
+                        ) : _react2.default.createElement(_Checkbox2.default, {
                             color: 'primary',
                             checked: checklistItem.followUp === '+' || checklistItem.followUp === true,
+                            disabled: Boolean(checklistItem.followUpWorkOrder),
                             onChange: this.handleChange }),
+                        labelPlacement: 'start',
                         label: "Follow-up"
                     })
                 )

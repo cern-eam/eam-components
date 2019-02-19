@@ -6,17 +6,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = require('react');
+var _Button = require('@material-ui/core/Button');
 
-var _react2 = _interopRequireDefault(_react);
-
-var _panel = require('../panel');
-
-var _panel2 = _interopRequireDefault(_panel);
-
-var _ExpandMore = require('@material-ui/icons/ExpandMore');
-
-var _ExpandMore2 = _interopRequireDefault(_ExpandMore);
+var _Button2 = _interopRequireDefault(_Button);
 
 var _ExpansionPanel = require('@material-ui/core/ExpansionPanel');
 
@@ -30,17 +22,33 @@ var _ExpansionPanelSummary = require('@material-ui/core/ExpansionPanelSummary');
 
 var _ExpansionPanelSummary2 = _interopRequireDefault(_ExpansionPanelSummary);
 
-var _ChecklistItem = require('./ChecklistItem');
+var _ExpandMore = require('@material-ui/icons/ExpandMore');
 
-var _ChecklistItem2 = _interopRequireDefault(_ChecklistItem);
+var _ExpandMore2 = _interopRequireDefault(_ExpandMore);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _WSChecklists = require('../../../tools/WSChecklists');
+
+var _WSChecklists2 = _interopRequireDefault(_WSChecklists);
+
+var _panel = require('../panel');
+
+var _panel2 = _interopRequireDefault(_panel);
 
 var _ChecklistEquipment = require('./ChecklistEquipment');
 
 var _ChecklistEquipment2 = _interopRequireDefault(_ChecklistEquipment);
 
-var _WSChecklists = require('../../../tools/WSChecklists');
+var _ChecklistItem = require('./ChecklistItem');
 
-var _WSChecklists2 = _interopRequireDefault(_WSChecklists);
+var _ChecklistItem2 = _interopRequireDefault(_ChecklistItem);
+
+var _reactBlockUi = require('react-block-ui');
+
+var _reactBlockUi2 = _interopRequireDefault(_reactBlockUi);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -65,12 +73,27 @@ var Checklists = function (_Component) {
         }
 
         return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Checklists.__proto__ || Object.getPrototypeOf(Checklists)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-            activities: []
+            activities: [],
+            blocking: false
         }, _this.expansionDetailsStyle = {
             marginRight: -24,
             marginLeft: -24,
             marginTop: -7,
             marginBottom: -24
+        }, _this.createFollowUpWOs = function (evt, checklistActivity) {
+            evt.stopPropagation();
+            var activity = {
+                workOrderNumber: checklistActivity.workOrderNumber,
+                activityCode: checklistActivity.activityCode
+            };
+            _this.setState({ blocking: true });
+
+            _WSChecklists2.default.createFolowUpWorkOrders(activity).then(function (resp) {
+                _this.readActivities(activity.workOrderNumber);
+                _this.props.showSuccess('Follow-up workorders successfully created.');
+            }).catch(function (error) {
+                _this.props.showError('Could not create follow-up workorders.');
+            });
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
@@ -93,7 +116,8 @@ var Checklists = function (_Component) {
 
             this.props.getWorkOrderActivities(workorder).then(function (response) {
                 _this2.setState({
-                    activities: response.body.data
+                    activities: response.body.data,
+                    blocking: false
                 });
             });
         }
@@ -137,26 +161,47 @@ var Checklists = function (_Component) {
         value: function renderActivities() {
             var _this4 = this;
 
+            var blocking = this.state.blocking;
+
             return this.state.activities.filter(function (activity) {
                 return activity.checklists && activity.checklists.length > 0;
             }).map(function (activity) {
                 return _react2.default.createElement(
-                    _ExpansionPanel2.default,
-                    { key: activity.activityCode, defaultExpanded: true },
+                    _reactBlockUi2.default,
+                    { blocking: blocking },
                     _react2.default.createElement(
-                        _ExpansionPanelSummary2.default,
-                        { expandIcon: _react2.default.createElement(_ExpandMore2.default, null) },
-                        activity.activityCode,
-                        ' - ',
-                        activity.taskDesc
-                    ),
-                    _react2.default.createElement(
-                        _ExpansionPanelDetails2.default,
-                        { style: { marginTop: -18 } },
+                        _ExpansionPanel2.default,
+                        { key: activity.activityCode, defaultExpanded: true },
                         _react2.default.createElement(
-                            'div',
-                            { style: { width: "100%" } },
-                            _this4.renderChecklistsForActivity(activity)
+                            _ExpansionPanelSummary2.default,
+                            { expandIcon: _react2.default.createElement(_ExpandMore2.default, null) },
+                            _react2.default.createElement(
+                                'div',
+                                { style: { padding: 2,
+                                        flexGrow: "1",
+                                        display: "flex",
+                                        alignItems: "center"
+                                    } },
+                                activity.activityCode,
+                                ' - ',
+                                activity.taskDesc,
+                                _react2.default.createElement(
+                                    _Button2.default,
+                                    { onClick: function onClick(evt) {
+                                            return _this4.createFollowUpWOs(evt, activity);
+                                        }, color: 'primary', style: { marginLeft: 'auto', paddingRight: '40px' } },
+                                    'Create Follow-up WO'
+                                )
+                            )
+                        ),
+                        _react2.default.createElement(
+                            _ExpansionPanelDetails2.default,
+                            { style: { marginTop: -18 } },
+                            _react2.default.createElement(
+                                'div',
+                                { style: { width: "100%" } },
+                                _this4.renderChecklistsForActivity(activity)
+                            )
                         )
                     )
                 );
