@@ -1,16 +1,23 @@
-import React, {Component} from 'react'
-import Autocomplete from './Autocomplete'
-import EAMBaseInput from './EAMBaseInput'
+import React from 'react';
+import Autocomplete from './Autocomplete';
+import EAMBaseInput from './EAMBaseInput';
 
 class EAMAutocomplete extends EAMBaseInput {
 
-    onDescChangeHandler = (value) => {
-        this.props.updateProperty(this.props.descKey, value);
-    };
+    onDescChangeHandler = value => this.props.updateProperty(this.props.descKey, value)
 
-    render() {
+    onValueChangeHandler = value => {
+        this.props.updateProperty(this.props.valueKey, value)
+        this.props.updateProperty(this.props.descKey, '');
+    }
 
-        const {autocompleteHandler} = this.props;
+    onSuggestionChange = (code, desc) => {
+        this.props.updateProperty(this.props.valueKey, code);
+        this.props.updateProperty(this.props.descKey, desc);
+    }
+
+    render () {
+        const { autocompleteHandler } = this.props;
 
         if (this.isHidden()) {
             return <div/>
@@ -22,11 +29,12 @@ class EAMAutocomplete extends EAMBaseInput {
                 error={this.state.error}
                 helperText={this.state.helperText}
                 disabled={this.state.disabled || this.props.elementInfo.readonly}
-                onChange={value => this.onChangeHandler(value)}
-                onDescChange={value => this.onDescChangeHandler(value)}
+                onChange={value => this.onValueChangeHandler(value)}
+                onDescChangeHandler={this.onDescChangeHandler.bind(this)}
+                onSuggestionChange={this.onSuggestionChange.bind(this)}
                 valueDesc={this.props.valueDesc || ''}
                 value={this.props.value || ''}
-                getSuggestions={this.props.autocompleteHandler}
+                getSuggestions={autocompleteHandler}
                 label={this.props.elementInfo.text}
                 renderSuggestion={suggestion => <div>{suggestion.code} - {suggestion.desc}</div>}
                 getSuggestionValue={suggestion => suggestion.code}

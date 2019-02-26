@@ -1,53 +1,68 @@
-import React, {Component} from 'react';
+import { Component } from 'react';
 
 class EAMBaseInput extends Component {
+
+    //PROPS
+    // VALIDATORS (list not required) default([])
+    // DEFAULT HELPER TEXT (string not required)
+    // SHOW HELPER TEXT (function not required)
+    // 
 
     state = {
         error: false,
         helperText: null,
-        disabled: false
+        disabled: false,
+        value: undefined, // [{validator: function(){}, errorText: ''}]
+        validators: []
     }
 
-    componentWillMount() {
-        if (this.props.children) {
-            this.props.children[this.props.elementInfo.xpath] = this
+    getValue = () => this.state.value
+
+    setValue = value => this.setState({value})
+
+    runValidators = () => this.setState(
+        {error: false},
+        () => !this.props.validators.some(({ getResult, errorText }) => {
+            let failed = getResult && !getResult(this.state.value)
+            if (failed) this.setState({error: true, helperText: errorText})
+            return failed
+        })
+    )
+
+    componentWillMount () {
+        let { children, elementInfo } = this.props;
+        if (children && elementInfo) {
+            children[elementInfo.xpath] = this;
         }
+        //TODO default validators
+        // if (elementInfo.isNumber) {
+        //     validators.push(this.isNumber)
+        // }
     }
 
-    enable() {
-        this.setState(() => ({
-            disabled: false
-        }))
-    }
+    isNumber = (value, label) => ({
+        getResult: value => value && !isNaN(value),
+        errorText: `'${label || 'This field'}' should be a valid number.` 
+    })
 
-    disable() {
-        this.setState(() => ({
-            disabled: true
-        }))
-    }
+    // getValues({code: , codeDesc})
 
-    isHidden() {
-        return (this.props.elementInfo.attribute === 'H')
-    }
+    enable = () => this.setState({disabled: false})
 
-    isRequired() {
-        return (this.props.elementInfo.attribute === 'R' || this.props.elementInfo.attribute === 'S')
-    }
+    disable = () => this.setState({disabled: true})
+
+    isRequired = () => this.props.elementInfo && (this.props.elementInfo.attribute === 'R' || this.props.elementInfo.attribute === 'S')
+
+    isHidden = () => this.props.elementInfo && this.props.elementInfo.attribute === 'H'
 
     validate() {
-        if (!this.props.value && this.isRequired()) {
-            this.setState(() => ({
-                error: true,
-                helperText: this.props.elementInfo.text + ' is a required field'
-            }))
+        const { value, elementInfo } = this.props;
+        if (!value && this.isRequired()) {
+            this.setState({ error: true, helperText: elementInfo.text + ' is a required field'})
             return false
-        } else {
-            this.setState(() => ({
-                error: false,
-                helperText: null
-            }))
-            return true
         }
+        this.setState({ error: false, helperText: null})
+        return true
     }
 
     onChangeHandler = (value) => {
@@ -60,8 +75,7 @@ class EAMBaseInput extends Component {
         if (value &&
             value.length &&
             this.props.elementInfo.maxLength &&
-            value.length > this.props.elementInfo.maxLength)
-        {
+            value.length > this.props.elementInfo.maxLength) {
             return
         }
 
@@ -71,7 +85,6 @@ class EAMBaseInput extends Component {
             this.props.onChangeValue(value);
         }
     };
-
 }
 
 export default EAMBaseInput

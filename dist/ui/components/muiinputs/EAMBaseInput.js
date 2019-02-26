@@ -8,10 +8,6 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _react = require('react');
 
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -35,7 +31,39 @@ var EAMBaseInput = function (_Component) {
         return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EAMBaseInput.__proto__ || Object.getPrototypeOf(EAMBaseInput)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
             error: false,
             helperText: null,
-            disabled: false
+            disabled: false,
+            value: undefined, // [{validator: function(){}, errorText: ''}]
+            validators: []
+        }, _this.getValue = function () {
+            return _this.state.value;
+        }, _this.setValue = function (value) {
+            return _this.setState({ value: value });
+        }, _this.runValidators = function () {
+            return _this.setState({ error: false }, function () {
+                return !_this.props.validators.some(function (_ref2) {
+                    var getResult = _ref2.getResult,
+                        errorText = _ref2.errorText;
+
+                    var failed = getResult && !getResult(_this.state.value);
+                    if (failed) _this.setState({ error: true, helperText: errorText });
+                    return failed;
+                });
+            });
+        }, _this.isNumber = function (value, label) {
+            return {
+                getResult: function getResult(value) {
+                    return value && !isNaN(value);
+                },
+                errorText: '\'' + (label || 'This field') + '\' should be a valid number.'
+            };
+        }, _this.enable = function () {
+            return _this.setState({ disabled: false });
+        }, _this.disable = function () {
+            return _this.setState({ disabled: true });
+        }, _this.isRequired = function () {
+            return _this.props.elementInfo && (_this.props.elementInfo.attribute === 'R' || _this.props.elementInfo.attribute === 'S');
+        }, _this.isHidden = function () {
+            return _this.props.elementInfo && _this.props.elementInfo.attribute === 'H';
         }, _this.onChangeHandler = function (value) {
             // TODO: uppercased fields
             //if (this.props.elementInfo.characterCase === 'uppercase') {
@@ -55,63 +83,43 @@ var EAMBaseInput = function (_Component) {
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
+    //PROPS
+    // VALIDATORS (list not required) default([])
+    // DEFAULT HELPER TEXT (string not required)
+    // SHOW HELPER TEXT (function not required)
+    // 
+
     _createClass(EAMBaseInput, [{
         key: 'componentWillMount',
         value: function componentWillMount() {
-            if (this.props.children) {
-                this.props.children[this.props.elementInfo.xpath] = this;
+            var _props = this.props,
+                children = _props.children,
+                elementInfo = _props.elementInfo;
+
+            if (children && elementInfo) {
+                children[elementInfo.xpath] = this;
             }
+            //TODO default validators
+            // if (elementInfo.isNumber) {
+            //     validators.push(this.isNumber)
+            // }
         }
-    }, {
-        key: 'enable',
-        value: function enable() {
-            this.setState(function () {
-                return {
-                    disabled: false
-                };
-            });
-        }
-    }, {
-        key: 'disable',
-        value: function disable() {
-            this.setState(function () {
-                return {
-                    disabled: true
-                };
-            });
-        }
-    }, {
-        key: 'isHidden',
-        value: function isHidden() {
-            return this.props.elementInfo.attribute === 'H';
-        }
-    }, {
-        key: 'isRequired',
-        value: function isRequired() {
-            return this.props.elementInfo.attribute === 'R' || this.props.elementInfo.attribute === 'S';
-        }
+
+        // getValues({code: , codeDesc})
+
     }, {
         key: 'validate',
         value: function validate() {
-            var _this2 = this;
+            var _props2 = this.props,
+                value = _props2.value,
+                elementInfo = _props2.elementInfo;
 
-            if (!this.props.value && this.isRequired()) {
-                this.setState(function () {
-                    return {
-                        error: true,
-                        helperText: _this2.props.elementInfo.text + ' is a required field'
-                    };
-                });
+            if (!value && this.isRequired()) {
+                this.setState({ error: true, helperText: elementInfo.text + ' is a required field' });
                 return false;
-            } else {
-                this.setState(function () {
-                    return {
-                        error: false,
-                        helperText: null
-                    };
-                });
-                return true;
             }
+            this.setState({ error: false, helperText: null });
+            return true;
         }
     }]);
 

@@ -11,7 +11,7 @@ import axios from "axios/index";
  * Default input, if none is provided
  */
 
-function getTextWidth(text) {
+function getTextWidth (text) {
     var canvas = document.createElement("canvas");
     var context = canvas.getContext("2d");
     context.font = '16px Roboto';
@@ -19,7 +19,7 @@ function getTextWidth(text) {
     return metrics.width;
 }
 
-function renderDefaultInput(inputProps) {
+function renderDefaultInput (inputProps) {
     const { classes, autoFocus, value, label, disabled, endAdornment, error, helperText, required, ...other } = inputProps;
 
     var inputAdornmentStyle = {
@@ -125,34 +125,31 @@ class Autocomplete extends React.Component {
         suggestions: []
     };
 
-    componentDidMount() {
-        this.setState({
-            value: this.props.value || '',
-            endAdornment: this.props.valueDesc
-        })
-
+    componentDidMount () {
+        this.setStateFromProps(this.props)
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps (nextProps) {
+        this.setStateFromProps(nextProps)
+    }
+
+    setStateFromProps (props) {
         this.setState({
-            value: nextProps.value || '',
-            endAdornment: nextProps.valueDesc || ''
+            value: props.value || '',
+            endAdornment: props.valueDesc || ''
         })
     }
 
     // Input rendering
-    renderInput(inputProps) {
-        return renderDefaultInput(inputProps);
-    }
+    renderInput = inputProps => renderDefaultInput(inputProps)
 
     // Fetch suggestions
     handleSuggestionsFetchRequested = ({ value }) => {
         clearTimeout(this.timeout)
         this.timeout = setTimeout(() => {
 
-            if (!!this.cancelSource) {
-                this.cancelSource.cancel();
-            }
+            if (!!this.cancelSource) this.cancelSource.cancel();
+
             this.cancelSource = axios.CancelToken.source()
 
             this.props.getSuggestions(value, {cancelToken: this.cancelSource.token})
@@ -162,56 +159,49 @@ class Autocomplete extends React.Component {
                     });
                 }).catch(error => {
 
-            });
+                });
         }, 200)
     };
 
     // Clear suggestions
     handleSuggestionsClearRequested = () => {
-        if (!this.state.endAdornment) {
-            this.props.onDescChange('')
-        }
-        this.props.onChange(this.state.value)
-        this.setState({
-            suggestions: []
-        });
-    };
+        console.log(`[handleSuggestionsClearRequested]: fired ${this.state.value}:${this.state.endAdornment}`)
+        this.setState({suggestions: []}, _ => {
+            console.log(`[handleSuggestionsClearRequested]: fired AFTER ${this.state.value}:${this.state.endAdornment}`)
+            this.props.onSuggestionChange(this.state.value, this.state.endAdornment)
+        })
+    }
 
     // On change, set the state
     handleChange = (event, { newValue }) => {
-        this.state.value = newValue
-        this.state.endAdornment = ''
+        console.log(`[handleChange]: fired ${this.state.value}:${this.state.endAdornment}`)
+        //this.props.onChange(newValue);
+        // Initially, the onChange only happened on lose focus (onBlur) event. However, both events
+        //(onChange and onBlur) are fired at the same time, causing the onBlur() event to not have 
+        //the updated state. Therefore, and until a complete redesign is in place, the parent shall
+        //be updated at every key stroke.
         this.setState({
             value: newValue,
             endAdornment: ''
-        });
-    };
+        })
+    }
+
+    onSuggestionSelected = (event, { suggestion }) => {
+        console.log(`[handleConSuggestionSelectedhange]: fired ${this.state.value}:${this.state.endAdornment}`)
+        if (suggestion) this.props.onSuggestionChange(suggestion.code, suggestion.desc)
+    }
 
     // Render
-    renderSuggestion(suggestion) {
-        if (this.props.renderSuggestion) {
-            return this.props.renderSuggestion(suggestion);
-        } else {
-            // Default behaviour
-            return (<div>{this.getSuggestionValue(suggestion)}</div>);
-        }
-    }
+    renderSuggestion = suggestion =>
+        this.props.renderSuggestion ? 
+            this.props.renderSuggestion(suggestion)
+            : (<div>
+                {suggestion.code}
+            </div>)
 
-    getSuggestionValue(suggestion) {
-        this.setState({
-            endAdornment: suggestion.desc
-        })
-        return this.props.getSuggestionValue(suggestion);
-    }
+    getSuggestionValue = suggestion => suggestion.desc;
 
-    onSuggestionSelected(event, {suggestion}) {
-        this.state.endAdornment = suggestion.desc
-        this.props.onDescChange(suggestion.desc)
-    }
-
-    shouldRenderSuggestions(value) {
-        return !!value
-    }
+    shouldRenderSuggestions = value => !!value
 
     render() {
         const { classes } = this.props;

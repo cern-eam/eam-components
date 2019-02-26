@@ -41,7 +41,13 @@ var EAMAutocomplete = function (_EAMBaseInput) {
         }
 
         return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EAMAutocomplete.__proto__ || Object.getPrototypeOf(EAMAutocomplete)).call.apply(_ref, [this].concat(args))), _this), _this.onDescChangeHandler = function (value) {
-            _this.props.updateProperty(_this.props.descKey, value);
+            return _this.props.updateProperty(_this.props.descKey, value);
+        }, _this.onValueChangeHandler = function (value) {
+            _this.props.updateProperty(_this.props.valueKey, value);
+            _this.props.updateProperty(_this.props.descKey, '');
+        }, _this.onSuggestionChange = function (code, desc) {
+            _this.props.updateProperty(_this.props.valueKey, code);
+            _this.props.updateProperty(_this.props.descKey, desc);
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
@@ -63,14 +69,13 @@ var EAMAutocomplete = function (_EAMBaseInput) {
                 helperText: this.state.helperText,
                 disabled: this.state.disabled || this.props.elementInfo.readonly,
                 onChange: function onChange(value) {
-                    return _this2.onChangeHandler(value);
+                    return _this2.onValueChangeHandler(value);
                 },
-                onDescChange: function onDescChange(value) {
-                    return _this2.onDescChangeHandler(value);
-                },
+                onDescChangeHandler: this.onDescChangeHandler.bind(this),
+                onSuggestionChange: this.onSuggestionChange.bind(this),
                 valueDesc: this.props.valueDesc || '',
                 value: this.props.value || '',
-                getSuggestions: this.props.autocompleteHandler,
+                getSuggestions: autocompleteHandler,
                 label: this.props.elementInfo.text,
                 renderSuggestion: function renderSuggestion(suggestion) {
                     return _react2.default.createElement(

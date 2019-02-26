@@ -194,15 +194,16 @@ var Autocomplete = function (_React$Component) {
         return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Autocomplete.__proto__ || Object.getPrototypeOf(Autocomplete)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
             value: '',
             suggestions: []
+        }, _this.renderInput = function (inputProps) {
+            return renderDefaultInput(inputProps);
         }, _this.handleSuggestionsFetchRequested = function (_ref2) {
             var value = _ref2.value;
 
             clearTimeout(_this.timeout);
             _this.timeout = setTimeout(function () {
 
-                if (!!_this.cancelSource) {
-                    _this.cancelSource.cancel();
-                }
+                if (!!_this.cancelSource) _this.cancelSource.cancel();
+
                 _this.cancelSource = _index2.default.CancelToken.source();
 
                 _this.props.getSuggestions(value, { cancelToken: _this.cancelSource.token }).then(function (result) {
@@ -212,49 +213,63 @@ var Autocomplete = function (_React$Component) {
                 }).catch(function (error) {});
             }, 200);
         }, _this.handleSuggestionsClearRequested = function () {
-            if (!_this.state.endAdornment) {
-                _this.props.onDescChange('');
-            }
-            _this.props.onChange(_this.state.value);
-            _this.setState({
-                suggestions: []
+            console.log('[handleSuggestionsClearRequested]: fired ' + _this.state.value + ':' + _this.state.endAdornment);
+            _this.setState({ suggestions: [] }, function (_) {
+                console.log('[handleSuggestionsClearRequested]: fired AFTER ' + _this.state.value + ':' + _this.state.endAdornment);
+                _this.props.onSuggestionChange(_this.state.value, _this.state.endAdornment);
             });
         }, _this.handleChange = function (event, _ref3) {
             var newValue = _ref3.newValue;
 
-            _this.state.value = newValue;
-            _this.state.endAdornment = '';
+            console.log('[handleChange]: fired ' + _this.state.value + ':' + _this.state.endAdornment);
+            //this.props.onChange(newValue);
+            // Initially, the onChange only happened on lose focus (onBlur) event. However, both events
+            //(onChange and onBlur) are fired at the same time, causing the onBlur() event to not have 
+            //the updated state. Therefore, and until a complete redesign is in place, the parent shall
+            //be updated at every key stroke.
             _this.setState({
                 value: newValue,
                 endAdornment: ''
             });
+        }, _this.onSuggestionSelected = function (event, _ref4) {
+            var suggestion = _ref4.suggestion;
+
+            console.log('[handleConSuggestionSelectedhange]: fired ' + _this.state.value + ':' + _this.state.endAdornment);
+            if (suggestion) _this.props.onSuggestionChange(suggestion.code, suggestion.desc);
+        }, _this.renderSuggestion = function (suggestion) {
+            return _this.props.renderSuggestion ? _this.props.renderSuggestion(suggestion) : _react2.default.createElement(
+                'div',
+                null,
+                suggestion.code
+            );
+        }, _this.getSuggestionValue = function (suggestion) {
+            return suggestion.desc;
+        }, _this.shouldRenderSuggestions = function (value) {
+            return !!value;
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
     _createClass(Autocomplete, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            this.setState({
-                value: this.props.value || '',
-                endAdornment: this.props.valueDesc
-            });
+            this.setStateFromProps(this.props);
         }
     }, {
         key: 'componentWillReceiveProps',
         value: function componentWillReceiveProps(nextProps) {
+            this.setStateFromProps(nextProps);
+        }
+    }, {
+        key: 'setStateFromProps',
+        value: function setStateFromProps(props) {
             this.setState({
-                value: nextProps.value || '',
-                endAdornment: nextProps.valueDesc || ''
+                value: props.value || '',
+                endAdornment: props.valueDesc || ''
             });
         }
 
         // Input rendering
 
-    }, {
-        key: 'renderInput',
-        value: function renderInput(inputProps) {
-            return renderDefaultInput(inputProps);
-        }
 
         // Fetch suggestions
 
@@ -264,44 +279,9 @@ var Autocomplete = function (_React$Component) {
 
         // On change, set the state
 
-    }, {
-        key: 'renderSuggestion',
-
 
         // Render
-        value: function renderSuggestion(suggestion) {
-            if (this.props.renderSuggestion) {
-                return this.props.renderSuggestion(suggestion);
-            } else {
-                // Default behaviour
-                return _react2.default.createElement(
-                    'div',
-                    null,
-                    this.getSuggestionValue(suggestion)
-                );
-            }
-        }
-    }, {
-        key: 'getSuggestionValue',
-        value: function getSuggestionValue(suggestion) {
-            this.setState({
-                endAdornment: suggestion.desc
-            });
-            return this.props.getSuggestionValue(suggestion);
-        }
-    }, {
-        key: 'onSuggestionSelected',
-        value: function onSuggestionSelected(event, _ref4) {
-            var suggestion = _ref4.suggestion;
 
-            this.state.endAdornment = suggestion.desc;
-            this.props.onDescChange(suggestion.desc);
-        }
-    }, {
-        key: 'shouldRenderSuggestions',
-        value: function shouldRenderSuggestions(value) {
-            return !!value;
-        }
     }, {
         key: 'render',
         value: function render() {
