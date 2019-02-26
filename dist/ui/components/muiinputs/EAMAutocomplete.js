@@ -6,13 +6,37 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _InputAdornment = require('@material-ui/core/InputAdornment');
+
+var _InputAdornment2 = _interopRequireDefault(_InputAdornment);
+
+var _MenuItem = require('@material-ui/core/MenuItem');
+
+var _MenuItem2 = _interopRequireDefault(_MenuItem);
+
+var _Paper = require('@material-ui/core/Paper');
+
+var _Paper2 = _interopRequireDefault(_Paper);
+
+var _styles = require('@material-ui/core/styles');
+
+var _TextField = require('@material-ui/core/TextField');
+
+var _TextField2 = _interopRequireDefault(_TextField);
+
+var _index = require('axios/index');
+
+var _index2 = _interopRequireDefault(_index);
+
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Autocomplete = require('./Autocomplete');
+var _reactAutosuggest = require('react-autosuggest');
 
-var _Autocomplete2 = _interopRequireDefault(_Autocomplete);
+var _reactAutosuggest2 = _interopRequireDefault(_reactAutosuggest);
 
 var _EAMBaseInput2 = require('./EAMBaseInput');
 
@@ -25,6 +49,129 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+function getTextWidth(text) {
+    var canvas = document.createElement("canvas");
+    var context = canvas.getContext("2d");
+    context.font = '16px Roboto';
+    var metrics = context.measureText(text);
+    return metrics.width;
+}
+
+function renderDefaultInput(inputProps) {
+    var classes = inputProps.classes,
+        autoFocus = inputProps.autoFocus,
+        value = inputProps.value,
+        label = inputProps.label,
+        disabled = inputProps.disabled,
+        endAdornment = inputProps.endAdornment,
+        error = inputProps.error,
+        helperText = inputProps.helperText,
+        required = inputProps.required,
+        other = _objectWithoutProperties(inputProps, ['classes', 'autoFocus', 'value', 'label', 'disabled', 'endAdornment', 'error', 'helperText', 'required']);
+
+    var inputAdornmentStyle = {
+        height: 20,
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        top: 6,
+        left: 5 + getTextWidth(value),
+        position: "absolute",
+        pointerEvents: "none",
+        fontSize: 16,
+        color: "#9E9E9E"
+    };
+
+    return _react2.default.createElement(_TextField2.default, {
+        required: required,
+        error: error,
+        helperText: helperText,
+        style: { overflow: "hidden" },
+        disabled: disabled,
+        margin: 'normal',
+        label: label,
+        autoFocus: autoFocus,
+        className: classes.textField,
+        value: value,
+        InputProps: _extends({
+            endAdornment: endAdornment && _react2.default.createElement(
+                _InputAdornment2.default,
+                { style: inputAdornmentStyle },
+                ' \u2014 ',
+                endAdornment
+            ),
+            classes: {
+                input: classes.input
+            }
+        }, other)
+    });
+}
+
+/**
+ * Container that will encapsulate every suggestion
+ */
+function renderSuggestionContainer(suggestion, isHighlighted) {
+    return _react2.default.createElement(
+        _MenuItem2.default,
+        { selected: isHighlighted, component: 'div' },
+        _react2.default.createElement(
+            'div',
+            null,
+            _react2.default.createElement(
+                'div',
+                null,
+                suggestion.code,
+                ' - ',
+                suggestion.desc
+            )
+        )
+    );
+}
+
+/**
+ * Global container containing all suggestions
+ */
+function renderSuggestionsContainer(options) {
+    var containerProps = options.containerProps,
+        children = options.children;
+
+    return _react2.default.createElement(
+        _Paper2.default,
+        _extends({}, containerProps, { square: true }),
+        children
+    );
+}
+
+var styles = function styles(theme) {
+    return {
+        container: {
+            flexGrow: 1,
+            position: 'relative'
+        },
+        suggestionsContainerOpen: {
+            position: 'absolute',
+            marginTop: theme.spacing.unit,
+            marginBottom: theme.spacing.unit * 3,
+            left: 0,
+            right: 0,
+            zIndex: 10
+        },
+        suggestion: {
+            display: 'block'
+        },
+        suggestionsList: {
+            margin: 0,
+            padding: 0,
+            listStyleType: 'none'
+        },
+        textField: {
+            width: '100%'
+        }
+    };
+};
 
 var EAMAutocomplete = function (_EAMBaseInput) {
     _inherits(EAMAutocomplete, _EAMBaseInput);
@@ -40,54 +187,158 @@ var EAMAutocomplete = function (_EAMBaseInput) {
             args[_key] = arguments[_key];
         }
 
-        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EAMAutocomplete.__proto__ || Object.getPrototypeOf(EAMAutocomplete)).call.apply(_ref, [this].concat(args))), _this), _this.onDescChangeHandler = function (value) {
-            return _this.props.updateProperty(_this.props.descKey, value);
-        }, _this.onValueChangeHandler = function (value) {
-            _this.props.updateProperty(_this.props.valueKey, value);
-            _this.props.updateProperty(_this.props.descKey, '');
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EAMAutocomplete.__proto__ || Object.getPrototypeOf(EAMAutocomplete)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+            suggestions: []
+        }, _this.setStateFromProps = function (props) {
+            _this.setValue({ code: props.value || '', desc: props.valueDesc || '' });
         }, _this.onSuggestionChange = function (code, desc) {
             _this.props.updateProperty(_this.props.valueKey, code);
             _this.props.updateProperty(_this.props.descKey, desc);
+        }, _this.renderInput = function (inputProps) {
+            return renderDefaultInput(inputProps);
+        }, _this.handleSuggestionsFetchRequested = function (_ref2) {
+            var value = _ref2.value;
+
+            clearTimeout(_this.timeout);
+            _this.timeout = setTimeout(function () {
+
+                if (!!_this.cancelSource) _this.cancelSource.cancel();
+
+                _this.cancelSource = _index2.default.CancelToken.source();
+
+                _this.props.autocompleteHandler(value, { cancelToken: _this.cancelSource.token }).then(function (result) {
+                    _this.setState({
+                        suggestions: result.body.data
+                    });
+                }).catch(function (error) {});
+            }, 200);
+        }, _this.handleChange = function (event, _ref3) {
+            var newValue = _ref3.newValue;
+
+            // Initially, the onChange only happened on lose focus (onBlur) event. However, both events
+            //(onChange and onBlur) are fired at the same time, causing the onBlur() event to not have 
+            //the updated state. Therefore, and until a complete redesign is in place, either the parent shall
+            //be updated at every key stroke, or thehandleSuggestionsClearRequested must contain a workaround
+            // this.setState({
+            //     value: newValue,
+            //     endAdornment: ''
+            // })
+            _this.setValue({ code: newValue, desc: '' });
+            //this.props.onChange(newValue); // This triggers a re-render all parent's child components
+        }, _this.handleSuggestionsClearRequested = function () {
+            return _this.setState({ suggestions: [] }, function (_) {
+                // Not the cleaniest of ways to achieve the parent update on the value: the parent should save 
+                //a ref and call getValue for that purpose. However, and to avoid manipulating state directly,
+                //we update it as a callback which should have the state updated
+                (function (_ref4) {
+                    var value = _ref4.value;
+                    return value && _this.onSuggestionChange(value.code, value.desc);
+                })(_this.state);
+            });
+        }, _this.onSuggestionSelected = function (event, _ref5) {
+            var suggestion = _ref5.suggestion;
+
+            if (suggestion) _this.onSuggestionChange(suggestion.code, suggestion.desc);
+        }, _this.getSuggestionValue = function (suggestion) {
+            return suggestion.desc;
+        }, _this.shouldRenderSuggestions = function (value) {
+            return !!value;
+        }, _this.onSuggestionSelected = function (event, _ref6) {
+            var suggestion = _ref6.suggestion;
+
+            if (suggestion) _this.onSuggestionChange(suggestion.code, suggestion.desc);
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
     _createClass(EAMAutocomplete, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.setStateFromProps(this.props);
+        }
+    }, {
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(nextProps) {
+            this.setStateFromProps(nextProps);
+        }
+
+        // Input rendering
+
+
+        // Fetch suggestions
+
+
+        // Clear suggestions
+
+
+        // render () {
+        //     const { autocompleteHandler } = this.props;
+        //     debugger;
+        //     if (this.isHidden()) {
+        //         return <div/>
+        //     }
+
+        //     return (
+        //         <Autocomplete
+        //             required={this.isRequired()}
+        //             error={this.state.error}
+        //             helperText={this.state.helperText}
+        //             disabled={this.state.disabled || this.props.elementInfo.readonly}
+        //             onChange={value => this.onValueChangeHandler(value)}
+        //             onDescChangeHandler={this.onDescChangeHandler.bind(this)}
+        //             onSuggestionChange={this.onSuggestionChange.bind(this)}
+        //             valueDesc={this.props.valueDesc || ''}
+        //             value={this.props.value || ''}
+        //             getSuggestions={autocompleteHandler}
+        //             label={this.props.elementInfo.text}
+        //             renderSuggestion={suggestion => <div>{suggestion.code} - {suggestion.desc}</div>}
+        //             getSuggestionValue={suggestion => suggestion.code}
+        //         />
+        //     )
+        // }
+
+    }, {
         key: 'render',
         value: function render() {
-            var _this2 = this;
+            var classes = this.props.classes;
+            var value = this.state.value;
 
-            var autocompleteHandler = this.props.autocompleteHandler;
-
+            if (!value) return null;
 
             if (this.isHidden()) {
-                return _react2.default.createElement('div', null);
+                return null;
             }
 
-            return _react2.default.createElement(_Autocomplete2.default, {
-                required: this.isRequired(),
-                error: this.state.error,
-                helperText: this.state.helperText,
-                disabled: this.state.disabled || this.props.elementInfo.readonly,
-                onChange: function onChange(value) {
-                    return _this2.onValueChangeHandler(value);
+            return _react2.default.createElement(_reactAutosuggest2.default, {
+                theme: {
+                    container: classes.container,
+                    suggestionsContainerOpen: classes.suggestionsContainerOpen,
+                    suggestionsList: classes.suggestionsList,
+                    suggestion: classes.suggestion
                 },
-                onDescChangeHandler: this.onDescChangeHandler.bind(this),
-                onSuggestionChange: this.onSuggestionChange.bind(this),
-                valueDesc: this.props.valueDesc || '',
-                value: this.props.value || '',
-                getSuggestions: autocompleteHandler,
-                label: this.props.elementInfo.text,
-                renderSuggestion: function renderSuggestion(suggestion) {
-                    return _react2.default.createElement(
-                        'div',
-                        null,
-                        suggestion.code,
-                        ' - ',
-                        suggestion.desc
-                    );
+                focusInputOnSuggestionClick: false,
+                onSuggestionSelected: this.onSuggestionSelected.bind(this),
+                suggestions: this.state.suggestions,
+                onSuggestionsFetchRequested: this.handleSuggestionsFetchRequested,
+                onSuggestionsClearRequested: this.handleSuggestionsClearRequested,
+                getSuggestionValue: this.getSuggestionValue,
+                renderSuggestionsContainer: renderSuggestionsContainer,
+                renderSuggestion: function renderSuggestion(suggestion, _ref7) {
+                    var isHighlighted = _ref7.isHighlighted;
+                    return renderSuggestionContainer(suggestion, isHighlighted);
                 },
-                getSuggestionValue: function getSuggestionValue(suggestion) {
-                    return suggestion.code;
+                renderInputComponent: this.renderInput.bind(this),
+                shouldRenderSuggestions: this.shouldRenderSuggestions.bind(this),
+                inputProps: {
+                    required: this.isRequired(),
+                    error: this.state.error,
+                    helperText: this.props.helperText,
+                    endAdornment: value.desc,
+                    classes: classes,
+                    placeholder: this.props.placeholder,
+                    label: this.props.elementInfo.text,
+                    value: value.code,
+                    onChange: this.handleChange,
+                    disabled: this.state.disabled || this.props.elementInfo.readonly
                 }
             });
         }
@@ -96,4 +347,4 @@ var EAMAutocomplete = function (_EAMBaseInput) {
     return EAMAutocomplete;
 }(_EAMBaseInput3.default);
 
-exports.default = EAMAutocomplete;
+exports.default = (0, _styles.withStyles)(styles)(EAMAutocomplete);

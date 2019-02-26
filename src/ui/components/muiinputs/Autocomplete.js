@@ -134,9 +134,9 @@ class Autocomplete extends React.Component {
     }
 
     setStateFromProps (props) {
-        this.setState({
-            value: props.value || '',
-            endAdornment: props.valueDesc || ''
+        this.setValue({
+            code: props.value || '',
+            desc: props.valueDesc || ''
         })
     }
 
@@ -163,31 +163,29 @@ class Autocomplete extends React.Component {
         }, 200)
     };
 
-    // Clear suggestions
-    handleSuggestionsClearRequested = () => {
-        console.log(`[handleSuggestionsClearRequested]: fired ${this.state.value}:${this.state.endAdornment}`)
-        this.setState({suggestions: []}, _ => {
-            console.log(`[handleSuggestionsClearRequested]: fired AFTER ${this.state.value}:${this.state.endAdornment}`)
-            this.props.onSuggestionChange(this.state.value, this.state.endAdornment)
-        })
-    }
-
-    // On change, set the state
     handleChange = (event, { newValue }) => {
-        console.log(`[handleChange]: fired ${this.state.value}:${this.state.endAdornment}`)
-        //this.props.onChange(newValue);
         // Initially, the onChange only happened on lose focus (onBlur) event. However, both events
         //(onChange and onBlur) are fired at the same time, causing the onBlur() event to not have 
-        //the updated state. Therefore, and until a complete redesign is in place, the parent shall
-        //be updated at every key stroke.
-        this.setState({
-            value: newValue,
-            endAdornment: ''
-        })
+        //the updated state. Therefore, and until a complete redesign is in place, either the parent shall
+        //be updated at every key stroke, or thehandleSuggestionsClearRequested must contain a workaround
+        // this.setState({
+        //     value: newValue,
+        //     endAdornment: ''
+        // })
+        this.setValue({code: value, desc: endAdornment});
+        //this.props.onChange(newValue); // This triggers a re-render all parent's child components
     }
 
+    // Clear suggestions
+    handleSuggestionsClearRequested = () =>
+        this.setState({suggestions: []}, _ => {
+            // Not the cleaniest of ways to achieve the parent update on the value: the parent should save 
+            //a ref and call getValue for that purpose. However, and to avoid manipulating state directly,
+            //we update it as a callback which should have the state updated
+            this.props.onSuggestionChange(this.getValue().code, this.getValue().desc)
+        })
+
     onSuggestionSelected = (event, { suggestion }) => {
-        console.log(`[handleConSuggestionSelectedhange]: fired ${this.state.value}:${this.state.endAdornment}`)
         if (suggestion) this.props.onSuggestionChange(suggestion.code, suggestion.desc)
     }
 
@@ -219,7 +217,7 @@ class Autocomplete extends React.Component {
                 onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
                 onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
                 renderSuggestionsContainer={renderSuggestionsContainer}
-                getSuggestionValue={this.getSuggestionValue.bind(this)}
+                getSuggestionValue={suggestion => suggestion.desc}
                 renderSuggestion={(suggestion, { isHighlighted }) => renderSuggestionContainer(this.renderSuggestion(suggestion), suggestion, isHighlighted)}
                 renderInputComponent={this.renderInput.bind(this)}
                 shouldRenderSuggestions={this.shouldRenderSuggestions.bind(this)}
@@ -227,11 +225,11 @@ class Autocomplete extends React.Component {
                     required: this.props.required,
                     error: this.props.error,
                     helperText: this.props.helperText,
-                    endAdornment: this.state.endAdornment,
+                    endAdornment: this.getValue().desc,
                     classes,
                     placeholder: this.props.placeholder,
                     label: this.props.label,
-                    value: this.state.value,
+                    value: this.getValue().code,
                     onChange: this.handleChange,
                     disabled: this.props.disabled
                 }}

@@ -212,29 +212,29 @@ var Autocomplete = function (_React$Component) {
                     });
                 }).catch(function (error) {});
             }, 200);
-        }, _this.handleSuggestionsClearRequested = function () {
-            console.log('[handleSuggestionsClearRequested]: fired ' + _this.state.value + ':' + _this.state.endAdornment);
-            _this.setState({ suggestions: [] }, function (_) {
-                console.log('[handleSuggestionsClearRequested]: fired AFTER ' + _this.state.value + ':' + _this.state.endAdornment);
-                _this.props.onSuggestionChange(_this.state.value, _this.state.endAdornment);
-            });
         }, _this.handleChange = function (event, _ref3) {
             var newValue = _ref3.newValue;
 
-            console.log('[handleChange]: fired ' + _this.state.value + ':' + _this.state.endAdornment);
-            //this.props.onChange(newValue);
             // Initially, the onChange only happened on lose focus (onBlur) event. However, both events
             //(onChange and onBlur) are fired at the same time, causing the onBlur() event to not have 
-            //the updated state. Therefore, and until a complete redesign is in place, the parent shall
-            //be updated at every key stroke.
-            _this.setState({
-                value: newValue,
-                endAdornment: ''
+            //the updated state. Therefore, and until a complete redesign is in place, either the parent shall
+            //be updated at every key stroke, or thehandleSuggestionsClearRequested must contain a workaround
+            // this.setState({
+            //     value: newValue,
+            //     endAdornment: ''
+            // })
+            _this.setValue({ code: value, desc: endAdornment });
+            //this.props.onChange(newValue); // This triggers a re-render all parent's child components
+        }, _this.handleSuggestionsClearRequested = function () {
+            return _this.setState({ suggestions: [] }, function (_) {
+                // Not the cleaniest of ways to achieve the parent update on the value: the parent should save 
+                //a ref and call getValue for that purpose. However, and to avoid manipulating state directly,
+                //we update it as a callback which should have the state updated
+                _this.props.onSuggestionChange(_this.getValue().code, _this.getValue().desc);
             });
         }, _this.onSuggestionSelected = function (event, _ref4) {
             var suggestion = _ref4.suggestion;
 
-            console.log('[handleConSuggestionSelectedhange]: fired ' + _this.state.value + ':' + _this.state.endAdornment);
             if (suggestion) _this.props.onSuggestionChange(suggestion.code, suggestion.desc);
         }, _this.renderSuggestion = function (suggestion) {
             return _this.props.renderSuggestion ? _this.props.renderSuggestion(suggestion) : _react2.default.createElement(
@@ -262,9 +262,9 @@ var Autocomplete = function (_React$Component) {
     }, {
         key: 'setStateFromProps',
         value: function setStateFromProps(props) {
-            this.setState({
-                value: props.value || '',
-                endAdornment: props.valueDesc || ''
+            this.setValue({
+                code: props.value || '',
+                desc: props.valueDesc || ''
             });
         }
 
@@ -275,9 +275,6 @@ var Autocomplete = function (_React$Component) {
 
 
         // Clear suggestions
-
-
-        // On change, set the state
 
 
         // Render
@@ -302,7 +299,9 @@ var Autocomplete = function (_React$Component) {
                 onSuggestionsFetchRequested: this.handleSuggestionsFetchRequested,
                 onSuggestionsClearRequested: this.handleSuggestionsClearRequested,
                 renderSuggestionsContainer: renderSuggestionsContainer,
-                getSuggestionValue: this.getSuggestionValue.bind(this),
+                getSuggestionValue: function getSuggestionValue(suggestion) {
+                    return suggestion.desc;
+                },
                 renderSuggestion: function renderSuggestion(suggestion, _ref5) {
                     var isHighlighted = _ref5.isHighlighted;
                     return renderSuggestionContainer(_this2.renderSuggestion(suggestion), suggestion, isHighlighted);
@@ -313,11 +312,11 @@ var Autocomplete = function (_React$Component) {
                     required: this.props.required,
                     error: this.props.error,
                     helperText: this.props.helperText,
-                    endAdornment: this.state.endAdornment,
+                    endAdornment: this.getValue().desc,
                     classes: classes,
                     placeholder: this.props.placeholder,
                     label: this.props.label,
-                    value: this.state.value,
+                    value: this.getValue().code,
                     onChange: this.handleChange,
                     disabled: this.props.disabled
                 }

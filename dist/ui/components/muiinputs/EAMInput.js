@@ -6,13 +6,15 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
 var _TextField = require('@material-ui/core/TextField');
 
 var _TextField2 = _interopRequireDefault(_TextField);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
 
 var _EAMBaseInput2 = require('./EAMBaseInput');
 
@@ -30,12 +32,34 @@ var EAMInput = function (_EAMBaseInput) {
     _inherits(EAMInput, _EAMBaseInput);
 
     function EAMInput() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
         _classCallCheck(this, EAMInput);
 
-        return _possibleConstructorReturn(this, (EAMInput.__proto__ || Object.getPrototypeOf(EAMInput)).apply(this, arguments));
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EAMInput.__proto__ || Object.getPrototypeOf(EAMInput)).call.apply(_ref, [this].concat(args))), _this), _this.state = {}, _this.setStateFromProps = function (props) {
+            _this.setValue(props && props.value || '');
+        }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
     _createClass(EAMInput, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            _get(EAMInput.prototype.__proto__ || Object.getPrototypeOf(EAMInput.prototype), 'componentDidMount', this).apply(this, this.props);
+            this.setStateFromProps(this.props);
+        }
+    }, {
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(nextProps) {
+            _get(EAMInput.prototype.__proto__ || Object.getPrototypeOf(EAMInput.prototype), 'componentDidMount', this).apply(this, nextProps);
+            this.setStateFromProps(nextProps);
+        }
+    }, {
         key: 'render',
         value: function render() {
             var _this2 = this;

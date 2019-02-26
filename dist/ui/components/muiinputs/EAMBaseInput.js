@@ -8,6 +8,8 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _react = require('react');
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -34,8 +36,25 @@ var EAMBaseInput = function (_Component) {
             disabled: false,
             value: undefined, // [{validator: function(){}, errorText: ''}]
             validators: []
-        }, _this.getValue = function () {
-            return _this.state.value;
+        }, _this.setValidatorsFromProps = function (props) {
+            var children = props.children,
+                elementInfo = props.elementInfo,
+                customValidators = props.customValidators,
+                valueKey = props.valueKey;
+
+            if (children && elementInfo) {
+                children[elementInfo.xpath] = _this;
+            }
+
+            var myValidators = [].concat(_toConsumableArray(customValidators || []));
+            var label = elementInfo.text;
+            if (elementInfo.fieldType === 'number') {
+                myValidators.push(_this.isNumber(label));
+            }
+            if (_this.isRequired()) {
+                myValidators.push(_this.hasValue(label));
+            }
+            _this.setState({ validators: myValidators });
         }, _this.setValue = function (value) {
             return _this.setState({ value: value });
         }, _this.runValidators = function () {
@@ -49,12 +68,19 @@ var EAMBaseInput = function (_Component) {
                     return failed;
                 });
             });
-        }, _this.isNumber = function (value, label) {
+        }, _this.hasValue = function (label) {
+            return {
+                getResult: function getResult(value) {
+                    return value;
+                },
+                errorText: '*Required field'
+            };
+        }, _this.isNumber = function (label) {
             return {
                 getResult: function getResult(value) {
                     return value && !isNaN(value);
                 },
-                errorText: '\'' + (label || 'This field') + '\' should be a valid number.'
+                errorText: '\'' + (label || 'This field') + '\' should be a valid number'
             };
         }, _this.enable = function () {
             return _this.setState({ disabled: false });
@@ -90,19 +116,14 @@ var EAMBaseInput = function (_Component) {
     // 
 
     _createClass(EAMBaseInput, [{
-        key: 'componentWillMount',
-        value: function componentWillMount() {
-            var _props = this.props,
-                children = _props.children,
-                elementInfo = _props.elementInfo;
-
-            if (children && elementInfo) {
-                children[elementInfo.xpath] = this;
-            }
-            //TODO default validators
-            // if (elementInfo.isNumber) {
-            //     validators.push(this.isNumber)
-            // }
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.setValidatorsFromProps(this.props);
+        }
+    }, {
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(nextProps) {
+            this.setValidatorsFromProps(nextProps);
         }
 
         // getValues({code: , codeDesc})
@@ -110,16 +131,23 @@ var EAMBaseInput = function (_Component) {
     }, {
         key: 'validate',
         value: function validate() {
-            var _props2 = this.props,
-                value = _props2.value,
-                elementInfo = _props2.elementInfo;
+            var _state = this.state,
+                helperText = _state.helperText,
+                validators = _state.validators,
+                value = _state.value;
 
-            if (!value && this.isRequired()) {
-                this.setState({ error: true, helperText: elementInfo.text + ' is a required field' });
-                return false;
-            }
-            this.setState({ error: false, helperText: null });
-            return true;
+            debugger;
+            var valid = !validators.some(function (_ref3) {
+                var getResult = _ref3.getResult,
+                    errorText = _ref3.errorText;
+
+                var failed = getResult && !getResult(value);
+                if (failed) helperText = errorText;
+                return failed;
+            });
+
+            this.setState({ error: !valid, helperText: valid ? '' : helperText });
+            return valid;
         }
     }]);
 
@@ -127,3 +155,8 @@ var EAMBaseInput = function (_Component) {
 }(_react.Component);
 
 exports.default = EAMBaseInput;
+
+
+EAMBaseInput.defaultProps = {
+    customValidators: []
+};
