@@ -1,6 +1,6 @@
-import TextField from '@material-ui/core/TextField';
 import React from 'react';
 import EAMBaseInput from './EAMBaseInput';
+import EAMTextField from './EAMTextField';
 
 class EAMInput extends EAMBaseInput {
 
@@ -13,7 +13,7 @@ class EAMInput extends EAMBaseInput {
 
     renderComponent () {
         return (
-            <TextField
+            <EAMTextField
                 disabled={this.state.disabled || this.props.elementInfo.readonly}
                 error={this.state.error}
                 helperText={this.state.helperText}
@@ -22,8 +22,6 @@ class EAMInput extends EAMBaseInput {
                 value={this.state.value}
                 onChange={event => this.setValue(event.target.value)}
                 onBlur={this.onLoseFocus}
-                fullWidth
-                margin="normal"
                 InputLabelProps={{ shrink: true }}/>
         )
     }

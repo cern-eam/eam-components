@@ -22,9 +22,9 @@ var _Paper2 = _interopRequireDefault(_Paper);
 
 var _styles = require('@material-ui/core/styles');
 
-var _TextField = require('@material-ui/core/TextField');
+var _EAMTextField = require('./EAMTextField');
 
-var _TextField2 = _interopRequireDefault(_TextField);
+var _EAMTextField2 = _interopRequireDefault(_EAMTextField);
 
 var _index = require('axios/index');
 
@@ -77,7 +77,6 @@ function renderDefaultInput(inputProps) {
         whiteSpace: "nowrap",
         overflow: "hidden",
         textOverflow: "ellipsis",
-        top: 6,
         left: 5 + getTextWidth(value),
         position: "absolute",
         pointerEvents: "none",
@@ -85,13 +84,12 @@ function renderDefaultInput(inputProps) {
         color: "#9E9E9E"
     };
 
-    return _react2.default.createElement(_TextField2.default, {
+    return _react2.default.createElement(_EAMTextField2.default, {
         required: required,
         error: error,
         helperText: helperText,
         style: { overflow: "hidden" },
         disabled: disabled,
-        margin: 'normal',
         label: label,
         autoFocus: autoFocus,
         className: classes.textField,

@@ -6,8 +6,6 @@ import EAMBaseInput from "./EAMBaseInput";
 const checkBoxStyle = {
     width: '50%',
     fontSize: '14px',
-    marginTop: '16px',
-    marginBottom: '1px',
     float: 'left',
     boxSizing: 'border-box',
     display: 'block',

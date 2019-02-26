@@ -33,8 +33,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var checkBoxStyle = {
     width: '50%',
     fontSize: '14px',
-    marginTop: '16px',
-    marginBottom: '1px',
     float: 'left',
     boxSizing: 'border-box',
     display: 'block'

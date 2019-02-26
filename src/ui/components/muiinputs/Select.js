@@ -6,13 +6,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import SvgIcon from '@material-ui/core/SvgIcon';
-
+import EAMTextField from './EAMTextField';
 /**
  * Default input, if none is provided
  */
 function renderInput(inputProps) {
     const { classes, value, label, disabled, error, helperText, required, ...other } = inputProps;
-
     const arrowIconStyle = {
         color: "rgba(0, 0, 0, 0.54)",
         pointerEvents: 'none',
@@ -21,21 +20,22 @@ function renderInput(inputProps) {
     }
 
     return (
-        <TextField
+        <EAMTextField
             required = {required}
             error={error}
             helperText={helperText}
             disabled={disabled}
-            margin="normal"
             label={label}
             className={classes.textField}
             value={value}
             InputProps={{
-                endAdornment: (!disabled && <InputAdornment position="end">
-                                    <SvgIcon style={arrowIconStyle}>
-                                        <path d="M7 10l5 5 5-5z" />
-                                    </SvgIcon>
-                               </InputAdornment>),
+                endAdornment: (!disabled &&
+                    <InputAdornment position="end">
+                        <SvgIcon style={arrowIconStyle}>
+                            <path d="M7 10l5 5 5-5z" />
+                        </SvgIcon>
+                    </InputAdornment>
+                ),
                 classes: {
                     input: classes.input,
                 },
@@ -127,19 +127,13 @@ class Select extends React.Component {
         else if (value && values) {
             const test = values.find(v => (v.code.toUpperCase() === value.toUpperCase() ||
                                          v.desc.toUpperCase() === value.toUpperCase()))
-            if (test) {
-                this.setState(() => ({
-                    value: test.desc
-                }))
-            } else {
-                this.setState(() => ({
-                    value: value
-                }))
-            }
+            this.setState(() => ({
+                value: test ? test.desc : value
+            }))
+
         }
     }
 
-    // Filter suggestions
     handleSuggestionsFetchRequested = ({ value, reason }) => {
         let suggestions = this.props.values
         if (!suggestions) {
@@ -158,46 +152,46 @@ class Select extends React.Component {
         });
     };
 
-    // Clear suggestions
     handleSuggestionsClearRequested = () => {
+        this.setState({
+            suggestions: [],
+        }, this.propagateChange);
+    };
+    
+    handleSuggestionSelected = (event, { suggestionValue }) => {
+        this.setState({ value: suggestionValue });
+    }
+
+    handleChange = (event, { newValue }) => {
+        this.setState({ value: newValue });
+    };
+
+    propagateChange = () => {
         if (!this.props.values) {
             this.props.onChange(this.state.value)
             return
         }
 
-       let temp = this.props.values.find(v => v.desc === this.state.value)
+        let temp = this.props.values.find(v => v.desc === this.state.value)
         if (temp) {
             this.props.onChange(temp.code)
         } else {
-           this.props.onChange(this.state.value)
+            this.props.onChange(this.state.value)
         }
-
-        this.setState({
-            suggestions: [],
-        });
-    };
-
-    // On change, set the state
-    handleChange = (event, { newValue }) => {
-        this.state.value = newValue
-        this.setState({
-            value: newValue,
-        });
-    };
-
-    handleSuggestionSelected(event, {suggestion}) {
-        this.setState({
-            value: suggestion.desc,
-        });
     }
 
-    // Render
+    getSuggestionValue = (suggestion) => {
+        return suggestion.desc;
+    }
+
+    shouldRenderSuggestions() {
+        // Returning true causes the suggestions to be
+        // rendered when the input is blank and focused
+        return true
+    }
+
     renderSuggestion(suggestion) {
         return (<div>{suggestion.desc}</div>);
-    }
-
-    getSuggestionValue(suggestion) {
-        return suggestion.desc;
     }
 
     render() {
@@ -210,17 +204,15 @@ class Select extends React.Component {
                     suggestionsList: classes.suggestionsList,
                     suggestion: classes.suggestion,
                 }}
+                shouldRenderSuggestions={this.shouldRenderSuggestions}
+                onSuggestionSelected={this.handleSuggestionSelected}
+                suggestions={this.state.suggestions}
                 focusInputOnSuggestionClick={false}
-
-                suggestions={this.state.suggestions || []}
                 onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
                 onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
-                onSuggestionSelected={this.handleSuggestionSelected.bind(this)}
                 renderSuggestionsContainer={renderSuggestionsContainer}
-                getSuggestionValue={this.getSuggestionValue.bind(this)}
+                getSuggestionValue={this.getSuggestionValue}
                 renderSuggestion={(suggestion, { isHighlighted }) => renderSuggestionContainer(this.renderSuggestion(suggestion), suggestion, isHighlighted)}
-
-                shouldRenderSuggestions={() => true}
                 renderInputComponent={renderInput.bind(this)}
                 inputProps={{
                     required: this.props.required,

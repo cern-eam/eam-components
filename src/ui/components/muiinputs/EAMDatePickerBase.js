@@ -6,6 +6,7 @@ import { DatePicker, DateTimePicker, MuiPickersUtilsProvider } from 'material-ui
 import PropTypes from 'prop-types';
 import React from 'react';
 import EAMBaseInput from './EAMBaseInput';
+import EAMTextField from './EAMTextField';
 
 export default class EAMDatePicker extends EAMBaseInput {
 
@@ -40,12 +41,11 @@ export default class EAMDatePicker extends EAMBaseInput {
             clearable: true,
             value: this.readValue(value),
             onChange: date => this.onChangeHandler(this.readDate(date)),
-            fullWidth: true,
             format: dateFormatDisplay,
-            margin: "normal",
             label: elementInfo.text,
             leftArrowIcon: <Icon> keyboard_arrow_left </Icon>,
-            rightArrowIcon: <Icon> keyboard_arrow_right </Icon>
+            rightArrowIcon: <Icon> keyboard_arrow_right </Icon>,
+            TextFieldComponent: EAMTextField
         }
     }
 

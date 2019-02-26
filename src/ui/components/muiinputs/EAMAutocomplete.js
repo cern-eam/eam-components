@@ -2,7 +2,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import MenuItem from '@material-ui/core/MenuItem';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
+import EAMTextField from './EAMTextField';
 import axios from "axios/index";
 import React from 'react';
 import Autosuggest from 'react-autosuggest';
@@ -25,7 +25,6 @@ function renderDefaultInput (inputProps) {
         whiteSpace: "nowrap",
         overflow: "hidden",
         textOverflow: "ellipsis",
-        top: 6,
         left: 5 + getTextWidth(value),
         position: "absolute",
         pointerEvents: "none",
@@ -34,13 +33,12 @@ function renderDefaultInput (inputProps) {
     }
 
     return (
-        <TextField
+        <EAMTextField
             required = {required}
             error={error}
             helperText={helperText}
             style={{overflow: "hidden"}}
             disabled = {disabled}
-            margin="normal"
             label={label}
             autoFocus={autoFocus}
             className={classes.textField}

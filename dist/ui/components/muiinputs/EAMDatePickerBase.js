@@ -36,6 +36,10 @@ var _EAMBaseInput2 = require('./EAMBaseInput');
 
 var _EAMBaseInput3 = _interopRequireDefault(_EAMBaseInput2);
 
+var _EAMTextField = require('./EAMTextField');
+
+var _EAMTextField2 = _interopRequireDefault(_EAMTextField);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -89,9 +93,7 @@ var EAMDatePicker = function (_EAMBaseInput) {
                 onChange: function onChange(date) {
                     return _this.onChangeHandler(_this.readDate(date));
                 },
-                fullWidth: true,
                 format: dateFormatDisplay,
-                margin: "normal",
                 label: elementInfo.text,
                 leftArrowIcon: _react2.default.createElement(
                     _Icon2.default,
@@ -102,7 +104,8 @@ var EAMDatePicker = function (_EAMBaseInput) {
                     _Icon2.default,
                     null,
                     ' keyboard_arrow_right '
-                )
+                ),
+                TextFieldComponent: _EAMTextField2.default
             };
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }

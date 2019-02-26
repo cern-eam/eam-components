@@ -6,10 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _TextField = require('@material-ui/core/TextField');
-
-var _TextField2 = _interopRequireDefault(_TextField);
-
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -17,6 +13,10 @@ var _react2 = _interopRequireDefault(_react);
 var _EAMBaseInput2 = require('./EAMBaseInput');
 
 var _EAMBaseInput3 = _interopRequireDefault(_EAMBaseInput2);
+
+var _EAMTextField = require('./EAMTextField');
+
+var _EAMTextField2 = _interopRequireDefault(_EAMTextField);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -53,7 +53,7 @@ var EAMInput = function (_EAMBaseInput) {
         value: function renderComponent() {
             var _this2 = this;
 
-            return _react2.default.createElement(_TextField2.default, {
+            return _react2.default.createElement(_EAMTextField2.default, {
                 disabled: this.state.disabled || this.props.elementInfo.readonly,
                 error: this.state.error,
                 helperText: this.state.helperText,
@@ -64,8 +64,6 @@ var EAMInput = function (_EAMBaseInput) {
                     return _this2.setValue(event.target.value);
                 },
                 onBlur: this.onLoseFocus,
-                fullWidth: true,
-                margin: 'normal',
                 InputLabelProps: { shrink: true } });
         }
     }]);
