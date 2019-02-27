@@ -1,5 +1,8 @@
 import { Component } from 'react';
 
+const numberReg = /^\-?(0|([1-9]\d*))(\.\d+)?$/
+const typingNumberReg = /^\-?\d*\.?\d*?$/
+
 export default class EAMBaseInput extends Component {
 
     //PROPS
@@ -11,8 +14,8 @@ export default class EAMBaseInput extends Component {
         error: false,
         helperText: null,
         disabled: false,
-        value: undefined, // [{validator: function(){}, errorText: ''}]
-        validators: []
+        value: '',
+        validators: [] // [{validator: function(){}, errorText: ''}]
     }
 
     componentDidMount () {
@@ -23,7 +26,7 @@ export default class EAMBaseInput extends Component {
         this.initBase(nextProps)
     }
 
-    initBase = (props) => {
+    initBase = props => {
         // Register as children
         let { children, elementInfo, customValidators, valueKey } = props;
         if (children && elementInfo) {
@@ -31,7 +34,7 @@ export default class EAMBaseInput extends Component {
         }
     
         // Set the validators
-        let myValidators = [...(customValidators || [])]
+        const myValidators = [...(customValidators || [])]
         const label = elementInfo.text;
         if (this.isRequired()) {
             myValidators.push(this.hasValue(label))
@@ -45,7 +48,7 @@ export default class EAMBaseInput extends Component {
         if (this.init) this.init(props)
     }
 
-    //Set value to be able to modify value before e.g. uppercasing
+    // TODO apply modifiers e.g. uppercasing
     setValue = value => this.setState({value})
 
     hasValue = label => ({
@@ -58,8 +61,8 @@ export default class EAMBaseInput extends Component {
     })
 
     isNumber = label => ({
-        getResult: value => !isNaN(parseFloat(value)),
-        errorText: `'${label || 'This field'}' should be a valid number` 
+        getResult: value => numberReg.test(value),
+        errorText: `*Number expected` 
     })
 
     // getValues({code: , codeDesc})
@@ -86,7 +89,7 @@ export default class EAMBaseInput extends Component {
         return valid
     }
 
-    onChangeHandler = (value) => {
+    onChangeHandler = value => {
         // TODO: uppercased fields
         //if (this.props.elementInfo.characterCase === 'uppercase') {
         //    value = value.toUpperCase()

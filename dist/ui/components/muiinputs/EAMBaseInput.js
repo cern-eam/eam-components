@@ -18,6 +18,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var numberReg = /^\-?(0|([1-9]\d*))(\.\d+)?$/;
+var typingNumberReg = /^\-?\d*\.?\d*?$/;
+
 var EAMBaseInput = function (_Component) {
     _inherits(EAMBaseInput, _Component);
 
@@ -36,8 +39,8 @@ var EAMBaseInput = function (_Component) {
             error: false,
             helperText: null,
             disabled: false,
-            value: undefined, // [{validator: function(){}, errorText: ''}]
-            validators: []
+            value: '',
+            validators: [] // [{validator: function(){}, errorText: ''}]
         }, _this.initBase = function (props) {
             // Register as children
             var children = props.children,
@@ -74,9 +77,9 @@ var EAMBaseInput = function (_Component) {
         }, _this.isNumber = function (label) {
             return {
                 getResult: function getResult(value) {
-                    return !isNaN(parseFloat(value));
+                    return numberReg.test(value);
                 },
-                errorText: '\'' + (label || 'This field') + '\' should be a valid number'
+                errorText: '*Number expected'
             };
         }, _this.enable = function () {
             return _this.setState({ disabled: false });
@@ -121,7 +124,7 @@ var EAMBaseInput = function (_Component) {
             this.initBase(nextProps);
         }
 
-        //Set value to be able to modify value before e.g. uppercasing
+        // TODO apply modifiers e.g. uppercasing
 
 
         // getValues({code: , codeDesc})

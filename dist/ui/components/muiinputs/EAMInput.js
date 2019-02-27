@@ -40,8 +40,11 @@ var EAMInput = function (_EAMBaseInput) {
             args[_key] = arguments[_key];
         }
 
-        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EAMInput.__proto__ || Object.getPrototypeOf(EAMInput)).call.apply(_ref, [this].concat(args))), _this), _this.state = {}, _this.init = function (props) {
-            return _this.setValue(props.value || '');
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EAMInput.__proto__ || Object.getPrototypeOf(EAMInput)).call.apply(_ref, [this].concat(args))), _this), _this.init = function (props) {
+            _this.setValue(props.value || '');
+        }, _this.onLoseFocus = function () {
+            //TODO prep input (e.g. uppercase)
+            _this.onChangeHandler(_this.state.value);
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
@@ -56,12 +59,14 @@ var EAMInput = function (_EAMBaseInput) {
                 helperText: this.state.helperText,
                 required: this.isRequired(),
                 label: this.props.elementInfo.text,
-                value: this.props.value || '',
+                value: this.state.value,
                 onChange: function onChange(event) {
-                    return _this2.onChangeHandler(event.target.value);
+                    return _this2.setValue(event.target.value);
                 },
+                onBlur: this.onLoseFocus,
                 fullWidth: true,
-                margin: 'normal' });
+                margin: 'normal',
+                InputLabelProps: { shrink: true } });
         }
     }]);
 

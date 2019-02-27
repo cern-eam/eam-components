@@ -4,12 +4,16 @@ import EAMBaseInput from './EAMBaseInput';
 
 class EAMInput extends EAMBaseInput {
 
-    state = {}
+    init = props => {
+        this.setValue(props.value || '')
+    }
 
-    init = props => this.setValue(props.value || '')
+    onLoseFocus = () => {
+        //TODO prep input (e.g. uppercase)
+        this.onChangeHandler(this.state.value)
+    }
 
     renderComponent () {
-
         return (
             <TextField
                 disabled={this.state.disabled || this.props.elementInfo.readonly}
@@ -17,10 +21,12 @@ class EAMInput extends EAMBaseInput {
                 helperText={this.state.helperText}
                 required={this.isRequired()}
                 label={this.props.elementInfo.text}
-                value={this.props.value  || ''}
-                onChange={event => this.onChangeHandler(event.target.value)}
+                value={this.state.value}
+                onChange={event => this.setValue(event.target.value)}
+                onBlur={this.onLoseFocus}
                 fullWidth
-                margin="normal"/>
+                margin="normal"
+                InputLabelProps={{ shrink: true }}/>
         )
     }
 }

@@ -4,12 +4,10 @@ import EAMBaseInput from './EAMBaseInput'
 
 export default class EAMSelect extends EAMBaseInput {
 
-    render() {
-        const {elementId, text, nullable} = this.props.elementInfo;
+    init = props => this.setValue(props.value || '')
 
-        if (this.isHidden()) {
-            return <div/>
-        }
+    renderComponent () {
+        const {elementId, text, nullable} = this.props.elementInfo;
 
         return (
             <Select

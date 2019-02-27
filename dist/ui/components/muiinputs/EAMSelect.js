@@ -30,14 +30,24 @@ var EAMSelect = function (_EAMBaseInput) {
     _inherits(EAMSelect, _EAMBaseInput);
 
     function EAMSelect() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
         _classCallCheck(this, EAMSelect);
 
-        return _possibleConstructorReturn(this, (EAMSelect.__proto__ || Object.getPrototypeOf(EAMSelect)).apply(this, arguments));
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EAMSelect.__proto__ || Object.getPrototypeOf(EAMSelect)).call.apply(_ref, [this].concat(args))), _this), _this.init = function (props) {
+            return _this.setValue(props.value || '');
+        }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
     _createClass(EAMSelect, [{
-        key: 'render',
-        value: function render() {
+        key: 'renderComponent',
+        value: function renderComponent() {
             var _this2 = this;
 
             var _props$elementInfo = this.props.elementInfo,
@@ -45,10 +55,6 @@ var EAMSelect = function (_EAMBaseInput) {
                 text = _props$elementInfo.text,
                 nullable = _props$elementInfo.nullable;
 
-
-            if (this.isHidden()) {
-                return _react2.default.createElement('div', null);
-            }
 
             return _react2.default.createElement(_Select2.default, {
                 required: this.isRequired(),
