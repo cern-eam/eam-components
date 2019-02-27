@@ -6,7 +6,6 @@ export default class EAMBaseInput extends Component {
     // VALIDATORS (list not required) default([])
     // DEFAULT HELPER TEXT (string not required)
     // SHOW HELPER TEXT (function not required)
-    // 
 
     state = {
         error: false,
@@ -17,48 +16,49 @@ export default class EAMBaseInput extends Component {
     }
 
     componentDidMount () {
-        this.setValidatorsFromProps(this.props)
+        this.initBase(this.props)
     }
 
     componentWillReceiveProps (nextProps) {
-        this.setValidatorsFromProps(nextProps)
+        this.initBase(nextProps)
     }
 
-    setValidatorsFromProps = (props) => {
+    initBase = (props) => {
+        // Register as children
         let { children, elementInfo, customValidators, valueKey } = props;
         if (children && elementInfo) {
             children[elementInfo.xpath] = this;
         }
     
+        // Set the validators
         let myValidators = [...(customValidators || [])]
         const label = elementInfo.text;
-        if (elementInfo.fieldType === 'number') {
-            myValidators.push(this.isNumber(label))
-        }
         if (this.isRequired()) {
             myValidators.push(this.hasValue(label))
         }
+        if (elementInfo.fieldType === 'number') {
+            myValidators.push(this.isNumber(label))
+        }
         this.setState({validators: myValidators})
+
+        //Subclass init
+        if (this.init) this.init(props)
     }
 
+    //Set value to be able to modify value before e.g. uppercasing
     setValue = value => this.setState({value})
 
-    runValidators = () => this.setState(
-        {error: false},
-        () => !this.props.validators.some(({ getResult, errorText }) => {
-            let failed = getResult && !getResult(this.state.value)
-            if (failed) this.setState({error: true, helperText: errorText})
-            return failed
-        })
-    )
-
     hasValue = label => ({
-        getResult: value => value,
+        getResult: value => {
+            return !!(value !== null && 
+                typeof value === 'object' ? value.code || value.length > 0
+                : value)
+        },
         errorText: `*Required field` 
     })
 
     isNumber = label => ({
-        getResult: value => value && !isNaN(value),
+        getResult: value => !isNaN(parseFloat(value)),
         errorText: `'${label || 'This field'}' should be a valid number` 
     })
 
@@ -73,8 +73,8 @@ export default class EAMBaseInput extends Component {
     isHidden = () => this.props.elementInfo && this.props.elementInfo.attribute === 'H'
 
     validate () {
-        let { helperText, validators, value } = this.state;
-        debugger;
+        let { validators, value } = this.state;
+        let helperText = '';
         let valid = !validators
             .some(({ getResult, errorText }) => {
                 let failed = getResult && !getResult(value)
@@ -82,7 +82,7 @@ export default class EAMBaseInput extends Component {
                 return failed
             })
 
-        this.setState({error: !valid, helperText: valid ? '' : helperText})
+        this.setState({error: !valid, helperText: helperText})
         return valid
     }
 
@@ -106,6 +106,13 @@ export default class EAMBaseInput extends Component {
             this.props.onChangeValue(value);
         }
     };
+
+    render () {
+        if (this.isHidden() || !this.renderComponent) {
+            return null
+        }
+        return this.renderComponent();
+    }
 }
 
 EAMBaseInput.defaultProps = {

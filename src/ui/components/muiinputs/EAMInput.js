@@ -6,25 +6,9 @@ class EAMInput extends EAMBaseInput {
 
     state = {}
 
-    componentDidMount () {
-        super.componentDidMount.apply(this, this.props);
-        this.setStateFromProps(this.props)
-    }
+    init = props => this.setValue(props.value || '')
 
-    componentWillReceiveProps (nextProps) {
-        super.componentDidMount.apply(this, nextProps);
-        this.setStateFromProps(nextProps)
-    }
-
-    setStateFromProps = props => {
-        this.setValue(props && props.value || '')
-    }
-
-    render() {
-        
-        if (this.isHidden()) {
-            return <div/>
-        }
+    renderComponent () {
 
         return (
             <TextField

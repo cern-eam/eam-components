@@ -189,8 +189,8 @@ var EAMAutocomplete = function (_EAMBaseInput) {
 
         return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EAMAutocomplete.__proto__ || Object.getPrototypeOf(EAMAutocomplete)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
             suggestions: []
-        }, _this.setStateFromProps = function (props) {
-            _this.setValue({ code: props.value || '', desc: props.valueDesc || '' });
+        }, _this.init = function (props) {
+            return _this.setValue({ code: props.value || '', desc: props.valueDesc || '' });
         }, _this.onSuggestionChange = function (code, desc) {
             _this.props.updateProperty(_this.props.valueKey, code);
             _this.props.updateProperty(_this.props.descKey, desc);
@@ -250,63 +250,24 @@ var EAMAutocomplete = function (_EAMBaseInput) {
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
+    // Input rendering
+
+
+    // Fetch suggestions
+
+
+    // Clear suggestions
+
+
     _createClass(EAMAutocomplete, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            this.setStateFromProps(this.props);
-        }
-    }, {
-        key: 'componentWillReceiveProps',
-        value: function componentWillReceiveProps(nextProps) {
-            this.setStateFromProps(nextProps);
-        }
-
-        // Input rendering
-
-
-        // Fetch suggestions
-
-
-        // Clear suggestions
-
-
-        // render () {
-        //     const { autocompleteHandler } = this.props;
-        //     debugger;
-        //     if (this.isHidden()) {
-        //         return <div/>
-        //     }
-
-        //     return (
-        //         <Autocomplete
-        //             required={this.isRequired()}
-        //             error={this.state.error}
-        //             helperText={this.state.helperText}
-        //             disabled={this.state.disabled || this.props.elementInfo.readonly}
-        //             onChange={value => this.onValueChangeHandler(value)}
-        //             onDescChangeHandler={this.onDescChangeHandler.bind(this)}
-        //             onSuggestionChange={this.onSuggestionChange.bind(this)}
-        //             valueDesc={this.props.valueDesc || ''}
-        //             value={this.props.value || ''}
-        //             getSuggestions={autocompleteHandler}
-        //             label={this.props.elementInfo.text}
-        //             renderSuggestion={suggestion => <div>{suggestion.code} - {suggestion.desc}</div>}
-        //             getSuggestionValue={suggestion => suggestion.code}
-        //         />
-        //     )
-        // }
-
-    }, {
-        key: 'render',
-        value: function render() {
+        key: 'renderComponent',
+        value: function renderComponent() {
             var classes = this.props.classes;
             var value = this.state.value;
 
-            if (!value) return null;
+            // Value should always be an object with code and desc
 
-            if (this.isHidden()) {
-                return null;
-            }
+            if (!value) return null;
 
             return _react2.default.createElement(_reactAutosuggest2.default, {
                 theme: {
@@ -331,7 +292,7 @@ var EAMAutocomplete = function (_EAMBaseInput) {
                 inputProps: {
                     required: this.isRequired(),
                     error: this.state.error,
-                    helperText: this.props.helperText,
+                    helperText: this.state.helperText,
                     endAdornment: value.desc,
                     classes: classes,
                     placeholder: this.props.placeholder,

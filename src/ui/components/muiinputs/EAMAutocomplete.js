@@ -115,17 +115,7 @@ class EAMAutocomplete extends EAMBaseInput {
         suggestions: []
     };
 
-    componentDidMount () {
-        this.setStateFromProps(this.props)
-    }
-
-    componentWillReceiveProps (nextProps) {
-        this.setStateFromProps(nextProps)
-    }
-
-    setStateFromProps = props => {
-        this.setValue({code: props.value || '', desc: props.valueDesc || ''})
-    }
+    init = props => this.setValue({code: props.value || '', desc: props.valueDesc || ''})
     
     onSuggestionChange = (code, desc) => {
         this.props.updateProperty(this.props.valueKey, code);
@@ -185,44 +175,16 @@ class EAMAutocomplete extends EAMBaseInput {
 
     shouldRenderSuggestions = value => !!value
 
-    // render () {
-    //     const { autocompleteHandler } = this.props;
-    //     debugger;
-    //     if (this.isHidden()) {
-    //         return <div/>
-    //     }
-
-    //     return (
-    //         <Autocomplete
-    //             required={this.isRequired()}
-    //             error={this.state.error}
-    //             helperText={this.state.helperText}
-    //             disabled={this.state.disabled || this.props.elementInfo.readonly}
-    //             onChange={value => this.onValueChangeHandler(value)}
-    //             onDescChangeHandler={this.onDescChangeHandler.bind(this)}
-    //             onSuggestionChange={this.onSuggestionChange.bind(this)}
-    //             valueDesc={this.props.valueDesc || ''}
-    //             value={this.props.value || ''}
-    //             getSuggestions={autocompleteHandler}
-    //             label={this.props.elementInfo.text}
-    //             renderSuggestion={suggestion => <div>{suggestion.code} - {suggestion.desc}</div>}
-    //             getSuggestionValue={suggestion => suggestion.code}
-    //         />
-    //     )
-    // }
-
     onSuggestionSelected = (event, { suggestion }) => {
         if (suggestion) this.onSuggestionChange(suggestion.code, suggestion.desc)
     }
     
-    render() {
+    renderComponent () {
         const { classes } = this.props;
         const { value } = this.state;
-        if (!value) return null
 
-        if (this.isHidden()) {
-            return null
-        }
+        // Value should always be an object with code and desc
+        if (!value) return null
 
         return (
             <Autosuggest
@@ -245,7 +207,7 @@ class EAMAutocomplete extends EAMBaseInput {
                 inputProps={{
                     required: this.isRequired(),
                     error: this.state.error,
-                    helperText: this.props.helperText,
+                    helperText: this.state.helperText,
                     endAdornment: value.desc,
                     classes,
                     placeholder: this.props.placeholder,
