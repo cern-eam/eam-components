@@ -15,6 +15,8 @@ const checkBoxStyle = {
 
 class EAMCheckbox extends EAMBaseInput {
 
+    init = props => this.setValue(props.value || '')
+
     onChangeHandler = (event, checked) => {
         const value = checked ? this.props.trueValue : this.props.falseValue;
         this.props.updateProperty(this.props.valueKey, value);
@@ -33,18 +35,14 @@ class EAMCheckbox extends EAMBaseInput {
         return this.props.value === this.props.trueValue;
     };
 
-    render() {
-        if (this.isHidden()) {
-            return <div/>
-        }
-
+    renderComponent () {
         return (
             <div style={checkBoxStyle}>
                 <FormControlLabel
                     control={
                         <Checkbox color="primary"
                                   checked={this._checked()}
-                                  value={this.props.value}
+                                  value={this.state.value}
                                   onChange={(event, checked) => this.onChangeHandler(event, checked)}
                                   disabled={this.props.elementInfo.readonly}
                         />

@@ -40,7 +40,8 @@ var EAMBaseInput = function (_Component) {
             helperText: null,
             disabled: false,
             value: '',
-            validators: [] // [{validator: function(){}, errorText: ''}]
+            validators: [], // [{validator: function(){}, errorText: ''}]
+            transformers: [] // To transform the value while typing, ex: uppercase
         }, _this.initBase = function (props) {
             // Register as children
             var children = props.children,
@@ -124,7 +125,7 @@ var EAMBaseInput = function (_Component) {
             this.initBase(nextProps);
         }
 
-        // TODO apply modifiers e.g. uppercasing
+        // TODO apply modifiers e.g. uppercasing, number
 
 
         // getValues({code: , codeDesc})

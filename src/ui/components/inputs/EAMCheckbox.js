@@ -15,11 +15,9 @@ class EAMCheckbox extends EAMBaseInput {
         }
     };
 
-    render() {
-        if (this.isHidden()) {
-            return <div/>
-        }
+    renderComponent () {
         const {labelStyle, elementInfo, label} = this.props;
+
         return (
             <div className={this.props.classes.fieldContainer}>
                 <EAMFormLabel required={this.isRequired()} label={label || (elementInfo && elementInfo.text)}

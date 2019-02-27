@@ -54,7 +54,9 @@ var EAMCheckbox = function (_EAMBaseInput) {
             args[_key] = arguments[_key];
         }
 
-        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EAMCheckbox.__proto__ || Object.getPrototypeOf(EAMCheckbox)).call.apply(_ref, [this].concat(args))), _this), _this.onChangeHandler = function (event, checked) {
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EAMCheckbox.__proto__ || Object.getPrototypeOf(EAMCheckbox)).call.apply(_ref, [this].concat(args))), _this), _this.init = function (props) {
+            return _this.setValue(props.value || '');
+        }, _this.onChangeHandler = function (event, checked) {
             var value = checked ? _this.props.trueValue : _this.props.falseValue;
             _this.props.updateProperty(_this.props.valueKey, value);
             //Extra function if needed
@@ -71,13 +73,9 @@ var EAMCheckbox = function (_EAMBaseInput) {
     }
 
     _createClass(EAMCheckbox, [{
-        key: 'render',
-        value: function render() {
+        key: 'renderComponent',
+        value: function renderComponent() {
             var _this2 = this;
-
-            if (this.isHidden()) {
-                return _react2.default.createElement('div', null);
-            }
 
             return _react2.default.createElement(
                 'div',
@@ -85,7 +83,7 @@ var EAMCheckbox = function (_EAMBaseInput) {
                 _react2.default.createElement(_FormControlLabel2.default, {
                     control: _react2.default.createElement(_Checkbox2.default, { color: 'primary',
                         checked: this._checked(),
-                        value: this.props.value,
+                        value: this.state.value,
                         onChange: function onChange(event, checked) {
                             return _this2.onChangeHandler(event, checked);
                         },

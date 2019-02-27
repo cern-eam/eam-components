@@ -57,17 +57,15 @@ var EAMCheckbox = function (_EAMBaseInput) {
     }
 
     _createClass(EAMCheckbox, [{
-        key: 'render',
-        value: function render() {
+        key: 'renderComponent',
+        value: function renderComponent() {
             var _this2 = this;
 
-            if (this.isHidden()) {
-                return _react2.default.createElement('div', null);
-            }
             var _props = this.props,
                 labelStyle = _props.labelStyle,
                 elementInfo = _props.elementInfo,
                 label = _props.label;
+
 
             return _react2.default.createElement(
                 'div',

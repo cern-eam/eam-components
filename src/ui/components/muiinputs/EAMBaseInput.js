@@ -15,7 +15,8 @@ export default class EAMBaseInput extends Component {
         helperText: null,
         disabled: false,
         value: '',
-        validators: [] // [{validator: function(){}, errorText: ''}]
+        validators: [], // [{validator: function(){}, errorText: ''}]
+        transformers: [] // To transform the value while typing, ex: uppercase
     }
 
     componentDidMount () {
@@ -48,7 +49,7 @@ export default class EAMBaseInput extends Component {
         if (this.init) this.init(props)
     }
 
-    // TODO apply modifiers e.g. uppercasing
+    // TODO apply modifiers e.g. uppercasing, number
     setValue = value => this.setState({value})
 
     hasValue = label => ({

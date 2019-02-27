@@ -57,12 +57,12 @@ export default class EAMDatePicker extends EAMBaseInput {
                 {showTime ? 
                     <DateTimePicker
                         {...this.getPickerProps(this.state, this.props)}
+                        ampm={false}
                     />
                     : <DatePicker
                         {...this.getPickerProps(this.state, this.props)}
                     />
                 }
-                
             </MuiPickersUtilsProvider>
         )
     }

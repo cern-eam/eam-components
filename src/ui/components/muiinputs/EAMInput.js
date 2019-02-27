@@ -4,9 +4,7 @@ import EAMBaseInput from './EAMBaseInput';
 
 class EAMInput extends EAMBaseInput {
 
-    init = props => {
-        this.setValue(props.value || '')
-    }
+    init = props => this.setValue(props.value || '')
 
     onLoseFocus = () => {
         //TODO prep input (e.g. uppercase)

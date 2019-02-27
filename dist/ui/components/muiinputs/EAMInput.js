@@ -41,7 +41,7 @@ var EAMInput = function (_EAMBaseInput) {
         }
 
         return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EAMInput.__proto__ || Object.getPrototypeOf(EAMInput)).call.apply(_ref, [this].concat(args))), _this), _this.init = function (props) {
-            _this.setValue(props.value || '');
+            return _this.setValue(props.value || '');
         }, _this.onLoseFocus = function () {
             //TODO prep input (e.g. uppercase)
             _this.onChangeHandler(_this.state.value);

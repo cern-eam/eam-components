@@ -4,4 +4,4 @@ export default {
 
     DATETIME_FORMAT_VALUE: 'dd-MMM-yyyy HH:mm',
     DATETIME_FORMAT_DISPLAY: 'dd-MMM-yyyy HH:mm',
-  }
+}
