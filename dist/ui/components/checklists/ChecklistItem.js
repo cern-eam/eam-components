@@ -246,7 +246,16 @@ var Checklist = function (_Component) {
                     _react2.default.createElement(
                         'div',
                         { style: this.firstLineDesc, onClick: this.descClickHandler.bind(this) },
-                        checklistItem.desc
+                        _react2.default.createElement(
+                            'label',
+                            null,
+                            checklistItem.desc
+                        ),
+                        checklistItem.requiredToClose === 'YES' && _react2.default.createElement(
+                            'label',
+                            { style: { color: "red" } },
+                            ' *'
+                        )
                     ),
                     this.renderChecklistItemInput()
                 ),

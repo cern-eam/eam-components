@@ -152,7 +152,8 @@ export default class Checklist extends Component {
 
                 <div style={this.firstLine}>
                     <div style={this.firstLineDesc} onClick={this.descClickHandler.bind(this)}>
-                        {checklistItem.desc}
+                        <label>{checklistItem.desc}</label>
+                        {checklistItem.requiredToClose === 'YES' && <label style={{color: "red"}}> *</label>}
                     </div>
                     {this.renderChecklistItemInput()}
                 </div>
