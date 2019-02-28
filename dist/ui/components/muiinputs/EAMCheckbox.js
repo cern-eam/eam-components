@@ -53,41 +53,28 @@ var EAMCheckbox = function (_EAMBaseInput) {
         }
 
         return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EAMCheckbox.__proto__ || Object.getPrototypeOf(EAMCheckbox)).call.apply(_ref, [this].concat(args))), _this), _this.init = function (props) {
-            return _this.setValue(props.value || '');
-        }, _this.onChangeHandler = function (event, checked) {
-            var value = checked ? _this.props.trueValue : _this.props.falseValue;
-            _this.props.updateProperty(_this.props.valueKey, value);
-            //Extra function if needed
-            if (_this.props.onChangeValue) {
-                _this.props.onChangeValue(value);
-            }
-        }, _this._checked = function () {
-            if (!_this.props.value) return false;
-            if (_this.props.value.toLowerCase) {
-                return _this.props.value.toLowerCase() === _this.props.trueValue;
-            }
-            return _this.props.value === _this.props.trueValue;
+            var checkedTextValue = props.value || '';
+            _this.setValue(checkedTextValue.toLowerCase() === true.toString());
+        }, _this.handleChange = function (event, checked) {
+            _this.onChangeHandler(checked.toString());
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
     _createClass(EAMCheckbox, [{
         key: 'renderComponent',
         value: function renderComponent() {
-            var _this2 = this;
-
             return _react2.default.createElement(
                 'div',
                 { style: checkBoxStyle },
                 _react2.default.createElement(_FormControlLabel2.default, {
-                    control: _react2.default.createElement(_Checkbox2.default, { color: 'primary',
-                        checked: this._checked(),
-                        value: this.state.value,
-                        onChange: function onChange(event, checked) {
-                            return _this2.onChangeHandler(event, checked);
-                        },
+                    label: this.props.elementInfo.text,
+                    control: _react2.default.createElement(_Checkbox2.default, {
+                        color: 'primary',
+                        checked: this.state.value,
+                        value: this.props.value,
+                        onChange: this.handleChange,
                         disabled: this.props.elementInfo.readonly
-                    }),
-                    label: this.props.elementInfo.text
+                    })
                 })
             );
         }
@@ -95,10 +82,5 @@ var EAMCheckbox = function (_EAMBaseInput) {
 
     return EAMCheckbox;
 }(_EAMBaseInput3.default);
-
-EAMCheckbox.defaultProps = {
-    trueValue: 'true',
-    falseValue: 'false'
-};
 
 exports.default = EAMCheckbox;
