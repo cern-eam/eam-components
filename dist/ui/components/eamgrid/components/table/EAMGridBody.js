@@ -229,7 +229,7 @@ var DataGridTableBody = function (_Component) {
                                 );
                             }),
                             row.cell.map(function (cell) {
-                                return cell.order > 0 && !_this2.props.isHiddenField(cell.t) && _react2.default.createElement(
+                                return cell.order > 0 && !_this2.props.isHiddenField(cell.t) && _this2.props.getCellWidth(cell.t) && _react2.default.createElement(
                                     'div',
                                     { key: cell.n,
                                         className: classes.searchRowCell,
