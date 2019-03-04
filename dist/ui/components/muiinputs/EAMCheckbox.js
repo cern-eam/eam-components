@@ -54,7 +54,7 @@ var EAMCheckbox = function (_EAMBaseInput) {
 
         return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EAMCheckbox.__proto__ || Object.getPrototypeOf(EAMCheckbox)).call.apply(_ref, [this].concat(args))), _this), _this.init = function (props) {
             var checkedTextValue = props.value || '';
-            _this.setValue(checkedTextValue.toLowerCase() === true.toString());
+            _this.setValue(checkedTextValue.toLowerCase() === true.toString(), false);
         }, _this.handleChange = function (event, checked) {
             _this.onChangeHandler(checked.toString());
         }, _temp), _possibleConstructorReturn(_this, _ret);

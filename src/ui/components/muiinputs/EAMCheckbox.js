@@ -15,7 +15,7 @@ class EAMCheckbox extends EAMBaseInput {
 
     init = (props) => {
         const checkedTextValue = props.value || '';
-        this.setValue(checkedTextValue.toLowerCase() === true.toString())
+        this.setValue(checkedTextValue.toLowerCase() === true.toString(), false)
     }
 
     handleChange = (event, checked) => {

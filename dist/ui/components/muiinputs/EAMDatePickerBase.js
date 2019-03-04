@@ -63,7 +63,7 @@ var EAMDatePicker = function (_EAMBaseInput) {
         }
 
         return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EAMDatePicker.__proto__ || Object.getPrototypeOf(EAMDatePicker)).call.apply(_ref, [this].concat(args))), _this), _this.init = function (props) {
-            _this.setValue(props.value || '');
+            _this.setValue(props.value || '', false);
             _this.setState({
                 dateFormatValue: props.dateFormatValue,
                 dateFormatDisplay: props.dateFormatDisplay

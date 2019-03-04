@@ -8,7 +8,7 @@ import EAMBaseInput from "./EAMBaseInput";
 
 export default class EamlightRadio extends EAMBaseInput {
 
-    init = props => this.setValue(props.value)
+    init = props => this.setValue(props.value, false)
 
     generateRadioButtons = (values) => {
         if (values) {

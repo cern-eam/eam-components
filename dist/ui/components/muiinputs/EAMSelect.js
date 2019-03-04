@@ -179,7 +179,7 @@ var EAMSelect = function (_EAMBaseInput) {
             _this.setValue({
                 code: value,
                 desc: valueFound && valueFound.desc || value
-            });
+            }, false);
         }, _this.onSuggestionChange = function (code, desc) {
             _this.props.updateProperty(_this.props.valueKey, code);
             if (_this.props && _this.props.valueDesc) {

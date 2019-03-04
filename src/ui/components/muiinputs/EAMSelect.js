@@ -113,7 +113,8 @@ class EAMSelect extends EAMBaseInput {
         this.setValue({
             code: value,
             desc: valueFound && valueFound.desc || value
-        })
+        },
+        false)
     }
 
     onSuggestionChange = (code, desc) => {
