@@ -4,12 +4,12 @@
     text-align: left;
 }
 
-.eamTableSortDropdown {
+.eamTableDropdown {
     background-color: transparent;
     width: 100%;
     font-size: 13px !important;
 }
 
-.eamTableSortDropdown select:focus {
+.eamTableDropdown select:focus {
     background-color: transparent !important;
 }
