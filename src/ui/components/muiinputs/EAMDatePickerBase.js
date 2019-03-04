@@ -11,7 +11,7 @@ import EAMTextField from './EAMTextField';
 export default class EAMDatePicker extends EAMBaseInput {
 
     init = props => {
-        this.setValue(props.value || '')
+        this.setValue(props.value || '', false)
         this.setState({
             dateFormatValue: props.dateFormatValue,
             dateFormatDisplay: props.dateFormatDisplay

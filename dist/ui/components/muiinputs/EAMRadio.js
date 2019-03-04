@@ -57,7 +57,7 @@ var EamlightRadio = function (_EAMBaseInput) {
         }
 
         return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EamlightRadio.__proto__ || Object.getPrototypeOf(EamlightRadio)).call.apply(_ref, [this].concat(args))), _this), _this.init = function (props) {
-            return _this.setValue(props.value);
+            return _this.setValue(props.value, false);
         }, _this.generateRadioButtons = function (values) {
             if (values) {
                 return values.map(function (value) {

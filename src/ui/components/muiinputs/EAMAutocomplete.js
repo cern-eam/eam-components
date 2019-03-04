@@ -113,7 +113,7 @@ class EAMAutocomplete extends EAMBaseInput {
         suggestions: []
     };
 
-    init = props => this.setValue({code: props.value || '', desc: props.valueDesc || ''})
+    init = props => this.setValue({code: props.value || '', desc: props.valueDesc || ''}, false)
     
     onSuggestionChange = (code, desc) => {
         this.props.updateProperty(this.props.valueKey, code);

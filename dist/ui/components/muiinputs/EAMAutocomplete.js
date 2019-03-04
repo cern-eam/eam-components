@@ -188,7 +188,7 @@ var EAMAutocomplete = function (_EAMBaseInput) {
         return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EAMAutocomplete.__proto__ || Object.getPrototypeOf(EAMAutocomplete)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
             suggestions: []
         }, _this.init = function (props) {
-            return _this.setValue({ code: props.value || '', desc: props.valueDesc || '' });
+            return _this.setValue({ code: props.value || '', desc: props.valueDesc || '' }, false);
         }, _this.onSuggestionChange = function (code, desc) {
             _this.props.updateProperty(_this.props.valueKey, code);
             _this.props.updateProperty(_this.props.descKey, desc);
