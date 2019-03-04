@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -47,7 +49,8 @@ var EAMBaseInput = function (_Component) {
             var children = props.children,
                 elementInfo = props.elementInfo,
                 customValidators = props.customValidators,
-                valueKey = props.valueKey;
+                valueKey = props.valueKey,
+                transformers = props.transformers;
 
             if (children && elementInfo) {
                 children[elementInfo.xpath] = _this;
@@ -62,12 +65,27 @@ var EAMBaseInput = function (_Component) {
             if (elementInfo.fieldType === 'number') {
                 myValidators.push(_this.isNumber(label));
             }
-            _this.setState({ validators: myValidators });
 
+            // Set the transformers
+            var myTransformers = [].concat(_toConsumableArray(transformers || []));
+            if (_this.isUpperCase()) {
+                myTransformers.push(_this.toUpperCase);
+            }
+
+            _this.setState({ validators: myValidators, transformers: myTransformers },
             //Subclass init
-            if (_this.init) _this.init(props);
+            function () {
+                if (_this.init) _this.init(props);
+            });
         }, _this.setValue = function (value) {
-            return _this.setState({ value: value });
+            var applyTransformers = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+            return _this.setState({ value: applyTransformers ? _this.applyTransformers(value) : value });
+        }, _this.applyTransformers = function (value) {
+            return _this.state.transformers.reduce(function (acc, transformer) {
+                return transformer(acc);
+            }, value);
+        }, _this.toUpperCase = function (value) {
+            return !value ? value : (typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object' ? _extends({}, value, { code: value.code ? value.code.toUpperCase() : value.code }) : value.toUpperCase ? value.toUpperCase() : value;
         }, _this.hasValue = function (label) {
             return {
                 getResult: function getResult(value) {
@@ -90,6 +108,8 @@ var EAMBaseInput = function (_Component) {
             return _this.props.elementInfo && (_this.props.elementInfo.attribute === 'R' || _this.props.elementInfo.attribute === 'S');
         }, _this.isHidden = function () {
             return _this.props.elementInfo && _this.props.elementInfo.attribute === 'H';
+        }, _this.isUpperCase = function () {
+            return _this.props.elementInfo && _this.props.elementInfo.characterCase === 'uppercase';
         }, _this.onChangeHandler = function (value) {
             // TODO: uppercased fields
             //if (this.props.elementInfo.characterCase === 'uppercase') {
