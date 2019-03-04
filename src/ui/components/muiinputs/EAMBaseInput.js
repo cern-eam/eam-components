@@ -29,11 +29,11 @@ export default class EAMBaseInput extends Component {
 
     initBase = props => {
         // Register as children
-        let { children, elementInfo, customValidators, valueKey } = props;
+        let { children, elementInfo, customValidators, valueKey, transformers } = props;
         if (children && elementInfo) {
             children[elementInfo.xpath] = this;
         }
-    
+
         // Set the validators
         const myValidators = [...(customValidators || [])]
         const label = elementInfo.text;
@@ -43,14 +43,29 @@ export default class EAMBaseInput extends Component {
         if (elementInfo.fieldType === 'number') {
             myValidators.push(this.isNumber(label))
         }
-        this.setState({validators: myValidators})
 
-        //Subclass init
-        if (this.init) this.init(props)
+        // Set the transformers
+        const myTransformers = [...(transformers || [])]
+        if (this.isUpperCase()) {
+            myTransformers.push(this.toUpperCase)
+        }
+
+        this.setState({validators: myValidators, transformers: myTransformers}, 
+            //Subclass init
+            () => {
+                if (this.init) this.init(props)
+            })
     }
 
     // TODO apply modifiers e.g. uppercasing, number
-    setValue = value => this.setState({value})
+    setValue = (value, applyTransformers = true) => this.setState({value: applyTransformers ? this.applyTransformers(value): value})
+
+    applyTransformers = (value) => this.state.transformers.reduce((acc, transformer) => transformer(acc), value)
+
+    toUpperCase = value => !value ? value 
+        : typeof value === 'object' ? {...value, code: value.code ? value.code.toUpperCase() : value.code}
+        : value.toUpperCase ? value.toUpperCase()
+        : value
 
     hasValue = label => ({
         getResult: value => {
@@ -75,6 +90,8 @@ export default class EAMBaseInput extends Component {
     isRequired = () => this.props.elementInfo && (this.props.elementInfo.attribute === 'R' || this.props.elementInfo.attribute === 'S')
 
     isHidden = () => this.props.elementInfo && this.props.elementInfo.attribute === 'H'
+
+    isUpperCase = () => this.props.elementInfo && this.props.elementInfo.characterCase === 'uppercase'
 
     validate () {
         let { validators, value } = this.state;
