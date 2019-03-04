@@ -40,6 +40,13 @@ var WSChecklists = function () {
 
             return _WS2.default._put('/checklists/', checklistItem, config);
         }
+    }, {
+        key: 'createFolowUpWorkOrders',
+        value: function createFolowUpWorkOrders(activity) {
+            var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+            return _WS2.default._post('/checklists/workorders', activity, config);
+        }
     }]);
 
     return WSChecklists;

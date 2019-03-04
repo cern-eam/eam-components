@@ -16,6 +16,9 @@ class WSChecklists {
         return WS._put('/checklists/', checklistItem, config);
     }
 
+    createFolowUpWorkOrders(activity, config = {}) {
+        return WS._post('/checklists/workorders', activity, config);
+    }
 }
 
 export default new WSChecklists();
