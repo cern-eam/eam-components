@@ -27,7 +27,7 @@ class EAMDateTimePicker extends EAMBaseInput {
                 return value;
             }
 
-            return parse(value, "dd-MMM-yyyy HH:mm", new Date());
+            return parse(value, Constants.DATETIME_FORMAT_VALUE, new Date());
         } else {
             return null
         }
@@ -35,7 +35,7 @@ class EAMDateTimePicker extends EAMBaseInput {
 
     readDate(date) {
         if (date) {
-            return format(date, "dd-MMM-yyyy HH:mm")
+            return format(date, Constants.DATETIME_FORMAT_VALUE)
         } else {
             return ''
         }
@@ -68,7 +68,7 @@ class EAMDateTimePicker extends EAMBaseInput {
                         InputProps={{
                             disableUnderline: true,
                         }}
-                        format="dd-MMM-yyyy HH:mm"
+                        format={Constants.DATETIME_FORMAT_DISPLAY}
                         margin="normal"
                         leftArrowIcon={<Icon> keyboard_arrow_left </Icon>}
                         rightArrowIcon={<Icon> keyboard_arrow_right </Icon>}

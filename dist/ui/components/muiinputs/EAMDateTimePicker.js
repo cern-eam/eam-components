@@ -4,31 +4,21 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _materialUiPickers = require('material-ui-pickers');
+var _Constants = require('../../../enums/Constants');
 
-var _Icon = require('@material-ui/core/Icon');
+var _Constants2 = _interopRequireDefault(_Constants);
 
-var _Icon2 = _interopRequireDefault(_Icon);
+var _EAMDatePickerBase = require('./EAMDatePickerBase');
 
-var _EAMBaseInput2 = require('./EAMBaseInput');
-
-var _EAMBaseInput3 = _interopRequireDefault(_EAMBaseInput2);
-
-var _dateFns = require('date-fns');
-
-var _dateFns2 = require('@date-io/date-fns');
-
-var _dateFns3 = _interopRequireDefault(_dateFns2);
-
-var _parse = require('date-fns/parse');
-
-var _parse2 = _interopRequireDefault(_parse);
+var _EAMDatePickerBase2 = _interopRequireDefault(_EAMDatePickerBase);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -38,8 +28,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var EAMDateTimePicker = function (_EAMBaseInput) {
-    _inherits(EAMDateTimePicker, _EAMBaseInput);
+var EAMDateTimePicker = function (_React$Component) {
+    _inherits(EAMDateTimePicker, _React$Component);
 
     function EAMDateTimePicker() {
         _classCallCheck(this, EAMDateTimePicker);
@@ -48,70 +38,17 @@ var EAMDateTimePicker = function (_EAMBaseInput) {
     }
 
     _createClass(EAMDateTimePicker, [{
-        key: 'readValue',
-        value: function readValue(value) {
-            if (value) {
-                return (0, _parse2.default)(value, "dd-MMM-yyyy HH:mm", new Date());
-            } else {
-                return null;
-            }
-        }
-    }, {
-        key: 'readDate',
-        value: function readDate(date) {
-            if (date) {
-                return (0, _dateFns.format)(date, "dd-MMM-yyyy HH:mm");
-            } else {
-                return '';
-            }
-        }
-    }, {
         key: 'render',
         value: function render() {
-            var _this2 = this;
-
-            var text = this.props.elementInfo.text;
-
-
-            if (this.isHidden()) {
-                return _react2.default.createElement('div', null);
-            }
-
-            return _react2.default.createElement(
-                _materialUiPickers.MuiPickersUtilsProvider,
-                { utils: _dateFns3.default },
-                _react2.default.createElement(_materialUiPickers.DateTimePicker, {
-                    InputAdornmentProps: { style: { marginRight: -12 } },
-                    keyboard: true,
-                    error: this.state.error,
-                    helperText: this.state.helperText,
-                    disabled: this.state.disabled || this.props.elementInfo.readonly,
-                    required: this.isRequired(),
-                    clearable: true,
-                    value: this.readValue(this.props.value),
-                    onChange: function onChange(date) {
-                        return _this2.onChangeHandler(_this2.readDate(date));
-                    },
-                    fullWidth: true,
-                    format: 'dd-MMM-yyyy HH:mm',
-                    margin: 'normal',
-                    label: text,
-                    leftArrowIcon: _react2.default.createElement(
-                        _Icon2.default,
-                        null,
-                        ' keyboard_arrow_left '
-                    ),
-                    rightArrowIcon: _react2.default.createElement(
-                        _Icon2.default,
-                        null,
-                        ' keyboard_arrow_right '
-                    )
-                })
-            );
+            return _react2.default.createElement(_EAMDatePickerBase2.default, _extends({}, this.props, {
+                dateFormatValue: this.props.dateFormatValue || _Constants2.default.DATETIME_FORMAT_VALUE,
+                dateFormatDisplay: this.props.dateFormatDisplay || _Constants2.default.DATETIME_FORMAT_DISPLAY,
+                showTime: true
+            }));
         }
     }]);
 
     return EAMDateTimePicker;
-}(_EAMBaseInput3.default);
+}(_react2.default.Component);
 
 exports.default = EAMDateTimePicker;

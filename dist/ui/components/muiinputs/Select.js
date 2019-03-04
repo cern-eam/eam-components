@@ -38,6 +38,10 @@ var _SvgIcon = require('@material-ui/core/SvgIcon');
 
 var _SvgIcon2 = _interopRequireDefault(_SvgIcon);
 
+var _EAMTextField = require('./EAMTextField');
+
+var _EAMTextField2 = _interopRequireDefault(_EAMTextField);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -68,12 +72,11 @@ function renderInput(inputProps) {
         right: 0
     };
 
-    return _react2.default.createElement(_TextField2.default, {
+    return _react2.default.createElement(_EAMTextField2.default, {
         required: required,
         error: error,
         helperText: helperText,
         disabled: disabled,
-        margin: 'normal',
         label: label,
         className: classes.textField,
         value: value,
@@ -190,6 +193,18 @@ var Select = function (_React$Component) {
                 suggestions: suggestions
             });
         }, _this.handleSuggestionsClearRequested = function () {
+            _this.setState({
+                suggestions: []
+            }, _this.propagateChange);
+        }, _this.handleSuggestionSelected = function (event, _ref3) {
+            var suggestionValue = _ref3.suggestionValue;
+
+            _this.setState({ value: suggestionValue });
+        }, _this.handleChange = function (event, _ref4) {
+            var newValue = _ref4.newValue;
+
+            _this.setState({ value: newValue });
+        }, _this.propagateChange = function () {
             if (!_this.props.values) {
                 _this.props.onChange(_this.state.value);
                 return;
@@ -203,17 +218,8 @@ var Select = function (_React$Component) {
             } else {
                 _this.props.onChange(_this.state.value);
             }
-
-            _this.setState({
-                suggestions: []
-            });
-        }, _this.handleChange = function (event, _ref3) {
-            var newValue = _ref3.newValue;
-
-            _this.state.value = newValue;
-            _this.setState({
-                value: newValue
-            });
+        }, _this.getSuggestionValue = function (suggestion) {
+            return suggestion.desc;
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
@@ -243,42 +249,20 @@ var Select = function (_React$Component) {
                     var test = values.find(function (v) {
                         return v.code.toUpperCase() === value.toUpperCase() || v.desc.toUpperCase() === value.toUpperCase();
                     });
-                    if (test) {
-                        this.setState(function () {
-                            return {
-                                value: test.desc
-                            };
-                        });
-                    } else {
-                        this.setState(function () {
-                            return {
-                                value: value
-                            };
-                        });
-                    }
+                    this.setState(function () {
+                        return {
+                            value: test ? test.desc : value
+                        };
+                    });
                 }
         }
-
-        // Filter suggestions
-
-
-        // Clear suggestions
-
-
-        // On change, set the state
-
     }, {
-        key: 'handleSuggestionSelected',
-        value: function handleSuggestionSelected(event, _ref4) {
-            var suggestion = _ref4.suggestion;
-
-            this.setState({
-                value: suggestion.desc
-            });
+        key: 'shouldRenderSuggestions',
+        value: function shouldRenderSuggestions() {
+            // Returning true causes the suggestions to be
+            // rendered when the input is blank and focused
+            return true;
         }
-
-        // Render
-
     }, {
         key: 'renderSuggestion',
         value: function renderSuggestion(suggestion) {
@@ -287,11 +271,6 @@ var Select = function (_React$Component) {
                 null,
                 suggestion.desc
             );
-        }
-    }, {
-        key: 'getSuggestionValue',
-        value: function getSuggestionValue(suggestion) {
-            return suggestion.desc;
         }
     }, {
         key: 'render',
@@ -307,21 +286,17 @@ var Select = function (_React$Component) {
                     suggestionsList: classes.suggestionsList,
                     suggestion: classes.suggestion
                 },
+                shouldRenderSuggestions: this.shouldRenderSuggestions,
+                onSuggestionSelected: this.handleSuggestionSelected,
+                suggestions: this.state.suggestions,
                 focusInputOnSuggestionClick: false,
-
-                suggestions: this.state.suggestions || [],
                 onSuggestionsFetchRequested: this.handleSuggestionsFetchRequested,
                 onSuggestionsClearRequested: this.handleSuggestionsClearRequested,
-                onSuggestionSelected: this.handleSuggestionSelected.bind(this),
                 renderSuggestionsContainer: renderSuggestionsContainer,
-                getSuggestionValue: this.getSuggestionValue.bind(this),
+                getSuggestionValue: this.getSuggestionValue,
                 renderSuggestion: function renderSuggestion(suggestion, _ref5) {
                     var isHighlighted = _ref5.isHighlighted;
                     return renderSuggestionContainer(_this2.renderSuggestion(suggestion), suggestion, isHighlighted);
-                },
-
-                shouldRenderSuggestions: function shouldRenderSuggestions() {
-                    return true;
                 },
                 renderInputComponent: renderInput.bind(this),
                 inputProps: {

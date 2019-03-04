@@ -1,56 +1,96 @@
-import React, {Component} from 'react';
+import { Component } from 'react';
 
-class EAMBaseInput extends Component {
+const numberReg = /^\-?(0|([1-9]\d*))(\.\d+)?$/
+const typingNumberReg = /^\-?\d*\.?\d*?$/
+
+export default class EAMBaseInput extends Component {
+
+    //PROPS
+    // VALIDATORS (list not required) default([])
+    // DEFAULT HELPER TEXT (string not required)
+    // SHOW HELPER TEXT (function not required)
 
     state = {
         error: false,
         helperText: null,
-        disabled: false
+        disabled: false,
+        value: '',
+        validators: [], // [{validator: function(){}, errorText: ''}]
+        transformers: [] // To transform the value while typing, ex: uppercase
     }
 
-    componentWillMount() {
-        if (this.props.children) {
-            this.props.children[this.props.elementInfo.xpath] = this
+    componentDidMount () {
+        this.initBase(this.props)
+    }
+
+    componentWillReceiveProps (nextProps) {
+        this.initBase(nextProps)
+    }
+
+    initBase = props => {
+        // Register as children
+        let { children, elementInfo, customValidators, valueKey } = props;
+        if (children && elementInfo) {
+            children[elementInfo.xpath] = this;
         }
-    }
-
-    enable() {
-        this.setState(() => ({
-            disabled: false
-        }))
-    }
-
-    disable() {
-        this.setState(() => ({
-            disabled: true
-        }))
-    }
-
-    isHidden() {
-        return (this.props.elementInfo.attribute === 'H')
-    }
-
-    isRequired() {
-        return (this.props.elementInfo.attribute === 'R' || this.props.elementInfo.attribute === 'S')
-    }
-
-    validate() {
-        if (!this.props.value && this.isRequired()) {
-            this.setState(() => ({
-                error: true,
-                helperText: this.props.elementInfo.text + ' is a required field'
-            }))
-            return false
-        } else {
-            this.setState(() => ({
-                error: false,
-                helperText: null
-            }))
-            return true
+    
+        // Set the validators
+        const myValidators = [...(customValidators || [])]
+        const label = elementInfo.text;
+        if (this.isRequired()) {
+            myValidators.push(this.hasValue(label))
         }
+        if (elementInfo.fieldType === 'number') {
+            myValidators.push(this.isNumber(label))
+        }
+        this.setState({validators: myValidators})
+
+        //Subclass init
+        if (this.init) this.init(props)
     }
 
-    onChangeHandler = (value) => {
+    // TODO apply modifiers e.g. uppercasing, number
+    setValue = value => this.setState({value})
+
+    hasValue = label => ({
+        getResult: value => {
+            return !!(value !== null && 
+                typeof value === 'object' ? value.code || value.length > 0
+                : value)
+        },
+        errorText: `*Required field` 
+    })
+
+    isNumber = label => ({
+        getResult: value => numberReg.test(value),
+        errorText: `*Number expected` 
+    })
+
+    // getValues({code: , codeDesc})
+
+    enable = () => this.setState({disabled: false})
+
+    disable = () => this.setState({disabled: true})
+
+    isRequired = () => this.props.elementInfo && (this.props.elementInfo.attribute === 'R' || this.props.elementInfo.attribute === 'S')
+
+    isHidden = () => this.props.elementInfo && this.props.elementInfo.attribute === 'H'
+
+    validate () {
+        let { validators, value } = this.state;
+        let helperText = '';
+        let valid = !validators
+            .some(({ getResult, errorText }) => {
+                let failed = getResult && !getResult(value)
+                if (failed) helperText = errorText
+                return failed
+            })
+
+        this.setState({error: !valid, helperText: helperText})
+        return valid
+    }
+
+    onChangeHandler = value => {
         // TODO: uppercased fields
         //if (this.props.elementInfo.characterCase === 'uppercase') {
         //    value = value.toUpperCase()
@@ -60,8 +100,7 @@ class EAMBaseInput extends Component {
         if (value &&
             value.length &&
             this.props.elementInfo.maxLength &&
-            value.length > this.props.elementInfo.maxLength)
-        {
+            value.length > this.props.elementInfo.maxLength) {
             return
         }
 
@@ -72,6 +111,14 @@ class EAMBaseInput extends Component {
         }
     };
 
+    render () {
+        if (this.isHidden() || !this.renderComponent) {
+            return null
+        }
+        return this.renderComponent();
+    }
 }
 
-export default EAMBaseInput
+EAMBaseInput.defaultProps = {
+    customValidators: []
+}

@@ -33,8 +33,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var checkBoxStyle = {
     width: '50%',
     fontSize: '14px',
-    marginTop: '16px',
-    marginBottom: '1px',
     float: 'left',
     boxSizing: 'border-box',
     display: 'block'
@@ -54,44 +52,29 @@ var EAMCheckbox = function (_EAMBaseInput) {
             args[_key] = arguments[_key];
         }
 
-        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EAMCheckbox.__proto__ || Object.getPrototypeOf(EAMCheckbox)).call.apply(_ref, [this].concat(args))), _this), _this.onChangeHandler = function (event, checked) {
-            var value = checked ? _this.props.trueValue : _this.props.falseValue;
-            _this.props.updateProperty(_this.props.valueKey, value);
-            //Extra function if needed
-            if (_this.props.onChangeValue) {
-                _this.props.onChangeValue(value);
-            }
-        }, _this._checked = function () {
-            if (!_this.props.value) return false;
-            if (_this.props.value.toLowerCase) {
-                return _this.props.value.toLowerCase() === _this.props.trueValue;
-            }
-            return _this.props.value === _this.props.trueValue;
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EAMCheckbox.__proto__ || Object.getPrototypeOf(EAMCheckbox)).call.apply(_ref, [this].concat(args))), _this), _this.init = function (props) {
+            var checkedTextValue = props.value || '';
+            _this.setValue(checkedTextValue.toLowerCase() === true.toString());
+        }, _this.handleChange = function (event, checked) {
+            _this.onChangeHandler(checked.toString());
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
     _createClass(EAMCheckbox, [{
-        key: 'render',
-        value: function render() {
-            var _this2 = this;
-
-            if (this.isHidden()) {
-                return _react2.default.createElement('div', null);
-            }
-
+        key: 'renderComponent',
+        value: function renderComponent() {
             return _react2.default.createElement(
                 'div',
                 { style: checkBoxStyle },
                 _react2.default.createElement(_FormControlLabel2.default, {
-                    control: _react2.default.createElement(_Checkbox2.default, { color: 'primary',
-                        checked: this._checked(),
+                    label: this.props.elementInfo.text,
+                    control: _react2.default.createElement(_Checkbox2.default, {
+                        color: 'primary',
+                        checked: this.state.value,
                         value: this.props.value,
-                        onChange: function onChange(event, checked) {
-                            return _this2.onChangeHandler(event, checked);
-                        },
+                        onChange: this.handleChange,
                         disabled: this.props.elementInfo.readonly
-                    }),
-                    label: this.props.elementInfo.text
+                    })
                 })
             );
         }
@@ -99,10 +82,5 @@ var EAMCheckbox = function (_EAMBaseInput) {
 
     return EAMCheckbox;
 }(_EAMBaseInput3.default);
-
-EAMCheckbox.defaultProps = {
-    trueValue: 'true',
-    falseValue: 'false'
-};
 
 exports.default = EAMCheckbox;

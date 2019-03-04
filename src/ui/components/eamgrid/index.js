@@ -216,9 +216,7 @@ class EAMGrid extends Component {
         }
     }
 
-    getCellWidth = (cellTagname) => {
-        return this.fieldsWidthInfo.get(cellTagname);
-    };
+    getCellWidth = cellTagname => this.fieldsWidthInfo.get(cellTagname)
 
     handleChangeDataSpy = (event) => {
         if (this.props.handleChangeDataSpy) {
@@ -308,7 +306,6 @@ class EAMGrid extends Component {
                 GridWS.getGridData(request, {
                     cancelToken: this.cancelSource.token
                 }).then(data => {
-
                     // nullify info of current transaction
                     this.cancelSource = null;
 

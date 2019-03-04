@@ -45,6 +45,4 @@ export default class ChecklistItemFollowUp extends Component {
             </div>
         )
     }
-
 }
-

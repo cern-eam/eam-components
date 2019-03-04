@@ -56,7 +56,9 @@ var EamlightRadio = function (_EAMBaseInput) {
             args[_key] = arguments[_key];
         }
 
-        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EamlightRadio.__proto__ || Object.getPrototypeOf(EamlightRadio)).call.apply(_ref, [this].concat(args))), _this), _this.generateRadioButtons = function (values) {
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EamlightRadio.__proto__ || Object.getPrototypeOf(EamlightRadio)).call.apply(_ref, [this].concat(args))), _this), _this.init = function (props) {
+            return _this.setValue(props.value);
+        }, _this.generateRadioButtons = function (values) {
             if (values) {
                 return values.map(function (value) {
                     return _react2.default.createElement(_FormControlLabel2.default, { key: value.code, value: value.code, control: _react2.default.createElement(_Radio2.default, { color: 'primary' }),
@@ -67,8 +69,8 @@ var EamlightRadio = function (_EAMBaseInput) {
     }
 
     _createClass(EamlightRadio, [{
-        key: 'render',
-        value: function render() {
+        key: 'renderComponent',
+        value: function renderComponent() {
             var _this2 = this;
 
             var _props$elementInfo = this.props.elementInfo,
@@ -76,10 +78,6 @@ var EamlightRadio = function (_EAMBaseInput) {
                 text = _props$elementInfo.text,
                 nullable = _props$elementInfo.nullable;
 
-
-            if (this.isHidden()) {
-                return _react2.default.createElement('div', null);
-            }
 
             return _react2.default.createElement(
                 _FormControl2.default,
