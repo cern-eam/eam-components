@@ -468,7 +468,7 @@ class EAMGrid extends Component {
                         toggleFilter={this.toggleFilter.bind(this)}
                         filterVisible={this.state.filterVisible}
                         runSearch={this.runSearch.bind(this)}
-                        clearFilters={clearFilters.bind(this)}
+                        clearFilters={this.clearFilters.bind(this)}
                     />
                 }
                 <DataGridResultTable
