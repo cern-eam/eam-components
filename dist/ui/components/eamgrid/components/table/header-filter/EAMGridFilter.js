@@ -121,6 +121,11 @@ var DataGridTableFilter = function (_Component) {
     }
 
     _createClass(DataGridTableFilter, [{
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(nextProps) {
+            this.setState({ filterValue: nextProps.filter && nextProps.filter.filterValue || '' });
+        }
+    }, {
         key: '_readDate',
         value: function _readDate(date) {
             if (date) {
