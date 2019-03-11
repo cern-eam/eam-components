@@ -148,12 +148,19 @@ class EAMAutocomplete extends EAMBaseInput {
         //(onChange and onBlur) are fired at the same time, causing the onBlur() event to not have 
         //the updated state. Therefore, and until a complete redesign is in place, either the parent shall
         //be updated at every key stroke, or thehandleSuggestionsClearRequested must contain a workaround
-        // this.setState({
-        //     value: newValue,
-        //     endAdornment: ''
-        // })
-        this.setValue({code: newValue, desc: ''});
-        //this.props.onChange(newValue); // This triggers a re-render all parent's child components
+        const valueFound = this.findValueInSuggestions(newValue, this.state.suggestions)
+        if (valueFound) {
+            this.setValue({code: valueFound.code, desc: valueFound.desc});
+        } else {
+            this.setValue({code: newValue, desc: ''});
+        }
+    }
+
+    findValueInSuggestions = (value, suggestions) => {
+        const processedValue = value.trim()
+        return suggestions.find(v => (
+            v.code.toUpperCase() === processedValue.toUpperCase() ||
+            v.desc.toUpperCase() === processedValue.toUpperCase()))
     }
 
     // Clear suggestions

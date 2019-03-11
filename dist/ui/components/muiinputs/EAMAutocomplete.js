@@ -217,12 +217,17 @@ var EAMAutocomplete = function (_EAMBaseInput) {
             //(onChange and onBlur) are fired at the same time, causing the onBlur() event to not have 
             //the updated state. Therefore, and until a complete redesign is in place, either the parent shall
             //be updated at every key stroke, or thehandleSuggestionsClearRequested must contain a workaround
-            // this.setState({
-            //     value: newValue,
-            //     endAdornment: ''
-            // })
-            _this.setValue({ code: newValue, desc: '' });
-            //this.props.onChange(newValue); // This triggers a re-render all parent's child components
+            var valueFound = _this.findValueInSuggestions(newValue, _this.state.suggestions);
+            if (valueFound) {
+                _this.setValue({ code: valueFound.code, desc: valueFound.desc });
+            } else {
+                _this.setValue({ code: newValue, desc: '' });
+            }
+        }, _this.findValueInSuggestions = function (value, suggestions) {
+            var processedValue = value.trim();
+            return suggestions.find(function (v) {
+                return v.code.toUpperCase() === processedValue.toUpperCase() || v.desc.toUpperCase() === processedValue.toUpperCase();
+            });
         }, _this.handleSuggestionsClearRequested = function () {
             return _this.setState({ suggestions: [] }, function (_) {
                 // Not the cleaniest of ways to achieve the parent update on the value: the parent should save 
