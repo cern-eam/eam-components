@@ -46,6 +46,10 @@ class DataGridTableFilter extends Component {
         }
     }
 
+    componentWillReceiveProps (nextProps) {
+        this.setState({filterValue: (nextProps.filter && nextProps.filter.filterValue) || ''})
+    }
+
     _handleChangeValue = (event) => {
         this.setState({
             filterValue: event.target.value

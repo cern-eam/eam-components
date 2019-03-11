@@ -498,7 +498,7 @@ var EAMGrid = function (_Component) {
                     toggleFilter: this.toggleFilter.bind(this),
                     filterVisible: this.state.filterVisible,
                     runSearch: this.runSearch.bind(this),
-                    clearFilters: _filtering.clearFilters.bind(this)
+                    clearFilters: this.clearFilters.bind(this)
                 }),
                 _react2.default.createElement(_EAMGridTable2.default, {
                     toggleSortField: this.toggleSortField.bind(this),
