@@ -111,7 +111,7 @@ class EAMSelect extends EAMBaseInput {
         const values = props.values || []
         const valueFound = this.findValueInValues(value, values)
         this.setValue({
-            code: value,
+            code: valueFound && valueFound.code || value,
             desc: valueFound && valueFound.desc || value
         },
         false)
@@ -125,9 +125,10 @@ class EAMSelect extends EAMBaseInput {
     }
 
     findValueInValues = (value, values) => {
+        const processedValue = value.trim()
         return values.find(v => (
-            v.code.toUpperCase() === value.toUpperCase() ||
-            v.desc.toUpperCase() === value.toUpperCase()))
+            v.code.toUpperCase() === processedValue.toUpperCase() ||
+            v.desc.toUpperCase() === processedValue.toUpperCase()))
     }
 
     handleSuggestionsFetchRequested = ({ value, reason }) => {
@@ -164,7 +165,7 @@ class EAMSelect extends EAMBaseInput {
     };
 
     getSuggestionValue = (suggestion) => {
-        return suggestion.desc;
+        return suggestion.code;
     }
 
     shouldRenderSuggestions = (value) => {

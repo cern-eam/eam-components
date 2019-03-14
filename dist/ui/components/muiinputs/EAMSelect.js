@@ -177,7 +177,7 @@ var EAMSelect = function (_EAMBaseInput) {
             var values = props.values || [];
             var valueFound = _this.findValueInValues(value, values);
             _this.setValue({
-                code: value,
+                code: valueFound && valueFound.code || value,
                 desc: valueFound && valueFound.desc || value
             }, false);
         }, _this.onSuggestionChange = function (code, desc) {
@@ -186,8 +186,9 @@ var EAMSelect = function (_EAMBaseInput) {
                 _this.props.updateProperty(_this.props.valueDesc, desc);
             }
         }, _this.findValueInValues = function (value, values) {
+            var processedValue = value.trim();
             return values.find(function (v) {
-                return v.code.toUpperCase() === value.toUpperCase() || v.desc.toUpperCase() === value.toUpperCase();
+                return v.code.toUpperCase() === processedValue.toUpperCase() || v.desc.toUpperCase() === processedValue.toUpperCase();
             });
         }, _this.handleSuggestionsFetchRequested = function (_ref2) {
             var value = _ref2.value,
@@ -222,7 +223,7 @@ var EAMSelect = function (_EAMBaseInput) {
 
             _this.setValue({ code: newValue, desc: newValue });
         }, _this.getSuggestionValue = function (suggestion) {
-            return suggestion.desc;
+            return suggestion.code;
         }, _this.shouldRenderSuggestions = function (value) {
             // Returning true causes the suggestions to be
             // rendered when the input is blank and focused
