@@ -39,19 +39,21 @@ var EAMBaseInput = function (_Component) {
             error: false,
             helperText: null,
             disabled: false
+        }, _this.updateFormField = function (elementInfo, formFields) {
+            if (!elementInfo || !formFields) return;
+            formFields[elementInfo.xpath] = _this;
+        }, _this.enable = function () {
+            return _this.setState({ disabled: false });
+        }, _this.disable = function () {
+            return _this.setState({ disabled: true });
+        }, _this.isRequired = function () {
+            return _this.props.elementInfo && (_this.props.elementInfo.attribute === 'R' || _this.props.elementInfo.attribute === 'S');
+        }, _this.isHidden = function () {
+            return _this.props.elementInfo && _this.props.elementInfo.attribute === 'H';
         }, _this.markFieldAsValid = function () {
-            _this.setState(function () {
-                return {
-                    error: false,
-                    helperText: null
-                };
-            });
+            return _this.setState({ error: false, helperText: null });
         }, _this.markFieldAsInvalid = function () {
-            _this.setState(function () {
-                return {
-                    error: true
-                };
-            });
+            return _this.setState({ error: true });
         }, _this.onChangeHandler = function (key, value) {
             var selectedObject = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : undefined;
             var executeExtra = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
@@ -74,10 +76,8 @@ var EAMBaseInput = function (_Component) {
                             });
                         } else if (elem.toUpperCase) {
                             return elem.toUpperCase();
-                        } else {
-                            //Other structure?
-                            return elem;
                         }
+                        return elem;
                     });
                 }
             }
@@ -123,85 +123,44 @@ var EAMBaseInput = function (_Component) {
     _createClass(EAMBaseInput, [{
         key: 'componentWillMount',
         value: function componentWillMount() {
-            var elementInfo = this.props.elementInfo;
+            var _props = this.props,
+                elementInfo = _props.elementInfo,
+                formFields = _props.formFields;
 
-            if (elementInfo && this.props.formFields) {
-                //Register itself in the form fields
-                this.props.formFields[elementInfo.xpath] = this;
-            }
+            updateFormField(elementInfo, formFields);
         }
     }, {
         key: 'componentWillReceiveProps',
-        value: function componentWillReceiveProps() {
-            var elementInfo = this.props.elementInfo;
+        value: function componentWillReceiveProps(nextProps) {
+            var elementInfo = nextProps.elementInfo,
+                formFields = nextProps.formFields;
 
-            if (elementInfo && this.props.formFields) {
-                //Register itself in the form fields
-                this.props.formFields[elementInfo.xpath] = this;
-            }
+            updateFormField(elementInfo, formFields);
         }
     }, {
         key: 'componentWillUnmount',
         value: function componentWillUnmount() {
-            var elementInfo = this.props.elementInfo;
+            var _props2 = this.props,
+                elementInfo = _props2.elementInfo,
+                formFields = _props2.formFields;
 
-            if (elementInfo && this.props.formFields) {
-                //Unregister for the form fields
-                this.props.formFields[elementInfo.xpath] = null;
-            }
-        }
-    }, {
-        key: 'enable',
-        value: function enable() {
-            this.setState(function () {
-                return {
-                    disabled: false
-                };
-            });
-        }
-    }, {
-        key: 'disable',
-        value: function disable() {
-            this.setState(function () {
-                return {
-                    disabled: true
-                };
-            });
-        }
-    }, {
-        key: 'isHidden',
-        value: function isHidden() {
-            var elementInfo = this.props.elementInfo;
-
-            return elementInfo && elementInfo.attribute === 'H';
-        }
-    }, {
-        key: 'isRequired',
-        value: function isRequired() {
-            var elementInfo = this.props.elementInfo;
-
-            return elementInfo && (elementInfo.attribute === 'R' || elementInfo.attribute === 'S');
+            if (elementInfo && formFields) formFields[elementInfo.xpath] = null;
         }
     }, {
         key: 'validate',
         value: function validate() {
-            if (!this.isRequired()) {
-                return true;
-            }
+            var required = this.state.required;
+
+
+            if (!required) return true;
+
             //Execute own validation
-            if (this.props.validate && this.props.validate(this.props.value)) {
+            if (this.props.validate && this.props.validate(this.props.value) || !this.props.validate && this.props.value) {
                 this.markFieldAsValid();
                 return true;
-            } else if (!this.props.validate && !this.props.value) {
-                this.markFieldAsInvalid();
-                return false;
-            } else if (!this.props.validate && this.props.value) {
-                this.markFieldAsValid();
-                return true;
-            } else {
-                this.markFieldAsInvalid();
-                return false;
             }
+            this.markFieldAsInvalid();
+            return false;
         }
     }]);
 

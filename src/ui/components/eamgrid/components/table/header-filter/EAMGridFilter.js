@@ -7,6 +7,7 @@ import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { Icon } from '@material-ui/core';
 import { format } from 'date-fns';
+import Constants from '../../../../../../enums/Constants'
 
 const styles = (theme) => ({
     ...theme,
@@ -87,21 +88,9 @@ class DataGridTableFilter extends Component {
         }
     };
 
-    _readDate(date) {
-        if (date) {
-            return format(date, 'dd-MMM-yyyy')
-        } else {
-            return ''
-        }
-    }
+    _readDate = date => date ? format(date, Constants.DATE_FORMAT_VALUE) : ''
 
-    _readDateTime(date) {
-        if (date) {
-            return format(date, 'dd-MMM-yyyy HH:mm')
-        } else {
-            return ''
-        }
-    }
+    _readDateTime = date => date ? format(date, Constants.DATETIME_FORMAT_VALUE) : ''
 
     _onChange(option) {
         // Disable input text depending on filter operator chosen
@@ -133,7 +122,7 @@ class DataGridTableFilter extends Component {
                             className={classes.filterInput}
                             style={{maxWidth:`calc(${this.props.width}px - 30px`, fontSize: '10px'}}
                             value={filterValue ? filterValue : null}
-                            format="DD-MMM-YYYY"
+                            format={Constants.DATE_FORMAT_DISPLAY}
                             onChange={date => this._handleChangeDate(date)}
                             autoOk={true}
                             clearable
@@ -152,7 +141,7 @@ class DataGridTableFilter extends Component {
                             className={classes.filterInput}
                             style={{maxWidth:`calc(${this.props.width}px - 30px`}}
                             value={filterValue ? filterValue : null}
-                            format="DD-MMM-YYYY HH:mm"
+                            format={Constants.DATETIME_FORMAT_DISPLAY}
                             onChange={date => this._handleChangeDateTime(date)}
                             autoOk={true}
                             clearable

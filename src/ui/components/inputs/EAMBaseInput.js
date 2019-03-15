@@ -8,87 +8,55 @@ class EAMBaseInput extends Component {
         disabled: false
     };
 
-    componentWillMount() {
-        let {elementInfo} = this.props;
-        if (elementInfo && this.props.formFields) {
-            //Register itself in the form fields
-            this.props.formFields[elementInfo.xpath] = this
-        }
+    componentWillMount () {
+        let { elementInfo, formFields } = this.props;
+        updateFormField(elementInfo, formFields);
     }
 
-    componentWillReceiveProps() {
-        let {elementInfo} = this.props;
-        if (elementInfo && this.props.formFields) {
-            //Register itself in the form fields
-            this.props.formFields[elementInfo.xpath] = this
-        }
+    componentWillReceiveProps (nextProps) {
+        let { elementInfo, formFields } = nextProps;
+        updateFormField(elementInfo, formFields);
     }
 
-    componentWillUnmount(){
-        let {elementInfo} = this.props;
-        if (elementInfo && this.props.formFields) {
-            //Unregister for the form fields
-            this.props.formFields[elementInfo.xpath] = null;
-        }
+    componentWillUnmount () {
+        const { elementInfo, formFields } = this.props;
+        if (elementInfo && formFields) formFields[elementInfo.xpath] = null;
     }
 
-    enable() {
-        this.setState(() => ({
-            disabled: false
-        }))
+    updateFormField = (elementInfo, formFields) => {
+        if (!elementInfo || !formFields) return;
+        formFields[elementInfo.xpath] = this;
     }
 
-    disable() {
-        this.setState(() => ({
-            disabled: true
-        }))
-    }
+    enable = () => this.setState({disabled: false})
 
-    isHidden() {
-        let {elementInfo} = this.props;
-        return (elementInfo && elementInfo.attribute === 'H')
-    }
+    disable = () => this.setState({disabled: true})
 
-    isRequired() {
-        let {elementInfo} = this.props;
-        return (elementInfo && (elementInfo.attribute === 'R' || elementInfo.attribute === 'S'))
-    }
+    isRequired = () => this.props.elementInfo && (this.props.elementInfo.attribute === 'R' || this.props.elementInfo.attribute === 'S')
+
+    isHidden = () => this.props.elementInfo && this.props.elementInfo.attribute === 'H'
+
+    markFieldAsValid = () => this.setState({error: false, helperText: null});
+
+    markFieldAsInvalid = () => this.setState({error: true})
 
     validate() {
-        if (!this.isRequired()) {
-            return true;
-        }
+        const { required } = this.state;
+
+        if (!required) return true;
+
         //Execute own validation
-        if (this.props.validate && this.props.validate(this.props.value)) {
+        if (this.props.validate && this.props.validate(this.props.value) ||
+                !this.props.validate && this.props.value) {
             this.markFieldAsValid();
             return true;
-        } else if (!this.props.validate && !this.props.value) {
-            this.markFieldAsInvalid();
-            return false;
-        } else if (!this.props.validate && this.props.value) {
-            this.markFieldAsValid();
-            return true;
-        } else {
-            this.markFieldAsInvalid();
-            return false;
         }
+        this.markFieldAsInvalid();
+        return false;
     }
 
-    markFieldAsValid = () => {
-        this.setState(() => ({
-            error: false,
-            helperText: null
-        }));
-    };
-
-    markFieldAsInvalid = () => {
-        this.setState(() => ({
-            error: true
-        }));
-    };
-
     onChangeHandler = (key, value, selectedObject = undefined, executeExtra = true) => {
-        let {elementInfo} = this.props;
+        let { elementInfo } = this.props;
         //Uppercase field if needed
         if (elementInfo && elementInfo.characterCase === 'uppercase' && value) {
             //If normal value
@@ -107,10 +75,8 @@ class EAMBaseInput extends Component {
                         }
                     } else if (elem.toUpperCase) {
                         return elem.toUpperCase();
-                    } else {
-                        //Other structure?
-                        return elem;
                     }
+                    return elem;
                 });
             }
         }
@@ -159,7 +125,7 @@ class EAMBaseInput extends Component {
 }
 
 EAMBaseInput.defaultProps = {
-    validate: (value) => !!value
+    validate: value => !!value
 };
 
 export default EAMBaseInput;

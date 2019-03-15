@@ -137,7 +137,8 @@ class DataGridTableBody extends Component {
                                 {row.cell.map((cell) =>
                                     (
                                         cell.order > 0 &&
-                                        !this.props.isHiddenField(cell.t) && (
+                                        !this.props.isHiddenField(cell.t) &&
+                                        this.props.getCellWidth(cell.t) && (
 
                                             <div key={cell.n}
                                                  className={classes.searchRowCell}

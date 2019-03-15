@@ -36,6 +36,10 @@ var _parse = require('date-fns/parse');
 
 var _parse2 = _interopRequireDefault(_parse);
 
+var _Constants = require('../../../enums/Constants');
+
+var _Constants2 = _interopRequireDefault(_Constants);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
@@ -72,7 +76,7 @@ var EAMDatePicker = function (_EAMBaseInput) {
             if (value) {
                 if (value instanceof Date) return value;
                 if (value.length > 11) value = value.substring(0, 11);
-                return (0, _parse2.default)(value, "dd-MMM-yyyy", new Date());
+                return (0, _parse2.default)(value, _Constants2.default.DATE_FORMAT_VALUE, new Date());
             } else {
                 return null;
             }
@@ -81,7 +85,7 @@ var EAMDatePicker = function (_EAMBaseInput) {
         key: 'readDate',
         value: function readDate(date) {
             if (date) {
-                return (0, _dateFns3.format)(date, 'dd-MMM-yyyy');
+                return (0, _dateFns3.format)(date, _Constants2.default.DATE_FORMAT_VALUE);
             } else {
                 return '';
             }
@@ -129,7 +133,7 @@ var EAMDatePicker = function (_EAMBaseInput) {
                             return _this2.onChangeHandler(valueKey, _this2.readDate(date));
                         },
                         fullWidth: true,
-                        format: 'dd-MMM-yyyy',
+                        format: _Constants2.default.DATE_FORMAT_DISPLAY,
                         margin: 'normal',
                         className: this.props.classes.textFieldInput,
                         InputProps: {

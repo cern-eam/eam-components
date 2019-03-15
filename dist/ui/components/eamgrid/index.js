@@ -234,7 +234,6 @@ var EAMGrid = function (_Component) {
                 _GridWS2.default.getGridData(request, {
                     cancelToken: _this.cancelSource.token
                 }).then(function (data) {
-
                     // nullify info of current transaction
                     _this.cancelSource = null;
 

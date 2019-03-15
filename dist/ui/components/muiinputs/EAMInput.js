@@ -10,13 +10,13 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _TextField = require('@material-ui/core/TextField');
-
-var _TextField2 = _interopRequireDefault(_TextField);
-
 var _EAMBaseInput2 = require('./EAMBaseInput');
 
 var _EAMBaseInput3 = _interopRequireDefault(_EAMBaseInput2);
+
+var _EAMTextField = require('./EAMTextField');
+
+var _EAMTextField2 = _interopRequireDefault(_EAMTextField);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -30,32 +30,41 @@ var EAMInput = function (_EAMBaseInput) {
     _inherits(EAMInput, _EAMBaseInput);
 
     function EAMInput() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
         _classCallCheck(this, EAMInput);
 
-        return _possibleConstructorReturn(this, (EAMInput.__proto__ || Object.getPrototypeOf(EAMInput)).apply(this, arguments));
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EAMInput.__proto__ || Object.getPrototypeOf(EAMInput)).call.apply(_ref, [this].concat(args))), _this), _this.init = function (props) {
+            return _this.setValue(props.value || '');
+        }, _this.onLoseFocus = function () {
+            //TODO prep input (e.g. uppercase)
+            _this.onChangeHandler(_this.state.value);
+        }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
     _createClass(EAMInput, [{
-        key: 'render',
-        value: function render() {
+        key: 'renderComponent',
+        value: function renderComponent() {
             var _this2 = this;
 
-            if (this.isHidden()) {
-                return _react2.default.createElement('div', null);
-            }
-
-            return _react2.default.createElement(_TextField2.default, {
+            return _react2.default.createElement(_EAMTextField2.default, {
                 disabled: this.state.disabled || this.props.elementInfo.readonly,
                 error: this.state.error,
                 helperText: this.state.helperText,
                 required: this.isRequired(),
                 label: this.props.elementInfo.text,
-                value: this.props.value || '',
+                value: this.state.value,
                 onChange: function onChange(event) {
-                    return _this2.onChangeHandler(event.target.value);
+                    return _this2.setValue(event.target.value);
                 },
-                fullWidth: true,
-                margin: 'normal' });
+                onBlur: this.onLoseFocus,
+                InputLabelProps: { shrink: true } });
         }
     }]);
 

@@ -11,7 +11,7 @@ import axios from "axios/index";
  * Default input, if none is provided
  */
 
-function getTextWidth(text) {
+function getTextWidth (text) {
     var canvas = document.createElement("canvas");
     var context = canvas.getContext("2d");
     context.font = '16px Roboto';
@@ -19,7 +19,7 @@ function getTextWidth(text) {
     return metrics.width;
 }
 
-function renderDefaultInput(inputProps) {
+function renderDefaultInput (inputProps) {
     const { classes, autoFocus, value, label, disabled, endAdornment, error, helperText, required, ...other } = inputProps;
 
     var inputAdornmentStyle = {
@@ -125,34 +125,31 @@ class Autocomplete extends React.Component {
         suggestions: []
     };
 
-    componentDidMount() {
-        this.setState({
-            value: this.props.value || '',
-            endAdornment: this.props.valueDesc
-        })
-
+    componentDidMount () {
+        this.setStateFromProps(this.props)
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            value: nextProps.value || '',
-            endAdornment: nextProps.valueDesc || ''
+    componentWillReceiveProps (nextProps) {
+        this.setStateFromProps(nextProps)
+    }
+
+    setStateFromProps (props) {
+        this.setValue({
+            code: props.value || '',
+            desc: props.valueDesc || ''
         })
     }
 
     // Input rendering
-    renderInput(inputProps) {
-        return renderDefaultInput(inputProps);
-    }
+    renderInput = inputProps => renderDefaultInput(inputProps)
 
     // Fetch suggestions
     handleSuggestionsFetchRequested = ({ value }) => {
         clearTimeout(this.timeout)
         this.timeout = setTimeout(() => {
 
-            if (!!this.cancelSource) {
-                this.cancelSource.cancel();
-            }
+            if (!!this.cancelSource) this.cancelSource.cancel();
+
             this.cancelSource = axios.CancelToken.source()
 
             this.props.getSuggestions(value, {cancelToken: this.cancelSource.token})
@@ -162,56 +159,47 @@ class Autocomplete extends React.Component {
                     });
                 }).catch(error => {
 
-            });
+                });
         }, 200)
     };
 
-    // Clear suggestions
-    handleSuggestionsClearRequested = () => {
-        if (!this.state.endAdornment) {
-            this.props.onDescChange('')
-        }
-        this.props.onChange(this.state.value)
-        this.setState({
-            suggestions: []
-        });
-    };
-
-    // On change, set the state
     handleChange = (event, { newValue }) => {
-        this.state.value = newValue
-        this.state.endAdornment = ''
-        this.setState({
-            value: newValue,
-            endAdornment: ''
-        });
-    };
+        // Initially, the onChange only happened on lose focus (onBlur) event. However, both events
+        //(onChange and onBlur) are fired at the same time, causing the onBlur() event to not have 
+        //the updated state. Therefore, and until a complete redesign is in place, either the parent shall
+        //be updated at every key stroke, or thehandleSuggestionsClearRequested must contain a workaround
+        // this.setState({
+        //     value: newValue,
+        //     endAdornment: ''
+        // })
+        this.setValue({code: value, desc: endAdornment});
+        //this.props.onChange(newValue); // This triggers a re-render all parent's child components
+    }
+
+    // Clear suggestions
+    handleSuggestionsClearRequested = () =>
+        this.setState({suggestions: []}, _ => {
+            // Not the cleaniest of ways to achieve the parent update on the value: the parent should save 
+            //a ref and call getValue for that purpose. However, and to avoid manipulating state directly,
+            //we update it as a callback which should have the state updated
+            this.props.onSuggestionChange(this.getValue().code, this.getValue().desc)
+        })
+
+    onSuggestionSelected = (event, { suggestion }) => {
+        if (suggestion) this.props.onSuggestionChange(suggestion.code, suggestion.desc)
+    }
 
     // Render
-    renderSuggestion(suggestion) {
-        if (this.props.renderSuggestion) {
-            return this.props.renderSuggestion(suggestion);
-        } else {
-            // Default behaviour
-            return (<div>{this.getSuggestionValue(suggestion)}</div>);
-        }
-    }
+    renderSuggestion = suggestion =>
+        this.props.renderSuggestion ? 
+            this.props.renderSuggestion(suggestion)
+            : (<div>
+                {suggestion.code}
+            </div>)
 
-    getSuggestionValue(suggestion) {
-        this.setState({
-            endAdornment: suggestion.desc
-        })
-        return this.props.getSuggestionValue(suggestion);
-    }
+    getSuggestionValue = suggestion => suggestion.desc;
 
-    onSuggestionSelected(event, {suggestion}) {
-        this.state.endAdornment = suggestion.desc
-        this.props.onDescChange(suggestion.desc)
-    }
-
-    shouldRenderSuggestions(value) {
-        return !!value
-    }
+    shouldRenderSuggestions = value => !!value
 
     render() {
         const { classes } = this.props;
@@ -229,7 +217,7 @@ class Autocomplete extends React.Component {
                 onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
                 onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
                 renderSuggestionsContainer={renderSuggestionsContainer}
-                getSuggestionValue={this.getSuggestionValue.bind(this)}
+                getSuggestionValue={suggestion => suggestion.desc}
                 renderSuggestion={(suggestion, { isHighlighted }) => renderSuggestionContainer(this.renderSuggestion(suggestion), suggestion, isHighlighted)}
                 renderInputComponent={this.renderInput.bind(this)}
                 shouldRenderSuggestions={this.shouldRenderSuggestions.bind(this)}
@@ -237,11 +225,11 @@ class Autocomplete extends React.Component {
                     required: this.props.required,
                     error: this.props.error,
                     helperText: this.props.helperText,
-                    endAdornment: this.state.endAdornment,
+                    endAdornment: this.getValue().desc,
                     classes,
                     placeholder: this.props.placeholder,
                     label: this.props.label,
-                    value: this.state.value,
+                    value: this.getValue().code,
                     onChange: this.handleChange,
                     disabled: this.props.disabled
                 }}

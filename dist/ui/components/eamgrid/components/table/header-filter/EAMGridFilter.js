@@ -32,6 +32,10 @@ var _core = require('@material-ui/core');
 
 var _dateFns3 = require('date-fns');
 
+var _Constants = require('../../../../../../enums/Constants');
+
+var _Constants2 = _interopRequireDefault(_Constants);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -113,6 +117,14 @@ var DataGridTableFilter = function (_Component) {
             }
         };
 
+        _this._readDate = function (date) {
+            return date ? (0, _dateFns3.format)(date, _Constants2.default.DATE_FORMAT_VALUE) : '';
+        };
+
+        _this._readDateTime = function (date) {
+            return date ? (0, _dateFns3.format)(date, _Constants2.default.DATETIME_FORMAT_VALUE) : '';
+        };
+
         _this.state = {
             filterValue: props.filter.fieldValue,
             inputDisabled: false
@@ -124,24 +136,6 @@ var DataGridTableFilter = function (_Component) {
         key: 'componentWillReceiveProps',
         value: function componentWillReceiveProps(nextProps) {
             this.setState({ filterValue: nextProps.filter && nextProps.filter.filterValue || '' });
-        }
-    }, {
-        key: '_readDate',
-        value: function _readDate(date) {
-            if (date) {
-                return (0, _dateFns3.format)(date, 'dd-MMM-yyyy');
-            } else {
-                return '';
-            }
-        }
-    }, {
-        key: '_readDateTime',
-        value: function _readDateTime(date) {
-            if (date) {
-                return (0, _dateFns3.format)(date, 'dd-MMM-yyyy HH:mm');
-            } else {
-                return '';
-            }
         }
     }, {
         key: '_onChange',
@@ -179,7 +173,7 @@ var DataGridTableFilter = function (_Component) {
                         className: classes.filterInput,
                         style: { maxWidth: 'calc(' + this.props.width + 'px - 30px', fontSize: '10px' },
                         value: filterValue ? filterValue : null,
-                        format: 'DD-MMM-YYYY',
+                        format: _Constants2.default.DATE_FORMAT_DISPLAY,
                         onChange: function onChange(date) {
                             return _this2._handleChangeDate(date);
                         },
@@ -198,7 +192,7 @@ var DataGridTableFilter = function (_Component) {
                         className: classes.filterInput,
                         style: { maxWidth: 'calc(' + this.props.width + 'px - 30px' },
                         value: filterValue ? filterValue : null,
-                        format: 'DD-MMM-YYYY HH:mm',
+                        format: _Constants2.default.DATETIME_FORMAT_DISPLAY,
                         onChange: function onChange(date) {
                             return _this2._handleChangeDateTime(date);
                         },

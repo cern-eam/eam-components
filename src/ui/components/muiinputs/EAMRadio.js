@@ -8,6 +8,8 @@ import EAMBaseInput from "./EAMBaseInput";
 
 export default class EamlightRadio extends EAMBaseInput {
 
+    init = props => this.setValue(props.value, false)
+
     generateRadioButtons = (values) => {
         if (values) {
             return values.map(value => (
@@ -17,12 +19,8 @@ export default class EamlightRadio extends EAMBaseInput {
         }
     };
 
-    render() {
+    renderComponent () {
         const {elementId, text, nullable} = this.props.elementInfo;
-
-        if (this.isHidden()) {
-            return <div/>
-        }
 
         return (
             <FormControl fullWidth margin="normal" required={this.isRequired()} style={{marginBottom: '0px'}}>

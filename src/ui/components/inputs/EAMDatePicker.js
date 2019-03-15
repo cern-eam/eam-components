@@ -7,6 +7,7 @@ import EAMFormLabel from "./EAMFormLabel";
 import {withStyles} from "@material-ui/core/styles/index";
 import {format} from "date-fns";
 import parse from "date-fns/parse";
+import Constants from '../../../enums/Constants';
 
 const styles = theme => {
     const defaultStyles = formStyles(theme);
@@ -27,7 +28,7 @@ class EAMDatePicker extends EAMBaseInput {
                 return value;
             if (value.length > 11)
                 value = value.substring(0, 11);
-            return parse(value, "dd-MMM-yyyy", new Date());
+            return parse(value, Constants.DATE_FORMAT_VALUE, new Date());
         } else {
             return null
         }
@@ -35,7 +36,7 @@ class EAMDatePicker extends EAMBaseInput {
 
     readDate(date) {
         if (date) {
-            return format(date, 'dd-MMM-yyyy');
+            return format(date, Constants.DATE_FORMAT_VALUE);
         } else {
             return '';
         }
@@ -66,7 +67,7 @@ class EAMDatePicker extends EAMBaseInput {
                         value={this.readValue(this.props.value)}
                         onChange={date => this.onChangeHandler(valueKey, this.readDate(date))}
                         fullWidth
-                        format="dd-MMM-yyyy"
+                        format={Constants.DATE_FORMAT_DISPLAY}
                         margin="normal"
                         className={this.props.classes.textFieldInput}
                         InputProps={{

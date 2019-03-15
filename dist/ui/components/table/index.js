@@ -52,6 +52,14 @@ var _Checkbox = require('@material-ui/core/Checkbox');
 
 var _Checkbox2 = _interopRequireDefault(_Checkbox);
 
+var _MenuItem = require('@material-ui/core/MenuItem');
+
+var _MenuItem2 = _interopRequireDefault(_MenuItem);
+
+var _FilterList = require('@material-ui/icons/FilterList');
+
+var _FilterList2 = _interopRequireDefault(_FilterList);
+
 var _propTypes = require('prop-types');
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
@@ -101,11 +109,19 @@ var EISTable = function (_Component) {
             orderBy: -1,
             order: 'asc',
             data: []
+        }, _this.filterSelectStyle = {
+            fontSize: '0.8125rem'
         }, _this.onWindowSizeChange = function () {
             _this.setState(function () {
                 return {
                     windowWidth: window.innerWidth
                 };
+            });
+        }, _this.resetSort = function () {
+            _this.setState(function () {
+                return {
+                    orderBy: -1,
+                    order: 'asc' };
             });
         }, _this.createSortHandler = function (property) {
             return function (event) {
@@ -201,7 +217,7 @@ var EISTable = function (_Component) {
                 {
                     native: true,
                     value: _this.state.orderBy,
-                    onChange: _this.createSortHandlerMobile, className: 'eamTableSortDropdown' },
+                    onChange: _this.createSortHandlerMobile, className: 'eamTableDropdown' },
                 _react2.default.createElement(
                     'option',
                     { value: -1 },
@@ -212,6 +228,25 @@ var EISTable = function (_Component) {
                         'option',
                         { key: index, value: index },
                         elem
+                    );
+                })
+            );
+        }, _this.propagateFilterChange = function (e) {
+            _this.resetSort();
+            _this.props.handleFilterChange(e.target.value);
+        }, _this.renderFilterByValuesMobile = function () {
+            return _react2.default.createElement(
+                _Select2.default,
+                {
+                    native: true,
+                    value: _this.props.activeFilter,
+                    onChange: _this.propagateFilterChange,
+                    className: 'eamTableDropdown' },
+                Object.keys(_this.props.filters).map(function (key) {
+                    return _react2.default.createElement(
+                        'option',
+                        { key: key, value: key },
+                        _this.props.filters[key].text
                     );
                 })
             );
@@ -258,6 +293,20 @@ var EISTable = function (_Component) {
                     _react2.default.createElement(
                         _TableHead2.default,
                         null,
+                        this.props.filters && Object.keys(this.props.filters).length && _react2.default.createElement(
+                            _TableRow2.default,
+                            null,
+                            _react2.default.createElement(
+                                _TableCell2.default,
+                                null,
+                                'Filter by:'
+                            ),
+                            _react2.default.createElement(
+                                _TableCell2.default,
+                                null,
+                                this.renderFilterByValuesMobile()
+                            )
+                        ),
                         _react2.default.createElement(
                             _TableRow2.default,
                             null,
@@ -333,78 +382,108 @@ var EISTable = function (_Component) {
                 );
             } else {
                 return _react2.default.createElement(
-                    _Table2.default,
-                    { className: 'responsiveTable', style: { overflow: 'visible' } },
-                    _react2.default.createElement(
-                        _TableHead2.default,
-                        null,
+                    _react2.default.Fragment,
+                    null,
+                    this.props.filters && Object.keys(this.props.filters).length && _react2.default.createElement(
+                        'div',
+                        { style: { display: 'flex', justifyContent: 'space-between' } },
+                        _react2.default.createElement(_FilterList2.default, { style: { marginLeft: 'auto' } }),
                         _react2.default.createElement(
-                            _TableRow2.default,
-                            null,
-                            this.props.headers.map(function (header, index) {
+                            _Select2.default,
+                            {
+                                style: this.filterSelectStyle,
+                                value: this.props.filters[this.props.activeFilter].text,
+                                onChange: this.propagateFilterChange,
+                                renderValue: function renderValue(value) {
+                                    return _react2.default.createElement(
+                                        'span',
+                                        null,
+                                        value
+                                    );
+                                } },
+                            Object.keys(this.props.filters).map(function (key) {
                                 return _react2.default.createElement(
-                                    _TableCell2.default,
-                                    { key: header,
-                                        sortDirection: _this3.state.orderBy === index ? _this3.state.order : false },
-                                    _react2.default.createElement(
-                                        _Tooltip2.default,
-                                        {
-                                            title: 'Sort',
-                                            placement: 'bottom-end',
-                                            enterDelay: 300 },
-                                        _react2.default.createElement(
-                                            _TableSortLabel2.default,
-                                            {
-                                                active: _this3.state.orderBy === index,
-                                                direction: _this3.state.order,
-                                                onClick: _this3.createSortHandler(index) },
-                                            header
-                                        )
-                                    )
+                                    _MenuItem2.default,
+                                    { key: key, value: key },
+                                    _this3.props.filters[key].text
                                 );
                             })
                         )
                     ),
                     _react2.default.createElement(
-                        _TableBody2.default,
-                        null,
-                        this.state.data.map(function (content, index) {
-                            var style = {};
-
-                            if (_this3.props.selectedRowIndexes && _this3.props.selectedRowIndexes.includes(index)) {
-                                style = _extends({}, style, {
-                                    backgroundColor: "#2196f3"
-                                });
-                            }
-
-                            if (rowsSelectable) {
-                                style = _extends({}, style, {
-                                    cursor: "pointer"
-                                });
-                            }
-
-                            if (_this3.props.stylesMap) {
-                                Object.keys(_this3.props.stylesMap).forEach(function (key) {
-                                    if (content[key]) {
-                                        style = _extends({}, style, _this3.props.stylesMap[key]);
-                                    }
-                                });
-                            }
-
-                            return _react2.default.createElement(
+                        _Table2.default,
+                        { className: 'responsiveTable', style: { overflow: 'visible' } },
+                        _react2.default.createElement(
+                            _TableHead2.default,
+                            null,
+                            _react2.default.createElement(
                                 _TableRow2.default,
-                                { key: index, style: style, onClick: rowsSelectable ? function () {
-                                        return _this3.props.onRowClick(content, index);
-                                    } : function () {} },
-                                _this3.props.propCodes.map(function (propCode) {
+                                null,
+                                this.props.headers.map(function (header, index) {
                                     return _react2.default.createElement(
                                         _TableCell2.default,
-                                        { key: propCode },
-                                        _this3.renderContent(propCode, content)
+                                        { key: header,
+                                            sortDirection: _this3.state.orderBy === index ? _this3.state.order : false },
+                                        _react2.default.createElement(
+                                            _Tooltip2.default,
+                                            {
+                                                title: 'Sort',
+                                                placement: 'bottom-end',
+                                                enterDelay: 300 },
+                                            _react2.default.createElement(
+                                                _TableSortLabel2.default,
+                                                {
+                                                    active: _this3.state.orderBy === index,
+                                                    direction: _this3.state.order,
+                                                    onClick: _this3.createSortHandler(index) },
+                                                header
+                                            )
+                                        )
                                     );
                                 })
-                            );
-                        })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            _TableBody2.default,
+                            null,
+                            this.state.data.map(function (content, index) {
+                                var style = {};
+
+                                if (_this3.props.selectedRowIndexes && _this3.props.selectedRowIndexes.includes(index)) {
+                                    style = _extends({}, style, {
+                                        backgroundColor: "#2196f3"
+                                    });
+                                }
+
+                                if (rowsSelectable) {
+                                    style = _extends({}, style, {
+                                        cursor: "pointer"
+                                    });
+                                }
+
+                                if (_this3.props.stylesMap) {
+                                    Object.keys(_this3.props.stylesMap).forEach(function (key) {
+                                        if (content[key]) {
+                                            style = _extends({}, style, _this3.props.stylesMap[key]);
+                                        }
+                                    });
+                                }
+
+                                return _react2.default.createElement(
+                                    _TableRow2.default,
+                                    { key: index, style: style, onClick: rowsSelectable ? function () {
+                                            return _this3.props.onRowClick(content, index);
+                                        } : function () {} },
+                                    _this3.props.propCodes.map(function (propCode) {
+                                        return _react2.default.createElement(
+                                            _TableCell2.default,
+                                            { key: propCode },
+                                            _this3.renderContent(propCode, content)
+                                        );
+                                    })
+                                );
+                            })
+                        )
                     )
                 );
             }

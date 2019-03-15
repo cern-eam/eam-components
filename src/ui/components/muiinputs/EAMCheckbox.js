@@ -6,8 +6,6 @@ import EAMBaseInput from "./EAMBaseInput";
 const checkBoxStyle = {
     width: '50%',
     fontSize: '14px',
-    marginTop: '16px',
-    marginBottom: '1px',
     float: 'left',
     boxSizing: 'border-box',
     display: 'block',
@@ -15,50 +13,33 @@ const checkBoxStyle = {
 
 class EAMCheckbox extends EAMBaseInput {
 
-    onChangeHandler = (event, checked) => {
-        const value = checked ? this.props.trueValue : this.props.falseValue;
-        this.props.updateProperty(this.props.valueKey, value);
-        //Extra function if needed
-        if (this.props.onChangeValue) {
-            this.props.onChangeValue(value);
-        }
-    };
+    init = (props) => {
+        const checkedTextValue = props.value || '';
+        this.setValue(checkedTextValue.toLowerCase() === true.toString(), false)
+    }
 
-    _checked = () => {
-        if (!this.props.value)
-            return false;
-        if (this.props.value.toLowerCase) {
-            return this.props.value.toLowerCase() === this.props.trueValue;
-        }
-        return this.props.value === this.props.trueValue;
-    };
+    handleChange = (event, checked) => {
+        this.onChangeHandler(checked.toString())
+    }
 
-    render() {
-        if (this.isHidden()) {
-            return <div/>
-        }
-
+    renderComponent () {
         return (
             <div style={checkBoxStyle}>
                 <FormControlLabel
+                    label={this.props.elementInfo.text}
                     control={
-                        <Checkbox color="primary"
-                                  checked={this._checked()}
-                                  value={this.props.value}
-                                  onChange={(event, checked) => this.onChangeHandler(event, checked)}
-                                  disabled={this.props.elementInfo.readonly}
+                        <Checkbox
+                            color="primary"
+                            checked={this.state.value}
+                            value={this.props.value}
+                            onChange={this.handleChange}
+                            disabled={this.props.elementInfo.readonly}
                         />
                     }
-                    label={this.props.elementInfo.text}
                 />
             </div>
         );
     }
-}
-
-EAMCheckbox.defaultProps = {
-    trueValue: 'true',
-    falseValue: 'false'
 }
 
 export default EAMCheckbox;

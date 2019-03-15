@@ -1,16 +1,19 @@
-import React, {Component} from 'react';
-import EISPanel from '../panel';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Button from '@material-ui/core/Button';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ChecklistItem from './ChecklistItem';
-import ChecklistEquipment from "./ChecklistEquipment";
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import React, { Component } from 'react';
 import WSChecklists from '../../../tools/WSChecklists';
+import EISPanel from '../panel';
+import ChecklistEquipment from "./ChecklistEquipment";
+import ChecklistItem from './ChecklistItem';
+import BlockUi from 'react-block-ui';
 
 export default class Checklists extends Component {
     state = {
-        activities: []
+        activities: [],
+        blocking: false
     }
 
     expansionDetailsStyle = {
@@ -33,7 +36,8 @@ export default class Checklists extends Component {
     readActivities(workorder) {
         this.props.getWorkOrderActivities(workorder).then(response => {
             this.setState({
-                activities: response.body.data
+                activities: response.body.data,
+                blocking: false
             })
         })
     }
@@ -74,16 +78,47 @@ export default class Checklists extends Component {
         return checklistItems
     }
 
+    createFollowUpWOs = (evt, checklistActivity) => {
+        evt.stopPropagation();
+        const activity = {
+            workOrderNumber: checklistActivity.workOrderNumber,
+            activityCode: checklistActivity.activityCode
+        }
+        this.setState({blocking: true});
+
+        WSChecklists.createFolowUpWorkOrders(activity)
+            .then(resp => {
+                this.readActivities(activity.workOrderNumber);
+                this.props.showSuccess('Follow-up workorders successfully created.');
+            })
+            .catch(error => {
+                this.props.showError('Could not create follow-up workorders.')
+            })
+            ;
+    }
+
     renderActivities() {
+        const { blocking } = this.state;
         return this.state.activities.filter(activity => (activity.checklists && activity.checklists.length > 0)).map(activity =>
             (
-                <ExpansionPanel key={activity.activityCode} defaultExpanded>
-                    <ExpansionPanelSummary expandIcon={
-                        <ExpandMoreIcon/>}>{activity.activityCode} - {activity.taskDesc}</ExpansionPanelSummary>
-                    <ExpansionPanelDetails style={{marginTop: -18}}>
-                        <div style={{width: "100%"}}>{this.renderChecklistsForActivity(activity)}</div>
-                    </ExpansionPanelDetails>
-                </ExpansionPanel>
+                <BlockUi blocking={blocking}>
+                    <ExpansionPanel key={activity.activityCode} defaultExpanded>
+                        <ExpansionPanelSummary expandIcon={
+                            <ExpandMoreIcon/>}>
+                            <div style={{padding: 2,
+                                flexGrow: "1",
+                                display: "flex",
+                                alignItems: "center"
+                            }}>
+                                {activity.activityCode} - {activity.taskDesc}
+                                <Button onClick={ evt => this.createFollowUpWOs(evt, activity) } color="primary" style={{marginLeft: 'auto', paddingRight: '40px'}}>Create Follow-up WO</Button>
+                            </div>
+                        </ExpansionPanelSummary>
+                        <ExpansionPanelDetails style={{marginTop: -18}}>
+                            <div style={{width: "100%"}}>{this.renderChecklistsForActivity(activity)}</div>
+                        </ExpansionPanelDetails>
+                    </ExpansionPanel>
+                </BlockUi>
             )
         )
     }

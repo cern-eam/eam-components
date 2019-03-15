@@ -72,7 +72,7 @@ var EAMDateTimePicker = function (_EAMBaseInput) {
                     return value;
                 }
 
-                return (0, _parse2.default)(value, "dd-MMM-yyyy HH:mm", new Date());
+                return (0, _parse2.default)(value, Constants.DATETIME_FORMAT_VALUE, new Date());
             } else {
                 return null;
             }
@@ -81,7 +81,7 @@ var EAMDateTimePicker = function (_EAMBaseInput) {
         key: 'readDate',
         value: function readDate(date) {
             if (date) {
-                return (0, _dateFns.format)(date, "dd-MMM-yyyy HH:mm");
+                return (0, _dateFns.format)(date, Constants.DATETIME_FORMAT_VALUE);
             } else {
                 return '';
             }
@@ -128,7 +128,7 @@ var EAMDateTimePicker = function (_EAMBaseInput) {
                         InputProps: {
                             disableUnderline: true
                         },
-                        format: 'dd-MMM-yyyy HH:mm',
+                        format: Constants.DATETIME_FORMAT_DISPLAY,
                         margin: 'normal',
                         leftArrowIcon: _react2.default.createElement(
                             _core.Icon,
