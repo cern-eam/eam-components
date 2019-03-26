@@ -127,7 +127,7 @@ var EAMBaseInput = function (_Component) {
                 elementInfo = _props.elementInfo,
                 formFields = _props.formFields;
 
-            updateFormField(elementInfo, formFields);
+            this.updateFormField(elementInfo, formFields);
         }
     }, {
         key: 'componentWillReceiveProps',
@@ -135,7 +135,7 @@ var EAMBaseInput = function (_Component) {
             var elementInfo = nextProps.elementInfo,
                 formFields = nextProps.formFields;
 
-            updateFormField(elementInfo, formFields);
+            this.updateFormField(elementInfo, formFields);
         }
     }, {
         key: 'componentWillUnmount',
