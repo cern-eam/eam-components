@@ -10,12 +10,12 @@ class EAMBaseInput extends Component {
 
     componentWillMount () {
         let { elementInfo, formFields } = this.props;
-        updateFormField(elementInfo, formFields);
+        this.updateFormField(elementInfo, formFields);
     }
 
     componentWillReceiveProps (nextProps) {
         let { elementInfo, formFields } = nextProps;
-        updateFormField(elementInfo, formFields);
+        this.updateFormField(elementInfo, formFields);
     }
 
     componentWillUnmount () {
