@@ -96,7 +96,7 @@ var EAMBaseInput = function (_Component) {
         }, _this.isNumber = function (label) {
             return {
                 getResult: function getResult(value) {
-                    return numberReg.test(value);
+                    return !value || numberReg.test(value);
                 },
                 errorText: '*Number expected'
             };
@@ -166,7 +166,6 @@ var EAMBaseInput = function (_Component) {
                 if (failed) helperText = errorText;
                 return failed;
             });
-
             this.setState({ error: !valid, helperText: helperText });
             return valid;
         }
