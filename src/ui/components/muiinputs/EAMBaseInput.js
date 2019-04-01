@@ -77,7 +77,7 @@ export default class EAMBaseInput extends Component {
     })
 
     isNumber = label => ({
-        getResult: value => numberReg.test(value),
+        getResult: value => !value || numberReg.test(value),
         errorText: `*Number expected` 
     })
 
@@ -102,7 +102,6 @@ export default class EAMBaseInput extends Component {
                 if (failed) helperText = errorText
                 return failed
             })
-
         this.setState({error: !valid, helperText: helperText})
         return valid
     }
