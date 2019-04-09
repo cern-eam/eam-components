@@ -120,7 +120,6 @@ var EAMBaseInput = function (_Component) {
             if (value && value.length && _this.props.elementInfo.maxLength && value.length > _this.props.elementInfo.maxLength) {
                 return;
             }
-
             _this.props.updateProperty(_this.props.valueKey, value);
             //Extra function if needed
             if (_this.props.onChangeValue) {

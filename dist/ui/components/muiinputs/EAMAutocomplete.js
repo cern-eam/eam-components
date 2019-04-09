@@ -219,6 +219,7 @@ var EAMAutocomplete = function (_EAMBaseInput) {
             //be updated at every key stroke, or thehandleSuggestionsClearRequested must contain a workaround
             var valueFound = _this.findValueInSuggestions(newValue, _this.state.suggestions);
             if (valueFound) {
+                _this.onChangeHandler(valueFound.code);
                 _this.setValue({ code: valueFound.code, desc: valueFound.desc });
             } else {
                 _this.setValue({ code: newValue, desc: '' });
@@ -226,7 +227,7 @@ var EAMAutocomplete = function (_EAMBaseInput) {
         }, _this.findValueInSuggestions = function (value, suggestions) {
             var processedValue = value.trim();
             return suggestions.find(function (v) {
-                return v.code.toUpperCase() === processedValue.toUpperCase() || v.desc.toUpperCase() === processedValue.toUpperCase();
+                return v.code.toUpperCase().trim() === processedValue.toUpperCase() || v.desc.toUpperCase().trim() === processedValue.toUpperCase();
             });
         }, _this.handleSuggestionsClearRequested = function () {
             return _this.setState({ suggestions: [] }, function (_) {

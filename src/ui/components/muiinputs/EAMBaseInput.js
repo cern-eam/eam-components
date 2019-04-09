@@ -119,7 +119,6 @@ export default class EAMBaseInput extends Component {
             value.length > this.props.elementInfo.maxLength) {
             return
         }
-
         this.props.updateProperty(this.props.valueKey, value);
         //Extra function if needed
         if (this.props.onChangeValue) {
