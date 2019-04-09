@@ -92,15 +92,15 @@ var EDMSWidgetToolbar = function (_Component) {
                 _react2.default.createElement('div', { style: this.separatorStyle }),
                 _react2.default.createElement(
                     _IconButton2.default,
-                    { onClick: this.props.galleriaClickHandler,
-                        style: this.computeGalleriaButtonStyle() },
-                    _react2.default.createElement(_ImageFilter2.default, null)
-                ),
-                _react2.default.createElement(
-                    _IconButton2.default,
                     { onClick: this.props.doclistClickHandler,
                         style: this.computeDoclistButtonStyle() },
                     _react2.default.createElement(_FormatListBulleted2.default, null)
+                ),
+                _react2.default.createElement(
+                    _IconButton2.default,
+                    { onClick: this.props.galleriaClickHandler,
+                        style: this.computeGalleriaButtonStyle() },
+                    _react2.default.createElement(_ImageFilter2.default, null)
                 )
             );
         }

@@ -45,13 +45,13 @@ class EDMSWidgetToolbar extends Component {
                     </IconButton>}
 
                 <div style={this.separatorStyle}/>
-                <IconButton onClick={this.props.galleriaClickHandler}
-                            style={this.computeGalleriaButtonStyle()}>
-                <ImageFilter/>
-                </IconButton>
                 <IconButton onClick={this.props.doclistClickHandler}
                             style={this.computeDoclistButtonStyle()}>
                     <FormatListBulleted/>
+                </IconButton>
+                <IconButton onClick={this.props.galleriaClickHandler}
+                            style={this.computeGalleriaButtonStyle()}>
+                <ImageFilter/>
                 </IconButton>
             </div>
         )
