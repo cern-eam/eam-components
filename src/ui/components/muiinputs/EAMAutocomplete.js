@@ -150,6 +150,7 @@ class EAMAutocomplete extends EAMBaseInput {
         //be updated at every key stroke, or thehandleSuggestionsClearRequested must contain a workaround
         const valueFound = this.findValueInSuggestions(newValue, this.state.suggestions)
         if (valueFound) {
+            this.onChangeHandler(valueFound.code)
             this.setValue({code: valueFound.code, desc: valueFound.desc});
         } else {
             this.setValue({code: newValue, desc: ''});
@@ -159,8 +160,8 @@ class EAMAutocomplete extends EAMBaseInput {
     findValueInSuggestions = (value, suggestions) => {
         const processedValue = value.trim()
         return suggestions.find(v => (
-            v.code.toUpperCase() === processedValue.toUpperCase() ||
-            v.desc.toUpperCase() === processedValue.toUpperCase()))
+            v.code.toUpperCase().trim() === processedValue.toUpperCase() ||
+            v.desc.toUpperCase().trim() === processedValue.toUpperCase()))
     }
 
     // Clear suggestions
