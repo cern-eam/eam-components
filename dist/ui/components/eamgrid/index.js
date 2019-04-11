@@ -203,7 +203,7 @@ var EAMGrid = function (_Component) {
                 gridFilter: [].concat(_toConsumableArray(_this.state.gridRequest.gridFilter))
             });
             request.gridFilter = request.gridFilter.filter(function (f) {
-                return f.operator !== 'INDETERMINATE' && (f.fieldValue && f.fieldValue !== "" || f.operator === 'SELECTED' || f.operator === 'NOT_SELECTED');
+                return f.operator !== 'INDETERMINATE' && (f.fieldValue && f.fieldValue !== "" || f.operator === 'IS_EMPTY' || f.operator === 'NOT_EMPTY');
             });
             return request;
         };
@@ -228,7 +228,7 @@ var EAMGrid = function (_Component) {
                 });
             }, function () {
 
-                // clean filter by removing filters without value
+                // clean filter by removing filters without value - Except the ones that don't need a value (such as EMPTY, NOT_EMPTY)
                 var request = _this.props.gridRequestAdapter(_this._cleanFilters());
 
                 _GridWS2.default.getGridData(request, {

@@ -135,7 +135,8 @@ var DataGridTableFilter = function (_Component) {
     _createClass(DataGridTableFilter, [{
         key: 'componentWillReceiveProps',
         value: function componentWillReceiveProps(nextProps) {
-            this.setState({ filterValue: nextProps.filter && nextProps.filter.filterValue || '' });
+            var filterValue = nextProps.filter && nextProps.filter.fieldValue || '';
+            this.setState({ filterValue: filterValue });
         }
     }, {
         key: '_onChange',

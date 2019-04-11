@@ -32,11 +32,7 @@ function getDefaultFilterOperator(dataType) {
 }
 
 function getFilters() {
-    var filters = [];
-    Object.values(this.filterMap).forEach(function (pendingFilter) {
-        return filters.push(pendingFilter);
-    });
-    return filters;
+    return Object.values(this.filterMap);
 }
 
 /**
