@@ -202,7 +202,7 @@ var EAMGrid = function (_Component) {
                 gridFilter: [].concat(_toConsumableArray(_this.state.gridRequest.gridFilter))
             });
             request.gridFilter = request.gridFilter.filter(function (f) {
-                return f.operator !== 'INDETERMINATE' && (f.fieldValue && f.fieldValue !== "" || f.operator === 'IS_EMPTY' || f.operator === 'NOT_EMPTY');
+                return f.operator !== 'INDETERMINATE' && (f.fieldValue && f.fieldValue !== "" || f.operator === 'SELECTED' || f.operator === 'NOT_SELECTED' || f.operator === 'IS_EMPTY' || f.operator === 'NOT_EMPTY');
             });
             return request;
         };

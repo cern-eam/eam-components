@@ -49,6 +49,7 @@ export function setFilter(filter, dataType) {
 }
 
 export function clearFilters(callback) {
+    this.filterMap = {}
     this.setState((prevState) => ({
         gridRequest: {
             ...prevState.gridRequest,

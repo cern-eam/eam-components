@@ -276,7 +276,7 @@ class EAMGrid extends Component {
                 ...this.state.gridRequest.gridFilter
             ]
         };
-        request.gridFilter = request.gridFilter.filter(f => f.operator !== 'INDETERMINATE' && ((f.fieldValue && f.fieldValue !== "") || f.operator === 'IS_EMPTY' || f.operator === 'NOT_EMPTY'));
+        request.gridFilter = request.gridFilter.filter(f => f.operator !== 'INDETERMINATE' && ((f.fieldValue && f.fieldValue !== "") || f.operator === 'SELECTED' || f.operator === 'NOT_SELECTED' || f.operator === 'IS_EMPTY' || f.operator === 'NOT_EMPTY'));
         return request;
     };
 

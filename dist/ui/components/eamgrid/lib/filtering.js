@@ -59,6 +59,7 @@ function setFilter(filter, dataType) {
 function clearFilters(callback) {
     var _this = this;
 
+    this.filterMap = {};
     this.setState(function (prevState) {
         return {
             gridRequest: _extends({}, prevState.gridRequest, {
