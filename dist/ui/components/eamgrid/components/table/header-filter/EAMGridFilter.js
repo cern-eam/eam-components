@@ -55,6 +55,7 @@ var styles = function styles(theme) {
             flexDirection: "row",
             flexWrap: "nowrap",
             alignItems: "center",
+            justifyContent: "center",
             marginLeft: 5,
             marginRight: 5
         },
@@ -85,19 +86,6 @@ var DataGridTableFilter = function (_Component) {
         _classCallCheck(this, DataGridTableFilter);
 
         var _this = _possibleConstructorReturn(this, (DataGridTableFilter.__proto__ || Object.getPrototypeOf(DataGridTableFilter)).call(this, props));
-
-        _this.filterTypeMenuButton = {
-
-            height: 29,
-            backgroundColor: "white",
-            borderTopLeftRadius: 3,
-            borderBottomLeftRadius: 3,
-            borderTop: "1px solid rgb(206, 212, 218)",
-            borderLeft: "1px solid rgb(206, 212, 218)",
-            borderBottom: "1px solid rgb(206, 212, 218)",
-            display: "flex",
-            alignItems: "center"
-        };
 
         _this._handleChangeValue = function (event) {
             _this.setState({
@@ -170,8 +158,6 @@ var DataGridTableFilter = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
-            var _this2 = this;
-
             var classes = this.props.classes;
             var filterValue = this.state.filterValue;
 
@@ -180,79 +166,17 @@ var DataGridTableFilter = function (_Component) {
                 'div',
                 { className: classes.filterCell },
                 _react2.default.createElement(_EAMGridFilterTypeMenu2.default, {
-                    style: this.filterTypeMenuButton,
                     filter: this.props.filter,
                     onChange: this._onChange.bind(this),
                     dataType: this.props.dataType
                 }),
-                this.props.dataType && this.props.dataType === 'DATE' && _react2.default.createElement(
-                    _materialUiPickers.MuiPickersUtilsProvider,
-                    { utils: _dateFns2.default },
-                    _react2.default.createElement(_materialUiPickers.DatePicker, {
-                        disabled: this.state.inputDisabled,
-                        className: classes.filterInput,
-                        style: { maxWidth: 'calc(' + this.props.width + 'px - 30px', fontSize: '10px' },
-                        value: filterValue ? filterValue : null,
-                        format: _Constants2.default.DATE_FORMAT_DISPLAY,
-                        onChange: function onChange(date) {
-                            return _this2._handleChangeDate(date);
-                        },
-                        autoOk: true,
-                        clearable: true,
-                        margin: 'dense',
-                        animateYearScrolling: false
-                        //inputProps={{style: {fontSize: '10px'}}}
-                    })
-                ),
-                this.props.dataType && this.props.dataType === 'DATETIME' && _react2.default.createElement(
-                    _materialUiPickers.MuiPickersUtilsProvider,
-                    { utils: _dateFns2.default },
-                    _react2.default.createElement(_materialUiPickers.DateTimePicker, {
-                        disabled: this.state.inputDisabled,
-                        className: classes.filterInput,
-                        style: { maxWidth: 'calc(' + this.props.width + 'px - 30px' },
-                        value: filterValue ? filterValue : null,
-                        format: _Constants2.default.DATETIME_FORMAT_DISPLAY,
-                        onChange: function onChange(date) {
-                            return _this2._handleChangeDateTime(date);
-                        },
-                        autoOk: true,
-                        clearable: true,
-                        margin: 'dense',
-                        animateYearScrolling: false,
-                        fullWidth: true,
-                        leftArrowIcon: _react2.default.createElement(
-                            _core.Icon,
-                            null,
-                            ' keyboard_arrow_left '
-                        ),
-                        rightArrowIcon: _react2.default.createElement(
-                            _core.Icon,
-                            null,
-                            ' keyboard_arrow_right '
-                        ),
-                        ampm: false
-                        //inputProps={{style: {fontSize: '10px'}}}
-                    })
-                ),
-                this.props.dataType && (this.props.dataType === 'VARCHAR' || this.props.dataType === 'MIXVARCHAR') && _react2.default.createElement(_EAMGridFilterInput2.default, {
+                this.props.dataType && (this.props.dataType === 'VARCHAR' || this.props.dataType === 'MIXVARCHAR' || this.props.dataType === 'DECIMAL' || this.props.dataType === 'NUMBER' || this.props.dataType === 'DATETIME' || this.props.dataType === 'DATE') && _react2.default.createElement(_EAMGridFilterInput2.default, {
                     disabled: this.state.inputDisabled,
                     width: this.props.width,
                     value: filterValue,
                     onChange: this._handleChangeValue,
                     onKeyPress: this._handleKeyPress,
                     dataType: this.props.dataType
-                }),
-                this.props.dataType && (this.props.dataType === 'DECIMAL' || this.props.dataType === 'NUMBER') && _react2.default.createElement(_TextField2.default, {
-                    disabled: this.state.inputDisabled,
-                    style: { maxWidth: 'calc(' + this.props.width + 'px - 30px' },
-                    className: classes.filterInput,
-                    value: filterValue,
-                    onChange: this._handleChangeValue,
-                    margin: 'dense',
-                    type: 'number',
-                    onKeyPress: this._handleKeyPress
-                    //inputProps={{style: {fontSize: '10px'}}}
                 })
             );
         }

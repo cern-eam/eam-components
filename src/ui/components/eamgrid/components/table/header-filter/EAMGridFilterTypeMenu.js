@@ -9,10 +9,10 @@ import { Minus,
          RayEndArrow,
          RayVertex,
          CheckboxMarked,
-         CodeGreaterThan,
-         CodeGreaterThanOrEqual,
-         CodeLessThan,
-         CodeLessThanOrEqual,
+         GreaterThan,
+         GreaterThanOrEqual,
+         LessThan,
+         LessThanOrEqual,
          Equal,
          NotEqualVariant,
          CheckboxBlank,
@@ -43,21 +43,21 @@ const options = {
         {'value':'NOT_EMPTY','label':'Is not empty', 'icon': <Rhombus/>}
     ],
     DATE: [
-        {'value':'GREATER_THAN','label':'Greater than', 'icon': <CodeGreaterThan/>},
+        {'value':'GREATER_THAN','label':'Greater than', 'icon': <GreaterThan/>},
         {'value':'EQUALS','label':'Equals', 'icon': <Equal/>},
-        {'value':'LESS_THAN','label':'Less than', 'icon': <CodeLessThan/>},
-        {'value':'LESS_THAN_EQUALS','label':'Less than or equals', 'icon': <CodeLessThanOrEqual/>},
-        {'value':'GREATER_THAN_EQUALS','label':'Greater than or equals', 'icon': <CodeGreaterThanOrEqual/>},
+        {'value':'LESS_THAN','label':'Less than', 'icon': <LessThan/>},
+        {'value':'LESS_THAN_EQUALS','label':'Less than or equals', 'icon': <LessThanOrEqual/>},
+        {'value':'GREATER_THAN_EQUALS','label':'Greater than or equals', 'icon': <GreaterThan/>},
         {'value':'IS_EMPTY','label':'Is empty', 'icon': <RhombusOutline/>},
         {'value':'NOT_EMPTY','label':'Is not empty', 'icon': <Rhombus/>},
         {'value':'NOT_EQUAL','label':'Does not equal', 'icon': <NotEqualVariant/>}
     ],
     NUMBER: [
         {'value':'EQUALS','label':'Equals', 'icon': <Equal/>},
-        {'value':'LESS_THAN','label':'Less than', 'icon': <CodeLessThan/>},
-        {'value':'GREATER_THAN','label':'Greater than', 'icon': <CodeGreaterThan/>},
-        {'value':'LESS_THAN_EQUALS','label':'Less than or equals', 'icon': <CodeLessThanOrEqual/>},
-        {'value':'GREATER_THAN_EQUALS','label':'Greater than or equals', 'icon': <CodeGreaterThanOrEqual/>},
+        {'value':'LESS_THAN','label':'Less than', 'icon': <LessThan/>},
+        {'value':'GREATER_THAN','label':'Greater than', 'icon': <GreaterThan/>},
+        {'value':'LESS_THAN_EQUALS','label':'Less than or equals', 'icon': <LessThanOrEqual/>},
+        {'value':'GREATER_THAN_EQUALS','label':'Greater than or equals', 'icon': <GreaterThanOrEqual/>},
         {'value':'IS_EMPTY','label':'Is empty', 'icon': <RhombusOutline/>},
         {'value':'NOT_EMPTY','label':'Is not empty', 'icon': <Rhombus/>},
         {'value':'NOT_EQUAL','label':'Does not equal', 'icon': <NotEqualVariant/>}
@@ -93,6 +93,25 @@ const menuItems = ( dataType ) => {
  */
 class DataGridFilterTypeMenu extends React.Component {
 
+    filterTypeMenuButtonStyle = () => {
+        let style = {
+            height: 29,
+            display: "flex",
+            alignItems: "center"
+        }
+        if (this.props.dataType !=='CHKBOOLEAN') {
+            style = {...style,
+                    backgroundColor: "white",
+                    borderTopLeftRadius: 3,
+                    borderBottomLeftRadius: 3,
+                    borderTop: "1px solid rgb(206, 212, 218)",
+                    borderLeft: "1px solid rgb(206, 212, 218)",
+                    borderBottom: "1px solid rgb(206, 212, 218)"
+            }
+        }
+        return style;
+    }
+
     constructor(props) {
         super(props);
 
@@ -126,7 +145,7 @@ class DataGridFilterTypeMenu extends React.Component {
         const { anchorEl } = this.state;
 
         return (
-            <div style={this.props.style}>
+            <div style={this.filterTypeMenuButtonStyle()}>
 
                 <Icon
                     className={classes.filterIconButton}

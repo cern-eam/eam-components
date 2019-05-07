@@ -58,7 +58,9 @@ var styles = function styles(theme) {
             boxSizing: "border-box",
             "-moz-box-sizing": "border-box",
             "-webkit-box-sizing": "border-box",
-            overflow: "hidden"
+            overflow: "hidden",
+            paddingBottom: 10,
+            paddingTop: 5
         },
         headerCell: {
             width: "100%",

@@ -17,6 +17,7 @@ const styles = (theme) => ({
         flexDirection: "row",
         flexWrap: "nowrap",
         alignItems: "center",
+        justifyContent: "center",
         marginLeft: 5,
         marginRight: 5
     },
@@ -49,19 +50,6 @@ class DataGridTableFilter extends Component {
             filterValue: props.filter.fieldValue,
             inputDisabled: false,
         }
-    }
-
-    filterTypeMenuButton = {
-
-        height: 29,
-        backgroundColor: "white",
-        borderTopLeftRadius: 3,
-        borderBottomLeftRadius: 3,
-        borderTop: "1px solid rgb(206, 212, 218)",
-        borderLeft: "1px solid rgb(206, 212, 218)",
-        borderBottom: "1px solid rgb(206, 212, 218)",
-        display: "flex",
-        alignItems: "center"
     }
 
     componentWillReceiveProps (nextProps) {
@@ -126,55 +114,19 @@ class DataGridTableFilter extends Component {
         return (
             <div className={classes.filterCell}>
                 <DataGridFilterTypeMenu
-                    style={this.filterTypeMenuButton}
                     filter={this.props.filter}
                     onChange={this._onChange.bind(this)}
                     dataType={this.props.dataType}
                 />
-                {
-                    (this.props.dataType && (this.props.dataType === 'DATE')) &&
 
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <DatePicker
-                            disabled={this.state.inputDisabled}
-                            className={classes.filterInput}
-                            style={{maxWidth:`calc(${this.props.width}px - 30px`, fontSize: '10px'}}
-                            value={filterValue ? filterValue : null}
-                            format={Constants.DATE_FORMAT_DISPLAY}
-                            onChange={date => this._handleChangeDate(date)}
-                            autoOk={true}
-                            clearable
-                            margin="dense"
-                            animateYearScrolling={false}
-                            //inputProps={{style: {fontSize: '10px'}}}
-                        />
-                    </MuiPickersUtilsProvider>
-                }
                 {
-                    (this.props.dataType && (this.props.dataType === 'DATETIME')) &&
-
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <DateTimePicker
-                            disabled={this.state.inputDisabled}
-                            className={classes.filterInput}
-                            style={{maxWidth:`calc(${this.props.width}px - 30px`}}
-                            value={filterValue ? filterValue : null}
-                            format={Constants.DATETIME_FORMAT_DISPLAY}
-                            onChange={date => this._handleChangeDateTime(date)}
-                            autoOk={true}
-                            clearable
-                            margin="dense"
-                            animateYearScrolling={false}
-                            fullWidth
-                            leftArrowIcon={<Icon> keyboard_arrow_left </Icon>}
-                            rightArrowIcon={<Icon> keyboard_arrow_right </Icon>}
-                            ampm={false}
-                            //inputProps={{style: {fontSize: '10px'}}}
-                        />
-                    </MuiPickersUtilsProvider>
-                }
-                {
-                    (this.props.dataType && (this.props.dataType === 'VARCHAR' || this.props.dataType === 'MIXVARCHAR')) &&
+                    (this.props.dataType &&
+                        (this.props.dataType === 'VARCHAR'
+                        || this.props.dataType === 'MIXVARCHAR'
+                        || this.props.dataType === 'DECIMAL'
+                        || this.props.dataType === 'NUMBER'
+                        || this.props.dataType === 'DATETIME'
+                        || this.props.dataType === 'DATE')) &&
 
                     <EAMGridFilterInput
                         disabled={this.state.inputDisabled}
@@ -183,21 +135,6 @@ class DataGridTableFilter extends Component {
                         onChange={this._handleChangeValue}
                         onKeyPress = {this._handleKeyPress}
                         dataType={this.props.dataType}
-                    />
-                }
-                {
-                    (this.props.dataType && (this.props.dataType === 'DECIMAL' || this.props.dataType === 'NUMBER')) &&
-
-                    <TextField
-                        disabled={this.state.inputDisabled}
-                        style={{maxWidth:`calc(${this.props.width}px - 30px`}}
-                        className={classes.filterInput}
-                        value={filterValue}
-                        onChange={this._handleChangeValue}
-                        margin="dense"
-                        type="number"
-                        onKeyPress = {this._handleKeyPress}
-                        //inputProps={{style: {fontSize: '10px'}}}
                     />
                 }
             </div>
