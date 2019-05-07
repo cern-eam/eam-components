@@ -7,6 +7,7 @@ import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { Icon } from '@material-ui/core';
 import { format } from 'date-fns';
+import EAMGridFilterInput from './EAMGridFilterInput'
 import Constants from '../../../../../../enums/Constants'
 
 const styles = (theme) => ({
@@ -15,11 +16,11 @@ const styles = (theme) => ({
         display: "flex",
         flexDirection: "row",
         flexWrap: "nowrap",
-        justifyContent: "space-evenly"
+        alignItems: "center",
+        marginLeft: 5,
+        marginRight: 5
     },
-    filterTypeMenuButton: {
 
-    },
     filterInput: {
         width: "100%",
         backgroundColor: "#FFFFFF"
@@ -31,6 +32,9 @@ const styles = (theme) => ({
         backgroundColor: 'red'
     }
 });
+
+
+
 
 /**
  * Data grid filter, with:
@@ -45,6 +49,19 @@ class DataGridTableFilter extends Component {
             filterValue: props.filter.fieldValue,
             inputDisabled: false,
         }
+    }
+
+    filterTypeMenuButton = {
+
+        height: 29,
+        backgroundColor: "white",
+        borderTopLeftRadius: 3,
+        borderBottomLeftRadius: 3,
+        borderTop: "1px solid rgb(206, 212, 218)",
+        borderLeft: "1px solid rgb(206, 212, 218)",
+        borderBottom: "1px solid rgb(206, 212, 218)",
+        display: "flex",
+        alignItems: "center"
     }
 
     componentWillReceiveProps (nextProps) {
@@ -108,7 +125,7 @@ class DataGridTableFilter extends Component {
         return (
             <div className={classes.filterCell}>
                 <DataGridFilterTypeMenu
-                    className={classes.filterTypeMenuButton}
+                    style={this.filterTypeMenuButton}
                     filter={this.props.filter}
                     onChange={this._onChange.bind(this)}
                     dataType={this.props.dataType}
@@ -158,15 +175,13 @@ class DataGridTableFilter extends Component {
                 {
                     (this.props.dataType && (this.props.dataType === 'VARCHAR' || this.props.dataType === 'MIXVARCHAR')) &&
 
-                    <TextField
+                    <EAMGridFilterInput
                         disabled={this.state.inputDisabled}
-                        style={{maxWidth:`calc(${this.props.width}px - 30px`}}
-                        className={classes.filterInput}
+                        width={this.props.width}
                         value={filterValue}
                         onChange={this._handleChangeValue}
-                        margin="dense"
                         onKeyPress = {this._handleKeyPress}
-                        //inputProps={{style: {fontSize: '10px'}}}
+                        dataType={this.props.dataType}
                     />
                 }
                 {

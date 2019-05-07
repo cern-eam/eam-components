@@ -3,6 +3,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import {withStyles} from "@material-ui/core/styles/index";
+import Icon from '@material-ui/core/Icon';
 import { Minus,
          RayStartArrow,
          RayEndArrow,
@@ -12,8 +13,8 @@ import { Minus,
          CodeGreaterThanOrEqual,
          CodeLessThan,
          CodeLessThanOrEqual,
-         EqualBox,
-         CodeNotEqual,
+         Equal,
+         NotEqualVariant,
          CheckboxBlank,
          CheckboxBlankOutline,
          Rhombus,
@@ -24,14 +25,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 const styles = () => ({
     filterIconButton: {
         width: "25px",
-        height: "25px",
-        marginTop: "8px",
-        fontSize: "16px",
-        '&:hover': {
-            color: "black",
-            background: 'lightGray',
-            boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12)"
-        }
+        color: "#b6b6b6"
     }
 });
 
@@ -39,34 +33,34 @@ const ITEM_HEIGHT = 48;
 
 const options = {
     VARCHAR: [
-        {'value':'BEGINS','label':'Starts with', 'icon': <RayStartArrow/>},
+        {'value':'BEGINS','label':'Starts with', 'icon': <RayStartArrow/>, 'symbol': 'a—'},
         {'value':'CONTAINS','label':'Contains', 'icon': <RayVertex/>},
         {'value':'NOT_CONTAINS','label':'Does not contain', 'icon': <Minus/>},
         {'value':'ENDS','label':'Ends with', 'icon': <RayEndArrow/>},
-        {'value':'EQUALS', 'label':'Equals', 'icon': <EqualBox/>},
-        {'value':'NOT_EQUAL','label':'Does not equal', 'icon': <CodeNotEqual/>},
+        {'value':'EQUALS', 'label':'Equals', 'icon': <Equal/>},
+        {'value':'NOT_EQUAL','label':'Does not equal', 'icon': <NotEqualVariant/>},
         {'value':'IS_EMPTY','label':'Is empty', 'icon': <RhombusOutline/>},
         {'value':'NOT_EMPTY','label':'Is not empty', 'icon': <Rhombus/>}
     ],
     DATE: [
         {'value':'GREATER_THAN','label':'Greater than', 'icon': <CodeGreaterThan/>},
-        {'value':'EQUALS','label':'Equals', 'icon': <EqualBox/>},
+        {'value':'EQUALS','label':'Equals', 'icon': <Equal/>},
         {'value':'LESS_THAN','label':'Less than', 'icon': <CodeLessThan/>},
         {'value':'LESS_THAN_EQUALS','label':'Less than or equals', 'icon': <CodeLessThanOrEqual/>},
         {'value':'GREATER_THAN_EQUALS','label':'Greater than or equals', 'icon': <CodeGreaterThanOrEqual/>},
         {'value':'IS_EMPTY','label':'Is empty', 'icon': <RhombusOutline/>},
         {'value':'NOT_EMPTY','label':'Is not empty', 'icon': <Rhombus/>},
-        {'value':'NOT_EQUAL','label':'Does not equal', 'icon': <CodeNotEqual/>}
+        {'value':'NOT_EQUAL','label':'Does not equal', 'icon': <NotEqualVariant/>}
     ],
     NUMBER: [
-        {'value':'EQUALS','label':'Equals', 'icon': <EqualBox/>},
+        {'value':'EQUALS','label':'Equals', 'icon': <Equal/>},
         {'value':'LESS_THAN','label':'Less than', 'icon': <CodeLessThan/>},
         {'value':'GREATER_THAN','label':'Greater than', 'icon': <CodeGreaterThan/>},
         {'value':'LESS_THAN_EQUALS','label':'Less than or equals', 'icon': <CodeLessThanOrEqual/>},
         {'value':'GREATER_THAN_EQUALS','label':'Greater than or equals', 'icon': <CodeGreaterThanOrEqual/>},
         {'value':'IS_EMPTY','label':'Is empty', 'icon': <RhombusOutline/>},
         {'value':'NOT_EMPTY','label':'Is not empty', 'icon': <Rhombus/>},
-        {'value':'NOT_EQUAL','label':'Does not equal', 'icon': <CodeNotEqual/>}
+        {'value':'NOT_EQUAL','label':'Does not equal', 'icon': <NotEqualVariant/>}
     ],
     CHKBOOLEAN: [
         {'value':'INDETERMINATE','label':'Indeterminate', 'icon': <CheckboxBlank/>},
@@ -132,15 +126,17 @@ class DataGridFilterTypeMenu extends React.Component {
         const { anchorEl } = this.state;
 
         return (
-            <div style={{margin:'0 auto'}}>
-                <IconButton
+            <div style={this.props.style}>
+
+                <Icon
                     className={classes.filterIconButton}
                     aria-label="More"
                     aria-owns={anchorEl ? 'long-menu' : null}
                     onClick={this.handleClick}
                 >
                     { this.state.option.icon }
-                </IconButton>
+                </Icon>
+
                 <Menu
                     id="long-menu"
                     anchorEl={this.state.anchorEl}

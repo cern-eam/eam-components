@@ -18,8 +18,7 @@ const styles = (theme) => ({
         flexDirection: "column",
         boxSizing: "border-box",
         "-moz-box-sizing": "border-box",
-        "-webkit-box-sizing": "border-box",
-        margin: "10px"
+        "-webkit-box-sizing": "border-box"
     }
 });
 
@@ -526,9 +525,9 @@ EAMGrid.defaultProps = {
     editColumn: false,
     autorun: true,
     gridRequestAdapter: gridRequest => gridRequest,
-    heightFilterVisible: '270px',
-    heightFilterNotVisible: '230px',
-    width: 'calc(100% - 20px)',
+    heightFilterVisible: '250px',
+    heightFilterNotVisible: '210px',
+    width: '100%',
     extraColumns: [],
     language: 'EN',
     allowRowSelection: false,

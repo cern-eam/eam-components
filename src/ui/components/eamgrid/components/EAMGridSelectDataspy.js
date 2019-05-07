@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button'
 import SearchIcon from '@material-ui/icons/Search';
-import { MenuItem } from '@material-ui/core';
+import {InputBase, MenuItem} from '@material-ui/core';
 import { FormControl } from '@material-ui/core';
 import Select from '@material-ui/core/Select';
 import { withStyles } from '@material-ui/core/styles';
@@ -28,20 +28,24 @@ const styles = () => ({
         justifyContent: "space-between"
     },
     fetchDataButton: {
-        marginLeft: "10px",
-        marginRight: "10px",
-        boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12)"
+        padding: "4px 16px"
     },
     toggleFilterButton: {
-        boxShadow: "none"
-    },
-    formItem: {
         marginLeft: "10px",
         marginRight: "10px",
+        boxShadow: "none",
+        backgroundColor: '#fafafa'
+    },
+    formItem: {
         flex: "0 0 auto"
     },
     selectDataspyInput: {
-        backgroundColor: 'white'
+        backgroundColor: '#fafafa',
+        marginLeft: "10px",
+    },
+    dataspyLabel: {
+        marginTop: -2,
+        fontSize: 16
     },
     root: {
         margin: "0 auto",
@@ -77,6 +81,7 @@ class DataGridSelectDataSpy extends Component {
                                         name: 'dataspy',
                                         id: 'dataspy-select',
                                     }}
+                                    input={<InputBase/>}
                                 >
                                     {
                                         this.props.listOfDataSpy && this.props.listOfDataSpy.map((dataspy) => {
@@ -84,24 +89,26 @@ class DataGridSelectDataSpy extends Component {
                                         })
                                     }
                                 </Select>
-                                <Button mini variant="fab"
+                                <Button variant="outlined"
                                         className={classNames(classes.formItem, classes.toggleFilterButton)}
                                         onClick = {this.props.toggleFilter}>
-                                    { this.props.filterVisible ? <FilterRemoveOutline /> : <FilterOutline/> }
+                                    { this.props.filterVisible ? 'HIDE FILTERS' : 'SHOW FILTERS' }
                                  </Button>
                                 {this.props.filterVisible && (
                                 <Button
+                                    variant="outlined"
                                     className={classes.cleanFiltersButton}
                                     onClick={this.props.clearFilters}>
                                     Clean filters
                                 </Button>
                                 )}
                             </div>
-                            <Button mini variant="fab"
+                            <Button variant="outlined"
                                     color="primary"
                                     className={classes.fetchDataButton}
                                     onClick = {this.props.runSearch}>
                                 <SearchIcon />
+                                SEARCH
                             </Button>
                         </div>
                     </FormControl>

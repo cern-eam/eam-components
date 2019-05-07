@@ -32,6 +32,10 @@ var _core = require('@material-ui/core');
 
 var _dateFns3 = require('date-fns');
 
+var _EAMGridFilterInput = require('./EAMGridFilterInput');
+
+var _EAMGridFilterInput2 = _interopRequireDefault(_EAMGridFilterInput);
+
 var _Constants = require('../../../../../../enums/Constants');
 
 var _Constants2 = _interopRequireDefault(_Constants);
@@ -50,9 +54,11 @@ var styles = function styles(theme) {
             display: "flex",
             flexDirection: "row",
             flexWrap: "nowrap",
-            justifyContent: "space-evenly"
+            alignItems: "center",
+            marginLeft: 5,
+            marginRight: 5
         },
-        filterTypeMenuButton: {},
+
         filterInput: {
             width: "100%",
             backgroundColor: "#FFFFFF"
@@ -79,6 +85,19 @@ var DataGridTableFilter = function (_Component) {
         _classCallCheck(this, DataGridTableFilter);
 
         var _this = _possibleConstructorReturn(this, (DataGridTableFilter.__proto__ || Object.getPrototypeOf(DataGridTableFilter)).call(this, props));
+
+        _this.filterTypeMenuButton = {
+
+            height: 29,
+            backgroundColor: "white",
+            borderTopLeftRadius: 3,
+            borderBottomLeftRadius: 3,
+            borderTop: "1px solid rgb(206, 212, 218)",
+            borderLeft: "1px solid rgb(206, 212, 218)",
+            borderBottom: "1px solid rgb(206, 212, 218)",
+            display: "flex",
+            alignItems: "center"
+        };
 
         _this._handleChangeValue = function (event) {
             _this.setState({
@@ -160,7 +179,7 @@ var DataGridTableFilter = function (_Component) {
                 'div',
                 { className: classes.filterCell },
                 _react2.default.createElement(_EAMGridFilterTypeMenu2.default, {
-                    className: classes.filterTypeMenuButton,
+                    style: this.filterTypeMenuButton,
                     filter: this.props.filter,
                     onChange: this._onChange.bind(this),
                     dataType: this.props.dataType
@@ -215,15 +234,13 @@ var DataGridTableFilter = function (_Component) {
                         //inputProps={{style: {fontSize: '10px'}}}
                     })
                 ),
-                this.props.dataType && (this.props.dataType === 'VARCHAR' || this.props.dataType === 'MIXVARCHAR') && _react2.default.createElement(_TextField2.default, {
+                this.props.dataType && (this.props.dataType === 'VARCHAR' || this.props.dataType === 'MIXVARCHAR') && _react2.default.createElement(_EAMGridFilterInput2.default, {
                     disabled: this.state.inputDisabled,
-                    style: { maxWidth: 'calc(' + this.props.width + 'px - 30px' },
-                    className: classes.filterInput,
+                    width: this.props.width,
                     value: filterValue,
                     onChange: this._handleChangeValue,
-                    margin: 'dense',
-                    onKeyPress: this._handleKeyPress
-                    //inputProps={{style: {fontSize: '10px'}}}
+                    onKeyPress: this._handleKeyPress,
+                    dataType: this.props.dataType
                 }),
                 this.props.dataType && (this.props.dataType === 'DECIMAL' || this.props.dataType === 'NUMBER') && _react2.default.createElement(_TextField2.default, {
                     disabled: this.state.inputDisabled,

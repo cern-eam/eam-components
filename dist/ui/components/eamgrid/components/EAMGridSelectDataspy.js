@@ -66,20 +66,24 @@ var styles = function styles() {
             justifyContent: "space-between"
         },
         fetchDataButton: {
-            marginLeft: "10px",
-            marginRight: "10px",
-            boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12)"
+            padding: "4px 16px"
         },
         toggleFilterButton: {
-            boxShadow: "none"
-        },
-        formItem: {
             marginLeft: "10px",
             marginRight: "10px",
+            boxShadow: "none",
+            backgroundColor: '#fafafa'
+        },
+        formItem: {
             flex: "0 0 auto"
         },
         selectDataspyInput: {
-            backgroundColor: 'white'
+            backgroundColor: '#fafafa',
+            marginLeft: "10px"
+        },
+        dataspyLabel: {
+            marginTop: -2,
+            fontSize: 16
         },
         root: {
             margin: "0 auto",
@@ -139,7 +143,8 @@ var DataGridSelectDataSpy = function (_Component) {
                                         inputProps: {
                                             name: 'dataspy',
                                             id: 'dataspy-select'
-                                        }
+                                        },
+                                        input: _react2.default.createElement(_core.InputBase, null)
                                     },
                                     this.props.listOfDataSpy && this.props.listOfDataSpy.map(function (dataspy) {
                                         return _react2.default.createElement(
@@ -151,14 +156,15 @@ var DataGridSelectDataSpy = function (_Component) {
                                 ),
                                 _react2.default.createElement(
                                     _Button2.default,
-                                    { mini: true, variant: 'fab',
+                                    { variant: 'outlined',
                                         className: (0, _classnames2.default)(classes.formItem, classes.toggleFilterButton),
                                         onClick: this.props.toggleFilter },
-                                    this.props.filterVisible ? _react2.default.createElement(_FilterRemoveOutline2.default, null) : _react2.default.createElement(_FilterOutline2.default, null)
+                                    this.props.filterVisible ? 'HIDE FILTERS' : 'SHOW FILTERS'
                                 ),
                                 this.props.filterVisible && _react2.default.createElement(
                                     _Button2.default,
                                     {
+                                        variant: 'outlined',
                                         className: classes.cleanFiltersButton,
                                         onClick: this.props.clearFilters },
                                     'Clean filters'
@@ -166,11 +172,12 @@ var DataGridSelectDataSpy = function (_Component) {
                             ),
                             _react2.default.createElement(
                                 _Button2.default,
-                                { mini: true, variant: 'fab',
+                                { variant: 'outlined',
                                     color: 'primary',
                                     className: classes.fetchDataButton,
                                     onClick: this.props.runSearch },
-                                _react2.default.createElement(_Search2.default, null)
+                                _react2.default.createElement(_Search2.default, null),
+                                'SEARCH'
                             )
                         )
                     )

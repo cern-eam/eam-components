@@ -37,8 +37,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var styles = function styles(theme) {
   return _extends({}, theme, {
     actionBar: {
-      marginTop: "10px",
-      marginBottom: "10px",
       '& > button': {
         marginRight: "10px"
       }

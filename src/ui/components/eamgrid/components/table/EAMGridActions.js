@@ -7,8 +7,6 @@ import CheckBoxOutlineBlank from '@material-ui/icons/CheckBoxOutlineBlank';
 const styles = (theme) => ({
   ...theme,
   actionBar: {
-    marginTop: "10px",
-    marginBottom: "10px",
     '& > button': {
       marginRight: "10px"
     }

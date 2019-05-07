@@ -17,9 +17,12 @@ const styles = (theme) => ({
     tableHeaderWrapper: {
         overflowX: 'hidden',
         borderLeft: '1px solid #d3d3d3',
-        borderTop: '1px solid #d3d3d3',
         borderRight: '1px solid #d3d3d3',
         backgroundColor: '#fafafa'
+    },
+    headerStyle: {
+        whiteSpace: "nowrap",
+        textOverflow: "ellipsis"
     }
 });
 
@@ -71,7 +74,7 @@ class DataGridResultTable extends Component {
                                              selectColumn={this.props.allowRowSelection}
                                              editColumn={this.props.onEditRow !== undefined}
                                              extraColumns={this.props.extraColumns}
-                                             headerStyle={this.props.headerStyle}
+                                             headerStyle={classes.headerStyle}
                         />
                     </div>
                 }
