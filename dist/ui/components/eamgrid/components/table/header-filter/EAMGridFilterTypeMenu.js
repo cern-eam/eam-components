@@ -107,6 +107,7 @@ var DataGridFilterTypeMenu = function (_React$Component) {
             if (_this.props.dataType !== 'CHKBOOLEAN') {
                 style = _extends({}, style, {
                     backgroundColor: "white",
+                    paddingLeft: 5,
                     borderTopLeftRadius: 3,
                     borderBottomLeftRadius: 3,
                     borderTop: "1px solid rgb(206, 212, 218)",

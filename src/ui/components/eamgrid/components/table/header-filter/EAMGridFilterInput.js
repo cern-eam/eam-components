@@ -6,6 +6,7 @@ export default class EAMGridFilterInput extends Component {
         width: "100%",
         flex: "1 1 auto",
         border: "1px solid #ced4da",
+        borderLeftWidth: 0,
         paddingLeft: "5px",
         height: 27,
         fontSize: 16,
