@@ -276,7 +276,7 @@ class EAMGrid extends Component {
                 ...this.state.gridRequest.gridFilter
             ]
         };
-        request.gridFilter = request.gridFilter.filter(f => f.operator !== 'INDETERMINATE' && ((f.fieldValue && f.fieldValue !== "") || f.operator === 'SELECTED' || f.operator === 'NOT_SELECTED'));
+        request.gridFilter = request.gridFilter.filter(f => f.operator !== 'INDETERMINATE' && ((f.fieldValue && f.fieldValue !== "") || f.operator === 'IS_EMPTY' || f.operator === 'NOT_EMPTY'));
         return request;
     };
 
@@ -299,7 +299,7 @@ class EAMGrid extends Component {
                 isloading: true
             }), () => {
 
-                // clean filter by removing filters without value
+                // clean filter by removing filters without value - Except the ones that don't need a value (such as EMPTY, NOT_EMPTY)
                 let request = this.props.gridRequestAdapter(this._cleanFilters());
 
                 GridWS.getGridData(request, {

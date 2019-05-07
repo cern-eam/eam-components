@@ -18,11 +18,8 @@ function getDefaultFilterOperator(dataType) {
 }
 
 
-export function getFilters() {
-    let filters = [];
-    Object.values(this.filterMap)
-        .forEach(pendingFilter => filters.push(pendingFilter));
-    return filters;
+export function getFilters () {
+    return Object.values(this.filterMap)
 }
 
 /**
