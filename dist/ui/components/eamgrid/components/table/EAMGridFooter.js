@@ -29,7 +29,6 @@ var styles = function styles(theme) {
         footerStyle: {
             backgroundColor: '#fafafa',
             padding: '10px',
-            border: '1px solid lightGray',
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',

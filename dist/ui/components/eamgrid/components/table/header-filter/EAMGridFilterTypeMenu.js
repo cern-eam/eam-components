@@ -12,10 +12,6 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _IconButton = require('@material-ui/core/IconButton');
-
-var _IconButton2 = _interopRequireDefault(_IconButton);
-
 var _Menu = require('@material-ui/core/Menu');
 
 var _Menu2 = _interopRequireDefault(_Menu);
@@ -25,10 +21,6 @@ var _MenuItem = require('@material-ui/core/MenuItem');
 var _MenuItem2 = _interopRequireDefault(_MenuItem);
 
 var _index = require('@material-ui/core/styles/index');
-
-var _Icon = require('@material-ui/core/Icon');
-
-var _Icon2 = _interopRequireDefault(_Icon);
 
 var _mdiMaterialUi = require('mdi-material-ui');
 
@@ -52,7 +44,9 @@ var styles = function styles() {
     return {
         filterIconButton: {
             width: "25px",
-            color: "#b6b6b6"
+            color: "#b6b6b6",
+            display: "flex",
+            alignItems: "center"
         }
     };
 };
@@ -60,10 +54,10 @@ var styles = function styles() {
 var ITEM_HEIGHT = 48;
 
 var options = {
-    VARCHAR: [{ 'value': 'BEGINS', 'label': 'Starts with', 'icon': _react2.default.createElement(_mdiMaterialUi.RayStartArrow, null), 'symbol': 'a—' }, { 'value': 'CONTAINS', 'label': 'Contains', 'icon': _react2.default.createElement(_mdiMaterialUi.RayVertex, null) }, { 'value': 'NOT_CONTAINS', 'label': 'Does not contain', 'icon': _react2.default.createElement(_mdiMaterialUi.Minus, null) }, { 'value': 'ENDS', 'label': 'Ends with', 'icon': _react2.default.createElement(_mdiMaterialUi.RayEndArrow, null) }, { 'value': 'EQUALS', 'label': 'Equals', 'icon': _react2.default.createElement(_mdiMaterialUi.Equal, null) }, { 'value': 'NOT_EQUAL', 'label': 'Does not equal', 'icon': _react2.default.createElement(_mdiMaterialUi.NotEqualVariant, null) }, { 'value': 'IS_EMPTY', 'label': 'Is empty', 'icon': _react2.default.createElement(_mdiMaterialUi.RhombusOutline, null) }, { 'value': 'NOT_EMPTY', 'label': 'Is not empty', 'icon': _react2.default.createElement(_mdiMaterialUi.Rhombus, null) }],
+    VARCHAR: [{ 'value': 'BEGINS', 'label': 'Starts with', 'icon': _react2.default.createElement(_mdiMaterialUi.ContainStart, null) }, { 'value': 'CONTAINS', 'label': 'Contains', 'icon': _react2.default.createElement(_mdiMaterialUi.Contain, null) }, { 'value': 'NOT_CONTAINS', 'label': 'Does not contain', 'icon': _react2.default.createElement(_mdiMaterialUi.Minus, null) }, { 'value': 'ENDS', 'label': 'Ends with', 'icon': _react2.default.createElement(_mdiMaterialUi.ContainEnd, null) }, { 'value': 'EQUALS', 'label': 'Equals', 'icon': _react2.default.createElement(_mdiMaterialUi.Equal, null) }, { 'value': 'NOT_EQUAL', 'label': 'Does not equal', 'icon': _react2.default.createElement(_mdiMaterialUi.NotEqualVariant, null) }, { 'value': 'IS_EMPTY', 'label': 'Is empty', 'icon': _react2.default.createElement(_mdiMaterialUi.RhombusOutline, null) }, { 'value': 'NOT_EMPTY', 'label': 'Is not empty', 'icon': _react2.default.createElement(_mdiMaterialUi.Rhombus, null) }],
     DATE: [{ 'value': 'GREATER_THAN', 'label': 'Greater than', 'icon': _react2.default.createElement(_mdiMaterialUi.GreaterThan, null) }, { 'value': 'EQUALS', 'label': 'Equals', 'icon': _react2.default.createElement(_mdiMaterialUi.Equal, null) }, { 'value': 'LESS_THAN', 'label': 'Less than', 'icon': _react2.default.createElement(_mdiMaterialUi.LessThan, null) }, { 'value': 'LESS_THAN_EQUALS', 'label': 'Less than or equals', 'icon': _react2.default.createElement(_mdiMaterialUi.LessThanOrEqual, null) }, { 'value': 'GREATER_THAN_EQUALS', 'label': 'Greater than or equals', 'icon': _react2.default.createElement(_mdiMaterialUi.GreaterThan, null) }, { 'value': 'IS_EMPTY', 'label': 'Is empty', 'icon': _react2.default.createElement(_mdiMaterialUi.RhombusOutline, null) }, { 'value': 'NOT_EMPTY', 'label': 'Is not empty', 'icon': _react2.default.createElement(_mdiMaterialUi.Rhombus, null) }, { 'value': 'NOT_EQUAL', 'label': 'Does not equal', 'icon': _react2.default.createElement(_mdiMaterialUi.NotEqualVariant, null) }],
     NUMBER: [{ 'value': 'EQUALS', 'label': 'Equals', 'icon': _react2.default.createElement(_mdiMaterialUi.Equal, null) }, { 'value': 'LESS_THAN', 'label': 'Less than', 'icon': _react2.default.createElement(_mdiMaterialUi.LessThan, null) }, { 'value': 'GREATER_THAN', 'label': 'Greater than', 'icon': _react2.default.createElement(_mdiMaterialUi.GreaterThan, null) }, { 'value': 'LESS_THAN_EQUALS', 'label': 'Less than or equals', 'icon': _react2.default.createElement(_mdiMaterialUi.LessThanOrEqual, null) }, { 'value': 'GREATER_THAN_EQUALS', 'label': 'Greater than or equals', 'icon': _react2.default.createElement(_mdiMaterialUi.GreaterThanOrEqual, null) }, { 'value': 'IS_EMPTY', 'label': 'Is empty', 'icon': _react2.default.createElement(_mdiMaterialUi.RhombusOutline, null) }, { 'value': 'NOT_EMPTY', 'label': 'Is not empty', 'icon': _react2.default.createElement(_mdiMaterialUi.Rhombus, null) }, { 'value': 'NOT_EQUAL', 'label': 'Does not equal', 'icon': _react2.default.createElement(_mdiMaterialUi.NotEqualVariant, null) }],
-    CHKBOOLEAN: [{ 'value': 'INDETERMINATE', 'label': 'Indeterminate', 'icon': _react2.default.createElement(_mdiMaterialUi.CheckboxBlank, null) }, { 'value': 'SELECTED', 'label': 'Selected', 'icon': _react2.default.createElement(_mdiMaterialUi.CheckboxMarked, null) }, { 'value': 'NOT_SELECTED', 'label': 'Not selected', 'icon': _react2.default.createElement(_mdiMaterialUi.CheckboxBlankOutline, null) }]
+    CHKBOOLEAN: [{ 'value': 'INDETERMINATE', 'label': 'Either Selected or Not Selected', 'icon': _react2.default.createElement(_mdiMaterialUi.CheckboxIntermediate, null) }, { 'value': 'SELECTED', 'label': 'Selected', 'icon': _react2.default.createElement(_mdiMaterialUi.CheckBoxOutline, null) }, { 'value': 'NOT_SELECTED', 'label': 'Not selected', 'icon': _react2.default.createElement(_mdiMaterialUi.CheckboxBlankOutline, null) }]
 };
 
 var menuItems = function menuItems(dataType) {
@@ -100,6 +94,7 @@ var DataGridFilterTypeMenu = function (_React$Component) {
 
         _this.filterTypeMenuButtonStyle = function () {
             var style = {
+                width: 24,
                 height: 29,
                 display: "flex",
                 alignItems: "center"
@@ -107,7 +102,7 @@ var DataGridFilterTypeMenu = function (_React$Component) {
             if (_this.props.dataType !== 'CHKBOOLEAN') {
                 style = _extends({}, style, {
                     backgroundColor: "white",
-                    paddingLeft: 5,
+                    paddingLeft: 3,
                     borderTopLeftRadius: 3,
                     borderBottomLeftRadius: 3,
                     borderTop: "1px solid rgb(206, 212, 218)",
@@ -163,7 +158,7 @@ var DataGridFilterTypeMenu = function (_React$Component) {
                 'div',
                 { style: this.filterTypeMenuButtonStyle() },
                 _react2.default.createElement(
-                    _Icon2.default,
+                    'div',
                     {
                         className: classes.filterIconButton,
                         'aria-label': 'More',

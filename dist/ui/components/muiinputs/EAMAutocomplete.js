@@ -73,6 +73,7 @@ function renderDefaultInput(inputProps) {
         other = _objectWithoutProperties(inputProps, ['classes', 'autoFocus', 'value', 'label', 'disabled', 'endAdornment', 'error', 'helperText', 'required']);
 
     var inputAdornmentStyle = {
+        top: 2,
         height: 20,
         whiteSpace: "nowrap",
         overflow: "hidden",

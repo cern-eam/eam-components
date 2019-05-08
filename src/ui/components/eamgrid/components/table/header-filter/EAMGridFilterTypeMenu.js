@@ -1,22 +1,20 @@
 import React from 'react';
-import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import {withStyles} from "@material-ui/core/styles/index";
-import Icon from '@material-ui/core/Icon';
 import { Minus,
-         RayStartArrow,
-         RayEndArrow,
-         RayVertex,
-         CheckboxMarked,
+         ContainStart,
+         ContainEnd,
+         Contain,
+         CheckBoxOutline,
          GreaterThan,
          GreaterThanOrEqual,
          LessThan,
          LessThanOrEqual,
          Equal,
          NotEqualVariant,
-         CheckboxBlank,
          CheckboxBlankOutline,
+         CheckboxIntermediate,
          Rhombus,
          RhombusOutline } from 'mdi-material-ui';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -25,7 +23,9 @@ import ListItemText from '@material-ui/core/ListItemText';
 const styles = () => ({
     filterIconButton: {
         width: "25px",
-        color: "#b6b6b6"
+        color: "#b6b6b6",
+        display: "flex",
+        alignItems: "center"
     }
 });
 
@@ -33,10 +33,10 @@ const ITEM_HEIGHT = 48;
 
 const options = {
     VARCHAR: [
-        {'value':'BEGINS','label':'Starts with', 'icon': <RayStartArrow/>, 'symbol': 'a—'},
-        {'value':'CONTAINS','label':'Contains', 'icon': <RayVertex/>},
+        {'value':'BEGINS','label':'Starts with', 'icon': <ContainStart/>},
+        {'value':'CONTAINS','label':'Contains', 'icon': <Contain/>},
         {'value':'NOT_CONTAINS','label':'Does not contain', 'icon': <Minus/>},
-        {'value':'ENDS','label':'Ends with', 'icon': <RayEndArrow/>},
+        {'value':'ENDS','label':'Ends with', 'icon': <ContainEnd/>},
         {'value':'EQUALS', 'label':'Equals', 'icon': <Equal/>},
         {'value':'NOT_EQUAL','label':'Does not equal', 'icon': <NotEqualVariant/>},
         {'value':'IS_EMPTY','label':'Is empty', 'icon': <RhombusOutline/>},
@@ -63,8 +63,8 @@ const options = {
         {'value':'NOT_EQUAL','label':'Does not equal', 'icon': <NotEqualVariant/>}
     ],
     CHKBOOLEAN: [
-        {'value':'INDETERMINATE','label':'Indeterminate', 'icon': <CheckboxBlank/>},
-        {'value':'SELECTED','label':'Selected', 'icon': <CheckboxMarked/>},
+        {'value':'INDETERMINATE','label':'Either Selected or Not Selected', 'icon': <CheckboxIntermediate/>},
+        {'value':'SELECTED','label':'Selected', 'icon': <CheckBoxOutline/>},
         {'value':'NOT_SELECTED','label':'Not selected', 'icon': <CheckboxBlankOutline/>}
     ]
 }
@@ -95,6 +95,7 @@ class DataGridFilterTypeMenu extends React.Component {
 
     filterTypeMenuButtonStyle = () => {
         let style = {
+            width: 24,
             height: 29,
             display: "flex",
             alignItems: "center"
@@ -102,7 +103,7 @@ class DataGridFilterTypeMenu extends React.Component {
         if (this.props.dataType !=='CHKBOOLEAN') {
             style = {...style,
                     backgroundColor: "white",
-                    paddingLeft: 5,
+                    paddingLeft: 3,
                     borderTopLeftRadius: 3,
                     borderBottomLeftRadius: 3,
                     borderTop: "1px solid rgb(206, 212, 218)",
@@ -148,14 +149,14 @@ class DataGridFilterTypeMenu extends React.Component {
         return (
             <div style={this.filterTypeMenuButtonStyle()}>
 
-                <Icon
+                <div
                     className={classes.filterIconButton}
                     aria-label="More"
                     aria-owns={anchorEl ? 'long-menu' : null}
                     onClick={this.handleClick}
                 >
                     { this.state.option.icon }
-                </Icon>
+                </div>
 
                 <Menu
                     id="long-menu"
