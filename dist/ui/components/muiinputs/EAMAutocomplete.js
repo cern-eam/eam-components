@@ -267,7 +267,9 @@ var EAMAutocomplete = function (_EAMBaseInput) {
     _createClass(EAMAutocomplete, [{
         key: 'renderComponent',
         value: function renderComponent() {
-            var classes = this.props.classes;
+            var _props = this.props,
+                classes = _props.classes,
+                elementInfo = _props.elementInfo;
             var value = this.state.value;
 
             // Value should always be an object with code and desc
@@ -301,10 +303,10 @@ var EAMAutocomplete = function (_EAMBaseInput) {
                     endAdornment: value.desc,
                     classes: classes,
                     placeholder: this.props.placeholder,
-                    label: this.props.elementInfo.text,
+                    label: elementInfo && elementInfo.text,
                     value: value.code,
                     onChange: this.handleChange,
-                    disabled: this.state.disabled || this.props.elementInfo.readonly
+                    disabled: this.state.disabled || elementInfo && elementInfo.readonly
                 }
             });
         }

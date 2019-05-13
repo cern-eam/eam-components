@@ -283,8 +283,8 @@ var EAMSelect = function (_EAMBaseInput) {
                     helperText: helperText,
                     classes: classes,
                     value: value.desc,
-                    label: elementInfo.text,
-                    disabled: disabled || elementInfo.readonly,
+                    label: elementInfo && elementInfo.text,
+                    disabled: disabled || elementInfo && elementInfo.readonly,
                     onChange: this.handleChange
                 }
             });

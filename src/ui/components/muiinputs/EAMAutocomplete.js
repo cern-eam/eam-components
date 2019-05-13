@@ -187,7 +187,7 @@ class EAMAutocomplete extends EAMBaseInput {
     }
     
     renderComponent () {
-        const { classes } = this.props;
+        const { classes, elementInfo } = this.props;
         const { value } = this.state;
 
         // Value should always be an object with code and desc
@@ -218,10 +218,10 @@ class EAMAutocomplete extends EAMBaseInput {
                     endAdornment: value.desc,
                     classes,
                     placeholder: this.props.placeholder,
-                    label: this.props.elementInfo.text,
+                    label: elementInfo && elementInfo.text,
                     value: value.code,
                     onChange: this.handleChange,
-                    disabled: this.state.disabled || this.props.elementInfo.readonly
+                    disabled: this.state.disabled || (elementInfo && elementInfo.readonly)
                 }}
             />
         );

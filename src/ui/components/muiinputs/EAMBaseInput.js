@@ -33,19 +33,21 @@ export default class EAMBaseInput extends Component {
         if (children && elementInfo) {
             children[elementInfo.xpath] = this;
         }
-
+        
         // Set the validators
         const myValidators = [...(customValidators || [])]
-        const label = elementInfo.text;
-        if (this.isRequired()) {
-            myValidators.push(this.hasValue(label))
-        }
-        if (elementInfo.fieldType === 'number') {
-            myValidators.push(this.isNumber(label))
-        }
-
-        // Set the transformers
         const myTransformers = [...(transformers || [])]
+
+        if (elementInfo) {
+            const label = elementInfo.text;
+            if (this.isRequired()) {
+                myValidators.push(this.hasValue(label))
+            }
+            if (elementInfo.fieldType === 'number') {
+                myValidators.push(this.isNumber(label))
+            }
+        }
+        // Set the transformers        
         if (this.isUpperCase()) {
             myTransformers.push(this.toUpperCase)
         }
@@ -115,6 +117,7 @@ export default class EAMBaseInput extends Component {
         // Don't set the value if it is about to (or has already) exceeded the max length
         if (value &&
             value.length &&
+            this.props.elementInfo &&
             this.props.elementInfo.maxLength &&
             value.length > this.props.elementInfo.maxLength) {
             return

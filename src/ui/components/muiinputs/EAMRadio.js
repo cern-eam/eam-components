@@ -20,14 +20,14 @@ export default class EamlightRadio extends EAMBaseInput {
     };
 
     renderComponent () {
-        const {elementId, text, nullable} = this.props.elementInfo;
+        const { elementInfo } = this.props;
 
         return (
             <FormControl fullWidth margin="normal" required={this.isRequired()} style={{marginBottom: '0px'}}>
-                <FormLabel component="legend">{text}</FormLabel>
+                <FormLabel component="legend">{elementInfo && elementInfo.text}</FormLabel>
                 <RadioGroup
                     aria-label={elementId}
-                    name={elementId}
+                    name={elementInfo && elementInfo.elementId}
                     value={this.props.value || ''}
                     onChange={event => this.onChangeHandler(event.target.value)}
                     style={{flexDirection: 'row'}}>

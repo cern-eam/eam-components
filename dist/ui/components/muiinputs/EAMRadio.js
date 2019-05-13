@@ -73,10 +73,7 @@ var EamlightRadio = function (_EAMBaseInput) {
         value: function renderComponent() {
             var _this2 = this;
 
-            var _props$elementInfo = this.props.elementInfo,
-                elementId = _props$elementInfo.elementId,
-                text = _props$elementInfo.text,
-                nullable = _props$elementInfo.nullable;
+            var elementInfo = this.props.elementInfo;
 
 
             return _react2.default.createElement(
@@ -85,13 +82,13 @@ var EamlightRadio = function (_EAMBaseInput) {
                 _react2.default.createElement(
                     _FormLabel2.default,
                     { component: 'legend' },
-                    text
+                    elementInfo && elementInfo.text
                 ),
                 _react2.default.createElement(
                     _RadioGroup2.default,
                     {
                         'aria-label': elementId,
-                        name: elementId,
+                        name: elementInfo && elementInfo.elementId,
                         value: this.props.value || '',
                         onChange: function onChange(event) {
                             return _this2.onChangeHandler(event.target.value);

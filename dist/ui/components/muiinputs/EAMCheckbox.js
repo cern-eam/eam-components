@@ -63,17 +63,19 @@ var EAMCheckbox = function (_EAMBaseInput) {
     _createClass(EAMCheckbox, [{
         key: 'renderComponent',
         value: function renderComponent() {
+            var elementInfo = this.props.elementInfo;
+
             return _react2.default.createElement(
                 'div',
                 { style: checkBoxStyle },
                 _react2.default.createElement(_FormControlLabel2.default, {
-                    label: this.props.elementInfo.text,
+                    label: elementInfo && elementInfo.text,
                     control: _react2.default.createElement(_Checkbox2.default, {
                         color: 'primary',
                         checked: this.state.value,
-                        value: this.props.value,
+                        value: this.props.value || '',
                         onChange: this.handleChange,
-                        disabled: this.props.elementInfo.readonly
+                        disabled: elementInfo && elementInfo.readonly
                     })
                 })
             );

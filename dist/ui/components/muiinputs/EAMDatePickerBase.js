@@ -69,7 +69,7 @@ var EAMDatePicker = function (_EAMBaseInput) {
                 dateFormatDisplay: props.dateFormatDisplay
             });
         }, _this.readValue = function (value) {
-            return value ? (0, _parse2.default)(value.substring(0, _this.state.dateFormatValue.length), _this.state.dateFormatValue, new Date()) : null;
+            return !value ? null : typeof value === "string" ? (0, _parse2.default)(value.substring(0, _this.state.dateFormatValue.length), _this.state.dateFormatValue, new Date()) : typeof value === "number" ? new Date(value) : value;
         }, _this.readDate = function (date) {
             return date ? (0, _dateFns3.format)(date, _this.state.dateFormatValue) : '';
         }, _this.getPickerProps = function (state, props) {
@@ -86,7 +86,7 @@ var EAMDatePicker = function (_EAMBaseInput) {
                 keyboard: true,
                 error: error,
                 helperText: helperText,
-                disabled: disabled || elementInfo.readonly,
+                disabled: disabled || elementInfo && elementInfo.readonly,
                 required: _this.isRequired(),
                 clearable: true,
                 value: _this.readValue(value),
@@ -94,7 +94,7 @@ var EAMDatePicker = function (_EAMBaseInput) {
                     return _this.onChangeHandler(_this.readDate(date));
                 },
                 format: dateFormatDisplay,
-                label: elementInfo.text,
+                label: elementInfo && elementInfo.text,
                 leftArrowIcon: _react2.default.createElement(
                     _Icon2.default,
                     null,

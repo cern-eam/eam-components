@@ -19,9 +19,10 @@ export default class EAMDatePicker extends EAMBaseInput {
     }
 
     readValue = value => 
-        value ?
-            parse(value.substring(0, this.state.dateFormatValue.length), this.state.dateFormatValue, new Date())
-            : null
+        !value ? null
+        : typeof value === "string" ? parse(value.substring(0, this.state.dateFormatValue.length), this.state.dateFormatValue, new Date())
+        : typeof value === "number" ? new Date(value)
+        : value 
 
     readDate = date => date ?
         format(date, this.state.dateFormatValue)
@@ -36,13 +37,13 @@ export default class EAMDatePicker extends EAMBaseInput {
             keyboard: true,
             error,
             helperText: helperText,
-            disabled: disabled || elementInfo.readonly,
+            disabled: disabled || (elementInfo && elementInfo.readonly),
             required: this.isRequired(),
             clearable: true,
             value: this.readValue(value),
             onChange: date => this.onChangeHandler(this.readDate(date)),
             format: dateFormatDisplay,
-            label: elementInfo.text,
+            label: elementInfo && elementInfo.text,
             leftArrowIcon: <Icon> keyboard_arrow_left </Icon>,
             rightArrowIcon: <Icon> keyboard_arrow_right </Icon>,
             TextFieldComponent: EAMTextField
