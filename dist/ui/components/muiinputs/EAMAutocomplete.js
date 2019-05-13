@@ -220,7 +220,7 @@ var EAMAutocomplete = function (_EAMBaseInput) {
             //be updated at every key stroke, or thehandleSuggestionsClearRequested must contain a workaround
             var valueFound = _this.findValueInSuggestions(newValue, _this.state.suggestions);
             if (valueFound) {
-                _this.onChangeHandler(valueFound.code);
+                _this.onChangeHandler(valueFound.code, valueFound);
                 _this.setValue({ code: valueFound.code, desc: valueFound.desc });
             } else {
                 _this.setValue({ code: newValue, desc: '' });
@@ -240,16 +240,12 @@ var EAMAutocomplete = function (_EAMBaseInput) {
                     return value && _this.onSuggestionChange(value.code, value.desc);
                 })(_this.state);
             });
-        }, _this.onSuggestionSelected = function (event, _ref5) {
-            var suggestion = _ref5.suggestion;
-
-            if (suggestion) _this.onSuggestionChange(suggestion.code, suggestion.desc);
         }, _this.getSuggestionValue = function (suggestion) {
             return suggestion.desc;
         }, _this.shouldRenderSuggestions = function (value) {
             return !!value;
-        }, _this.onSuggestionSelected = function (event, _ref6) {
-            var suggestion = _ref6.suggestion;
+        }, _this.onSuggestionSelected = function (event, _ref5) {
+            var suggestion = _ref5.suggestion;
 
             if (suggestion) _this.onSuggestionChange(suggestion.code, suggestion.desc);
         }, _temp), _possibleConstructorReturn(_this, _ret);
@@ -290,8 +286,8 @@ var EAMAutocomplete = function (_EAMBaseInput) {
                 onSuggestionsClearRequested: this.handleSuggestionsClearRequested,
                 getSuggestionValue: this.getSuggestionValue,
                 renderSuggestionsContainer: renderSuggestionsContainer,
-                renderSuggestion: function renderSuggestion(suggestion, _ref7) {
-                    var isHighlighted = _ref7.isHighlighted;
+                renderSuggestion: function renderSuggestion(suggestion, _ref6) {
+                    var isHighlighted = _ref6.isHighlighted;
                     return renderSuggestionContainer(suggestion, isHighlighted);
                 },
                 renderInputComponent: this.renderInput.bind(this),

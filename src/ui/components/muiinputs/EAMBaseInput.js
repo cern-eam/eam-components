@@ -108,7 +108,7 @@ export default class EAMBaseInput extends Component {
         return valid
     }
 
-    onChangeHandler = value => {
+    onChangeHandler = (value, valueFound = {}) => {
         // TODO: uppercased fields
         //if (this.props.elementInfo.characterCase === 'uppercase') {
         //    value = value.toUpperCase()
@@ -125,7 +125,7 @@ export default class EAMBaseInput extends Component {
         this.props.updateProperty(this.props.valueKey, value);
         //Extra function if needed
         if (this.props.onChangeValue) {
-            this.props.onChangeValue(value);
+            this.props.onChangeValue(value, valueFound);
         }
     };
 
