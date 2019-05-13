@@ -215,11 +215,11 @@ class EDMSWidget extends Component {
     };
 
     render() {
-
+        const { hideLink } = this.props;
         return (
             <EISPanel heading={this.props.title}
                       detailsStyle={{marginLeft: '-24px', marginRight: '-24px'}}
-                      link={this.props.edmsDocListLink + this.props.objectType + ":" + this.props.objectID + "::"}>
+                      link={hideLink ? undefined : this.props.edmsDocListLink + this.props.objectType + ":" + this.props.objectID + "::"}>
                 <BlockUi tag="div" blocking={this.state.isLoading} style={this.mainDivStyle}>
 
                     <EDMSWidgetToolbar currentView={this.state.currentView}
