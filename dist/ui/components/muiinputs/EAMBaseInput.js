@@ -58,16 +58,18 @@ var EAMBaseInput = function (_Component) {
 
             // Set the validators
             var myValidators = [].concat(_toConsumableArray(customValidators || []));
-            var label = elementInfo.text;
-            if (_this.isRequired()) {
-                myValidators.push(_this.hasValue(label));
-            }
-            if (elementInfo.fieldType === 'number') {
-                myValidators.push(_this.isNumber(label));
-            }
-
-            // Set the transformers
             var myTransformers = [].concat(_toConsumableArray(transformers || []));
+
+            if (elementInfo) {
+                var label = elementInfo.text;
+                if (_this.isRequired()) {
+                    myValidators.push(_this.hasValue(label));
+                }
+                if (elementInfo.fieldType === 'number') {
+                    myValidators.push(_this.isNumber(label));
+                }
+            }
+            // Set the transformers        
             if (_this.isUpperCase()) {
                 myTransformers.push(_this.toUpperCase);
             }
@@ -111,19 +113,21 @@ var EAMBaseInput = function (_Component) {
         }, _this.isUpperCase = function () {
             return _this.props.elementInfo && _this.props.elementInfo.characterCase === 'uppercase';
         }, _this.onChangeHandler = function (value) {
+            var valueFound = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
             // TODO: uppercased fields
             //if (this.props.elementInfo.characterCase === 'uppercase') {
             //    value = value.toUpperCase()
             //}
 
             // Don't set the value if it is about to (or has already) exceeded the max length
-            if (value && value.length && _this.props.elementInfo.maxLength && value.length > _this.props.elementInfo.maxLength) {
+            if (value && value.length && _this.props.elementInfo && _this.props.elementInfo.maxLength && value.length > _this.props.elementInfo.maxLength) {
                 return;
             }
             _this.props.updateProperty(_this.props.valueKey, value);
             //Extra function if needed
             if (_this.props.onChangeValue) {
-                _this.props.onChangeValue(value);
+                _this.props.onChangeValue(value, valueFound);
             }
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }

@@ -23,17 +23,18 @@ class EAMCheckbox extends EAMBaseInput {
     }
 
     renderComponent () {
+        const { elementInfo } = this.props;
         return (
             <div style={checkBoxStyle}>
                 <FormControlLabel
-                    label={this.props.elementInfo.text}
+                    label={elementInfo && elementInfo.text}
                     control={
                         <Checkbox
                             color="primary"
                             checked={this.state.value}
-                            value={this.props.value}
+                            value={this.props.value || ''}
                             onChange={this.handleChange}
-                            disabled={this.props.elementInfo.readonly}
+                            disabled={elementInfo && elementInfo.readonly}
                         />
                     }
                 />

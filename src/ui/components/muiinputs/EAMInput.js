@@ -12,13 +12,15 @@ class EAMInput extends EAMBaseInput {
     }
 
     renderComponent () {
+        const { elementInfo } = this.props;
+
         return (
             <EAMTextField
-                disabled={this.state.disabled || this.props.elementInfo.readonly}
+                disabled={this.state.disabled || (elementInfo  && elementInfo.readonly)}
                 error={this.state.error}
                 helperText={this.state.helperText}
                 required={this.isRequired()}
-                label={this.props.elementInfo.text}
+                label={elementInfo && elementInfo.text}
                 value={this.state.value}
                 onChange={event => this.setValue(event.target.value)}
                 onBlur={this.onLoseFocus}

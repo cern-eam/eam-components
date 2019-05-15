@@ -276,11 +276,13 @@ var EDMSWidget = function (_Component) {
         value: function render() {
             var _this2 = this;
 
+            var hideLink = this.props.hideLink;
+
             return _react2.default.createElement(
                 _panel2.default,
                 { heading: this.props.title,
                     detailsStyle: { marginLeft: '-24px', marginRight: '-24px' },
-                    link: this.props.edmsDocListLink + this.props.objectType + ":" + this.props.objectID + "::" },
+                    link: hideLink ? undefined : this.props.edmsDocListLink + this.props.objectType + ":" + this.props.objectID + "::" },
                 _react2.default.createElement(
                     _reactBlockUi2.default,
                     { tag: 'div', blocking: this.state.isLoading, style: this.mainDivStyle },

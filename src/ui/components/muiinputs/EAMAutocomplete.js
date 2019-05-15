@@ -151,7 +151,7 @@ class EAMAutocomplete extends EAMBaseInput {
         //be updated at every key stroke, or thehandleSuggestionsClearRequested must contain a workaround
         const valueFound = this.findValueInSuggestions(newValue, this.state.suggestions)
         if (valueFound) {
-            this.onChangeHandler(valueFound.code)
+            this.onChangeHandler(valueFound.code, valueFound)
             this.setValue({code: valueFound.code, desc: valueFound.desc});
         } else {
             this.setValue({code: newValue, desc: ''});
@@ -174,10 +174,6 @@ class EAMAutocomplete extends EAMBaseInput {
             (({ value }) => value && this.onSuggestionChange(value.code, value.desc))(this.state)
         })
 
-    onSuggestionSelected = (event, { suggestion }) => {
-        if (suggestion) this.onSuggestionChange(suggestion.code, suggestion.desc)
-    }
-
     getSuggestionValue = suggestion => suggestion.desc;
 
     shouldRenderSuggestions = value => !!value
@@ -187,7 +183,7 @@ class EAMAutocomplete extends EAMBaseInput {
     }
     
     renderComponent () {
-        const { classes } = this.props;
+        const { classes, elementInfo } = this.props;
         const { value } = this.state;
 
         // Value should always be an object with code and desc
@@ -218,10 +214,10 @@ class EAMAutocomplete extends EAMBaseInput {
                     endAdornment: value.desc,
                     classes,
                     placeholder: this.props.placeholder,
-                    label: this.props.elementInfo.text,
+                    label: elementInfo && elementInfo.text,
                     value: value.code,
                     onChange: this.handleChange,
-                    disabled: this.state.disabled || this.props.elementInfo.readonly
+                    disabled: this.state.disabled || (elementInfo && elementInfo.readonly)
                 }}
             />
         );

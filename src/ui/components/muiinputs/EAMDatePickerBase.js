@@ -11,21 +11,27 @@ import EAMTextField from './EAMTextField';
 export default class EAMDatePicker extends EAMBaseInput {
 
     init = props => {
-        this.setValue(props.value || '', false)
         this.setState({
             dateFormatValue: props.dateFormatValue,
             dateFormatDisplay: props.dateFormatDisplay
-        })
+        }, () => this.setValue(this.convert(props.value), false))
     }
 
-    readValue = value => 
-        value ?
-            parse(value.substring(0, this.state.dateFormatValue.length), this.state.dateFormatValue, new Date())
-            : null
+    /** Always returns a Date from the value provided */
+    readValue = value =>
+        !value ? ''
+            : value instanceof Date ? value
+            : typeof value === "string" ? parse(value.substring(0, this.state.dateFormatValue.length), this.state.dateFormatValue, new Date())
+            : typeof value === "number" ? new Date(value)
+            : value 
 
-    readDate = date => date ?
-        format(date, this.state.dateFormatValue)
-        : ''
+    /* Reads the Date it receives to the format wanted (TIMESTAMP or FORMATTED STRING) */
+    readDate = date =>
+        !date ? null
+            : this.props.timestamp ? date.getTime()
+            : format(date, this.state.dateFormatValue)
+
+    convert = value => this.readDate(this.readValue(value || ''))
 
     getPickerProps = (state, props) => {
         const { elementInfo } = props;
@@ -36,13 +42,13 @@ export default class EAMDatePicker extends EAMBaseInput {
             keyboard: true,
             error,
             helperText: helperText,
-            disabled: disabled || elementInfo.readonly,
+            disabled: disabled || (elementInfo && elementInfo.readonly),
             required: this.isRequired(),
             clearable: true,
-            value: this.readValue(value),
-            onChange: date => this.onChangeHandler(this.readDate(date)),
+            value,
+            onChange: str => this.onChangeHandler(this.convert(str)),
             format: dateFormatDisplay,
-            label: elementInfo.text,
+            label: elementInfo && elementInfo.text,
             leftArrowIcon: <Icon> keyboard_arrow_left </Icon>,
             rightArrowIcon: <Icon> keyboard_arrow_right </Icon>,
             TextFieldComponent: EAMTextField

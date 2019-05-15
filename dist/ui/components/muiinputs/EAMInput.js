@@ -53,12 +53,15 @@ var EAMInput = function (_EAMBaseInput) {
         value: function renderComponent() {
             var _this2 = this;
 
+            var elementInfo = this.props.elementInfo;
+
+
             return _react2.default.createElement(_EAMTextField2.default, {
-                disabled: this.state.disabled || this.props.elementInfo.readonly,
+                disabled: this.state.disabled || elementInfo && elementInfo.readonly,
                 error: this.state.error,
                 helperText: this.state.helperText,
                 required: this.isRequired(),
-                label: this.props.elementInfo.text,
+                label: elementInfo && elementInfo.text,
                 value: this.state.value,
                 onChange: function onChange(event) {
                     return _this2.setValue(event.target.value);

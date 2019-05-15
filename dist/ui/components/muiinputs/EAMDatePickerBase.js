@@ -63,15 +63,18 @@ var EAMDatePicker = function (_EAMBaseInput) {
         }
 
         return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EAMDatePicker.__proto__ || Object.getPrototypeOf(EAMDatePicker)).call.apply(_ref, [this].concat(args))), _this), _this.init = function (props) {
-            _this.setValue(props.value || '', false);
             _this.setState({
                 dateFormatValue: props.dateFormatValue,
                 dateFormatDisplay: props.dateFormatDisplay
+            }, function () {
+                return _this.setValue(_this.convert(props.value), false);
             });
         }, _this.readValue = function (value) {
-            return value ? (0, _parse2.default)(value.substring(0, _this.state.dateFormatValue.length), _this.state.dateFormatValue, new Date()) : null;
+            return !value ? '' : value instanceof Date ? value : typeof value === "string" ? (0, _parse2.default)(value.substring(0, _this.state.dateFormatValue.length), _this.state.dateFormatValue, new Date()) : typeof value === "number" ? new Date(value) : value;
         }, _this.readDate = function (date) {
-            return date ? (0, _dateFns3.format)(date, _this.state.dateFormatValue) : '';
+            return !date ? null : _this.props.timestamp ? date.getTime() : (0, _dateFns3.format)(date, _this.state.dateFormatValue);
+        }, _this.convert = function (value) {
+            return _this.readDate(_this.readValue(value || ''));
         }, _this.getPickerProps = function (state, props) {
             var elementInfo = props.elementInfo;
             var helperText = state.helperText,
@@ -86,15 +89,15 @@ var EAMDatePicker = function (_EAMBaseInput) {
                 keyboard: true,
                 error: error,
                 helperText: helperText,
-                disabled: disabled || elementInfo.readonly,
+                disabled: disabled || elementInfo && elementInfo.readonly,
                 required: _this.isRequired(),
                 clearable: true,
-                value: _this.readValue(value),
-                onChange: function onChange(date) {
-                    return _this.onChangeHandler(_this.readDate(date));
+                value: value,
+                onChange: function onChange(str) {
+                    return _this.onChangeHandler(_this.convert(str));
                 },
                 format: dateFormatDisplay,
-                label: elementInfo.text,
+                label: elementInfo && elementInfo.text,
                 leftArrowIcon: _react2.default.createElement(
                     _Icon2.default,
                     null,
@@ -109,6 +112,12 @@ var EAMDatePicker = function (_EAMBaseInput) {
             };
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
+
+    /** Always returns a Date from the value provided */
+
+
+    /* Reads the Date it receives to the format wanted (TIMESTAMP or FORMATTED STRING) */
+
 
     _createClass(EAMDatePicker, [{
         key: 'renderComponent',
