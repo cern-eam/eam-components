@@ -80,20 +80,6 @@ var Checklists = function (_Component) {
             marginLeft: -24,
             marginTop: -7,
             marginBottom: -24
-        }, _this.createFollowUpWOs = function (evt, checklistActivity) {
-            evt.stopPropagation();
-            var activity = {
-                workOrderNumber: checklistActivity.workOrderNumber,
-                activityCode: checklistActivity.activityCode
-            };
-            _this.setState({ blocking: true });
-
-            _WSChecklists2.default.createFolowUpWorkOrders(activity).then(function (resp) {
-                _this.readActivities(activity.workOrderNumber);
-                _this.props.showSuccess('Follow-up workorders successfully created.');
-            }).catch(function (error) {
-                _this.props.showError('Could not create follow-up workorders.');
-            });
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
@@ -123,55 +109,70 @@ var Checklists = function (_Component) {
         }
     }, {
         key: 'renderChecklistsForActivity',
-        value: function renderChecklistsForActivity(activity) {
+        value: function renderChecklistsForActivity(checklists) {
             var _this3 = this;
 
-            var checklistItems = [];
             var equipmentCode = void 0;
-            var equipmentDesc = void 0;
-            //Count the number of equipments to know if it is multiequipment
-            var equipments = [];
-            activity.checklists.forEach(function (checklist) {
-                if (!equipments.includes(checklist.equipmentCode)) {
-                    equipments.push(checklist.equipmentCode);
-                }
+
+            //If there are more than 1 equipment, at least one is different from the first
+            var multipleEquipment = checklists.some(function (chk) {
+                return chk.equipmentCode !== checklists[0].equipmentCode;
             });
-            var multipleEquipment = equipments.length > 1;
-            //Iterate on checklists to display items
-            activity.checklists.forEach(function (checklist) {
+            return checklists.reduce(function (acc, checklist) {
+                // In a multiequipment scenario, include header for equipment
                 if (multipleEquipment && equipmentCode !== checklist.equipmentCode) {
                     equipmentCode = checklist.equipmentCode;
-                    equipmentDesc = checklist.equipmentDesc;
-                    checklistItems.push(_react2.default.createElement(_ChecklistEquipment2.default, { key: checklist.checkListCode + "_equipment",
-                        equipmentCode: equipmentCode,
-                        equipmentDesc: equipmentDesc }));
+                    acc.push(_react2.default.createElement(_ChecklistEquipment2.default, {
+                        key: checklist.checkListCode + "_equipment",
+                        equipmentCode: checklist.equipmentCode,
+                        equipmentDesc: checklist.equipmentDesc
+                    }));
                 }
-
-                checklistItems.push(_react2.default.createElement(_ChecklistItem2.default, { key: checklist.checkListCode,
+                acc.push(_react2.default.createElement(_ChecklistItem2.default, {
+                    key: 'checklistItem$' + checklist.checkListCode,
                     updateChecklistItem: _this3.props.updateChecklistItem,
                     checklistItem: checklist,
                     handleError: _this3.props.handleError,
-                    minFindingsDropdown: _this3.props.minFindingsDropdown }));
-            });
+                    minFindingsDropdown: _this3.props.minFindingsDropdown
+                }));
+                return acc;
+            }, []);
+        }
+    }, {
+        key: 'createFollowUpWOs',
+        value: function createFollowUpWOs(evt, checklistActivity) {
+            var _this4 = this;
 
-            return checklistItems;
+            evt.stopPropagation();
+            var activity = {
+                workOrderNumber: checklistActivity.workOrderNumber,
+                activityCode: checklistActivity.activityCode
+            };
+            this.setState({ blocking: true });
+
+            _WSChecklists2.default.createFolowUpWorkOrders(activity).then(function (resp) {
+                _this4.readActivities(activity.workOrderNumber);
+                _this4.props.showSuccess('Follow-up workorders successfully created.');
+            }).catch(function (error) {
+                _this4.props.showError('Could not create follow-up workorders.');
+            });
         }
     }, {
         key: 'renderActivities',
-        value: function renderActivities() {
-            var _this4 = this;
+        value: function renderActivities(activities) {
+            var _this5 = this;
 
             var blocking = this.state.blocking;
 
-            return this.state.activities.filter(function (activity) {
+            return activities.filter(function (activity) {
                 return activity.checklists && activity.checklists.length > 0;
             }).map(function (activity) {
                 return _react2.default.createElement(
                     _reactBlockUi2.default,
-                    { blocking: blocking },
+                    { key: activity.activityCode, blocking: blocking },
                     _react2.default.createElement(
                         _ExpansionPanel2.default,
-                        { key: activity.activityCode, defaultExpanded: true },
+                        { defaultExpanded: true },
                         _react2.default.createElement(
                             _ExpansionPanelSummary2.default,
                             { expandIcon: _react2.default.createElement(_ExpandMore2.default, null) },
@@ -187,9 +188,13 @@ var Checklists = function (_Component) {
                                 activity.taskDesc,
                                 _react2.default.createElement(
                                     _Button2.default,
-                                    { onClick: function onClick(evt) {
-                                            return _this4.createFollowUpWOs(evt, activity);
-                                        }, color: 'primary', style: { marginLeft: 'auto', paddingRight: '40px' } },
+                                    {
+                                        key: activity.activityCode + '$createfuwo',
+                                        onClick: function onClick(evt) {
+                                            return _this5.createFollowUpWOs(evt, activity);
+                                        },
+                                        color: 'primary',
+                                        style: { marginLeft: 'auto', paddingRight: '40px' } },
                                     'Create Follow-up WO'
                                 )
                             )
@@ -200,7 +205,7 @@ var Checklists = function (_Component) {
                             _react2.default.createElement(
                                 'div',
                                 { style: { width: "100%" } },
-                                _this4.renderChecklistsForActivity(activity)
+                                _this5.renderChecklistsForActivity(activity.checklists)
                             )
                         )
                     )
@@ -217,11 +222,13 @@ var Checklists = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
+            var activities = this.state.activities;
+
             var divStyle = { width: "100%" };
             if (this.props.readonly) {
                 divStyle.pointerEvents = 'none';
             }
-            if (this.state.activities.filter(function (activity) {
+            if (activities.filter(function (activity) {
                 return activity.checklists && activity.checklists.length > 0;
             }).length === 0) {
                 return _react2.default.createElement('div', null);
@@ -235,7 +242,7 @@ var Checklists = function (_Component) {
                     _react2.default.createElement(
                         'div',
                         { style: divStyle },
-                        this.renderActivities()
+                        this.renderActivities(activities)
                     )
                 );
             }

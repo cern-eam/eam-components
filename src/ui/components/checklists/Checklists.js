@@ -34,51 +34,46 @@ export default class Checklists extends Component {
     }
 
     readActivities(workorder) {
-        this.props.getWorkOrderActivities(workorder).then(response => {
-            this.setState({
-                activities: response.body.data,
-                blocking: false
+        this.props.getWorkOrderActivities(workorder)
+            .then(response => {
+                this.setState({
+                    activities: response.body.data,
+                    blocking: false
+                })
             })
-        })
     }
 
-    renderChecklistsForActivity(activity) {
-        let checklistItems = [];
+    renderChecklistsForActivity(checklists) {
         let equipmentCode;
-        let equipmentDesc;
-        //Count the number of equipments to know if it is multiequipment
-        let equipments = [];
-        activity.checklists.forEach(checklist => {
-            if (!equipments.includes(checklist.equipmentCode)) {
-                equipments.push(checklist.equipmentCode);
-            }
-        });
-        const multipleEquipment = equipments.length > 1;
-        //Iterate on checklists to display items
-        activity.checklists.forEach(checklist => {
+       
+        //If there are more than 1 equipment, at least one is different from the first
+        const multipleEquipment = checklists.some(chk => chk.equipmentCode !== checklists[0].equipmentCode);
+        return checklists.reduce((acc, checklist) => {
+            // In a multiequipment scenario, include header for equipment
             if (multipleEquipment && equipmentCode !== checklist.equipmentCode) {
                 equipmentCode = checklist.equipmentCode;
-                equipmentDesc = checklist.equipmentDesc;
-                checklistItems.push(
-                    <ChecklistEquipment key={checklist.checkListCode + "_equipment"}
-                                        equipmentCode={equipmentCode}
-                                        equipmentDesc={equipmentDesc}/>
+                acc.push( 
+                    <ChecklistEquipment 
+                            key={checklist.checkListCode + "_equipment"}
+                            equipmentCode={checklist.equipmentCode}
+                            equipmentDesc={checklist.equipmentDesc}
+                    />
                 )
             }
-
-            checklistItems.push(
-                <ChecklistItem key={checklist.checkListCode}
-                               updateChecklistItem={this.props.updateChecklistItem}
-                               checklistItem={checklist}
-                               handleError={this.props.handleError}
-                               minFindingsDropdown={this.props.minFindingsDropdown}/>
+            acc.push(
+                <ChecklistItem 
+                        key={'checklistItem$' + checklist.checkListCode}
+                        updateChecklistItem={this.props.updateChecklistItem}
+                        checklistItem={checklist}
+                        handleError={this.props.handleError}
+                        minFindingsDropdown={this.props.minFindingsDropdown}
+                />
             )
-        });
-
-        return checklistItems
+            return acc;
+        }, []);
     }
 
-    createFollowUpWOs = (evt, checklistActivity) => {
+    createFollowUpWOs (evt, checklistActivity) {
         evt.stopPropagation();
         const activity = {
             workOrderNumber: checklistActivity.workOrderNumber,
@@ -97,12 +92,12 @@ export default class Checklists extends Component {
             ;
     }
 
-    renderActivities() {
+    renderActivities(activities) {
         const { blocking } = this.state;
-        return this.state.activities.filter(activity => (activity.checklists && activity.checklists.length > 0)).map(activity =>
+        return activities.filter(activity => (activity.checklists && activity.checklists.length > 0)).map(activity =>
             (
-                <BlockUi blocking={blocking}>
-                    <ExpansionPanel key={activity.activityCode} defaultExpanded>
+                <BlockUi key={activity.activityCode} blocking={blocking}>
+                    <ExpansionPanel defaultExpanded>
                         <ExpansionPanelSummary expandIcon={
                             <ExpandMoreIcon/>}>
                             <div style={{padding: 2,
@@ -111,11 +106,17 @@ export default class Checklists extends Component {
                                 alignItems: "center"
                             }}>
                                 {activity.activityCode} - {activity.taskDesc}
-                                <Button onClick={ evt => this.createFollowUpWOs(evt, activity) } color="primary" style={{marginLeft: 'auto', paddingRight: '40px'}}>Create Follow-up WO</Button>
+                                <Button 
+                                    key={activity.activityCode + '$createfuwo'}
+                                    onClick={ evt => this.createFollowUpWOs(evt, activity) } 
+                                    color="primary" 
+                                    style={{marginLeft: 'auto', paddingRight: '40px'}}>
+                                    Create Follow-up WO
+                                </Button>
                             </div>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails style={{marginTop: -18}}>
-                            <div style={{width: "100%"}}>{this.renderChecklistsForActivity(activity)}</div>
+                            <div style={{width: "100%"}}>{this.renderChecklistsForActivity(activity.checklists)}</div>
                         </ExpansionPanelDetails>
                     </ExpansionPanel>
                 </BlockUi>
@@ -129,11 +130,12 @@ export default class Checklists extends Component {
      * @returns {*}
      */
     render() {
+        const { activities } = this.state;
         const divStyle = {width: "100%"};
         if (this.props.readonly) {
             divStyle.pointerEvents = 'none';
         }
-        if (this.state.activities.filter(activity => (activity.checklists && activity.checklists.length > 0)).length === 0) {
+        if (activities.filter(activity => (activity.checklists && activity.checklists.length > 0)).length === 0) {
             return <div/>
         } else {
             return (
@@ -142,7 +144,7 @@ export default class Checklists extends Component {
                           link={this.props.printingChecklistLinkToAIS ? (this.props.printingChecklistLinkToAIS + this.props.workorder) : undefined}
                           linkIcon="fa fa-print">
                     <div style={divStyle}>
-                        {this.renderActivities()}
+                        {this.renderActivities(activities)}
                     </div>
                 </EISPanel>
             )

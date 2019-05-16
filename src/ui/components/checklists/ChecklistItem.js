@@ -10,7 +10,6 @@ import ChecklistItemInputInspection from './inputs/ChecklistItemInputInspection'
 import ChecklistItemNotes from './ChecklistItemNotes';
 import Collapse from '@material-ui/core/Collapse';
 import ChecklistItemFollowUp from "./ChecklistItemFollowUp";
-
 export default class Checklist extends Component {
 
     state = {
@@ -19,19 +18,18 @@ export default class Checklist extends Component {
     }
 
     componentWillMount() {
-        if (this.props.checklistItem) {
-            this.setState({
-                checklistItem: this.props.checklistItem,
-                detailsVisible: !!this.props.checklistItem.notes
-            })
-        }
+        this.init(this.props);
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.checklistItem) {
+        this.init(nextProps);
+    }
+
+    init = props => {
+        if (props.checklistItem) {
             this.setState({
-                checklistItem: this.props.checklistItem,
-                detailsVisible: !!this.props.checklistItem.notes
+                checklistItem: props.checklistItem,
+                detailsVisible: !!props.checklistItem.notes
             })
         }
     }
@@ -75,22 +73,14 @@ export default class Checklist extends Component {
     onChange(checklistItem) {
         // Block the UI
         this.setState({blocked: true})
-        // Copy the current checklist item (will be used to restore the UI)
-        let oldChecklistItem = Object.assign({}, this.state.checklistItem)
-        //
-        this.setState({checklistItem})
-        // Update the checklist Item
         this.props.updateChecklistItem(checklistItem)
             .then(response => {
-                this.setState({blocked: false})
+                this.setState({blocked: false, checklistItem})
             })
             .catch(error => {
                 this.props.handleError(error)
-                // Unblock the UI and restore the UI
-                this.setState({
-                    blocked: false,
-                    checklistItem: oldChecklistItem
-                })
+                // Unblock the UI
+                this.setState({blocked: false})
             });
     }
 
@@ -145,8 +135,7 @@ export default class Checklist extends Component {
     }
 
     render() {
-        let {checklistItem} = this.props;
-
+        let {checklistItem} = this.state;
         return (
             <div style={this.getCheckListItemStyle()}>
 
@@ -160,9 +149,9 @@ export default class Checklist extends Component {
 
                 <Collapse in={this.state.detailsVisible}>
                     <div style={this.checklistDetailsStyle} >
-                        <ChecklistItemNotes checklistItem={this.state.checklistItem}
+                        <ChecklistItemNotes checklistItem={checklistItem}
                                             onChange={value => this.onChange(value)}/>
-                        <ChecklistItemFollowUp checklistItem={this.state.checklistItem}
+                        <ChecklistItemFollowUp checklistItem={checklistItem}
                                                onChange={value => this.onChange(value)}/>
                     </div>
                 </Collapse>
