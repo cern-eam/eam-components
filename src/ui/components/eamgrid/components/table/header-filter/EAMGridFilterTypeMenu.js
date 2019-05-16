@@ -43,21 +43,21 @@ const options = {
         {'value':'NOT EMPTY','label':'Is not empty', 'icon': <Rhombus/>}
     ],
     DATE: [
-        {'value':'>','label':'Greater than', 'icon': <GreaterThan/>},
+        {'value':'GREATER_THAN','label':'Greater than', 'icon': <GreaterThan/>},
         {'value':'=','label':'Equals', 'icon': <Equal/>},
-        {'value':'&lt;','label':'Less than', 'icon': <LessThan/>},
-        {'value':'&lt;=','label':'Less than or equals', 'icon': <LessThanOrEqual/>},
-        {'value':'>=','label':'Greater than or equals', 'icon': <GreaterThan/>},
+        {'value':'LESS_THAN','label':'Less than', 'icon': <LessThan/>},
+        {'value':'LESS_THAN_EQUALS','label':'Less than or equals', 'icon': <LessThanOrEqual/>},
+        {'value':'GREATER_THAN_EQUALS','label':'Greater than or equals', 'icon': <GreaterThan/>},
         {'value':'IS EMPTY','label':'Is empty', 'icon': <RhombusOutline/>},
         {'value':'NOT EMPTY','label':'Is not empty', 'icon': <Rhombus/>},
         {'value':'!=','label':'Does not equal', 'icon': <NotEqualVariant/>}
     ],
     NUMBER: [
         {'value':'=','label':'Equals', 'icon': <Equal/>},
-        {'value':'&lt;','label':'Less than', 'icon': <LessThan/>},
-        {'value':'>','label':'Greater than', 'icon': <GreaterThan/>},
-        {'value':'&lt;=','label':'Less than or equals', 'icon': <LessThanOrEqual/>},
-        {'value':'>=','label':'Greater than or equals', 'icon': <GreaterThanOrEqual/>},
+        {'value':'LESS_THAN','label':'Less than', 'icon': <LessThan/>},
+        {'value':'GREATER_THAN','label':'Greater than', 'icon': <GreaterThan/>},
+        {'value':'LESS_THAN_EQUALS','label':'Less than or equals', 'icon': <LessThanOrEqual/>},
+        {'value':'GREATER_THAN_EQUALS','label':'Greater than or equals', 'icon': <GreaterThanOrEqual/>},
         {'value':'IS EMPTY','label':'Is empty', 'icon': <RhombusOutline/>},
         {'value':'NOT EMPTY','label':'Is not empty', 'icon': <Rhombus/>},
         {'value':'!=','label':'Does not equal', 'icon': <NotEqualVariant/>}
