@@ -35,7 +35,7 @@ const initialState = {
         dataspyID: "",
         gridSort: [],
         gridFilter: [],
-        useNative: false
+        useNative: true
     },
     exporterBlocked: false
 };
@@ -69,7 +69,8 @@ class EAMGrid extends Component {
                     ...JSON.parse(cachedGridRequest),
                     gridID: this.props.gridId,
                     gridSort: this.props.gridSort ? this.props.gridSort : JSON.parse(cachedGridRequest).gridSort,
-                    cursorPosition: 1
+                    cursorPosition: 1,
+                    useNative: true
                 }
             }
             :

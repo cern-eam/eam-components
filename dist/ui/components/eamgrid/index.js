@@ -85,7 +85,7 @@ var initialState = {
         dataspyID: "",
         gridSort: [],
         gridFilter: [],
-        useNative: false
+        useNative: true
     },
     exporterBlocked: false
 };
@@ -323,7 +323,8 @@ var EAMGrid = function (_Component) {
             gridRequest: _extends({}, initialState.gridRequest, JSON.parse(cachedGridRequest), {
                 gridID: _this.props.gridId,
                 gridSort: _this.props.gridSort ? _this.props.gridSort : JSON.parse(cachedGridRequest).gridSort,
-                cursorPosition: 1
+                cursorPosition: 1,
+                useNative: true
             })
         }) : _extends({}, initialState, {
             filterVisible: _this.props.filterVisible,
