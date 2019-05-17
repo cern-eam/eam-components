@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { Link } from 'react-router-dom';
 
 export default class ChecklistItemFollowUp extends Component {
 
@@ -24,14 +25,18 @@ export default class ChecklistItemFollowUp extends Component {
     }
 
     render() {
-        let { checklistItem } = this.props;
+        let { checklistItem, getWoLink } = this.props;
         return (
             <div style={{padding: 2}}>
                 <div style={this.mainStyle}>
                     <FormControlLabel
                         control={
                             checklistItem.followUpWorkOrder ? 
-                            <div style={this.followUpWOCodeStyle}>{checklistItem.followUpWorkOrder}</div> :
+                            <div style={this.followUpWOCodeStyle}>
+                                <Link to={getWoLink(checklistItem.followUpWorkOrder)} target="_blank">
+                                    {checklistItem.followUpWorkOrder} 
+                                </Link>
+                            </div> :
                             <Checkbox
                                 color="primary"
                                 checked={checklistItem.followUp === '+' || checklistItem.followUp === true}

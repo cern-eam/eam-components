@@ -257,10 +257,13 @@ var Checklist = function (_Component) {
                             onChange: function onChange(value) {
                                 return _this4.onChange(value);
                             } }),
-                        _react2.default.createElement(_ChecklistItemFollowUp2.default, { checklistItem: checklistItem,
+                        _react2.default.createElement(_ChecklistItemFollowUp2.default, {
+                            checklistItem: checklistItem,
                             onChange: function onChange(value) {
                                 return _this4.onChange(value);
-                            } })
+                            },
+                            getWoLink: this.props.getWoLink
+                        })
                     )
                 )
             );

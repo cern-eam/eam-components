@@ -133,7 +133,8 @@ var Checklists = function (_Component) {
                     updateChecklistItem: _this3.props.updateChecklistItem,
                     checklistItem: checklist,
                     handleError: _this3.props.handleError,
-                    minFindingsDropdown: _this3.props.minFindingsDropdown
+                    minFindingsDropdown: _this3.props.minFindingsDropdown,
+                    getWoLink: _this3.props.getWoLink
                 }));
                 return acc;
             }, []);

@@ -151,8 +151,11 @@ export default class Checklist extends Component {
                     <div style={this.checklistDetailsStyle} >
                         <ChecklistItemNotes checklistItem={checklistItem}
                                             onChange={value => this.onChange(value)}/>
-                        <ChecklistItemFollowUp checklistItem={checklistItem}
-                                               onChange={value => this.onChange(value)}/>
+                        <ChecklistItemFollowUp 
+                                checklistItem={checklistItem}
+                                onChange={value => this.onChange(value)}
+                                getWoLink={this.props.getWoLink}
+                        />
                     </div>
                 </Collapse>
             </div>

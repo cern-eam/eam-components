@@ -20,6 +20,8 @@ var _FormControlLabel = require('@material-ui/core/FormControlLabel');
 
 var _FormControlLabel2 = _interopRequireDefault(_FormControlLabel);
 
+var _reactRouterDom = require('react-router-dom');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -60,7 +62,9 @@ var ChecklistItemFollowUp = function (_Component) {
     _createClass(ChecklistItemFollowUp, [{
         key: 'render',
         value: function render() {
-            var checklistItem = this.props.checklistItem;
+            var _props = this.props,
+                checklistItem = _props.checklistItem,
+                getWoLink = _props.getWoLink;
 
             return _react2.default.createElement(
                 'div',
@@ -72,7 +76,11 @@ var ChecklistItemFollowUp = function (_Component) {
                         control: checklistItem.followUpWorkOrder ? _react2.default.createElement(
                             'div',
                             { style: this.followUpWOCodeStyle },
-                            checklistItem.followUpWorkOrder
+                            _react2.default.createElement(
+                                _reactRouterDom.Link,
+                                { to: getWoLink(checklistItem.followUpWorkOrder), target: '_blank' },
+                                checklistItem.followUpWorkOrder
+                            )
                         ) : _react2.default.createElement(_Checkbox2.default, {
                             color: 'primary',
                             checked: checklistItem.followUp === '+' || checklistItem.followUp === true,

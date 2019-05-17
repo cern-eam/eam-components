@@ -67,6 +67,7 @@ export default class Checklists extends Component {
                         checklistItem={checklist}
                         handleError={this.props.handleError}
                         minFindingsDropdown={this.props.minFindingsDropdown}
+                        getWoLink={this.props.getWoLink}
                 />
             )
             return acc;
