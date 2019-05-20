@@ -29,7 +29,7 @@ export default class Checklist extends Component {
         if (props.checklistItem) {
             this.setState({
                 checklistItem: props.checklistItem,
-                detailsVisible: !!props.checklistItem.notes
+                detailsVisible: !!props.checklistItem.notes || !!props.checklistItem.followUpWorkOrder  || props.checklistItem.followUp === '+'
             })
         }
     }
