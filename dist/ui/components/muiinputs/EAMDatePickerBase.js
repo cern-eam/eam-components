@@ -63,26 +63,20 @@ var EAMDatePicker = function (_EAMBaseInput) {
         }
 
         return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EAMDatePicker.__proto__ || Object.getPrototypeOf(EAMDatePicker)).call.apply(_ref, [this].concat(args))), _this), _this.init = function (props) {
-            _this.setState({
-                dateFormatValue: props.dateFormatValue,
-                dateFormatDisplay: props.dateFormatDisplay
-            }, function () {
-                return _this.setValue(_this.convert(props.value), false);
-            });
+            return _this.setValue(_this.convert(props.value), false);
         }, _this.readValue = function (value) {
-            return !value ? '' : value instanceof Date ? value : typeof value === "string" ? (0, _parse2.default)(value.substring(0, _this.state.dateFormatValue.length), _this.state.dateFormatValue, new Date()) : typeof value === "number" ? new Date(value) : value;
+            return value instanceof Date ? value : typeof value === "string" && value.length ? (0, _parse2.default)(value.substring(0, _this.props.dateFormatValue.length), _this.props.dateFormatValue, new Date()) : typeof value === "number" ? new Date(value) : null;
         }, _this.readDate = function (date) {
-            return !date ? null : _this.props.timestamp ? date.getTime() : (0, _dateFns3.format)(date, _this.state.dateFormatValue);
+            return !date ? null : _this.props.timestamp ? date.getTime() : (0, _dateFns3.format)(date, _this.props.dateFormatValue);
         }, _this.convert = function (value) {
             return _this.readDate(_this.readValue(value || ''));
         }, _this.getPickerProps = function (state, props) {
-            var elementInfo = props.elementInfo;
+            var elementInfo = props.elementInfo,
+                dateFormatDisplay = props.dateFormatDisplay;
             var helperText = state.helperText,
                 error = state.error,
                 disabled = state.disabled,
-                value = state.value,
-                dateFormatDisplay = state.dateFormatDisplay;
-
+                value = state.value;
 
             return {
                 InputAdornmentProps: { style: { marginRight: -12 } },
@@ -92,7 +86,7 @@ var EAMDatePicker = function (_EAMBaseInput) {
                 disabled: disabled || elementInfo && elementInfo.readonly,
                 required: _this.isRequired(),
                 clearable: true,
-                value: value,
+                value: _this.readValue(value), // Always formats the value. In EDGE and IE, the new Date() has a different behavior than in Chrome and Firefox
                 onChange: function onChange(str) {
                     return _this.onChangeHandler(_this.convert(str));
                 },
