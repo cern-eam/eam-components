@@ -87,7 +87,7 @@ var EamlightRadio = function (_EAMBaseInput) {
                 _react2.default.createElement(
                     _RadioGroup2.default,
                     {
-                        'aria-label': elementId,
+                        'aria-label': elementInfo && elementInfo.elementId,
                         name: elementInfo && elementInfo.elementId,
                         value: this.props.value || '',
                         onChange: function onChange(event) {

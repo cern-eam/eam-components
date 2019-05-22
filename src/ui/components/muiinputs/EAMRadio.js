@@ -26,7 +26,7 @@ export default class EamlightRadio extends EAMBaseInput {
             <FormControl fullWidth margin="normal" required={this.isRequired()} style={{marginBottom: '0px'}}>
                 <FormLabel component="legend">{elementInfo && elementInfo.text}</FormLabel>
                 <RadioGroup
-                    aria-label={elementId}
+                    aria-label={elementInfo && elementInfo.elementId}
                     name={elementInfo && elementInfo.elementId}
                     value={this.props.value || ''}
                     onChange={event => this.onChangeHandler(event.target.value)}
