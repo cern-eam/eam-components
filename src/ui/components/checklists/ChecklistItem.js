@@ -18,7 +18,6 @@ export default class Checklist extends Component {
     }
 
     componentWillMount() {
-        console.log("compoentn mounted")
         this.init(this.props.checklistItem);
     }
 
@@ -27,7 +26,6 @@ export default class Checklist extends Component {
         let checklistItemState = this.state.checklistItem;
         if (checklistItemProps && checklistItemState) {
             if (checklistItemProps.workOrderCode !== checklistItemState.workOrderCode) {
-                console.log('new wo!')
                 this.init(checklistItemProps);
             }
             if (checklistItemProps.followUpWorkOrder !== checklistItemState.followUpWorkOrder) {
