@@ -18,18 +18,33 @@ export default class Checklist extends Component {
     }
 
     componentWillMount() {
-        this.init(this.props);
+        console.log("compoentn mounted")
+        this.init(this.props.checklistItem);
     }
 
     componentWillReceiveProps(nextProps) {
-        this.init(nextProps);
+        let checklistItemProps = nextProps.checklistItem;
+        let checklistItemState = this.state.checklistItem;
+        if (checklistItemProps && checklistItemState) {
+            if (checklistItemProps.workOrderCode !== checklistItemState.workOrderCode) {
+                console.log('new wo!')
+                this.init(checklistItemProps);
+            }
+            if (checklistItemProps.followUpWorkOrder !== checklistItemState.followUpWorkOrder) {
+                let checklistItem = {
+                    ...checklistItemState,
+                    followUpWorkOrder: checklistItemProps.followUpWorkOrder
+                }
+                this.init(checklistItem);
+            }
+        }
     }
 
-    init = props => {
-        if (props.checklistItem) {
+    init = checklistItem => {
+        if (checklistItem) {
             this.setState({
-                checklistItem: props.checklistItem,
-                detailsVisible: !!props.checklistItem.notes || !!props.checklistItem.followUpWorkOrder  || props.checklistItem.followUp === '+'
+                checklistItem: checklistItem,
+                detailsVisible: !!checklistItem.notes || !!checklistItem.followUpWorkOrder  || checklistItem.followUp === '+'
             })
         }
     }
@@ -73,14 +88,22 @@ export default class Checklist extends Component {
     onChange(checklistItem) {
         // Block the UI
         this.setState({blocked: true})
+        // Copy the current checklist item (will be used to restore the UI)
+        let oldChecklistItem = Object.assign({}, this.state.checklistItem)
+        //
+        this.setState({checklistItem})
+        // Update the checklist Item
         this.props.updateChecklistItem(checklistItem)
             .then(response => {
-                this.setState({blocked: false, checklistItem})
+                this.setState({blocked: false})
             })
             .catch(error => {
                 this.props.handleError(error)
-                // Unblock the UI
-                this.setState({blocked: false})
+                // Unblock the UI and restore the UI
+                this.setState({
+                    blocked: false,
+                    checklistItem: oldChecklistItem
+                })
             });
     }
 

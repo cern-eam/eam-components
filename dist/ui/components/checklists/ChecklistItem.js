@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = require('react');
@@ -79,11 +81,11 @@ var Checklist = function (_Component) {
         return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Checklist.__proto__ || Object.getPrototypeOf(Checklist)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
             detailsVisible: false,
             blocked: false
-        }, _this.init = function (props) {
-            if (props.checklistItem) {
+        }, _this.init = function (checklistItem) {
+            if (checklistItem) {
                 _this.setState({
-                    checklistItem: props.checklistItem,
-                    detailsVisible: !!props.checklistItem.notes || !!props.checklistItem.followUpWorkOrder || props.checklistItem.followUp === '+'
+                    checklistItem: checklistItem,
+                    detailsVisible: !!checklistItem.notes || !!checklistItem.followUpWorkOrder || checklistItem.followUp === '+'
                 });
             }
         }, _this.getCheckListItemStyle = function () {
@@ -116,12 +118,26 @@ var Checklist = function (_Component) {
     _createClass(Checklist, [{
         key: 'componentWillMount',
         value: function componentWillMount() {
-            this.init(this.props);
+            console.log("compoentn mounted");
+            this.init(this.props.checklistItem);
         }
     }, {
         key: 'componentWillReceiveProps',
         value: function componentWillReceiveProps(nextProps) {
-            this.init(nextProps);
+            var checklistItemProps = nextProps.checklistItem;
+            var checklistItemState = this.state.checklistItem;
+            if (checklistItemProps && checklistItemState) {
+                if (checklistItemProps.workOrderCode !== checklistItemState.workOrderCode) {
+                    console.log('new wo!');
+                    this.init(checklistItemProps);
+                }
+                if (checklistItemProps.followUpWorkOrder !== checklistItemState.followUpWorkOrder) {
+                    var checklistItem = _extends({}, checklistItemState, {
+                        followUpWorkOrder: checklistItemProps.followUpWorkOrder
+                    });
+                    this.init(checklistItem);
+                }
+            }
         }
 
         /**
@@ -137,12 +153,20 @@ var Checklist = function (_Component) {
 
             // Block the UI
             this.setState({ blocked: true });
+            // Copy the current checklist item (will be used to restore the UI)
+            var oldChecklistItem = Object.assign({}, this.state.checklistItem);
+            //
+            this.setState({ checklistItem: checklistItem });
+            // Update the checklist Item
             this.props.updateChecklistItem(checklistItem).then(function (response) {
-                _this2.setState({ blocked: false, checklistItem: checklistItem });
+                _this2.setState({ blocked: false });
             }).catch(function (error) {
                 _this2.props.handleError(error);
-                // Unblock the UI
-                _this2.setState({ blocked: false });
+                // Unblock the UI and restore the UI
+                _this2.setState({
+                    blocked: false,
+                    checklistItem: oldChecklistItem
+                });
             });
         }
     }, {
