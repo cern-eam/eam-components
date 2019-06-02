@@ -26,6 +26,7 @@ export default class Checklist extends Component {
         let checklistItemState = this.state.checklistItem;
         if (checklistItemProps && checklistItemState) {
             if (checklistItemProps.workOrderCode !== checklistItemState.workOrderCode) {
+                console.log('new wo!')
                 this.init(checklistItemProps);
             }
             if (checklistItemProps.followUpWorkOrder !== checklistItemState.followUpWorkOrder) {
@@ -163,7 +164,7 @@ export default class Checklist extends Component {
                 <div style={this.firstLine}>
                     <div style={this.firstLineDesc} onClick={this.descClickHandler.bind(this)}>
                         <label>{checklistItem.desc}</label>
-                        {checklistItem.requiredToClose === 'YES' && <label style={{color: "red"}}> *</label>}
+                        {checklistItem.requiredToClose === true && <label style={{color: "red"}}> *</label>}
                     </div>
                     {this.renderChecklistItemInput()}
                 </div>

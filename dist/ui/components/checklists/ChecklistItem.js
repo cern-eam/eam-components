@@ -118,7 +118,6 @@ var Checklist = function (_Component) {
     _createClass(Checklist, [{
         key: 'componentWillMount',
         value: function componentWillMount() {
-            console.log("compoentn mounted");
             this.init(this.props.checklistItem);
         }
     }, {
@@ -263,7 +262,7 @@ var Checklist = function (_Component) {
                             null,
                             checklistItem.desc
                         ),
-                        checklistItem.requiredToClose === 'YES' && _react2.default.createElement(
+                        checklistItem.requiredToClose === true && _react2.default.createElement(
                             'label',
                             { style: { color: "red" } },
                             ' *'
