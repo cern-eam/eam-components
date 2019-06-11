@@ -5,7 +5,7 @@ import WS from './WS';
  */
 class WSChecklists {
 
-    getWorkOrderActivities(number, config = {}) {
+    getWorkOrderActivities(number, config = {timeout: 60000}) {
         return WS._get('/activities/read/?workorder=' + number, config);
     }
     //

@@ -25,7 +25,7 @@ var WSChecklists = function () {
     _createClass(WSChecklists, [{
         key: 'getWorkOrderActivities',
         value: function getWorkOrderActivities(number) {
-            var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+            var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : { timeout: 60000 };
 
             return _WS2.default._get('/activities/read/?workorder=' + number, config);
         }
