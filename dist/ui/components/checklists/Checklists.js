@@ -186,7 +186,7 @@ var Checklists = function (_Component) {
                                     } },
                                 activity.activityCode,
                                 ' - ',
-                                activity.taskDesc,
+                                activity.activityNote,
                                 _react2.default.createElement(
                                     _Button2.default,
                                     {

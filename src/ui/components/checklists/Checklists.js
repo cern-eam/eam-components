@@ -106,7 +106,7 @@ export default class Checklists extends Component {
                                 display: "flex",
                                 alignItems: "center"
                             }}>
-                                {activity.activityCode} - {activity.taskDesc}
+                                {activity.activityCode} - {activity.activityNote}
                                 <Button 
                                     key={activity.activityCode + '$createfuwo'}
                                     onClick={ evt => this.createFollowUpWOs(evt, activity) } 
