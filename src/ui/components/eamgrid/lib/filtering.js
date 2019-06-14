@@ -58,8 +58,6 @@ export function clearFilters(callback) {
         },
         selectedRows: {}
     }), () => {
-        // update local storage
-        this.saveGridRequestInLocalStorage();
         // execute callback if any
         if (callback && typeof callback === 'function') {
             callback();

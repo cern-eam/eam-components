@@ -41,21 +41,6 @@ var GridWS = function () {
             return this._post('/grids/export/', gridRequest, config);
         }
     }, {
-        key: 'getGridFieldsInfo',
-        value: function getGridFieldsInfo(gridid, dataspyid) {
-            var config = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-
-            return this._get('/grids/' + gridid + '/dataspy?dataspyid=' + dataspyid, config);
-        }
-    }, {
-        key: 'getGridMetadata',
-        value: function getGridMetadata(gridid) {
-            var lang = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'EN';
-            var config = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-
-            return this._get('/grids/' + gridid + '/metadata?lang=' + lang, config);
-        }
-    }, {
         key: '_get',
         value: function _get(url) {
             var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};

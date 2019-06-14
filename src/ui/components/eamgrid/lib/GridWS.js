@@ -16,14 +16,6 @@ class GridWS {
         return this._post('/grids/export/', gridRequest, config);
     }
 
-    getGridFieldsInfo(gridid, dataspyid, config = {}) {
-        return this._get('/grids/'+gridid+'/dataspy?dataspyid='+dataspyid, config);
-    }
-
-    getGridMetadata(gridid, lang = 'EN', config = {}) {
-        return this._get(`/grids/${gridid}/metadata?lang=${lang}`, config);
-    }
-
     _get(url, config = {}) {
         return ajax.get(process.env.REACT_APP_BACKEND + url, config);
     }

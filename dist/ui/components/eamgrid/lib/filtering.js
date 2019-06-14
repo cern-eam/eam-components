@@ -57,8 +57,6 @@ function setFilter(filter, dataType) {
 }
 
 function clearFilters(callback) {
-    var _this = this;
-
     this.filterMap = {};
     this.setState(function (prevState) {
         return {
@@ -69,8 +67,6 @@ function clearFilters(callback) {
             selectedRows: {}
         };
     }, function () {
-        // update local storage
-        _this.saveGridRequestInLocalStorage();
         // execute callback if any
         if (callback && typeof callback === 'function') {
             callback();
