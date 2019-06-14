@@ -45,12 +45,11 @@ export default class Checklists extends Component {
 
     renderChecklistsForActivity(checklists) {
         let equipmentCode;
-       
         //If there are more than 1 equipment, at least one is different from the first
-        const multipleEquipment = checklists.some(chk => chk.equipmentCode !== checklists[0].equipmentCode);
+        //TODO: const multipleEquipment = checklists.some(chk => chk.equipmentCode !== checklists[0].equipmentCode);
         return checklists.reduce((acc, checklist) => {
             // In a multiequipment scenario, include header for equipment
-            if (multipleEquipment && equipmentCode !== checklist.equipmentCode) {
+            if (equipmentCode !== checklist.equipmentCode) {
                 equipmentCode = checklist.equipmentCode;
                 acc.push( 
                     <ChecklistEquipment 

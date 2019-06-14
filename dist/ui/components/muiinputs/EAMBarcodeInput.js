@@ -10,9 +10,7 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _quagga = require('quagga');
-
-var _quagga2 = _interopRequireDefault(_quagga);
+var _library = require('@zxing/library');
 
 var _IconButton = require('@material-ui/core/IconButton');
 
@@ -58,17 +56,24 @@ var EAMBarcodeInput = function (_Component) {
             args[_key] = arguments[_key];
         }
 
-        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EAMBarcodeInput.__proto__ || Object.getPrototypeOf(EAMBarcodeInput)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EAMBarcodeInput.__proto__ || Object.getPrototypeOf(EAMBarcodeInput)).call.apply(_ref, [this].concat(args))), _this), _this.codeReader = null, _this.state = {
             open: false,
             showBarcodeButton: false
         }, _this.handleClickOpen = function () {
             _this.setState({ open: true });
         }, _this.handleClose = function () {
             _this.setState({ open: false });
-            _quagga2.default.stop();
+            _this.codeReader.reset();
+        }, _this.startDecoding = function (deviceId) {
+            _this.codeReader.decodeFromInputVideoDevice(deviceId, 'video').then(function (result) {
+                _this.onDetectedCallback(result.text);
+                _this.codeReader.reset();
+                _this.handleClose();
+            }).catch(function (err) {
+                return console.error(err);
+            });
         }, _this.onChangeHandler = function (value) {
             _this.props.updateProperty(_this.props.valueKey, value);
-            //Extra function if needed
             if (_this.props.onChangeValue) {
                 _this.props.onChangeValue(value);
             }
@@ -77,69 +82,14 @@ var EAMBarcodeInput = function (_Component) {
 
     _createClass(EAMBarcodeInput, [{
         key: 'startScanner',
-        value: function startScanner(mydiv, onDetectedCallback, handleClose) {
-            _quagga2.default.init({
-                inputStream: {
-                    name: "Live",
-                    type: "LiveStream",
-                    target: mydiv,
-                    constraints: {
-                        width: { min: 640 },
-                        height: { min: 480 },
-                        facingMode: "environment"
-                    }
-                },
-                locator: {
-                    patchSize: "medium",
-                    halfSample: true
-                },
-                locate: true,
-                numOfWorkers: 4,
-                frequency: 10,
-                decoder: {
-                    readers: ['code_128_reader', 'code_39_reader'],
-                    multiple: false
-                }
+        value: function startScanner(onDetectedCallback, handleClose) {
+            var _this2 = this;
 
-            }, function (err) {
-                if (err) {
-                    console.log('error: ', err);
-                    handleClose();
-                    return;
-                }
-
-                _quagga2.default.start();
-            });
-
-            _quagga2.default.onProcessed(function (result) {
-                var drawingCtx = _quagga2.default.canvas.ctx.overlay,
-                    drawingCanvas = _quagga2.default.canvas.dom.overlay;
-
-                if (result) {
-                    if (result.boxes) {
-                        drawingCtx.clearRect(0, 0, parseInt(drawingCanvas.getAttribute("width")), parseInt(drawingCanvas.getAttribute("height")));
-                        result.boxes.filter(function (box) {
-                            return box !== result.box;
-                        }).forEach(function (box) {
-                            _quagga2.default.ImageDebug.drawPath(box, { x: 0, y: 1 }, drawingCtx, { color: "green", lineWidth: 2 });
-                        });
-                    }
-
-                    if (result.box) {
-                        _quagga2.default.ImageDebug.drawPath(result.box, { x: 0, y: 1 }, drawingCtx, { color: "#00F", lineWidth: 2 });
-                    }
-
-                    if (result.codeResult && result.codeResult.code) {
-                        _quagga2.default.ImageDebug.drawPath(result.line, { x: 'x', y: 'y' }, drawingCtx, { color: 'red', lineWidth: 3 });
-                    }
-                }
-            });
-
-            _quagga2.default.onDetected(function (result) {
-                if (result.codeResult.startInfo.error > 0.1) {} else {
-                    _quagga2.default.stop();
-                    onDetectedCallback(result.codeResult.code);
-                }
+            this.codeReader = new _library.BrowserMultiFormatReader();
+            this.codeReader.listVideoInputDevices().then(function (videoInputDevices) {
+                return _this2.startDecoding(videoInputDevices[0].deviceId);
+            }).catch(function (err) {
+                return console.error(err);
             });
         }
     }, {
@@ -151,7 +101,7 @@ var EAMBarcodeInput = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
-            var _this2 = this;
+            var _this3 = this;
 
             var userMediaSupported = false;
 
@@ -198,7 +148,7 @@ var EAMBarcodeInput = function (_Component) {
                     _Dialog2.default,
                     {
                         onEntered: function onEntered() {
-                            return _this2.startScanner(_this2.mydiv, _this2.onDetectedCallback.bind(_this2), _this2.handleClose.bind(_this2));
+                            return _this3.startScanner(_this3.onDetectedCallback.bind(_this3), _this3.handleClose.bind(_this3));
                         },
                         open: this.state.open,
                         onClose: this.handleClose,
@@ -208,9 +158,7 @@ var EAMBarcodeInput = function (_Component) {
                     _react2.default.createElement(
                         _DialogContent2.default,
                         { style: { maxWidth: 320, maxHeight: 320 } },
-                        _react2.default.createElement('div', { style: style, ref: function ref(mydiv) {
-                                return _this2.mydiv = mydiv;
-                            } })
+                        _react2.default.createElement('video', { id: 'video', width: '200', height: '200' })
                     ),
                     _react2.default.createElement(
                         _DialogActions2.default,

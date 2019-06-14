@@ -113,14 +113,11 @@ var Checklists = function (_Component) {
             var _this3 = this;
 
             var equipmentCode = void 0;
-
             //If there are more than 1 equipment, at least one is different from the first
-            var multipleEquipment = checklists.some(function (chk) {
-                return chk.equipmentCode !== checklists[0].equipmentCode;
-            });
+            //TODO: const multipleEquipment = checklists.some(chk => chk.equipmentCode !== checklists[0].equipmentCode);
             return checklists.reduce(function (acc, checklist) {
                 // In a multiequipment scenario, include header for equipment
-                if (multipleEquipment && equipmentCode !== checklist.equipmentCode) {
+                if (equipmentCode !== checklist.equipmentCode) {
                     equipmentCode = checklist.equipmentCode;
                     acc.push(_react2.default.createElement(_ChecklistEquipment2.default, {
                         key: checklist.checkListCode + "_equipment",
