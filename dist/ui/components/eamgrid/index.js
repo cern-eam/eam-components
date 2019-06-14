@@ -116,6 +116,7 @@ var EAMGrid = function (_Component) {
                         hasMore: metadata.moreRowsPresent === 'TRUE',
                         totalRecords: metadata.records,
                         rows: metadata.row,
+                        isloading: false,
                         gridRequest: _extends({}, prevState.gridRequest, {
                             "gridID": metadata.gridCode,
                             "dataspyID": metadata.dataSpyId,
@@ -125,6 +126,9 @@ var EAMGrid = function (_Component) {
                     });
                 });
             }).catch(function (error) {
+                _this.setState({
+                    isloading: false
+                });
                 if (error.status === _HttpStatus2.default.NOT_FOUND) {
                     alert("Metadata for this grid does not exist");
                 }
@@ -152,6 +156,7 @@ var EAMGrid = function (_Component) {
                 return _extends({}, prevState, {
                     rows: [],
                     totalRecords: 0,
+                    isloading: true,
                     hasMore: true,
                     gridRequest: _extends({}, prevState.gridRequest, {
                         cursorPosition: 1,

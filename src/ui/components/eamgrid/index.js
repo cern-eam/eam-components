@@ -92,6 +92,7 @@ class EAMGrid extends Component {
                         hasMore: metadata.moreRowsPresent === 'TRUE',
                         totalRecords: metadata.records,
                         rows: metadata.row,
+                        isloading: false,
                         gridRequest: {
                             ...prevState.gridRequest,
                             "gridID": metadata.gridCode,
@@ -102,6 +103,9 @@ class EAMGrid extends Component {
                     }
                 });
             }).catch(error => {
+                this.setState({
+                    isloading: false
+                })
             if (error.status === HttpStatus.NOT_FOUND) {
                 alert("Metadata for this grid does not exist");
             }
@@ -150,6 +154,7 @@ class EAMGrid extends Component {
                 ...prevState,
                 rows: [],
                 totalRecords: 0,
+                isloading: true,
                 hasMore: true,
                 gridRequest: {
                     ...prevState.gridRequest,
