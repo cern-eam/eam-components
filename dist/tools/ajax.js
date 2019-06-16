@@ -151,7 +151,7 @@ var Ajax = function () {
       } else {
         // Because we are behind IT-DB proxy this will be only reached when a redirect was sent (i.e. SSO session has expired)
         // TODO: should be carefully studied
-        window.location.reload(true);
+        //window.location.reload(true)
       }
     }
   }, {

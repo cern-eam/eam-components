@@ -6,7 +6,7 @@ import { Minus,
          ContainStart,
          ContainEnd,
          Contain,
-         CheckBoxOutline,
+         CheckboxMarkedOutline,
          GreaterThan,
          GreaterThanOrEqual,
          LessThan,
@@ -64,8 +64,8 @@ const options = {
     ],
     CHKBOOLEAN: [
         {'value':'INDETERMINATE','label':'Either Selected or Not Selected', 'icon': <CheckboxIntermediate/>},
-        {'value':'SELECTED','label':'Selected', 'icon': <CheckBoxOutline/>},
-        {'value':'NOT_SELECTED','label':'Not selected', 'icon': <CheckboxBlankOutline/>}
+        {'value':'=','label':'Selected', 'icon': <CheckboxMarkedOutline/>},
+        {'value':'=','label':'Not selected', 'icon': <CheckboxBlankOutline/>}
     ]
 }
 
