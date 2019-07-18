@@ -65,7 +65,7 @@ var EAMBarcodeInput = function (_Component) {
             _this.setState({ open: false });
             _this.codeReader.reset();
         }, _this.startDecoding = function (deviceId) {
-            _this.codeReader.decodeFromInputVideoDevice(deviceId, 'video').then(function (result) {
+            _this.codeReader.decodeFromInputVideoDevice(undefined, 'video').then(function (result) {
                 _this.onDetectedCallback(result.text);
                 _this.codeReader.reset();
                 _this.handleClose();

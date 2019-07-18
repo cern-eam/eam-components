@@ -85,6 +85,11 @@ class Comment extends Component {
         ));
     };
 
+    onKeyDownHandler = (event) => {
+        if (event.keyCode === 13 || event.keyCode === 121) {
+            event.stopPropagation();
+        }
+    }
 
     render() {
         return (
@@ -119,7 +124,7 @@ class Comment extends Component {
                         </div>
 
 
-                    <div className="commentTextContainer">
+                    <div className="commentTextContainer" onKeyDown={this.onKeyDownHandler}>
                         <TextareaAutosize defaultValue={this.state.comment.text} className="commentText"
                                           onInput={this.inputTextArea}/>
 

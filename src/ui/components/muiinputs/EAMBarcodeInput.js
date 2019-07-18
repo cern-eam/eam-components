@@ -35,7 +35,7 @@ class EAMBarcodeInput extends Component {
 
     startDecoding = (deviceId) => {
         this.codeReader
-            .decodeFromInputVideoDevice(deviceId, 'video')
+            .decodeFromInputVideoDevice(undefined, 'video')
             .then(result => {
                 this.onDetectedCallback(result.text);
                 this.codeReader.reset();

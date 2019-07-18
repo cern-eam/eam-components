@@ -99,7 +99,7 @@ var CommentNew = function (_Component) {
                     ),
                     _react2.default.createElement(
                         'div',
-                        { className: 'commentTextContainer' },
+                        { className: 'commentTextContainer', onKeyDown: this.onKeyDownHandler },
                         _react2.default.createElement(_reactAutosizeTextarea2.default, { placeholder: 'Enter new comment here',
                             className: 'commentText', onInput: this.inputTextArea,
                             value: this.props.newCommentText, onFocus: this.inputTextArea })
@@ -150,6 +150,12 @@ var _initialiseProps = function _initialiseProps() {
                 containerStyle: containerStyle
             };
         });
+    };
+
+    this.onKeyDownHandler = function (event) {
+        if (event.keyCode === 13 || event.keyCode === 121) {
+            event.stopPropagation();
+        }
     };
 };
 

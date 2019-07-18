@@ -86,6 +86,12 @@ class CommentNew extends Component {
         }));
     };
 
+    onKeyDownHandler = (event) => {
+        if (event.keyCode === 13 || event.keyCode === 121) {
+            event.stopPropagation();
+        }
+    }
+
     render() {
         return (
             <ListItem classes={{root: this.props.classes.root}}>
@@ -109,7 +115,7 @@ class CommentNew extends Component {
                                         showUpdatingHandler={this.showUpdating}/>
                         </div>}
 
-                    <div className="commentTextContainer">
+                    <div className="commentTextContainer" onKeyDown={this.onKeyDownHandler}>
                         <TextareaAutosize placeholder="Enter new comment here"
                                           className="commentText" onInput={this.inputTextArea}
                                           value={this.props.newCommentText} onFocus={this.inputTextArea}/>

@@ -96,6 +96,12 @@ var Comment = function (_Component) {
             });
         };
 
+        _this.onKeyDownHandler = function (event) {
+            if (event.keyCode === 13 || event.keyCode === 121) {
+                event.stopPropagation();
+            }
+        };
+
         _this.state = {
             text: _this.props.comment.text,
             displayBar: false,
@@ -146,7 +152,7 @@ var Comment = function (_Component) {
                     ),
                     _react2.default.createElement(
                         'div',
-                        { className: 'commentTextContainer' },
+                        { className: 'commentTextContainer', onKeyDown: this.onKeyDownHandler },
                         _react2.default.createElement(_reactAutosizeTextarea2.default, { defaultValue: this.state.comment.text, className: 'commentText',
                             onInput: this.inputTextArea })
                     )

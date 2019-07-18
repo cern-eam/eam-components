@@ -126,7 +126,7 @@ class NCRCreation extends Component {
         WSEDMS.getEquipmentWorkOrders(objectType, objectID).then(response => {
             if (objectType === 'J' && Object.keys(response.body.data) && Object.keys(response.body.data).length > 0 ) {
                 let equipmentWorkOrder = Object.keys(response.body.data).map(key => response.body.data[key])[0]
-                this.setStateProperty('title', 'LHC-QN-' + equipmentWorkOrder.parentEqpCode + '-' + equipmentWorkOrder.stepDesc)
+                this.setStateProperty('title', 'LHC-QN-' + equipmentWorkOrder.parentEqpCode + '-' + equipmentWorkOrder.stepDesc + '_')
             }
             this.setStateProperty('equipmentWorkOrders', response.body.data)
         })
@@ -163,7 +163,7 @@ class NCRCreation extends Component {
     equipmentWorkOrdersHandler = (key, value) => {
         this.setStateProperty('currentEquipmentWorkOrder', value)
         if (value) {
-            this.setStateProperty('title', 'LHC-QN-' + this.state.equipmentWorkOrders[value].parentEqpCode + '-' + this.state.equipmentWorkOrders[value].stepDesc)
+            this.setStateProperty('title', 'LHC-QN-' + this.state.equipmentWorkOrders[value].parentEqpCode + '-' + this.state.equipmentWorkOrders[value].stepDesc + '_')
         }
     }
 
@@ -213,7 +213,7 @@ class NCRCreation extends Component {
                     />
 
 
-                    {this.props.objectType === 'A' &&
+                    {(this.props.objectType === 'A' || this.props.objectType === 'S') &&
                      <EAMSelect label = "Work Orders"
                         value = {this.state.currentEquipmentWorkOrder}
                         values = {this.equipmentWorkOrderValues()}

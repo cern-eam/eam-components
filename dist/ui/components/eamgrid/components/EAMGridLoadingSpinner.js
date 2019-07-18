@@ -57,11 +57,7 @@ var DataGridLoadingSpinner = function (_Component) {
                 this.props.isloading && _react2.default.createElement(
                     _reactBlockUi2.default,
                     { tag: 'div', blocking: true, style: this.blockUiStyle },
-                    _react2.default.createElement(
-                        'div',
-                        { style: this.blockUiStyleDiv },
-                        'Loading data ...'
-                    )
+                    _react2.default.createElement('div', { style: this.blockUiStyleDiv })
                 )
             );
         }

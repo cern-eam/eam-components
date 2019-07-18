@@ -12,6 +12,20 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _react = require('react');
 
+var _react2 = _interopRequireDefault(_react);
+
+var _IconButton = require('@material-ui/core/IconButton');
+
+var _IconButton2 = _interopRequireDefault(_IconButton);
+
+var _OpenInNew = require('mdi-material-ui/OpenInNew');
+
+var _OpenInNew2 = _interopRequireDefault(_OpenInNew);
+
+var _reactRouterDom = require('react-router-dom');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -37,7 +51,18 @@ var EAMBaseInput = function (_Component) {
             args[_key] = arguments[_key];
         }
 
-        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EAMBaseInput.__proto__ || Object.getPrototypeOf(EAMBaseInput)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EAMBaseInput.__proto__ || Object.getPrototypeOf(EAMBaseInput)).call.apply(_ref, [this].concat(args))), _this), _this.linkButtonStyle = {
+            position: "absolute",
+            top: 20,
+            right: -2,
+            backgroundColor: "white",
+            width: 32,
+            height: 32,
+            zIndex: 100,
+            padding: 0
+        }, _this.mainDivStyle = {
+            position: "relative"
+        }, _this.state = {
             error: false,
             helperText: null,
             disabled: false,
@@ -175,10 +200,36 @@ var EAMBaseInput = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
+            var _this2 = this;
+
             if (this.isHidden() || !this.renderComponent) {
                 return null;
             }
-            return this.renderComponent();
+
+            var eamLink = null;
+
+            if (this.props.link && this.props.link(this.state.value)) {
+                if (this.props.link().startsWith("http")) {
+                    eamLink = function eamLink(props) {
+                        return _react2.default.createElement('a', _extends({ href: _this2.props.link(_this2.state.value) }, props));
+                    };
+                } else {
+                    eamLink = function eamLink(props) {
+                        return _react2.default.createElement(_reactRouterDom.Link, _extends({ to: _this2.props.link(_this2.state.value) }, props));
+                    };
+                }
+            }
+
+            return _react2.default.createElement(
+                'div',
+                { style: this.mainDivStyle },
+                this.renderComponent(),
+                this.props.link && this.props.link(this.state.value) && _react2.default.createElement(
+                    _IconButton2.default,
+                    { style: this.linkButtonStyle, component: eamLink },
+                    _react2.default.createElement(_OpenInNew2.default, null)
+                )
+            );
         }
     }]);
 

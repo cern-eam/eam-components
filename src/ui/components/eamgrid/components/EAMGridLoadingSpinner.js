@@ -22,7 +22,7 @@ export default class DataGridLoadingSpinner extends Component {
                 {
                     this.props.isloading &&
                     <BlockUi tag="div" blocking={true} style={this.blockUiStyle}>
-                        <div style={this.blockUiStyleDiv}>Loading data ...</div>
+                        <div style={this.blockUiStyleDiv}></div>
                     </BlockUi>
                 }
             </div>

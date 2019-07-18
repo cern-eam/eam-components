@@ -1,4 +1,7 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
+import IconButton from '@material-ui/core/IconButton';
+import OpenInNewIcon from 'mdi-material-ui/OpenInNew'
+import { Link } from 'react-router-dom'
 
 const numberReg = /^\-?(0|([1-9]\d*))(\.\d+)?$/
 const typingNumberReg = /^\-?\d*\.?\d*?$/
@@ -9,6 +12,21 @@ export default class EAMBaseInput extends Component {
     // VALIDATORS (list not required) default([])
     // DEFAULT HELPER TEXT (string not required)
     // SHOW HELPER TEXT (function not required)
+
+    linkButtonStyle = {
+        position: "absolute",
+        top: 20,
+        right:  -2,
+        backgroundColor: "white",
+        width: 32,
+        height: 32,
+        zIndex: 100,
+        padding: 0
+    }
+
+    mainDivStyle = {
+        position: "relative"
+    }
 
     state = {
         error: false,
@@ -133,7 +151,27 @@ export default class EAMBaseInput extends Component {
         if (this.isHidden() || !this.renderComponent) {
             return null
         }
-        return this.renderComponent();
+
+        let eamLink = null;
+
+        if (this.props.link && this.props.link(this.state.value)) {
+            if (this.props.link().startsWith("http")) {
+                eamLink = props => <a href={this.props.link(this.state.value)} {...props} />
+            } else {
+                eamLink = props => <Link to={this.props.link(this.state.value)} {...props} />
+            }
+        }
+
+        return (
+            <div style={this.mainDivStyle}>
+                {this.renderComponent()}
+                {this.props.link && this.props.link(this.state.value) &&
+                    <IconButton style={this.linkButtonStyle} component={eamLink}>
+                        <OpenInNewIcon/>
+                    </IconButton>
+                }
+            </div>
+        )
     }
 }
 

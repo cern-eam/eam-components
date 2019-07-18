@@ -161,7 +161,7 @@ var NCRCreation = function (_Component) {
                     var equipmentWorkOrder = Object.keys(response.body.data).map(function (key) {
                         return response.body.data[key];
                     })[0];
-                    _this.setStateProperty('title', 'LHC-QN-' + equipmentWorkOrder.parentEqpCode + '-' + equipmentWorkOrder.stepDesc);
+                    _this.setStateProperty('title', 'LHC-QN-' + equipmentWorkOrder.parentEqpCode + '-' + equipmentWorkOrder.stepDesc + '_');
                 }
                 _this.setStateProperty('equipmentWorkOrders', response.body.data);
             });
@@ -189,7 +189,7 @@ var NCRCreation = function (_Component) {
         }, _this.equipmentWorkOrdersHandler = function (key, value) {
             _this.setStateProperty('currentEquipmentWorkOrder', value);
             if (value) {
-                _this.setStateProperty('title', 'LHC-QN-' + _this.state.equipmentWorkOrders[value].parentEqpCode + '-' + _this.state.equipmentWorkOrders[value].stepDesc);
+                _this.setStateProperty('title', 'LHC-QN-' + _this.state.equipmentWorkOrders[value].parentEqpCode + '-' + _this.state.equipmentWorkOrders[value].stepDesc + '_');
             }
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
@@ -284,7 +284,7 @@ var NCRCreation = function (_Component) {
                         value: this.state.description,
                         updateProperty: this.setStateProperty
                     }),
-                    this.props.objectType === 'A' && _react2.default.createElement(_EAMSelect2.default, { label: 'Work Orders',
+                    (this.props.objectType === 'A' || this.props.objectType === 'S') && _react2.default.createElement(_EAMSelect2.default, { label: 'Work Orders',
                         value: this.state.currentEquipmentWorkOrder,
                         values: this.equipmentWorkOrderValues(),
                         updateProperty: this.equipmentWorkOrdersHandler }),
