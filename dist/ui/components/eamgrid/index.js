@@ -121,6 +121,7 @@ var EAMGrid = function (_Component) {
                             "gridID": metadata.gridCode,
                             "dataspyID": metadata.dataSpyId,
                             "gridName": metadata.gridName,
+                            "userFunctionName": metadata.gridName,
                             cursorPosition: metadata.cursorPosition + 1
                         })
                     });
@@ -139,7 +140,8 @@ var EAMGrid = function (_Component) {
             if (screenCode) {
                 _this.setState({
                     gridRequest: _extends({}, initialState.gridRequest, {
-                        gridName: screenCode
+                        gridName: screenCode,
+                        userFunctionName: screenCode
                     })
                 }, function () {
                     _this._initGrid();

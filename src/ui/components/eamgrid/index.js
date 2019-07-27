@@ -98,6 +98,7 @@ class EAMGrid extends Component {
                             "gridID": metadata.gridCode,
                             "dataspyID": metadata.dataSpyId,
                             "gridName": metadata.gridName,
+                            "userFunctionName": metadata.gridName,
                             cursorPosition: metadata.cursorPosition + 1
                         }
                     }
@@ -118,6 +119,7 @@ class EAMGrid extends Component {
                 gridRequest: {
                     ...initialState.gridRequest,
                     gridName: screenCode,
+                    userFunctionName: screenCode
                 }
             }, () => {this._initGrid()})
         }
