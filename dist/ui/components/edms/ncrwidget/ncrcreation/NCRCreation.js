@@ -89,6 +89,8 @@ var NCRCreation = function (_Component) {
             showNCRProperties: false,
             currentProperties: {},
             equipmentWorkOrders: {},
+            NCRKeyWords: [],
+            NCRKeyWord: "",
             currentEquipmentWorkOrder: null
         }, _this.mainDivStyle = {
             borderBottom: "3px solid rgb(238, 238, 238)",
@@ -124,7 +126,7 @@ var NCRCreation = function (_Component) {
             };
         }, _this.createDocumentHandler = function (event) {
             var document = {
-                title: _this.state.title,
+                title: _this.state.title + _this.state.NCRKeyWord,
                 type: 'Report',
                 description: _this.state.description,
                 typeAtt1: 'Non Conformity',
@@ -147,14 +149,22 @@ var NCRCreation = function (_Component) {
             _this.setState({ files: acceptedFiles });
         }, _this.setStateProperty = function (key, value) {
             _this.setState(_defineProperty({}, key, value));
+        }, _this.getNCRKeyWords = function () {
+            var _this$props = _this.props,
+                objectType = _this$props.objectType,
+                objectID = _this$props.objectID;
+
+            _WSEDMS2.default.getNCRKeyWords(objectID).then(function (response) {
+                _this.setStateProperty('NCRKeyWords', response.body.data);
+            });
         }, _this.getNCRProperties = function () {
             _WSEDMS2.default.getNCRProperties().then(function (response) {
                 _this.setStateProperty('NCRProperties', response.body.data);
             });
         }, _this.getEquipmentWorkOrders = function () {
-            var _this$props = _this.props,
-                objectType = _this$props.objectType,
-                objectID = _this$props.objectID;
+            var _this$props2 = _this.props,
+                objectType = _this$props2.objectType,
+                objectID = _this$props2.objectID;
 
             _WSEDMS2.default.getEquipmentWorkOrders(objectType, objectID).then(function (response) {
                 if (objectType === 'J' && Object.keys(response.body.data) && Object.keys(response.body.data).length > 0) {
@@ -162,6 +172,7 @@ var NCRCreation = function (_Component) {
                         return response.body.data[key];
                     })[0];
                     _this.setStateProperty('title', 'LHC-QN-' + equipmentWorkOrder.parentEqpCode + '-' + equipmentWorkOrder.stepDesc + '_');
+                    console.log('title', 'LHC-QN-' + equipmentWorkOrder.parentEqpCode + '-' + equipmentWorkOrder.stepDesc + '_');
                 }
                 _this.setStateProperty('equipmentWorkOrders', response.body.data);
             });
@@ -191,6 +202,18 @@ var NCRCreation = function (_Component) {
             if (value) {
                 _this.setStateProperty('title', 'LHC-QN-' + _this.state.equipmentWorkOrders[value].parentEqpCode + '-' + _this.state.equipmentWorkOrders[value].stepDesc + '_');
             }
+        }, _this.NCRKeyWordsHandler = function (key, value) {
+            _this.setStateProperty('NCRKeyWord', value);
+        }, _this.getInputsProps = function () {
+            var inputProps = {};
+            if (_this.state.NCRKeyWords && _this.state.NCRKeyWords.length > 0) {
+                inputProps.style = {
+                    width: 250,
+                    border: "0",
+                    backgroundColor: "white"
+                };
+            }
+            return inputProps;
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
@@ -199,6 +222,7 @@ var NCRCreation = function (_Component) {
         value: function componentDidMount() {
             this.getNCRProperties();
             this.getEquipmentWorkOrders();
+            this.getNCRKeyWords();
         }
 
         //
@@ -241,9 +265,19 @@ var NCRCreation = function (_Component) {
                             _react2.default.createElement(_EAMInput2.default, { label: 'NCR Title:',
                                 value: this.state.title,
                                 valueKey: 'title',
+                                disabled: this.state.NCRKeyWords && this.state.NCRKeyWords.length > 0,
+                                inputProps: this.getInputsProps(),
                                 updateProperty: function updateProperty(key, value) {
                                     return _this2.setStateProperty(key, value);
-                                } })
+                                } }),
+                            this.state.NCRKeyWords && this.state.NCRKeyWords.length > 0 && _react2.default.createElement(
+                                'div',
+                                { style: { width: "calc(100% - 250px)" } },
+                                _react2.default.createElement(_EAMSelect2.default, { searchable: true,
+                                    value: this.state.NCRKeyWord,
+                                    values: this.state.NCRKeyWords,
+                                    updateProperty: this.NCRKeyWordsHandler })
+                            )
                         ),
                         _react2.default.createElement(
                             'div',

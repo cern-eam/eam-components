@@ -50,6 +50,13 @@ var WSEDMS = function () {
             return _ajax2.default.get(process.env.REACT_APP_BACKEND.replace('/eamlightws/rest', '/cern-eam-services/rest') + '/edms/ncrproperties', config);
         }
     }, {
+        key: 'getNCRKeyWords',
+        value: function getNCRKeyWords(objectID) {
+            var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+            return _ajax2.default.get(process.env.REACT_APP_BACKEND.replace('/eamlightws/rest', '/cern-eam-services/rest') + ('/edms/ncrkeywords/' + objectID), config);
+        }
+    }, {
         key: 'getEquipmentWorkOrders',
         value: function getEquipmentWorkOrders(objectType, objectID) {
             var config = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};

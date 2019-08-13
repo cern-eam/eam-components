@@ -21,6 +21,10 @@ class WSEDMS {
         return ajax.get(process.env.REACT_APP_BACKEND.replace('/eamlightws/rest', '/cern-eam-services/rest') + `/edms/ncrproperties`, config);
     }
 
+    getNCRKeyWords(objectID, config = {}) {
+        return ajax.get(process.env.REACT_APP_BACKEND.replace('/eamlightws/rest', '/cern-eam-services/rest') + `/edms/ncrkeywords/${objectID}`, config);
+    }
+
     getEquipmentWorkOrders(objectType, objectID, config = {}) {
         return ajax.get(process.env.REACT_APP_BACKEND.replace('/eamlightws/rest', '/cern-eam-services/rest') + `/edms/equipmentwos?objectType=${objectType}&objectCode=${objectID}`, config);
     }

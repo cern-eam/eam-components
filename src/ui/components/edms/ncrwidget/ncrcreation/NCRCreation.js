@@ -22,12 +22,15 @@ class NCRCreation extends Component {
         showNCRProperties: false,
         currentProperties: {},
         equipmentWorkOrders: {},
+        NCRKeyWords: [],
+        NCRKeyWord: "",
         currentEquipmentWorkOrder: null
     }
 
     componentDidMount() {
-       this.getNCRProperties()
-       this.getEquipmentWorkOrders()
+        this.getNCRProperties()
+        this.getEquipmentWorkOrders()
+        this.getNCRKeyWords()
     }
 
     //
@@ -84,7 +87,7 @@ class NCRCreation extends Component {
     //
     createDocumentHandler = (event) => {
         let document = {
-            title: this.state.title,
+            title: this.state.title + this.state.NCRKeyWord,
             type: 'Report',
             description: this.state.description,
             typeAtt1: 'Non Conformity',
@@ -116,6 +119,12 @@ class NCRCreation extends Component {
         })
     }
 
+    getNCRKeyWords = () => {
+        let {objectType, objectID} = this.props;
+        WSEDMS.getNCRKeyWords(objectID).then(response => {
+            this.setStateProperty('NCRKeyWords', response.body.data)})
+    }
+
     getNCRProperties = () => {
         WSEDMS.getNCRProperties().then(response => {
             this.setStateProperty('NCRProperties', response.body.data)})
@@ -127,6 +136,7 @@ class NCRCreation extends Component {
             if (objectType === 'J' && Object.keys(response.body.data) && Object.keys(response.body.data).length > 0 ) {
                 let equipmentWorkOrder = Object.keys(response.body.data).map(key => response.body.data[key])[0]
                 this.setStateProperty('title', 'LHC-QN-' + equipmentWorkOrder.parentEqpCode + '-' + equipmentWorkOrder.stepDesc + '_')
+                console.log('title', 'LHC-QN-' + equipmentWorkOrder.parentEqpCode + '-' + equipmentWorkOrder.stepDesc + '_');
             }
             this.setStateProperty('equipmentWorkOrders', response.body.data)
         })
@@ -167,6 +177,22 @@ class NCRCreation extends Component {
         }
     }
 
+    NCRKeyWordsHandler = (key, value) => {
+        this.setStateProperty('NCRKeyWord', value)
+    }
+
+    getInputsProps = () => {
+        let inputProps = {};
+        if (this.state.NCRKeyWords && this.state.NCRKeyWords.length > 0) {
+           inputProps.style = {
+               width: 250,
+               border: "0",
+               backgroundColor: "white"
+           }
+        }
+        return inputProps;
+    }
+
     //
     // RENDER
     //
@@ -180,10 +206,23 @@ class NCRCreation extends Component {
                           ref={dropzone => this.dropzone = dropzone}>
                     <div style={this.newDocStyle}>
                         <div style={this.titleStyle}>
+
                             <EAMInput label="NCR Title:"
                                       value={this.state.title}
                                       valueKey="title"
+                                      disabled={this.state.NCRKeyWords && this.state.NCRKeyWords.length > 0}
+                                      inputProps={this.getInputsProps()}
                                       updateProperty={(key, value) => this.setStateProperty(key, value)}/>
+
+                            {this.state.NCRKeyWords && this.state.NCRKeyWords.length > 0 &&
+                                <div style={{width: "calc(100% - 250px)"}}>
+                                    <EAMSelect searchable={true}
+                                               value={this.state.NCRKeyWord}
+                                               values={this.state.NCRKeyWords}
+                                               updateProperty={this.NCRKeyWordsHandler}/>
+                                </div>
+                            }
+
                         </div>
                         <div>
                             <IconButton onClick={() => this.dropzone.open()}>
