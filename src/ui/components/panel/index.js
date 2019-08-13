@@ -34,7 +34,6 @@ class EISPanel extends Component {
     linkIconStyle = {
         color: "#00aaff"
     };
-
     linkClickHandler() {
         window.open(this.props.link, '_blank');
     }
@@ -75,7 +74,7 @@ class EISPanel extends Component {
 
         return (
             <ExpansionPanel defaultExpanded expanded={this.props.alwaysExpanded ? true : this.state.panelExpanded}
-                            CollapseProps={{style: {...panelStyle}, unmountOnExit: true}}
+                            CollapseProps={{style: {...panelStyle}, unmountOnExit: true, timeout: 300}}
                             onChange={this._onPanelChange}>
                 <ExpansionPanelSummary expandIcon={this.props.alwaysExpanded ? undefined : <ExpandMoreIcon/>}
                                        style={this.summaryStyle}>

@@ -111,7 +111,7 @@ var EISPanel = function (_Component) {
             return _react2.default.createElement(
                 _ExpansionPanel2.default,
                 { defaultExpanded: true, expanded: this.props.alwaysExpanded ? true : this.state.panelExpanded,
-                    CollapseProps: { style: _extends({}, panelStyle), unmountOnExit: true },
+                    CollapseProps: { style: _extends({}, panelStyle), unmountOnExit: true, timeout: 300 },
                     onChange: this._onPanelChange },
                 _react2.default.createElement(
                     _ExpansionPanelSummary2.default,
