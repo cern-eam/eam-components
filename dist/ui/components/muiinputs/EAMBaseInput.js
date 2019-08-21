@@ -139,6 +139,7 @@ var EAMBaseInput = function (_Component) {
             return _this.props.elementInfo && _this.props.elementInfo.characterCase === 'uppercase';
         }, _this.onChangeHandler = function (value) {
             var valueFound = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+            var executeExtra = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
             // TODO: uppercased fields
             //if (this.props.elementInfo.characterCase === 'uppercase') {
@@ -149,9 +150,13 @@ var EAMBaseInput = function (_Component) {
             if (value && value.length && _this.props.elementInfo && _this.props.elementInfo.maxLength && value.length > _this.props.elementInfo.maxLength) {
                 return;
             }
-            _this.props.updateProperty(_this.props.valueKey, value);
+
+            if (_this.props.updateProperty) {
+                _this.props.updateProperty(_this.props.valueKey, value);
+            }
+
             //Extra function if needed
-            if (_this.props.onChangeValue) {
+            if (executeExtra && _this.props.onChangeValue) {
                 _this.props.onChangeValue(value, valueFound);
             }
         }, _temp), _possibleConstructorReturn(_this, _ret);
