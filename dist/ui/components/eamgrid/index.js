@@ -3,6 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.initialGridRequest = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -70,217 +71,92 @@ var styles = function styles(theme) {
     });
 };
 
-var initialState = {
-    hasMore: true,
-    totalRecords: 0,
-    rows: [],
-    selectedRows: {},
-    filterVisible: false,
-    isloading: false,
-    gridRequest: {
-        rowCount: 50,
-        cursorPosition: 1,
-        gridSort: [],
-        gridFilter: [],
-        useNative: true,
-        includeMetadata: true
-    },
-    exporterBlocked: false
+var initialGridRequest = exports.initialGridRequest = {
+    rowCount: 50,
+    cursorPosition: 1,
+    gridSort: [],
+    gridFilter: [],
+    useNative: true,
+    includeMetadata: true
 };
 
 var EAMGrid = function (_Component) {
     _inherits(EAMGrid, _Component);
 
-    function EAMGrid(props) {
+    function EAMGrid() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
         _classCallCheck(this, EAMGrid);
 
-        // init the state
-        var _this = _possibleConstructorReturn(this, (EAMGrid.__proto__ || Object.getPrototypeOf(EAMGrid)).call(this, props));
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
 
-        _this.filterMap = {};
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EAMGrid.__proto__ || Object.getPrototypeOf(EAMGrid)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+            hasMore: true,
+            totalRecords: 0,
+            rows: [],
+            selectedRows: {},
+            isloading: true,
+            gridRequest: {},
+            exporterBlocked: false,
+            filterVisible: _this.props.filterVisible
+        }, _this.filterMap = {}, _this.fieldsWidthInfo = new Map(), _this.toggleSortField = _sorting.toggleSortField.bind(_this), _this.setFilter = _filtering.setFilter.bind(_this), _this.getFilters = _filtering.getFilters.bind(_this), _this.clearFilters = _filtering.clearFilters.bind(_this), _this.init = function (props) {
+            if (props.gridId) {
+                _this._initGrid(_extends({}, initialGridRequest, {
+                    gridID: props.gridId,
+                    dataspyID: props.dataspyId || null,
+                    gridName: props.screenCode,
+                    userFunctionName: props.screenCode
+                }));
+            }
+        }, _this._initGrid = function (gridRequest) {
+            _this.setState({
+                isloading: true,
+                rows: []
+            }, function () {
+                return _GridWS2.default.getGridData(gridRequest).then(function (data) {
+                    var metadata = data.body.data;
 
-        _this._initGrid = function () {
-            _GridWS2.default.getGridData(_this.state.gridRequest).then(function (data) {
-                var metadata = data.body.data;
+                    if (gridRequest.includeMetadata) {
+                        _this._resetFieldWidthInfo(metadata.gridField);
 
-                _this._resetFieldWidthInfo(metadata.gridField);
+                        // sort field based on their order
+                        _this._orderGridFieldsBasedOnTheirOrderProperty(metadata.gridField);
+                    }
 
-                // sort field based on their order
-                _this._orderGridFieldsBasedOnTheirOrderProperty(metadata.gridField);
-
-                // set metadata info in state
-                _this.setState(function (prevState) {
-                    return _extends({}, prevState, {
+                    // set metadata info in state
+                    _this.setState({
                         fields: metadata.gridField,
                         listOfDataSpy: metadata.gridDataspy,
                         hasMore: metadata.moreRowsPresent === 'TRUE',
                         totalRecords: metadata.records,
                         rows: metadata.row,
                         isloading: false,
-                        gridRequest: _extends({}, prevState.gridRequest, {
-                            "gridID": metadata.gridCode,
-                            "dataspyID": metadata.dataSpyId,
-                            "gridName": metadata.gridName,
-                            "userFunctionName": metadata.gridName,
-                            cursorPosition: metadata.cursorPosition + 1
+                        gridRequest: _extends({}, gridRequest, {
+                            gridID: metadata.gridCode,
+                            dataspyID: metadata.dataSpyId,
+                            gridName: metadata.gridName,
+                            userFunctionName: metadata.gridName,
+                            cursorPosition: metadata.cursorPosition + 1,
+                            includeMetadata: false
                         })
                     });
-                });
-            }).catch(function (error) {
-                _this.setState({
-                    isloading: false
-                });
-                if (error.status === _HttpStatus2.default.NOT_FOUND) {
-                    alert("Metadata for this grid does not exist");
-                }
-            });
-        };
-
-        _this.init = function (screenCode) {
-            if (screenCode) {
-                _this.setState({
-                    gridRequest: _extends({}, initialState.gridRequest, {
-                        gridName: screenCode,
-                        userFunctionName: screenCode
-                    })
-                }, function () {
-                    _this._initGrid();
-                });
-            }
-        };
-
-        _this.getCellWidth = function (cellTagname) {
-            return _this.fieldsWidthInfo.get(cellTagname);
-        };
-
-        _this.handleChangeDataSpy = function (event) {
-            _this.setState(function (prevState) {
-                return _extends({}, prevState, {
-                    rows: [],
-                    totalRecords: 0,
-                    isloading: true,
-                    hasMore: true,
-                    gridRequest: _extends({}, prevState.gridRequest, {
-                        cursorPosition: 1,
-                        dataspyID: event.target.value,
-                        gridSort: [],
-                        gridFilter: []
-                    })
-                });
-            }, function () {
-                _this._initGrid();
-            });
-        };
-
-        _this.toggleFilter = function () {
-            _this.setState(function (prevState) {
-                return _extends({}, prevState, {
-                    filterVisible: !prevState.filterVisible
-                });
-            });
-        };
-
-        _this.runSearch = function () {
-            // Run search, update state with latest state of filters
-            var filters = _this.getFilters();
-
-            _this.setState(function (prevState) {
-                return {
-                    hasMore: true,
-                    rows: [],
-                    totalRecords: 0,
-                    gridRequest: _extends({}, prevState.gridRequest, {
-                        gridFilter: filters,
-                        cursorPosition: 1
-                    }),
-                    selectedRows: {}
-                };
-            }, function () {
-                _this.loadMoreData();
-            });
-        };
-
-        _this.loadMoreData = function () {
-            // cancel current transaction if any
-            if (!!_this.cancelSource) {
-                _this.cancelSource.cancel();
-            }
-
-            // return if no results have to be returned
-            if (!_this.state.hasMore) {
-                return;
-            }
-
-            // get axios token to allow transaction cancellation
-            _this.cancelSource = _index2.default.CancelToken.source();
-
-            _this.setState(function (prevState) {
-                return _extends({}, prevState, {
-                    isloading: true
-                });
-            }, function () {
-
-                _GridWS2.default.getGridData(_this.state.gridRequest, {
-                    cancelToken: _this.cancelSource.token
-                }).then(function (data) {
-                    // nullify info of current transaction
-                    _this.cancelSource = null;
-
-                    // set state with data and grid fields info
-                    _this.setState(function (prevState) {
-                        // true if it has more results
-                        var hasMore = data.body.data.moreRowsPresent === 'TRUE';
-
-                        return _extends({}, prevState, {
-                            'isloading': false,
-                            'data': data.body.data,
-                            'hasMore': data.body.data.moreRowsPresent === 'TRUE',
-                            'totalRecords': data.body.data.records,
-                            'rows': prevState.rows.concat(data.body.data.row),
-                            'gridRequest': _extends({}, prevState.gridRequest, {
-                                cursorPosition: data.body.data.cursorPosition
-                            })
-                        });
-                    });
                 }).catch(function (error) {
-                    if (error.type !== _GridErrorTypes2.default.REQUEST_CANCELLED) {
-                        _this.setState({
-                            isloading: false
-                        });
-
-                        _this.props.handleError(error);
+                    _this.setState({
+                        isloading: false,
+                        gridRequest: _extends({}, gridRequest)
+                    });
+                    if (error.status === _HttpStatus2.default.NOT_FOUND) {
+                        alert("Metadata for this grid does not exist");
                     }
                 });
             });
-        };
-
-        _this.exportDataToCSV = function () {
-            _this.setState({ exporterBlocked: true });
-
-            // get axios token to allow transaction cancellation
-            _this.cancelSource = _index2.default.CancelToken.source();
-
-            return _GridWS2.default.exportDataToCSV(request, {
-                cancelToken: _this.cancelSource.token
-            }).then(function (data) {
-                // nullify info of current transaction
-                _this.cancelSource = null;
-
-                _this.setState({ exporterBlocked: false });
-
-                return data.body;
-            }).catch(function (error) {
-                if (error.type !== _GridErrorTypes2.default.REQUEST_CANCELLED) {
-                    _this.setState({
-                        isloading: false
-                    });
-
-                    _this.props.handleError(error);
-                }
-            });
-        };
-
-        _this.handleSelectRow = function (row, checked) {
+        }, _this.getCellWidth = function (cellTagname) {
+            return _this.fieldsWidthInfo.get(cellTagname);
+        }, _this.handleSelectRow = function (row, checked) {
             _this.setState(function (prevState) {
                 var selectedRows = _extends({}, prevState.selectedRows);
                 if (checked && _this.props.isRowSelectable(row, selectedRows)) {
@@ -292,26 +168,7 @@ var EAMGrid = function (_Component) {
                 if (_this.props.onSelectRow) _this.props.onSelectRow(row, checked, selectedRows);
                 return { selectedRows: selectedRows };
             });
-        };
-
-        _this.state = _extends({}, initialState, {
-            filterVisible: _this.props.filterVisible
-        });
-
-        _this.fieldsWidthInfo = new Map();
-
-        // toggleSortField method from sorting
-        _this.toggleSortField = _sorting.toggleSortField.bind(_this);
-
-        // setFilter method from filtering
-        _this.setFilter = _filtering.setFilter.bind(_this);
-
-        _this.getFilters = _filtering.getFilters.bind(_this);
-
-        // clearFilter method from filtering
-        _this.clearFilters = _filtering.clearFilters.bind(_this);
-
-        return _this;
+        }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
     /*
@@ -328,37 +185,169 @@ var EAMGrid = function (_Component) {
             if (this.props.onRef) {
                 this.props.onRef(this);
             }
-            this.init(this.props.screenCode);
             document.body.onkeydown = function (e) {
                 return _this2.handleKeyDown(e);
             };
+            this.init(this.props);
         }
     }, {
         key: 'componentWillReceiveProps',
         value: function componentWillReceiveProps(nextProps) {
-            this.init(nextProps.screenCode);
+            if (nextProps.gridId && nextProps.gridId !== this.props.gridId) {
+                this.init(nextProps);
+            }
+        }
+    }, {
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate(prevProps) {
+            if (this.props.gridId !== prevProps.gridId || this.props.screenCode !== prevProps.screenCode || this.props.dataspyId !== prevProps.dataspyId) {
+                this.init(this.props);
+            }
         }
     }, {
         key: 'componentWillUnmount',
         value: function componentWillUnmount() {
+            !!this.cancelSource && this.cancelSource.cancel && this.cancelSource.cancel();
+            this.props.onRef && this.props.onRef(undefined);
+        }
+
+        /**
+         * To be called only when the Grid changes (GRID ID)
+         */
+
+    }, {
+        key: 'handleChangeDataSpy',
+        value: function handleChangeDataSpy(event) {
+            this._initGrid(_extends({}, this.state.gridRequest, {
+                includeMetadata: true,
+                cursorPosition: 1,
+                dataspyID: event.target.value,
+                gridSort: [],
+                gridFilter: []
+            }));
+        }
+    }, {
+        key: 'toggleFilter',
+        value: function toggleFilter() {
+            this.setState(function (prevState) {
+                return {
+                    filterVisible: !prevState.filterVisible
+                };
+            });
+        }
+    }, {
+        key: 'runSearch',
+
+
+        // Execute search
+        value: function runSearch() {
+            var _this3 = this;
+
+            // Run search, update state with latest state of filters
+            var filters = this.getFilters();
+
+            this.setState(function (prevState) {
+                return {
+                    hasMore: true,
+                    rows: [],
+                    totalRecords: 0,
+                    gridRequest: _extends({}, prevState.gridRequest, {
+                        gridFilter: filters,
+                        cursorPosition: 1
+                    }),
+                    selectedRows: {}
+                };
+            }, function () {
+                _this3.loadMoreData();
+            });
+        }
+    }, {
+        key: 'loadMoreData',
+        value: function loadMoreData() {
+            var _this4 = this;
+
             // cancel current transaction if any
             if (!!this.cancelSource) {
                 this.cancelSource.cancel();
             }
 
-            //
-            if (this.props.onRef) {
-                this.props.onRef(undefined);
+            // return if no results have to be returned
+            if (!this.state.hasMore) {
+                return;
             }
+
+            // get axios token to allow transaction cancellation
+            this.cancelSource = _index2.default.CancelToken.source();
+
+            this.setState(function (prevState) {
+                return _extends({}, prevState, {
+                    isloading: true
+                });
+            }, function () {
+
+                _GridWS2.default.getGridData(_this4.state.gridRequest, {
+                    cancelToken: _this4.cancelSource.token
+                }).then(function (data) {
+                    // nullify info of current transaction
+                    _this4.cancelSource = null;
+
+                    // set state with data and grid fields info
+                    _this4.setState(function (prevState) {
+                        return _extends({}, prevState, {
+                            isloading: false,
+                            data: data.body.data,
+                            hasMore: data.body.data.moreRowsPresent === 'TRUE',
+                            totalRecords: data.body.data.records,
+                            rows: prevState.rows.concat(data.body.data.row),
+                            gridRequest: _extends({}, prevState.gridRequest, {
+                                cursorPosition: data.body.data.cursorPosition
+                            })
+                        });
+                    });
+                }).catch(function (error) {
+                    if (error.type !== _GridErrorTypes2.default.REQUEST_CANCELLED) {
+                        _this4.setState({
+                            isloading: false
+                        });
+
+                        _this4.props.handleError(error);
+                    }
+                });
+            });
         }
+    }, {
+        key: 'exportDataToCSV',
+        value: function exportDataToCSV() {
+            var _this5 = this;
 
-        // Execute search
+            this.setState({ exporterBlocked: true });
 
+            // get axios token to allow transaction cancellation
+            this.cancelSource = _index2.default.CancelToken.source();
+
+            return _GridWS2.default.exportDataToCSV(request, {
+                cancelToken: this.cancelSource.token
+            }).then(function (data) {
+                // nullify info of current transaction
+                _this5.cancelSource = null;
+
+                _this5.setState({ exporterBlocked: false });
+
+                return data.body;
+            }).catch(function (error) {
+                if (error.type !== _GridErrorTypes2.default.REQUEST_CANCELLED) {
+                    _this5.setState({
+                        exporterBlocked: false
+                    });
+                    _this5.props.handleError(error);
+                }
+            });
+        }
     }, {
         key: '_orderGridFieldsBasedOnTheirOrderProperty',
         value: function _orderGridFieldsBasedOnTheirOrderProperty(fields) {
             fields.sort(function (a, b) {
-                return a.order - b.order;
+                return +a.order - +b.order;
             });
         }
     }, {
@@ -366,22 +355,18 @@ var EAMGrid = function (_Component) {
         value: function _isHidden(tagName) {
             var hiddenTags = this.props.hiddenTags;
 
-            if (hiddenTags && hiddenTags.filter(function (f) {
+            return hiddenTags && hiddenTags.some(function (f) {
                 return f === tagName;
-            }).length > 0) {
-                return true;
-            } else {
-                return false;
-            }
+            });
         }
     }, {
         key: '_resetFieldWidthInfo',
         value: function _resetFieldWidthInfo(fields) {
-            var _this3 = this;
+            var _this6 = this;
 
             this.fieldsWidthInfo = new Map();
             fields.map(function (field) {
-                return _this3.fieldsWidthInfo.set(field.name, {
+                return _this6.fieldsWidthInfo.set(field.name, {
                     width: field.width,
                     dataType: field.dataType
                 });
@@ -392,9 +377,7 @@ var EAMGrid = function (_Component) {
         value: function handleKeyDown(event) {
             if (event.key === _KeyCode2.default.F7) {
                 this.toggleFilter();
-            }
-
-            if (event.key === _KeyCode2.default.F8) {
+            } else if (event.key === _KeyCode2.default.F8) {
                 this.runSearch();
             }
         }
@@ -402,6 +385,7 @@ var EAMGrid = function (_Component) {
         key: 'render',
         value: function render() {
             var classes = this.props.classes;
+
 
             return _react2.default.createElement(
                 'div',
@@ -411,7 +395,7 @@ var EAMGrid = function (_Component) {
                         width: '' + this.props.width
                     } },
                 this.props.showDataspySelection && _react2.default.createElement(_EAMGridSelectDataspy2.default, {
-                    dataSpy: this.state.gridRequest.dataspyID,
+                    dataSpy: this.state.gridRequest.dataspyID || '',
                     listOfDataSpy: this.state.listOfDataSpy,
                     handleChangeDataSpy: this.handleChangeDataSpy.bind(this),
                     toggleFilter: this.toggleFilter.bind(this),
@@ -431,8 +415,8 @@ var EAMGrid = function (_Component) {
                     filterVisible: this.state.filterVisible,
                     filters: this.state.gridRequest.gridFilter,
                     sortFields: this.state.gridRequest.gridSort,
-                    setFilter: this.setFilter.bind(this),
-                    runSearch: this.runSearch.bind(this),
+                    setFilter: this.setFilter,
+                    runSearch: this.runSearch,
                     totalRecords: this.state.totalRecords,
                     cellRenderer: this.props.cellRenderer,
                     exporterBlocked: this.state.exporterBlocked,
