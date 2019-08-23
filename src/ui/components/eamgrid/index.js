@@ -95,7 +95,8 @@ class EAMGrid extends Component {
                 gridID: props.gridId,
                 dataspyID: props.dataspyId || null,
                 gridName: props.screenCode,
-                userFunctionName: props.screenCode
+                userFunctionName: props.screenCode,
+                gridSort: props.gridSort || []
             })
         }
     }
