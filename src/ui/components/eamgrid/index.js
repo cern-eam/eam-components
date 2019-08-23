@@ -347,7 +347,7 @@ class EAMGrid extends Component {
                     filters={this.state.gridRequest.gridFilter}
                     sortFields={this.state.gridRequest.gridSort}
                     setFilter={this.setFilter}
-                    runSearch={this.runSearch}
+                    runSearch={this.runSearch.bind(this)}
                     totalRecords={this.state.totalRecords}
                     cellRenderer={this.props.cellRenderer}
                     exporterBlocked={this.state.exporterBlocked}
