@@ -52,7 +52,6 @@ class EDMSWidget extends Component {
     };
 
     createDocument = (document, files, documentLink) => {
-
         //creating document
         this.blockUI();
         //isLoading is set to false later by readDocuments if successful
@@ -108,7 +107,9 @@ class EDMSWidget extends Component {
         return new Promise(function(resolve, reject) {
             // Do the usual XHR stuff
             let req = new XMLHttpRequest();
-            const urlUpload = process.env.REACT_APP_BACKEND.replace('/eamlightws/rest', '/cern-eam-services/edms/upload');
+            const urlUpload = process.env.REACT_APP_BACKEND
+                .replace('/eamlightws/rest', '/cern-eam-services/edms/upload')
+                .replace('/logbookws/rest', '/cern-eam-services/edms/upload');
             req.open('POST', urlUpload, true);
 
             req.onload = function() {

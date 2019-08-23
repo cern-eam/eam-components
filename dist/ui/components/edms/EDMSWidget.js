@@ -88,7 +88,6 @@ var EDMSWidget = function (_Component) {
                     return _react2.default.createElement(_DocumentCreation2.default, { createDocument: _this.createDocument });
             }
         }, _this.createDocument = function (document, files, documentLink) {
-
             //creating document
             _this.blockUI();
             //isLoading is set to false later by readDocuments if successful
@@ -142,7 +141,7 @@ var EDMSWidget = function (_Component) {
             return new Promise(function (resolve, reject) {
                 // Do the usual XHR stuff
                 var req = new XMLHttpRequest();
-                var urlUpload = process.env.REACT_APP_BACKEND.replace('/eamlightws/rest', '/cern-eam-services/edms/upload');
+                var urlUpload = process.env.REACT_APP_BACKEND.replace('/eamlightws/rest', '/cern-eam-services/edms/upload').replace('/logbookws/rest', '/cern-eam-services/edms/upload');
                 req.open('POST', urlUpload, true);
 
                 req.onload = function () {
