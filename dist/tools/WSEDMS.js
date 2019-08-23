@@ -33,35 +33,35 @@ var WSEDMS = function () {
             var config = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
 
             objectType = encodeURIComponent(objectType);
-            return _ajax2.default.get(process.env.REACT_APP_BACKEND.replace('/logbookws/rest', '/cern-eam-services/rest') + ('/edms/documents?objectid=' + objectID + '&objectType=' + objectType + '&mode=' + mode).replace('/eamlightws/rest', '/cern-eam-services/rest') + ('/edms/documents?objectid=' + objectID + '&objectType=' + objectType + '&mode=' + mode), config);
+            return _ajax2.default.get(process.env.REACT_APP_BACKEND.replace('/logbookws/rest', '/cern-eam-services/rest').replace('/eamlightws/rest', '/cern-eam-services/rest'), config);
         }
     }, {
         key: 'createNewDocument',
         value: function createNewDocument(data) {
             var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-            return _ajax2.default.post(process.env.REACT_APP_BACKEND.replace('/logbookws/rest', '/cern-eam-services/rest') + ('/edms/documents?objectid=' + objectID + '&objectType=' + objectType + '&mode=' + mode).replace('/eamlightws/rest', '/cern-eam-services/rest') + '/edms/createdocument', data, config);
+            return _ajax2.default.post(process.env.REACT_APP_BACKEND.replace('/logbookws/rest', '/cern-eam-services/rest').replace('/eamlightws/rest', '/cern-eam-services/rest') + '/edms/createdocument', data, config);
         }
     }, {
         key: 'getNCRProperties',
         value: function getNCRProperties(objectType, objectID) {
             var config = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
-            return _ajax2.default.get(process.env.REACT_APP_BACKEND.replace('/logbookws/rest', '/cern-eam-services/rest') + ('/edms/documents?objectid=' + objectID + '&objectType=' + objectType + '&mode=' + mode).replace('/eamlightws/rest', '/cern-eam-services/rest') + '/edms/ncrproperties', config);
+            return _ajax2.default.get(process.env.REACT_APP_BACKEND.replace('/logbookws/rest', '/cern-eam-services/rest').replace('/eamlightws/rest', '/cern-eam-services/rest') + '/edms/ncrproperties', config);
         }
     }, {
         key: 'getNCRKeyWords',
         value: function getNCRKeyWords(objectID) {
             var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-            return _ajax2.default.get(process.env.REACT_APP_BACKEND.replace('/logbookws/rest', '/cern-eam-services/rest') + ('/edms/documents?objectid=' + objectID + '&objectType=' + objectType + '&mode=' + mode).replace('/eamlightws/rest', '/cern-eam-services/rest') + ('/edms/ncrkeywords/' + objectID), config);
+            return _ajax2.default.get(process.env.REACT_APP_BACKEND.replace('/logbookws/rest', '/cern-eam-services/rest').replace('/eamlightws/rest', '/cern-eam-services/rest') + ('/edms/ncrkeywords/' + objectID), config);
         }
     }, {
         key: 'getEquipmentWorkOrders',
         value: function getEquipmentWorkOrders(objectType, objectID) {
             var config = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
-            return _ajax2.default.get(process.env.REACT_APP_BACKEND.replace('/logbookws/rest', '/cern-eam-services/rest') + ('/edms/documents?objectid=' + objectID + '&objectType=' + objectType + '&mode=' + mode).replace('/eamlightws/rest', '/cern-eam-services/rest') + ('/edms/equipmentwos?objectType=' + objectType + '&objectCode=' + objectID), config);
+            return _ajax2.default.get(process.env.REACT_APP_BACKEND.replace('/logbookws/rest', '/cern-eam-services/rest').replace('/eamlightws/rest', '/cern-eam-services/rest') + ('/edms/equipmentwos?objectType=' + objectType + '&objectCode=' + objectID), config);
         }
     }]);
 

@@ -88,7 +88,7 @@ var EDMSWidget = function (_Component) {
                     return _react2.default.createElement(_DocumentCreation2.default, { createDocument: _this.createDocument });
             }
         }, _this.createDocument = function (document, files, documentLink) {
-
+            debugger;
             //creating document
             _this.blockUI();
             //isLoading is set to false later by readDocuments if successful
