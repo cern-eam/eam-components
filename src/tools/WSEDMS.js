@@ -12,7 +12,7 @@ class WSEDMS {
         objectType = encodeURIComponent(objectType);
         return ajax.get(process.env.REACT_APP_BACKEND
             .replace('/logbookws/rest', '/cern-eam-services/rest')
-            .replace('/eamlightws/rest', '/cern-eam-services/rest'), config);
+            .replace('/eamlightws/rest', '/cern-eam-services/rest') + `/edms/documents?objectid=${objectID}&objectType=${objectType}&mode=${mode}`, config);
     }
 
     createNewDocument(data, config = {}) {

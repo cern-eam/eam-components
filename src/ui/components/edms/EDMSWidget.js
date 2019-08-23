@@ -52,7 +52,6 @@ class EDMSWidget extends Component {
     };
 
     createDocument = (document, files, documentLink) => {
-        debugger
         //creating document
         this.blockUI();
         //isLoading is set to false later by readDocuments if successful

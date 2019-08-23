@@ -33,7 +33,7 @@ var WSEDMS = function () {
             var config = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
 
             objectType = encodeURIComponent(objectType);
-            return _ajax2.default.get(process.env.REACT_APP_BACKEND.replace('/logbookws/rest', '/cern-eam-services/rest').replace('/eamlightws/rest', '/cern-eam-services/rest'), config);
+            return _ajax2.default.get(process.env.REACT_APP_BACKEND.replace('/logbookws/rest', '/cern-eam-services/rest').replace('/eamlightws/rest', '/cern-eam-services/rest') + ('/edms/documents?objectid=' + objectID + '&objectType=' + objectType + '&mode=' + mode), config);
         }
     }, {
         key: 'createNewDocument',
