@@ -40,6 +40,8 @@ var _EAMTextField = require('./EAMTextField');
 
 var _EAMTextField2 = _interopRequireDefault(_EAMTextField);
 
+var _locale = require('date-fns/locale');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -62,21 +64,46 @@ var EAMDatePicker = function (_EAMBaseInput) {
             args[_key] = arguments[_key];
         }
 
-        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EAMDatePicker.__proto__ || Object.getPrototypeOf(EAMDatePicker)).call.apply(_ref, [this].concat(args))), _this), _this.init = function (props) {
-            return _this.setValue(_this.convert(props.value), false);
-        }, _this.readValue = function (value) {
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EAMDatePicker.__proto__ || Object.getPrototypeOf(EAMDatePicker)).call.apply(_ref, [this].concat(args))), _this), _this.readValue = function (value) {
             return value instanceof Date ? value : typeof value === "string" && value.length ? (0, _parse2.default)(value.substring(0, _this.props.dateFormatValue.length), _this.props.dateFormatValue, new Date()) : typeof value === "number" ? new Date(value) : null;
         }, _this.readDate = function (date) {
             return !date ? null : _this.props.timestamp ? date.getTime() : (0, _dateFns3.format)(date, _this.props.dateFormatValue);
         }, _this.convert = function (value) {
             return _this.readDate(_this.readValue(value || ''));
-        }, _this.getPickerProps = function (state, props) {
+        }, _temp), _possibleConstructorReturn(_this, _ret);
+    }
+
+    /** Always returns a Date from the value provided */
+
+
+    /* Reads the Date it receives to the format wanted (TIMESTAMP or FORMATTED STRING) */
+
+
+    _createClass(EAMDatePicker, [{
+        key: 'shouldComponentUpdate',
+        value: function shouldComponentUpdate(nextProps, nextState) {
+            return this.props && this.props.value !== nextProps.value;
+        }
+    }, {
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate() {
+            var value = this.props.value;
+
+            if (value instanceof Date || typeof value === 'string' && this.props.timestamp || typeof value === 'number' && !this.props.timestamp) {
+                this.onChangeHandler(this.props.valueKey, this.convert(value));
+            }
+        }
+    }, {
+        key: 'getPickerProps',
+        value: function getPickerProps(state, props) {
+            var _this2 = this;
+
             var elementInfo = props.elementInfo,
-                dateFormatDisplay = props.dateFormatDisplay;
+                dateFormatDisplay = props.dateFormatDisplay,
+                value = props.value;
             var helperText = state.helperText,
                 error = state.error,
-                disabled = state.disabled,
-                value = state.value;
+                disabled = state.disabled;
 
             return {
                 InputAdornmentProps: { style: { marginRight: -12 } },
@@ -84,11 +111,11 @@ var EAMDatePicker = function (_EAMBaseInput) {
                 error: error,
                 helperText: helperText,
                 disabled: disabled || elementInfo && elementInfo.readonly,
-                required: _this.isRequired(),
+                required: this.isRequired(),
                 clearable: true,
-                value: _this.readValue(value), // Always formats the value. In EDGE and IE, the new Date() has a different behavior than in Chrome and Firefox
+                value: this.readValue(value), // Always formats the value. In EDGE and IE, the new Date() has a different behavior than in Chrome and Firefox
                 onChange: function onChange(str) {
-                    return _this.onChangeHandler(_this.convert(str));
+                    return _this2.onChangeHandler(_this2.convert(str));
                 },
                 format: dateFormatDisplay,
                 label: elementInfo && elementInfo.text,
@@ -104,16 +131,8 @@ var EAMDatePicker = function (_EAMBaseInput) {
                 ),
                 TextFieldComponent: _EAMTextField2.default
             };
-        }, _temp), _possibleConstructorReturn(_this, _ret);
-    }
-
-    /** Always returns a Date from the value provided */
-
-
-    /* Reads the Date it receives to the format wanted (TIMESTAMP or FORMATTED STRING) */
-
-
-    _createClass(EAMDatePicker, [{
+        }
+    }, {
         key: 'renderComponent',
         value: function renderComponent() {
             var showTime = this.props.showTime;

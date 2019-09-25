@@ -22,23 +22,14 @@ const styles = (theme) => ({
     }
 });
 
-const initialState = {
-    hasMore: true,
-    totalRecords: 0,
-    rows: [],
-    selectedRows: {},
-    filterVisible: false,
-    isloading: false,
-    gridRequest: {
-        rowCount: 50,
-        cursorPosition: 1,
-        gridSort: [],
-        gridFilter: [],
-        useNative: true,
-        includeMetadata: true
-    },
-    exporterBlocked: false
-};
+export const initialGridRequest = {
+    rowCount: 50,
+    cursorPosition: 1,
+    gridSort: [],
+    gridFilter: [],
+    useNative: true,
+    includeMetadata: true
+}
 
 class EAMGrid extends Component {
 
@@ -46,47 +37,92 @@ class EAMGrid extends Component {
     Map containing all filters
     filterMap is updated on every keystroke. Filters are applied when the user actually executes the search.
     */
+    state = {
+        hasMore: true,
+        totalRecords: 0,
+        rows: []    ,
+        selectedRows: {},
+        isloading: true,
+        gridRequest: {},
+        exporterBlocked: false,
+        filterVisible: this.props.filterVisible
+    };
+
     filterMap = {};
 
-    constructor(props) {
-        super(props);
+    fieldsWidthInfo = new Map();
 
-        // init the state
-        this.state =
-            {
-                ...initialState,
-                filterVisible: this.props.filterVisible
-            };
+    toggleSortField = toggleSortField.bind(this);
 
-        this.fieldsWidthInfo = new Map();
+    setFilter = setFilter.bind(this);
 
-        // toggleSortField method from sorting
-        this.toggleSortField = toggleSortField.bind(this);
+    getFilters = getFilters.bind(this);
 
-        // setFilter method from filtering
-        this.setFilter = setFilter.bind(this);
+    clearFilters = clearFilters.bind(this);
 
-        this.getFilters = getFilters.bind(this);
-
-        // clearFilter method from filtering
-        this.clearFilters = clearFilters.bind(this);
-
+    
+    componentDidMount() {
+        if (this.props.onRef) {
+            this.props.onRef(this);
+        }
+        document.body.onkeydown = e => this.handleKeyDown(e);
+        this.init(this.props);
     }
 
-    _initGrid = () => {
-        GridWS.getGridData(this.state.gridRequest)
-            .then(data => {
-                const metadata = data.body.data;
+    componentWillReceiveProps (nextProps) {
+        if (nextProps.gridId && nextProps.gridId !== this.props.gridId) {
+            this.init(nextProps)
+        }
+    }
 
-                this._resetFieldWidthInfo(metadata.gridField)
+    componentDidUpdate (prevProps) {
+        if (this.props.gridId !== prevProps.gridId 
+                || this.props.screenCode !== prevProps.screenCode
+                || this.props.dataspyId !== prevProps.dataspyId) {
+            this.init(this.props);
+        }
+    }
 
-                // sort field based on their order
-                this._orderGridFieldsBasedOnTheirOrderProperty(metadata.gridField);
+    componentWillUnmount() {
+        !!this.cancelSource && this.cancelSource.cancel && this.cancelSource.cancel();
+        this.props.onRef && this.props.onRef(undefined);
+    }
 
-                // set metadata info in state
-                this.setState((prevState) => {
-                    return {
-                        ...prevState,
+    init = props => {
+        if (props.gridId) {
+            this._initGrid({
+                ...initialGridRequest,
+                gridID: props.gridId,
+                dataspyID: props.dataspyId || null,
+                gridName: props.screenCode,
+                userFunctionName: props.screenCode
+            })
+        }
+    }
+
+
+    /**
+     * To be called only when the Grid changes (GRID ID)
+     */
+    _initGrid = (gridRequest) => {
+        this.setState({
+            isloading: true,
+            rows: []
+        },
+            () => GridWS.getGridData(gridRequest)
+                .then(data => {
+                    const metadata = data.body.data;
+
+                    if (gridRequest.includeMetadata) {
+                        this._resetFieldWidthInfo(metadata.gridField)
+
+                        // sort field based on their order
+                        this._orderGridFieldsBasedOnTheirOrderProperty(metadata.gridField);
+                    }
+                   
+
+                    // set metadata info in state
+                    this.setState({
                         fields: metadata.gridField,
                         listOfDataSpy: metadata.gridDataspy,
                         hasMore: metadata.moreRowsPresent === 'TRUE',
@@ -94,92 +130,51 @@ class EAMGrid extends Component {
                         rows: metadata.row,
                         isloading: false,
                         gridRequest: {
-                            ...prevState.gridRequest,
-                            "gridID": metadata.gridCode,
-                            "dataspyID": metadata.dataSpyId,
-                            "gridName": metadata.gridName,
-                            "userFunctionName": metadata.gridName,
-                            cursorPosition: metadata.cursorPosition + 1
+                            ...gridRequest,
+                            gridID: metadata.gridCode,
+                            dataspyID: metadata.dataSpyId,
+                            gridName: metadata.gridName,
+                            userFunctionName: metadata.gridName,
+                            cursorPosition: metadata.cursorPosition + 1,
+                            includeMetadata: false
                         }
-                    }
-                });
-            }).catch(error => {
-                this.setState({
-                    isloading: false
-                })
-            if (error.status === HttpStatus.NOT_FOUND) {
-                alert("Metadata for this grid does not exist");
-            }
-        });
-    };
-
-    init = screenCode => {
-        if (screenCode) {
-            this.setState({
-                gridRequest: {
-                    ...initialState.gridRequest,
-                    gridName: screenCode,
-                    userFunctionName: screenCode
+                    });
+                }).catch(error => {
+                    this.setState({
+                        isloading: false,
+                        gridRequest: {
+                            ...gridRequest
+                        }
+                    })
+                if (error.status === HttpStatus.NOT_FOUND) {
+                    alert("Metadata for this grid does not exist");
                 }
-            }, () => {this._initGrid()})
-        }
-    }
-
-    componentDidMount() {
-        if (this.props.onRef) {
-            this.props.onRef(this);
-        }
-        this.init(this.props.screenCode)
-        document.body.onkeydown = e => this.handleKeyDown(e);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this.init(nextProps.screenCode)
-    }
-
-    componentWillUnmount() {
-        // cancel current transaction if any
-        if (!!this.cancelSource) {
-            this.cancelSource.cancel();
-        }
-
-        //
-        if (this.props.onRef) {
-            this.props.onRef(undefined);
-        }
-    }
+            })
+        ); 
+        
+    };
 
     getCellWidth = cellTagname => this.fieldsWidthInfo.get(cellTagname)
 
-    handleChangeDataSpy = (event) => {
-            this.setState((prevState) => ({
-                ...prevState,
-                rows: [],
-                totalRecords: 0,
-                isloading: true,
-                hasMore: true,
-                gridRequest: {
-                    ...prevState.gridRequest,
-                    cursorPosition: 1,
-                    dataspyID: event.target.value,
-                    gridSort: [],
-                    gridFilter: []
-                }
-            }), () => {
-                this._initGrid();
-            });
-
+    handleChangeDataSpy (event) {
+        this._initGrid({
+            ...this.state.gridRequest,
+            includeMetadata: true,
+            cursorPosition: 1,
+            dataspyID: event.target.value,
+            gridSort: [],
+            gridFilter: []
+        });
     };
 
-    toggleFilter = () => {
+    toggleFilter () {
         this.setState(prevState => ({
-            ...prevState,
             filterVisible: !prevState.filterVisible
         }))
     };
 
     // Execute search
-    runSearch = () => {
+    runSearch () {
         // Run search, update state with latest state of filters
         let filters = this.getFilters();
 
@@ -198,7 +193,7 @@ class EAMGrid extends Component {
         })
     };
 
-    loadMoreData = () => {
+    loadMoreData () {
         // cancel current transaction if any
         if (!!this.cancelSource) {
             this.cancelSource.cancel();
@@ -225,17 +220,14 @@ class EAMGrid extends Component {
 
                     // set state with data and grid fields info
                     this.setState(prevState => {
-                        // true if it has more results
-                        let hasMore = data.body.data.moreRowsPresent === 'TRUE';
-
                         return {
                             ...prevState,
-                            'isloading': false,
-                            'data': data.body.data,
-                            'hasMore': data.body.data.moreRowsPresent === 'TRUE',
-                            'totalRecords': data.body.data.records,
-                            'rows': prevState.rows.concat(data.body.data.row),
-                            'gridRequest': {
+                            isloading: false,
+                            data: data.body.data,
+                            hasMore: data.body.data.moreRowsPresent === 'TRUE',
+                            totalRecords: data.body.data.records,
+                            rows: prevState.rows.concat(data.body.data.row),
+                            gridRequest: {
                                 ...prevState.gridRequest,
                                 cursorPosition: data.body.data.cursorPosition,
                             }
@@ -254,7 +246,7 @@ class EAMGrid extends Component {
         )
     };
 
-    exportDataToCSV = () => {
+    exportDataToCSV () {
         this.setState({exporterBlocked: true});
 
         // get axios token to allow transaction cancellation
@@ -272,9 +264,8 @@ class EAMGrid extends Component {
         }).catch(error => {
             if (error.type !== ErrorTypes.REQUEST_CANCELLED) {
                 this.setState({
-                    isloading: false
+                    exporterBlocked: false
                 });
-
                 this.props.handleError(error);
             }
         });
@@ -297,18 +288,12 @@ class EAMGrid extends Component {
 
 
     _orderGridFieldsBasedOnTheirOrderProperty(fields) {
-        fields.sort(function (a, b) {
-            return a.order - b.order;
-        });
+        fields.sort((a, b) => +a.order - +b.order);
     }
 
     _isHidden(tagName) {
-        const {hiddenTags} = this.props;
-        if (hiddenTags && hiddenTags.filter(f => f === tagName).length > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        const { hiddenTags } = this.props;
+        return hiddenTags && hiddenTags.some(f => f === tagName)
     }
 
     _resetFieldWidthInfo(fields) {
@@ -323,15 +308,14 @@ class EAMGrid extends Component {
     handleKeyDown(event) {
         if (event.key === KeyCode.F7) {
             this.toggleFilter();
-        }
-
-        if (event.key === KeyCode.F8) {
+        } else if (event.key === KeyCode.F8) {
             this.runSearch();
         }
     }
 
     render() {
         const {classes} = this.props;
+
         return (
             <div className={classes.dataGridMainContainer}
                  style={{
@@ -341,7 +325,7 @@ class EAMGrid extends Component {
                 {
                     this.props.showDataspySelection &&
                     <DataGridSelectDataspy
-                        dataSpy={this.state.gridRequest.dataspyID}
+                        dataSpy={this.state.gridRequest.dataspyID || ''}
                         listOfDataSpy={this.state.listOfDataSpy}
                         handleChangeDataSpy={this.handleChangeDataSpy.bind(this)}
                         toggleFilter={this.toggleFilter.bind(this)}
@@ -362,7 +346,7 @@ class EAMGrid extends Component {
                     filterVisible={this.state.filterVisible}
                     filters={this.state.gridRequest.gridFilter}
                     sortFields={this.state.gridRequest.gridSort}
-                    setFilter={this.setFilter.bind(this)}
+                    setFilter={this.setFilter}
                     runSearch={this.runSearch.bind(this)}
                     totalRecords={this.state.totalRecords}
                     cellRenderer={this.props.cellRenderer}

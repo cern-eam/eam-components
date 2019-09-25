@@ -7,10 +7,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import EAMBaseInput from './EAMBaseInput';
 import EAMTextField from './EAMTextField';
+import { th } from 'date-fns/locale';
 
 export default class EAMDatePicker extends EAMBaseInput {
-
-    init = props => this.setValue(this.convert(props.value), false)
 
     /** Always returns a Date from the value provided */
     readValue = value => {
@@ -29,9 +28,22 @@ export default class EAMDatePicker extends EAMBaseInput {
 
     convert = value => this.readDate(this.readValue(value || ''))
 
-    getPickerProps = (state, props) => {
-        const { elementInfo, dateFormatDisplay } = props;
-        const { helperText, error, disabled, value } = state;
+    shouldComponentUpdate(nextProps, nextState) {
+        return this.props && this.props.value !== nextProps.value
+    }
+
+    componentDidUpdate() {
+        let { value } = this.props;
+        if (value instanceof Date
+                || (typeof value === 'string' && this.props.timestamp)
+                || (typeof value === 'number' && !this.props.timestamp)) {
+            this.onChangeHandler(this.props.valueKey, this.convert(value))
+        }
+    }
+
+    getPickerProps (state, props) {
+        const { elementInfo, dateFormatDisplay, value } = props;
+        const { helperText, error, disabled } = state;
         return {
             InputAdornmentProps: {style: {marginRight: -12}},
             keyboard: true,
