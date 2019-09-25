@@ -57,7 +57,8 @@ class NCRCreation extends Component {
 
     titleStyle = {
         flexGrow: 1,
-        display: "flex"
+        display: "flex",
+        flexDirection: "column"
     }
 
     dropZoneStyle = {
@@ -215,7 +216,7 @@ class NCRCreation extends Component {
                                       updateProperty={(key, value) => this.setStateProperty(key, value)}/>
 
                             {this.state.NCRKeyWords && this.state.NCRKeyWords.length > 0 &&
-                                <div style={{width: "calc(100% - 250px)"}}>
+                                <div style={{marginLeft: 148}}>
                                     <EAMSelect searchable={true}
                                                value={this.state.NCRKeyWord}
                                                values={this.state.NCRKeyWords}

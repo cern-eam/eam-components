@@ -107,7 +107,8 @@ var NCRCreation = function (_Component) {
             fontWeight: 500
         }, _this.titleStyle = {
             flexGrow: 1,
-            display: "flex"
+            display: "flex",
+            flexDirection: "column"
         }, _this.dropZoneStyle = {
             border: "1px solid white"
         }, _this.dropZoneActiveStyle = {
@@ -272,7 +273,7 @@ var NCRCreation = function (_Component) {
                                 } }),
                             this.state.NCRKeyWords && this.state.NCRKeyWords.length > 0 && _react2.default.createElement(
                                 'div',
-                                { style: { width: "calc(100% - 250px)" } },
+                                { style: { marginLeft: 148 } },
                                 _react2.default.createElement(_EAMSelect2.default, { searchable: true,
                                     value: this.state.NCRKeyWord,
                                     values: this.state.NCRKeyWords,

@@ -211,7 +211,7 @@ var EAMBaseInput = function (_Component) {
             if (this.props.link && this.props.link(this.state.value)) {
                 if (this.props.link().startsWith("http")) {
                     eamLink = function eamLink(props) {
-                        return _react2.default.createElement('a', _extends({ href: _this2.props.link(_this2.state.value) }, props));
+                        return _react2.default.createElement('a', _extends({ href: _this2.props.link(_this2.state.value) }, props, { target: '_blank' }));
                     };
                 } else {
                     eamLink = function eamLink(props) {
