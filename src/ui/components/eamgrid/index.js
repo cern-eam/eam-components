@@ -70,7 +70,8 @@ class EAMGrid extends Component {
     }
 
     componentWillReceiveProps (nextProps) {
-        if (nextProps.gridId && nextProps.gridId !== this.props.gridId) {
+        if ((nextProps.gridId && nextProps.gridId !== this.props.gridId) ||
+            (nextProps.screenCode && nextProps.screenCode !== this.props.screenCode)) {
             this.init(nextProps)
         }
     }
@@ -89,7 +90,7 @@ class EAMGrid extends Component {
     }
 
     init = props => {
-        if (props.gridId) {
+        if (props.gridId || props.screenCode) {
             this._initGrid({
                 ...initialGridRequest,
                 gridID: props.gridId,
@@ -120,7 +121,6 @@ class EAMGrid extends Component {
                         // sort field based on their order
                         this._orderGridFieldsBasedOnTheirOrderProperty(metadata.gridField);
                     }
-                   
 
                     // set metadata info in state
                     this.setState({
