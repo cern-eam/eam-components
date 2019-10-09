@@ -64,7 +64,9 @@ var EAMDatePicker = function (_EAMBaseInput) {
             args[_key] = arguments[_key];
         }
 
-        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EAMDatePicker.__proto__ || Object.getPrototypeOf(EAMDatePicker)).call.apply(_ref, [this].concat(args))), _this), _this.readValue = function (value) {
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EAMDatePicker.__proto__ || Object.getPrototypeOf(EAMDatePicker)).call.apply(_ref, [this].concat(args))), _this), _this.init = function (props) {
+            _this.setValue(_this.convert(props.value));
+        }, _this.readValue = function (value) {
             return value instanceof Date ? value : typeof value === "string" && value.length ? (0, _parse2.default)(value.substring(0, _this.props.dateFormatValue.length), _this.props.dateFormatValue, new Date()) : typeof value === "number" ? new Date(value) : null;
         }, _this.readDate = function (date) {
             return !date ? null : _this.props.timestamp ? date.getTime() : (0, _dateFns3.format)(date, _this.props.dateFormatValue);

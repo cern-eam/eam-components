@@ -11,14 +11,18 @@ import { th } from 'date-fns/locale';
 
 export default class EAMDatePicker extends EAMBaseInput {
 
+    init = props => {
+        this.setValue(this.convert(props.value))
+    }
+
     /** Always returns a Date from the value provided */
-    readValue = value => {
-        return value instanceof Date ? value
+    readValue = value => 
+            value instanceof Date ? value
             : typeof value === "string" && value.length ? parse(value.substring(0, this.props.dateFormatValue.length), this.props.dateFormatValue, new Date())
             : typeof value === "number" ? new Date(value)
             : null
             ;
-    }
+
 
     /* Reads the Date it receives to the format wanted (TIMESTAMP or FORMATTED STRING) */
     readDate = date =>
