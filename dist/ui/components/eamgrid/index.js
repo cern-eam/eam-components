@@ -141,7 +141,7 @@ var EAMGrid = function (_Component) {
                             dataspyID: metadata.dataSpyId,
                             gridName: metadata.gridName,
                             userFunctionName: metadata.gridName,
-                            cursorPosition: metadata.cursorPosition + 1,
+                            cursorPosition: 1,
                             includeMetadata: false
                         })
                     });
@@ -301,7 +301,7 @@ var EAMGrid = function (_Component) {
                             totalRecords: data.body.data.records,
                             rows: prevState.rows.concat(data.body.data.row),
                             gridRequest: _extends({}, prevState.gridRequest, {
-                                cursorPosition: data.body.data.cursorPosition
+                                cursorPosition: data.body.data.cursorPosition + 1
                             })
                         });
                     });

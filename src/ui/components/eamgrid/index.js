@@ -136,7 +136,7 @@ class EAMGrid extends Component {
                             dataspyID: metadata.dataSpyId,
                             gridName: metadata.gridName,
                             userFunctionName: metadata.gridName,
-                            cursorPosition: metadata.cursorPosition + 1,
+                            cursorPosition: 1,
                             includeMetadata: false
                         }
                     });
@@ -230,7 +230,7 @@ class EAMGrid extends Component {
                             rows: prevState.rows.concat(data.body.data.row),
                             gridRequest: {
                                 ...prevState.gridRequest,
-                                cursorPosition: data.body.data.cursorPosition,
+                                cursorPosition: data.body.data.cursorPosition + 1,
                             }
                         }
                     });
