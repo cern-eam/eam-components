@@ -11,8 +11,7 @@ import {withStyles} from "@material-ui/core/styles/index";
 import KeyCode from "./enums/KeyCode";
 import HttpStatus from "./enums/HttpStatus";
 
-const styles = (theme) => ({
-    ...theme,
+const styles = {
     dataGridMainContainer: {
         display: "flex",
         flexDirection: "column",
@@ -20,7 +19,7 @@ const styles = (theme) => ({
         "-moz-box-sizing": "border-box",
         "-webkit-box-sizing": "border-box"
     }
-});
+};
 
 export const initialGridRequest = {
     rowCount: 50,
@@ -60,7 +59,7 @@ class EAMGrid extends Component {
 
     clearFilters = clearFilters.bind(this);
 
-    
+
     componentDidMount() {
         if (this.props.onRef) {
             this.props.onRef(this);
@@ -393,8 +392,8 @@ EAMGrid.defaultProps = {
     editColumn: false,
     autorun: true,
     gridRequestAdapter: gridRequest => gridRequest,
-    heightFilterVisible: '250px',
-    heightFilterNotVisible: '210px',
+    heightFilterVisible: '175px',
+    heightFilterNotVisible: '145px',
     width: '100%',
     extraColumns: [],
     language: 'EN',

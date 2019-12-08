@@ -1,30 +1,29 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
+exports["default"] = void 0;
 
-var _react = require('react');
+var _react = _interopRequireDefault(require("react"));
 
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var StatusBox = function StatusBox(_ref) {
-    var color = _ref.color;
-
-
-    var style = {
-        float: 'left',
-        width: '100%',
-        maxWidth: 15,
-        height: 15,
-        marginRight: 5,
-        borderRadius: 5,
-        backgroundColor: color
-    };
-
-    return _react2.default.createElement('div', { style: style });
+  var color = _ref.color;
+  var style = {
+    "float": 'left',
+    width: '100%',
+    maxWidth: 15,
+    height: 15,
+    marginRight: 5,
+    borderRadius: 5,
+    backgroundColor: color
+  };
+  return _react["default"].createElement("div", {
+    style: style
+  });
 };
 
-exports.default = StatusBox;
+var _default = StatusBox;
+exports["default"] = _default;

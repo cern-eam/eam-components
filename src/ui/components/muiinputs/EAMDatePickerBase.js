@@ -2,7 +2,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import Icon from '@material-ui/core/Icon';
 import { format } from 'date-fns';
 import parse from "date-fns/parse";
-import { DatePicker, DateTimePicker, MuiPickersUtilsProvider } from 'material-ui-pickers';
+import { KeyboardDatePicker, KeyboardDateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import PropTypes from 'prop-types';
 import React from 'react';
 import EAMBaseInput from './EAMBaseInput';
@@ -49,8 +49,7 @@ export default class EAMDatePicker extends EAMBaseInput {
         const { elementInfo, dateFormatDisplay, value } = props;
         const { helperText, error, disabled } = state;
         return {
-            InputAdornmentProps: {style: {marginRight: -12}},
-            keyboard: true,
+            inputadornmentprops: {style: {marginRight: -12}},
             error,
             helperText: helperText,
             disabled: disabled || (elementInfo && elementInfo.readonly),
@@ -62,7 +61,8 @@ export default class EAMDatePicker extends EAMBaseInput {
             label: elementInfo && elementInfo.text,
             leftArrowIcon: <Icon> keyboard_arrow_left </Icon>,
             rightArrowIcon: <Icon> keyboard_arrow_right </Icon>,
-            TextFieldComponent: EAMTextField
+            TextFieldComponent: EAMTextField,
+            KeyboardButtonProps: {style: {paddingRight: 2}}
         }
     }
 
@@ -72,11 +72,11 @@ export default class EAMDatePicker extends EAMBaseInput {
         return (
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 {showTime ? 
-                    <DateTimePicker
+                    <KeyboardDateTimePicker
                         {...this.getPickerProps(this.state, this.props)}
                         ampm={false}
                     />
-                    : <DatePicker
+                    : <KeyboardDatePicker
                         {...this.getPickerProps(this.state, this.props)}
                     />
                 }

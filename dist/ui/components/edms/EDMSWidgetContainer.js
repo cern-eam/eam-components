@@ -1,27 +1,28 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
+exports["default"] = void 0;
 
-var _reactRedux = require('react-redux');
+var _reactRedux = require("react-redux");
 
-var _EDMSWidget = require('./EDMSWidget');
+var _EDMSWidget = _interopRequireDefault(require("./EDMSWidget"));
 
-var _EDMSWidget2 = _interopRequireDefault(_EDMSWidget);
+var _uiActions = require("../../../actions/uiActions");
 
-var _uiActions = require('../../../actions/uiActions');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function mapStateToProps(state) {
-    return {};
+  return {};
 }
 
 var EDMSWidgetContainer = (0, _reactRedux.connect)(mapStateToProps, {
-    showSuccess: _uiActions.showSuccess,
-    showError: _uiActions.showError,
-    handleError: _uiActions.handleError
-}, null, { withRef: true })(_EDMSWidget2.default);
+  showSuccess: _uiActions.showSuccess,
+  showError: _uiActions.showError,
+  handleError: _uiActions.handleError
+})(_EDMSWidget["default"]);
+var _default = EDMSWidgetContainer; // upgrade npm dependencies
+// deployment to the cloud
 
-exports.default = EDMSWidgetContainer;
+exports["default"] = _default;

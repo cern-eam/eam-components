@@ -4,6 +4,7 @@ import Comment from "./Comment";
 import CommentNew from "./CommentNew";
 import EISPanel from '../panel';
 import List from '@material-ui/core/List';
+import PropTypes from "prop-types";
 
 const datatablePanelStyle = {
     marginLeft: -18,
@@ -24,13 +25,13 @@ class Comments extends Component {
             this.readComments(this.props.entityCode, this.props.entityKeyCode);
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentDidUpdate(prevProps) {
         //Just read for existing object
-        if ((nextProps.entityKeyCode !== this.props.entityKeyCode || nextProps.entityCode !== this.props.entityCode)
-            && nextProps.entityKeyCode) {
+        if ((prevProps.entityKeyCode !== this.props.entityKeyCode || prevProps.entityCode !== this.props.entityCode)
+            && this.props.entityKeyCode) {
             //Just read the comments
-            this.readComments(nextProps.entityCode, nextProps.entityKeyCode);
-        } else if (!nextProps.entityKeyCode || nextProps.entityKeyCode === '') { /*It's new object again*/
+            this.readComments(this.props.entityCode, this.props.entityKeyCode);
+        } else if (prevProps.entityKeyCode && !this.props.entityKeyCode) { /*It's new object again*/
             this.setState(() => ({comments: [], newCommentText: ''}));
         }
     }
@@ -134,6 +135,18 @@ Comments.defaultProps = {
     readComments: WSComments.readComments,
     updateComment: WSComments.updateComment,
     createComment: WSComments.createComment
+};
+
+Comments.propTypes = {
+    entityCode: PropTypes.string,
+    entityKeyCode: PropTypes.string,
+    userDesc: PropTypes.string.isRequired,
+    onCommentAdded: PropTypes.func,
+    onCommentUpdated: PropTypes.func,
+    title: PropTypes.string,
+    readComments: PropTypes.func,
+    updateComment: PropTypes.func,
+    createComment: PropTypes.func
 };
 
 export default Comments;

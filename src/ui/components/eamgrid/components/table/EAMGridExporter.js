@@ -3,9 +3,8 @@ import { withStyles } from '@material-ui/core/styles';
 import DownloadLink from "react-download-link";
 import BlockUi from 'react-block-ui';
 
-const styles = (theme) => ({
+const styles = {
     button: {
-        margin: theme.spacing.unit,
         background: 'rgba(0, 0, 0, 0)',
         border: '10px',
         cursor: 'pointer',
@@ -20,7 +19,7 @@ const styles = (theme) => ({
             outline: 'none'
         }
     },
-});
+};
 
 class EAMGridExporter extends Component {
 

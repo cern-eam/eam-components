@@ -11,8 +11,7 @@ import Edit from "@material-ui/icons/Edit";
 import classNames from "classnames";
 import EAMGridCell from "./EAMGridCell";
 
-const styles = (theme) => ({
-    ...theme,
+const styles = {
     searchRow: {
         wordBreak: "break-all",
         wordWrap: "break-word",
@@ -52,7 +51,7 @@ const styles = (theme) => ({
         textAlign: "left",
         padding: "5px"
     }
-});
+};
 
 class DataGridTableBody extends Component {
 
@@ -177,7 +176,7 @@ class DataGridTableBody extends Component {
                                                                 <Typography style={{
                                                                     width: `calc(${this.props.getCellWidth(cell.t).width}px - 10px)`,
                                                                     color: 'inherit',
-                                                                    fontWeight: 'inherit'
+                                                                    //fontWeight: 'inherit'
                                                                 }}>
                                                                     {cell.value}
                                                                 </Typography>

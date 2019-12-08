@@ -1,99 +1,116 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
+exports["default"] = void 0;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _react = _interopRequireDefault(require("react"));
 
-var _react = require('react');
+var _Checkbox = _interopRequireDefault(require("@material-ui/core/Checkbox"));
 
-var _react2 = _interopRequireDefault(_react);
+var _EAMBaseInput2 = _interopRequireWildcard(require("./EAMBaseInput"));
 
-var _Checkbox = require('@material-ui/core/Checkbox');
+var _EAMFormLabel = _interopRequireDefault(require("./EAMFormLabel"));
 
-var _Checkbox2 = _interopRequireDefault(_Checkbox);
+var _index = require("@material-ui/core/styles/index");
 
-var _EAMBaseInput2 = require('./EAMBaseInput');
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
-var _EAMBaseInput3 = _interopRequireDefault(_EAMBaseInput2);
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-var _EAMFormLabel = require('./EAMFormLabel');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var _EAMFormLabel2 = _interopRequireDefault(_EAMFormLabel);
-
-var _index = require('@material-ui/core/styles/index');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var EAMCheckbox = function (_EAMBaseInput) {
-    _inherits(EAMCheckbox, _EAMBaseInput);
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-    function EAMCheckbox() {
-        var _ref;
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-        var _temp, _this, _ret;
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-        _classCallCheck(this, EAMCheckbox);
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-            args[_key] = arguments[_key];
-        }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EAMCheckbox.__proto__ || Object.getPrototypeOf(EAMCheckbox)).call.apply(_ref, [this].concat(args))), _this), _this.onChangeHandler = function (event, checked) {
-            var value = checked ? _this.props.trueValue : _this.props.falseValue;
-            _this.props.updateProperty(_this.props.valueKey, value);
-            //Extra function if needed
-            if (_this.props.onChangeValue) {
-                _this.props.onChangeValue(value);
-            }
-        }, _temp), _possibleConstructorReturn(_this, _ret);
+var EAMCheckbox =
+/*#__PURE__*/
+function (_EAMBaseInput) {
+  _inherits(EAMCheckbox, _EAMBaseInput);
+
+  function EAMCheckbox() {
+    var _getPrototypeOf2;
+
+    var _this;
+
+    _classCallCheck(this, EAMCheckbox);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
     }
 
-    _createClass(EAMCheckbox, [{
-        key: 'renderComponent',
-        value: function renderComponent() {
-            var _this2 = this;
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(EAMCheckbox)).call.apply(_getPrototypeOf2, [this].concat(args)));
 
-            var _props = this.props,
-                labelStyle = _props.labelStyle,
-                elementInfo = _props.elementInfo,
-                label = _props.label;
+    _this.onChangeHandler = function (event, checked) {
+      var value = checked ? _this.props.trueValue : _this.props.falseValue;
+
+      _this.props.updateProperty(_this.props.valueKey, value); //Extra function if needed
 
 
-            return _react2.default.createElement(
-                'div',
-                { className: this.props.classes.fieldContainer },
-                _react2.default.createElement(_EAMFormLabel2.default, { required: this.isRequired(), label: label || elementInfo && elementInfo.text,
-                    labelStyle: labelStyle, error: this.state.error }),
-                _react2.default.createElement(
-                    'div',
-                    { style: { width: "100%" } },
-                    _react2.default.createElement(_Checkbox2.default, { color: 'primary',
-                        checked: this.props.value === this.props.trueValue,
-                        value: '' + this.props.value,
-                        onChange: function onChange(event, checked) {
-                            return _this2.onChangeHandler(event, checked);
-                        },
-                        disabled: this.state.disabled || elementInfo && elementInfo.readonly
-                    })
-                )
-            );
+      if (_this.props.onChangeValue) {
+        _this.props.onChangeValue(value);
+      }
+    };
+
+    return _this;
+  }
+
+  _createClass(EAMCheckbox, [{
+    key: "renderComponent",
+    value: function renderComponent() {
+      var _this2 = this;
+
+      var _this$props = this.props,
+          labelStyle = _this$props.labelStyle,
+          elementInfo = _this$props.elementInfo,
+          label = _this$props.label;
+      return _react["default"].createElement("div", {
+        className: this.props.classes.fieldContainer
+      }, _react["default"].createElement(_EAMFormLabel["default"], {
+        required: this.isRequired(),
+        label: label || elementInfo && elementInfo.text,
+        labelStyle: labelStyle,
+        error: this.state.error
+      }), _react["default"].createElement("div", {
+        style: {
+          width: "100%"
         }
-    }]);
+      }, _react["default"].createElement(_Checkbox["default"], {
+        color: "primary",
+        checked: this.props.value === this.props.trueValue,
+        value: '' + this.props.value,
+        onChange: function onChange(event, checked) {
+          return _this2.onChangeHandler(event, checked);
+        },
+        disabled: this.state.disabled || elementInfo && elementInfo.readonly
+      })));
+    }
+  }]);
 
-    return EAMCheckbox;
-}(_EAMBaseInput3.default);
+  return EAMCheckbox;
+}(_EAMBaseInput2["default"]);
 
 EAMCheckbox.defaultProps = {
-    trueValue: 'true',
-    falseValue: 'false'
+  trueValue: 'true',
+  falseValue: 'false'
 };
 
-exports.default = (0, _index.withStyles)(_EAMBaseInput2.formStyles)(EAMCheckbox);
+var _default = (0, _index.withStyles)(_EAMBaseInput2.formStyles)(EAMCheckbox);
+
+exports["default"] = _default;

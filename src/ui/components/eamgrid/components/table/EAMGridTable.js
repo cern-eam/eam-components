@@ -6,8 +6,7 @@ import DataGridFooter from './EAMGridFooter';
 import {withStyles} from "@material-ui/core/styles/index";
 import DataGridActions from './EAMGridActions';
 
-const styles = (theme) => ({
-    ...theme,
+const styles = {
     searchresults: {
         height: '100%',
         backgroundColor: 'white',
@@ -24,7 +23,7 @@ const styles = (theme) => ({
         whiteSpace: "nowrap",
         textOverflow: "ellipsis"
     }
-});
+};
 
 class DataGridResultTable extends Component {
 

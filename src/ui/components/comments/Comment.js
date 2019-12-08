@@ -6,12 +6,9 @@ import TextareaAutosize from 'react-autosize-textarea';
 import ListItem from '@material-ui/core/ListItem';
 import UserAvatar from 'react-user-avatar'
 import { withStyles } from '@material-ui/core/styles';
-import {FlagCheckered} from 'mdi-material-ui';
+import {FlagCheckered, PlusBoxOutline, Pencil} from 'mdi-material-ui';
 
-const createdIcon = 'fa fa-plus-square-o Fs13 Black';
-const createdIconStyle = {paddingRight: '3px'};
-const updatedIcon = 'fa fa-pencil-square-o Fs13 Black';
-const updatedIconStyle = {};
+const iconStyle = {height: 17};
 const initialContainerStyle = {opacity: 1.0, pointerEvents: 'all'};
 
 const mainColors = [
@@ -106,12 +103,14 @@ class Comment extends Component {
 
                             <div>
                                 <CommentUser userDesc={this.state.comment.creationUserDesc}
-                                             userDate={this.state.comment.creationDate} icon={createdIcon}
-                                             iconStyle={createdIconStyle}/>
+                                             userDate={this.state.comment.creationDate}
+                                             icon={<PlusBoxOutline style={iconStyle}/>}
+                                />
                                 {this.props.comment.updateUserCode &&
                                 <CommentUser userDesc={this.state.comment.updateUserDesc}
                                              userDate={this.state.comment.updateDate}
-                                             icon={updatedIcon} iconStyle={updatedIconStyle}/>}
+                                             icon={<Pencil style={iconStyle}/>}
+                                />}
                             </div>
 
                             <div style={{display: "flex", alignItems: "center", height: 25, marginRight: 7}}>

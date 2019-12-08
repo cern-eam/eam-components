@@ -5,13 +5,13 @@ import { ToggleSwitch, HomeModern, HelpCircle} from 'mdi-material-ui';
 import CheckCircle from '@material-ui/icons/CheckCircle';
 import green from '@material-ui/core/colors/green';
 
-export const PartIcon = props => (
-    <SvgIcon {...props} viewBox='0 0 199 199'>
+export const PartIcon = React.forwardRef((props, ref) => (
+    <SvgIcon {...props} ref={ref} viewBox='0 0 199 199'>
         <path
             d="M198 82c0 16-6 30-18 41a5 5 0 0 1-7 0L75 25a5 5 0 0 1 0-7C87 6 102 0 118 0c15 0 29 6 39 17h1c1 2 2 5 0 7l-18 20 14 15 21-18c2-2 5-2 7 0 11 11 17 26 16 41zM27 118L9 137l72 34 19-18-73-35zm24-26l-17 19 74 35 20-18-77-36zm91 15L91 57l-3-2-4 2-25 27 77 36 6-6a5 5 0 0 0 0-7zM2 145l-1 1v7l45 44a5 5 0 0 0 7 0l20-19-71-33z"
         />
     </SvgIcon>
-);
+));
 
 export const SystemIcon = props => (
     <SvgIcon {...props} viewBox='0 0 100 100'>
@@ -45,9 +45,7 @@ export const LocationIcon = props => (
     <HomeModern {...props} />
 );
 
-export const WorkorderIcon = props => (
-    <AssignmentTurnedInIcon {...props} />
-);
+export const WorkorderIcon = React.forwardRef((props, ref) => <AssignmentTurnedInIcon {...props} ref={ref} />);
 
 export const AssetIcon = props => (
     <SvgIcon {...props} viewBox='0 0 485 585'>

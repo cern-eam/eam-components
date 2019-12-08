@@ -1,167 +1,183 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
+exports["default"] = void 0;
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var _react = _interopRequireWildcard(require("react"));
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _ExpandMore = _interopRequireDefault(require("@material-ui/icons/ExpandMore"));
 
-var _react = require('react');
+var _ExpansionPanel = _interopRequireDefault(require("@material-ui/core/ExpansionPanel"));
 
-var _react2 = _interopRequireDefault(_react);
+var _ExpansionPanelDetails = _interopRequireDefault(require("@material-ui/core/ExpansionPanelDetails"));
 
-var _ExpandMore = require('@material-ui/icons/ExpandMore');
+var _ExpansionPanelSummary = _interopRequireDefault(require("@material-ui/core/ExpansionPanelSummary"));
 
-var _ExpandMore2 = _interopRequireDefault(_ExpandMore);
+var _Icon = _interopRequireDefault(require("@material-ui/core/Icon"));
 
-var _ExpansionPanel = require('@material-ui/core/ExpansionPanel');
+var _IconButton = _interopRequireDefault(require("@material-ui/core/IconButton"));
 
-var _ExpansionPanel2 = _interopRequireDefault(_ExpansionPanel);
+var _OpenInNew = _interopRequireDefault(require("mdi-material-ui/OpenInNew"));
 
-var _ExpansionPanelDetails = require('@material-ui/core/ExpansionPanelDetails');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var _ExpansionPanelDetails2 = _interopRequireDefault(_ExpansionPanelDetails);
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
-var _ExpansionPanelSummary = require('@material-ui/core/ExpansionPanelSummary');
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-var _ExpansionPanelSummary2 = _interopRequireDefault(_ExpansionPanelSummary);
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-var _Icon = require('@material-ui/core/Icon');
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-var _Icon2 = _interopRequireDefault(_Icon);
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-var _IconButton = require('@material-ui/core/IconButton');
-
-var _IconButton2 = _interopRequireDefault(_IconButton);
-
-var _OpenInNew = require('mdi-material-ui/OpenInNew');
-
-var _OpenInNew2 = _interopRequireDefault(_OpenInNew);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var EISPanel = function (_Component) {
-    _inherits(EISPanel, _Component);
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-    function EISPanel() {
-        var _ref;
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-        var _temp, _this, _ret;
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-        _classCallCheck(this, EISPanel);
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-            args[_key] = arguments[_key];
-        }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EISPanel.__proto__ || Object.getPrototypeOf(EISPanel)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-            panelExpanded: true
-        }, _this.headingStyle = {
-            display: "flex",
-            alignItems: "center",
-            fontWeight: 500
-        }, _this.headingIconStyle = {
-            fontSize: 20,
-            marginRight: 7
-        }, _this.summaryStyle = {
-            backgroundColor: "#fafafa",
-            borderBottom: "1px solid #EEEEEE",
-            minHeight: '45px',
-            height: '45px'
-        }, _this.linkIconStyle = {
-            color: "#00aaff"
-        }, _this._onPanelChange = function (object, expanded) {
-            if (_this.props.alwaysExpanded) {
-                expanded = true;
-            }
-            _this.setState(function () {
-                return {
-                    panelExpanded: expanded
-                };
-            });
+var EISPanel =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(EISPanel, _Component);
 
-            if (_this.props.onPanelChange) {
-                _this.props.onPanelChange(expanded);
-            }
-        }, _temp), _possibleConstructorReturn(_this, _ret);
+  function EISPanel() {
+    var _getPrototypeOf2;
+
+    var _this;
+
+    _classCallCheck(this, EISPanel);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
     }
 
-    _createClass(EISPanel, [{
-        key: 'linkClickHandler',
-        value: function linkClickHandler() {
-            window.open(this.props.link, '_blank');
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(EISPanel)).call.apply(_getPrototypeOf2, [this].concat(args)));
+    _this.state = {
+      panelExpanded: true
+    };
+    _this.headingStyle = {
+      display: "flex",
+      alignItems: "center",
+      fontWeight: 500
+    };
+    _this.headingIconStyle = {
+      fontSize: 20,
+      marginRight: 7
+    };
+    _this.summaryStyle = {
+      backgroundColor: "#fafafa",
+      borderBottom: "1px solid #EEEEEE",
+      minHeight: '45px',
+      height: '45px'
+    };
+    _this.linkIconStyle = {
+      color: "#00aaff"
+    };
+
+    _this._onPanelChange = function (object, expanded) {
+      if (_this.props.alwaysExpanded) {
+        expanded = true;
+      }
+
+      _this.setState(function () {
+        return {
+          panelExpanded: expanded
+        };
+      });
+
+      if (_this.props.onPanelChange) {
+        _this.props.onPanelChange(expanded);
+      }
+    };
+
+    return _this;
+  }
+
+  _createClass(EISPanel, [{
+    key: "linkClickHandler",
+    value: function linkClickHandler() {
+      window.open(this.props.link, '_blank');
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var detailsStyle = _objectSpread({
+        overflow: "visible"
+      }, this.props.detailsStyle);
+
+      var panelStyle = this.state.panelExpanded ? {
+        display: 'inherit',
+        overflow: 'visible'
+      } : {
+        overflow: 'hidden'
+      };
+      return _react["default"].createElement(_ExpansionPanel["default"], {
+        defaultExpanded: true,
+        expanded: this.props.alwaysExpanded ? true : this.state.panelExpanded,
+        TransitionProps: {
+          style: _objectSpread({}, panelStyle),
+          unmountOnExit: true,
+          timeout: 300
+        },
+        onChange: this._onPanelChange
+      }, _react["default"].createElement(_ExpansionPanelSummary["default"], {
+        expandIcon: this.props.alwaysExpanded ? undefined : _react["default"].createElement(_ExpandMore["default"], null),
+        style: this.summaryStyle
+      }, _react["default"].createElement("div", {
+        style: this.headingStyle
+      }, this.props.headingIcon && _react["default"].createElement(_Icon["default"], {
+        style: this.headingIconStyle,
+        className: "fa " + this.props.headingIcon
+      }), _react["default"].createElement("div", null, this.props.heading), this.props.link && _react["default"].createElement(_IconButton["default"], {
+        onClick: this.linkClickHandler.bind(this),
+        style: {
+          height: "auto",
+          width: 35
         }
-    }, {
-        key: 'render',
-        value: function render() {
-            var detailsStyle = _extends({
-                overflow: "visible"
-            }, this.props.detailsStyle);
+      }, _react["default"].createElement(_OpenInNew["default"], {
+        style: this.linkIconStyle
+      })))), _react["default"].createElement(_ExpansionPanelDetails["default"], {
+        style: detailsStyle
+      }, this.props.children));
+    }
+  }], [{
+    key: "getDerivedStateFromProps",
+    value: function getDerivedStateFromProps(nextProps, prevState) {
+      // if panelExpanded is passed as prop and is different from the current
+      // state.panelExpanded then we update the state
+      if (typeof nextProps.panelExpanded !== "undefined" && nextProps.panelExpanded !== prevState.panelExpanded) {
+        return {
+          panelExpanded: nextProps.panelExpanded
+        };
+      } // No state update necessary
 
-            var panelStyle = this.state.panelExpanded ? { display: 'inherit', overflow: 'visible' } : { overflow: 'hidden' };
 
-            return _react2.default.createElement(
-                _ExpansionPanel2.default,
-                { defaultExpanded: true, expanded: this.props.alwaysExpanded ? true : this.state.panelExpanded,
-                    CollapseProps: { style: _extends({}, panelStyle), unmountOnExit: true, timeout: 300 },
-                    onChange: this._onPanelChange },
-                _react2.default.createElement(
-                    _ExpansionPanelSummary2.default,
-                    { expandIcon: this.props.alwaysExpanded ? undefined : _react2.default.createElement(_ExpandMore2.default, null),
-                        style: this.summaryStyle },
-                    _react2.default.createElement(
-                        'div',
-                        { style: this.headingStyle },
-                        this.props.headingIcon && _react2.default.createElement(_Icon2.default, { style: this.headingIconStyle, className: "fa " + this.props.headingIcon }),
-                        _react2.default.createElement(
-                            'div',
-                            null,
-                            this.props.heading
-                        ),
-                        this.props.link && _react2.default.createElement(
-                            _IconButton2.default,
-                            { onClick: this.linkClickHandler.bind(this), style: { height: "auto", width: 35 } },
-                            _react2.default.createElement(_OpenInNew2.default, { style: this.linkIconStyle })
-                        )
-                    )
-                ),
-                _react2.default.createElement(
-                    _ExpansionPanelDetails2.default,
-                    { style: detailsStyle },
-                    this.props.children
-                )
-            );
-        }
-    }], [{
-        key: 'getDerivedStateFromProps',
-        value: function getDerivedStateFromProps(nextProps, prevState) {
-            // if panelExpanded is passed as prop and is different from the current
-            // state.panelExpanded then we update the state
-            if (typeof nextProps.panelExpanded !== "undefined" && nextProps.panelExpanded !== prevState.panelExpanded) {
-                return {
-                    panelExpanded: nextProps.panelExpanded
-                };
-            }
+      return null;
+    }
+  }]);
 
-            // No state update necessary
-            return null;
-        }
-    }]);
-
-    return EISPanel;
+  return EISPanel;
 }(_react.Component);
 
 EISPanel.defaultProps = {
-    alwaysExpanded: false,
-    onPanelChange: undefined
+  alwaysExpanded: false,
+  onPanelChange: undefined
 };
-
-exports.default = EISPanel;
+var _default = EISPanel;
+exports["default"] = _default;

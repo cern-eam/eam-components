@@ -74,7 +74,7 @@ class EISPanel extends Component {
 
         return (
             <ExpansionPanel defaultExpanded expanded={this.props.alwaysExpanded ? true : this.state.panelExpanded}
-                            CollapseProps={{style: {...panelStyle}, unmountOnExit: true, timeout: 300}}
+                            TransitionProps={{style: {...panelStyle}, unmountOnExit: true, timeout: 300}}
                             onChange={this._onPanelChange}>
                 <ExpansionPanelSummary expandIcon={this.props.alwaysExpanded ? undefined : <ExpandMoreIcon/>}
                                        style={this.summaryStyle}>

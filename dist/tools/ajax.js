@@ -1,24 +1,27 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var _axios = _interopRequireDefault(require("axios"));
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _ErrorTypes = _interopRequireDefault(require("../enums/ErrorTypes"));
 
-var _axios = require('axios');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var _axios2 = _interopRequireDefault(_axios);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-var _ErrorTypes = require('../enums/ErrorTypes');
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-var _ErrorTypes2 = _interopRequireDefault(_ErrorTypes);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /*
  * Default timeout is 20s.
@@ -26,14 +29,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var DEFAULT_TIMEOUT = 20000;
 
-var Ajax = function () {
+var Ajax =
+/*#__PURE__*/
+function () {
   function Ajax() {
     _classCallCheck(this, Ajax);
   }
 
   _createClass(Ajax, [{
-    key: 'get',
-
+    key: "get",
 
     /**
      * Make a HTTP GET request
@@ -42,68 +46,62 @@ var Ajax = function () {
       var _this = this;
 
       var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-      return _axios2.default.get(url, _extends({ timeout: DEFAULT_TIMEOUT }, config)).then(function (response) {
+      return _axios["default"].get(url, _objectSpread({
+        timeout: DEFAULT_TIMEOUT
+      }, config)).then(function (response) {
         return _this._convertResponse(response);
-      }).catch(function (error) {
+      })["catch"](function (error) {
         throw _this._convertError(error);
       });
     }
-
     /**
      * Make a HTTP POST request
      */
 
   }, {
-    key: 'post',
+    key: "post",
     value: function post(url, data) {
       var _this2 = this;
 
       var config = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-
-      return _axios2.default.post(url, data, config).then(function (response) {
+      return _axios["default"].post(url, data, config).then(function (response) {
         return _this2._convertResponse(response);
-      }).catch(function (error) {
+      })["catch"](function (error) {
         throw _this2._convertError(error);
       });
     }
-
     /**
      * Make a HTTP PUT request
      */
 
   }, {
-    key: 'put',
+    key: "put",
     value: function put(url, data) {
       var _this3 = this;
 
       var config = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-
-      return _axios2.default.put(url, data, config).then(function (response) {
+      return _axios["default"].put(url, data, config).then(function (response) {
         return _this3._convertResponse(response);
-      }).catch(function (error) {
+      })["catch"](function (error) {
         throw _this3._convertError(error);
       });
     }
-
     /**
      * Make a HTTP DELETE request
      */
 
   }, {
-    key: 'delete',
+    key: "delete",
     value: function _delete(url) {
       var _this4 = this;
 
       var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-      return _axios2.default.delete(url, config).then(function (response) {
+      return _axios["default"]["delete"](url, config).then(function (response) {
         return _this4._convertResponse(response);
-      }).catch(function (error) {
+      })["catch"](function (error) {
         throw _this4._convertError(error);
       });
     }
-
     /**
      * Convert Axios Response to our standard format
      * @param response
@@ -112,14 +110,13 @@ var Ajax = function () {
      */
 
   }, {
-    key: '_convertResponse',
+    key: "_convertResponse",
     value: function _convertResponse(response) {
       return {
         status: response.status,
         body: response.data
       };
     }
-
     /**
      * Convert Axios error to our standard format
      * @param error
@@ -128,17 +125,17 @@ var Ajax = function () {
      */
 
   }, {
-    key: '_convertError',
+    key: "_convertError",
     value: function _convertError(error) {
-      if (_axios2.default.isCancel(error)) {
+      if (_axios["default"].isCancel(error)) {
         return {
-          type: _ErrorTypes2.default.REQUEST_CANCELLED
+          type: _ErrorTypes["default"].REQUEST_CANCELLED
         };
       }
 
       if (error.response) {
         return {
-          type: _ErrorTypes2.default.SERVER_ERROR,
+          type: _ErrorTypes["default"].SERVER_ERROR,
           response: {
             status: error.response.status,
             body: error.response.data
@@ -146,22 +143,23 @@ var Ajax = function () {
         };
       } else if (error.code === 'ECONNABORTED') {
         return {
-          type: _ErrorTypes2.default.CONNECTION_ABORDED
+          type: _ErrorTypes["default"].CONNECTION_ABORDED
         };
-      } else {
-        // Because we are behind IT-DB proxy this will be only reached when a redirect was sent (i.e. SSO session has expired)
+      } else {// Because we are behind IT-DB proxy this will be only reached when a redirect was sent (i.e. SSO session has expired)
         // TODO: should be carefully studied
         //window.location.reload(true)
       }
     }
   }, {
-    key: 'getAxiosInstance',
+    key: "getAxiosInstance",
     value: function getAxiosInstance() {
-      return _axios2.default;
+      return _axios["default"];
     }
   }]);
 
   return Ajax;
 }();
 
-exports.default = new Ajax();
+var _default = new Ajax();
+
+exports["default"] = _default;

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import EAMGridExporter from './EAMGridExporter';
 
-const styles = (theme) => ({
+const styles = {
     footerStyle: {
         backgroundColor: '#fafafa',
         padding: '10px',
@@ -11,7 +11,7 @@ const styles = (theme) => ({
         alignItems: 'center',
         justifyContent: 'space-between'
     },
-});
+};
 
 class DataGridFooter extends Component {
 

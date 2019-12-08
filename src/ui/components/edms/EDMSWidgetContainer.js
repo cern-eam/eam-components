@@ -10,7 +10,10 @@ const EDMSWidgetContainer = connect(mapStateToProps, {
         showSuccess,
         showError,
         handleError
-    }, null, {withRef: true}
+    }
 )(EDMSWidget);
 
 export default EDMSWidgetContainer;
+
+// upgrade npm dependencies
+// deployment to the cloud

@@ -9,7 +9,14 @@ export const theme = createMuiTheme({
     },
     typography: {
         body1: {
-            fontSize: '12px',
+            fontSize: '14px'
+        }
+    },
+    overrides: {
+        MuiButton: {
+            root: {
+                color: "#585858"
+            }
         }
     }
 });

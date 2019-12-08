@@ -1,7 +1,7 @@
 import React from 'react';
 import {withStyles} from "@material-ui/core/styles/index";
 
-const styles = () => ({
+const styles = {
     headerCellContainer: {
         display: "flex",
         flexDirection: "column",
@@ -23,7 +23,7 @@ const styles = () => ({
         "-moz-box-sizing": "border-box",
         "-webkit-box-sizing": "border-box"
     }
-});
+};
 
 const EAMGridHeaderCell = props => {
 

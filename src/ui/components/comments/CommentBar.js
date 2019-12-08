@@ -46,8 +46,7 @@ class CommentBar extends Component {
             return (
                 <div className="commentBarContainer">
 
-                    <Button variant="flat" onClick={this.barCommentSaveHandler} className="commentSaveButton"
-                            color="primary">
+                    <Button variant="flat" onClick={this.barCommentSaveHandler} color="primary">
                         <SaveIcon style={saveIconStyle}/> Save
                     </Button>
 

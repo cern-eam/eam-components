@@ -1,5 +1,5 @@
 import React from 'react';
-import {DatePicker, MuiPickersUtilsProvider} from 'material-ui-pickers';
+import {DatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
 import {Icon} from '@material-ui/core';
 import EAMBaseInput, {formStyles} from './EAMBaseInput'
 import DateFnsUtils from '@date-io/date-fns';
@@ -57,8 +57,8 @@ class EAMDatePicker extends EAMBaseInput {
 
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <DatePicker
-                        InputAdornmentProps={{style: {marginRight: -12}}}
-                        keyboard
+                        inputadornmentprops={{style: {marginRight: -12}}}
+                        keyboard="true"
                         error={this.state.error}
                         helperText={this.state.helperText}
                         disabled={this.state.disabled || (elementInfo && elementInfo.readonly)}

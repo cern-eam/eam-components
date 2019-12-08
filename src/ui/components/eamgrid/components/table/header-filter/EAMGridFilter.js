@@ -2,16 +2,14 @@ import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
 import DataGridFilterTypeMenu from './EAMGridFilterTypeMenu';
 import {withStyles} from "@material-ui/core/styles/index";
-import { DatePicker, DateTimePicker } from 'material-ui-pickers';
-import { MuiPickersUtilsProvider } from 'material-ui-pickers';
+import { DatePicker, DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { Icon } from '@material-ui/core';
 import { format } from 'date-fns';
 import EAMGridFilterInput from './EAMGridFilterInput'
 import Constants from '../../../../../../enums/Constants'
 
-const styles = (theme) => ({
-    ...theme,
+const styles = {
     filterCell: {
         display: "flex",
         flexDirection: "row",
@@ -32,7 +30,7 @@ const styles = (theme) => ({
     input: {
         backgroundColor: 'red'
     }
-});
+};
 
 
 

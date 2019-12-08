@@ -160,9 +160,9 @@ export default class EAMBaseInput extends Component {
 
         if (this.props.link && this.props.link(this.state.value)) {
             if (this.props.link().startsWith("http")) {
-                eamLink = props => <a href={this.props.link(this.state.value)} {...props} target="_blank"/>
+                eamLink = React.forwardRef((props, ref) => <a href={this.props.link(this.state.value)} {...props} target="_blank"/>);
             } else {
-                eamLink = props => <Link to={this.props.link(this.state.value)} {...props} />
+                eamLink = React.forwardRef( (props, ref) => <Link to={this.props.link(this.state.value)} {...props} />);
             }
         }
 

@@ -9,7 +9,7 @@ import classNames from 'classnames';
 import FilterOutline from 'mdi-material-ui/FilterOutline';
 import FilterRemoveOutline from 'mdi-material-ui/FilterRemoveOutline';
 
-const styles = () => ({
+const styles = {
     mainPanelStyle: {
         backgroundColor: '#fafafa',
         padding: '10px',
@@ -59,7 +59,7 @@ const styles = () => ({
             display: "none"
         }
     }
-});
+};
 
 class DataGridSelectDataSpy extends Component {
     render() {

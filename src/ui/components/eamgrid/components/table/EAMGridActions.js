@@ -4,14 +4,13 @@ import Button from '@material-ui/core/Button';
 import CheckBox from '@material-ui/icons/CheckBox';
 import CheckBoxOutlineBlank from '@material-ui/icons/CheckBoxOutlineBlank';
 
-const styles = (theme) => ({
-  ...theme,
+const styles = {
   actionBar: {
     '& > button': {
       marginRight: "10px"
     }
   }
-});
+};
 
 /**
  * Action bar on top of the grid

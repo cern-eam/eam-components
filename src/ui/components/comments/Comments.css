@@ -92,15 +92,6 @@ div.innerTriangle {
     width: 100%;
 }
 
-.commentSaveButton {
-    width: 25px;
-    height: 25px;
-}
-
-.commentBarContainer {
-
-}
-
 .commentBarClosing {
     position: absolute;
     float: right;

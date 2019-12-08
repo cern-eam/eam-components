@@ -186,12 +186,12 @@ class EISTable extends Component {
                 <Table className="responsiveTable" style={{overflow:'visible'}}>
                     <TableHead>
                         {this.props.filters && Object.keys(this.props.filters).length &&
-                        <TableRow>
+                        <TableRow key={"filterby"}>
                             <TableCell>Filter by:</TableCell>
                             <TableCell>{this.renderFilterByValuesMobile()}</TableCell>
                         </TableRow>
                         }
-                        <TableRow>
+                        <TableRow key={"sortby"}>
                             <TableCell>Sort by:</TableCell>
                             <TableCell>{this.renderSortByValuesMobile()}</TableCell>
                         </TableRow>
@@ -273,7 +273,7 @@ class EISTable extends Component {
                     }
                     <Table className="responsiveTable" style={{overflow:'visible'}}>
                         <TableHead>
-                            <TableRow>
+                            <TableRow key={"key"}>
                                 {this.props.headers.map((header, index) => (
                                     <TableCell key={header}
                                                 sortDirection={this.state.orderBy === index ? this.state.order : false}>

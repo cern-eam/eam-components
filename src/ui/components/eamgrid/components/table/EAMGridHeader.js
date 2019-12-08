@@ -6,8 +6,7 @@ import {withStyles} from "@material-ui/core/styles/index";
 import Tooltip from '@material-ui/core/Tooltip';
 import EAMGridHeaderCell from './EAMGridHeaderCell';
 
-const styles = (theme) => ({
-    ...theme,
+const styles = {
     tableHeader: {
         width: "100%",
         display: "flex",
@@ -43,7 +42,7 @@ const styles = (theme) => ({
         height: "24px",
         fontWeight: "bold"
     }
-});
+};
 
 class DataGridTableHeader extends Component {
 

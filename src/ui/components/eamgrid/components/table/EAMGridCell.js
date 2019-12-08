@@ -1,7 +1,7 @@
 import React from 'react';
 import {withStyles} from "@material-ui/core/styles/index";
 
-const styles = () => ({
+const styles = {
     searchRowCell: {
         display: "flex",
         justifyContent: "center",
@@ -22,7 +22,7 @@ const styles = () => ({
         alignItems: "center",
         textAlign: "left"
     }
-});
+};
 
 const EAMGridCell = props => {
 

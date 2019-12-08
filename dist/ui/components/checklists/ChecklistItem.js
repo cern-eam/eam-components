@@ -1,299 +1,319 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
+exports["default"] = void 0;
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var _react = _interopRequireWildcard(require("react"));
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _ChecklistItemInputYesNo = _interopRequireDefault(require("./inputs/ChecklistItemInputYesNo"));
 
-var _react = require('react');
+var _ChecklistItemInput3Findings = _interopRequireDefault(require("./inputs/ChecklistItemInput3Findings"));
 
-var _react2 = _interopRequireDefault(_react);
+var _ChecklistItemInput2Findings = _interopRequireDefault(require("./inputs/ChecklistItemInput2Findings"));
 
-var _ChecklistItemInputYesNo = require('./inputs/ChecklistItemInputYesNo');
+var _ChecklistItemInput1Finding = _interopRequireDefault(require("./inputs/ChecklistItemInput1Finding"));
 
-var _ChecklistItemInputYesNo2 = _interopRequireDefault(_ChecklistItemInputYesNo);
+var _ChecklistItemInputMoreFindings = _interopRequireDefault(require("./inputs/ChecklistItemInputMoreFindings"));
 
-var _ChecklistItemInput3Findings = require('./inputs/ChecklistItemInput3Findings');
+var _ChecklistItemInputQuantitative = _interopRequireDefault(require("./inputs/ChecklistItemInputQuantitative"));
 
-var _ChecklistItemInput3Findings2 = _interopRequireDefault(_ChecklistItemInput3Findings);
+var _ChecklistItemInputChecklist = _interopRequireDefault(require("./inputs/ChecklistItemInputChecklist"));
 
-var _ChecklistItemInput2Findings = require('./inputs/ChecklistItemInput2Findings');
+var _ChecklistItemInputInspection = _interopRequireDefault(require("./inputs/ChecklistItemInputInspection"));
 
-var _ChecklistItemInput2Findings2 = _interopRequireDefault(_ChecklistItemInput2Findings);
+var _ChecklistItemNotes = _interopRequireDefault(require("./ChecklistItemNotes"));
 
-var _ChecklistItemInput1Finding = require('./inputs/ChecklistItemInput1Finding');
+var _Collapse = _interopRequireDefault(require("@material-ui/core/Collapse"));
 
-var _ChecklistItemInput1Finding2 = _interopRequireDefault(_ChecklistItemInput1Finding);
+var _ChecklistItemFollowUp = _interopRequireDefault(require("./ChecklistItemFollowUp"));
 
-var _ChecklistItemInputMoreFindings = require('./inputs/ChecklistItemInputMoreFindings');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var _ChecklistItemInputMoreFindings2 = _interopRequireDefault(_ChecklistItemInputMoreFindings);
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
-var _ChecklistItemInputQuantitative = require('./inputs/ChecklistItemInputQuantitative');
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-var _ChecklistItemInputQuantitative2 = _interopRequireDefault(_ChecklistItemInputQuantitative);
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-var _ChecklistItemInputChecklist = require('./inputs/ChecklistItemInputChecklist');
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-var _ChecklistItemInputChecklist2 = _interopRequireDefault(_ChecklistItemInputChecklist);
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-var _ChecklistItemInputInspection = require('./inputs/ChecklistItemInputInspection');
-
-var _ChecklistItemInputInspection2 = _interopRequireDefault(_ChecklistItemInputInspection);
-
-var _ChecklistItemNotes = require('./ChecklistItemNotes');
-
-var _ChecklistItemNotes2 = _interopRequireDefault(_ChecklistItemNotes);
-
-var _Collapse = require('@material-ui/core/Collapse');
-
-var _Collapse2 = _interopRequireDefault(_Collapse);
-
-var _ChecklistItemFollowUp = require('./ChecklistItemFollowUp');
-
-var _ChecklistItemFollowUp2 = _interopRequireDefault(_ChecklistItemFollowUp);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var Checklist = function (_Component) {
-    _inherits(Checklist, _Component);
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-    function Checklist() {
-        var _ref;
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-        var _temp, _this, _ret;
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-        _classCallCheck(this, Checklist);
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-            args[_key] = arguments[_key];
-        }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Checklist.__proto__ || Object.getPrototypeOf(Checklist)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-            detailsVisible: false,
-            blocked: false
-        }, _this.init = function (checklistItem) {
-            if (checklistItem) {
-                _this.setState({
-                    checklistItem: checklistItem,
-                    detailsVisible: !!checklistItem.notes || !!checklistItem.followUpWorkOrder || checklistItem.followUp === '+'
-                });
-            }
-        }, _this.getCheckListItemStyle = function () {
-            return {
-                paddingTop: 5,
-                paddingBottom: 5,
-                borderBottom: "dashed 1px #d1d3d4",
-                opacity: _this.state.blocked ? 0.5 : 1,
-                pointerEvents: _this.state.blocked ? 'none' : 'auto'
-            };
-        }, _this.firstLine = {
-            display: "flex",
-            alignItems: "center",
-            minHeight: 48,
-            justifyContent: 'space-between'
-        }, _this.firstLineDesc = {
-            float: "left",
-            pointerEvents: "initial",
-            color: "rgba(0, 0, 0, 0.87)"
-        }, _this.checklistDetailsStyle = {
-            marginLeft: -5,
-            marginTop: -5,
-            marginRight: -8,
-            paddingRight: 3,
-            display: "flex",
-            flexDirection: "row"
-        }, _temp), _possibleConstructorReturn(_this, _ret);
+var Checklist =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(Checklist, _Component);
+
+  function Checklist() {
+    var _getPrototypeOf2;
+
+    var _this;
+
+    _classCallCheck(this, Checklist);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
     }
 
-    _createClass(Checklist, [{
-        key: 'componentWillMount',
-        value: function componentWillMount() {
-            this.init(this.props.checklistItem);
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Checklist)).call.apply(_getPrototypeOf2, [this].concat(args)));
+    _this.state = {
+      detailsVisible: false,
+      blocked: false
+    };
+
+    _this.init = function (checklistItem) {
+      if (checklistItem) {
+        _this.setState({
+          checklistItem: checklistItem,
+          detailsVisible: !!checklistItem.notes || !!checklistItem.followUpWorkOrder || checklistItem.followUp === '+'
+        });
+      }
+    };
+
+    _this.getCheckListItemStyle = function () {
+      return {
+        paddingTop: 5,
+        paddingBottom: 5,
+        borderBottom: "dashed 1px #d1d3d4",
+        opacity: _this.state.blocked ? 0.5 : 1,
+        pointerEvents: _this.state.blocked ? 'none' : 'auto'
+      };
+    };
+
+    _this.firstLine = {
+      display: "flex",
+      alignItems: "center",
+      minHeight: 48,
+      justifyContent: 'space-between'
+    };
+    _this.firstLineDesc = {
+      "float": "left",
+      pointerEvents: "initial",
+      color: "rgba(0, 0, 0, 0.87)"
+    };
+    _this.checklistDetailsStyle = {
+      marginLeft: -5,
+      marginTop: -5,
+      marginRight: -8,
+      paddingRight: 3,
+      display: "flex",
+      flexDirection: "row"
+    };
+    return _this;
+  }
+
+  _createClass(Checklist, [{
+    key: "componentWillMount",
+    value: function componentWillMount() {
+      this.init(this.props.checklistItem);
+    }
+  }, {
+    key: "componentWillReceiveProps",
+    value: function componentWillReceiveProps(nextProps) {
+      var checklistItemProps = nextProps.checklistItem;
+      var checklistItemState = this.state.checklistItem;
+
+      if (checklistItemProps && checklistItemState) {
+        if (checklistItemProps.workOrderCode !== checklistItemState.workOrderCode) {
+          console.log('new wo!');
+          this.init(checklistItemProps);
         }
-    }, {
-        key: 'componentWillReceiveProps',
-        value: function componentWillReceiveProps(nextProps) {
-            var checklistItemProps = nextProps.checklistItem;
-            var checklistItemState = this.state.checklistItem;
-            if (checklistItemProps && checklistItemState) {
-                if (checklistItemProps.workOrderCode !== checklistItemState.workOrderCode) {
-                    console.log('new wo!');
-                    this.init(checklistItemProps);
-                }
-                if (checklistItemProps.followUpWorkOrder !== checklistItemState.followUpWorkOrder) {
-                    var checklistItem = _extends({}, checklistItemState, {
-                        followUpWorkOrder: checklistItemProps.followUpWorkOrder
-                    });
-                    this.init(checklistItem);
-                }
+
+        if (checklistItemProps.followUpWorkOrder !== checklistItemState.followUpWorkOrder) {
+          var checklistItem = _objectSpread({}, checklistItemState, {
+            followUpWorkOrder: checklistItemProps.followUpWorkOrder
+          });
+
+          this.init(checklistItem);
+        }
+      }
+    }
+  }, {
+    key: "onChange",
+    value: function onChange(checklistItem) {
+      var _this2 = this;
+
+      // Block the UI
+      this.setState({
+        blocked: true
+      }); // Copy the current checklist item (will be used to restore the UI)
+
+      var oldChecklistItem = Object.assign({}, this.state.checklistItem); //
+
+      this.setState({
+        checklistItem: checklistItem
+      }); // Update the checklist Item
+
+      this.props.updateChecklistItem(checklistItem).then(function (response) {
+        _this2.setState({
+          blocked: false
+        });
+      })["catch"](function (error) {
+        _this2.props.handleError(error); // Unblock the UI and restore the UI
+
+
+        _this2.setState({
+          blocked: false,
+          checklistItem: oldChecklistItem
+        });
+      });
+    }
+  }, {
+    key: "descClickHandler",
+    value: function descClickHandler() {
+      //if (!this.state.notesVisible) {
+      //    setTimeout(() => this.notesInput.focus(), 0)
+      //}
+      this.setState({
+        detailsVisible: !this.state.detailsVisible
+      });
+    }
+  }, {
+    key: "renderChecklistItemInput",
+    value: function renderChecklistItemInput() {
+      var _this3 = this;
+
+      var checklistItem = this.state.checklistItem;
+
+      switch (checklistItem.type) {
+        case "01":
+          return _react["default"].createElement(_ChecklistItemInputChecklist["default"], {
+            checklistItem: checklistItem,
+            onChange: function onChange(value) {
+              return _this3.onChange(value);
             }
-        }
+          });
 
-        /**
-         * Compute the style for notes div container
-         *
-         * @returns {{marginLeft: number, marginTop: number, position: string, display: string}}
-         */
+        case "02":
+          return _react["default"].createElement(_ChecklistItemInputYesNo["default"], {
+            checklistItem: checklistItem,
+            onChange: function onChange(value) {
+              return _this3.onChange(value);
+            }
+          });
 
-    }, {
-        key: 'onChange',
-        value: function onChange(checklistItem) {
-            var _this2 = this;
-
-            // Block the UI
-            this.setState({ blocked: true });
-            // Copy the current checklist item (will be used to restore the UI)
-            var oldChecklistItem = Object.assign({}, this.state.checklistItem);
-            //
-            this.setState({ checklistItem: checklistItem });
-            // Update the checklist Item
-            this.props.updateChecklistItem(checklistItem).then(function (response) {
-                _this2.setState({ blocked: false });
-            }).catch(function (error) {
-                _this2.props.handleError(error);
-                // Unblock the UI and restore the UI
-                _this2.setState({
-                    blocked: false,
-                    checklistItem: oldChecklistItem
+        case "03":
+          if (checklistItem.possibleFindings.length >= this.props.minFindingsDropdown) {
+            return _react["default"].createElement(_ChecklistItemInputMoreFindings["default"], {
+              checklistItem: checklistItem,
+              onChange: function onChange(value) {
+                return _this3.onChange(value);
+              }
+            });
+          } else {
+            switch (checklistItem.possibleFindings.length) {
+              case 1:
+                return _react["default"].createElement(_ChecklistItemInput1Finding["default"], {
+                  checklistItem: checklistItem,
+                  onChange: function onChange(value) {
+                    return _this3.onChange(value);
+                  }
                 });
-            });
-        }
-    }, {
-        key: 'descClickHandler',
-        value: function descClickHandler() {
-            //if (!this.state.notesVisible) {
-            //    setTimeout(() => this.notesInput.focus(), 0)
-            //}
-            this.setState({
-                detailsVisible: !this.state.detailsVisible
-            });
-        }
-    }, {
-        key: 'renderChecklistItemInput',
-        value: function renderChecklistItemInput() {
-            var _this3 = this;
 
-            var checklistItem = this.state.checklistItem;
+              case 2:
+                return _react["default"].createElement(_ChecklistItemInput2Findings["default"], {
+                  checklistItem: checklistItem,
+                  onChange: function onChange(value) {
+                    return _this3.onChange(value);
+                  }
+                });
 
+              case 3:
+                return _react["default"].createElement(_ChecklistItemInput3Findings["default"], {
+                  checklistItem: checklistItem,
+                  onChange: function onChange(value) {
+                    return _this3.onChange(value);
+                  }
+                });
 
-            switch (checklistItem.type) {
-                case "01":
-                    return _react2.default.createElement(_ChecklistItemInputChecklist2.default, { checklistItem: checklistItem,
-                        onChange: function onChange(value) {
-                            return _this3.onChange(value);
-                        } });
-                case "02":
-                    return _react2.default.createElement(_ChecklistItemInputYesNo2.default, { checklistItem: checklistItem, onChange: function onChange(value) {
-                            return _this3.onChange(value);
-                        } });
-                case "03":
-                    if (checklistItem.possibleFindings.length >= this.props.minFindingsDropdown) {
-                        return _react2.default.createElement(_ChecklistItemInputMoreFindings2.default, { checklistItem: checklistItem,
-                            onChange: function onChange(value) {
-                                return _this3.onChange(value);
-                            } });
-                    } else {
-                        switch (checklistItem.possibleFindings.length) {
-                            case 1:
-                                return _react2.default.createElement(_ChecklistItemInput1Finding2.default, { checklistItem: checklistItem,
-                                    onChange: function onChange(value) {
-                                        return _this3.onChange(value);
-                                    } });
-                            case 2:
-                                return _react2.default.createElement(_ChecklistItemInput2Findings2.default, { checklistItem: checklistItem,
-                                    onChange: function onChange(value) {
-                                        return _this3.onChange(value);
-                                    } });
-                            case 3:
-                                return _react2.default.createElement(_ChecklistItemInput3Findings2.default, { checklistItem: checklistItem,
-                                    onChange: function onChange(value) {
-                                        return _this3.onChange(value);
-                                    } });
-                            default:
-                                return _react2.default.createElement(_ChecklistItemInputMoreFindings2.default, { checklistItem: checklistItem,
-                                    onChange: function onChange(value) {
-                                        return _this3.onChange(value);
-                                    } });
-                        }
-                    }
-                case "04":
-                case "05":
-                    return _react2.default.createElement(_ChecklistItemInputQuantitative2.default, { checklistItem: checklistItem,
-                        onChange: function onChange(value) {
-                            return _this3.onChange(value);
-                        } });
-                case "06":
-                    return _react2.default.createElement(_ChecklistItemInputInspection2.default, { checklistItem: checklistItem,
-                        onChange: function onChange(value) {
-                            return _this3.onChange(value);
-                        } });
-                default:
-                    return _react2.default.createElement('div', null);
+              default:
+                return _react["default"].createElement(_ChecklistItemInputMoreFindings["default"], {
+                  checklistItem: checklistItem,
+                  onChange: function onChange(value) {
+                    return _this3.onChange(value);
+                  }
+                });
             }
+          }
+
+        case "04":
+        case "05":
+          return _react["default"].createElement(_ChecklistItemInputQuantitative["default"], {
+            checklistItem: checklistItem,
+            onChange: function onChange(value) {
+              return _this3.onChange(value);
+            }
+          });
+
+        case "06":
+          return _react["default"].createElement(_ChecklistItemInputInspection["default"], {
+            checklistItem: checklistItem,
+            onChange: function onChange(value) {
+              return _this3.onChange(value);
+            }
+          });
+
+        default:
+          return _react["default"].createElement("div", null);
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this4 = this;
+
+      var checklistItem = this.state.checklistItem;
+      return _react["default"].createElement("div", {
+        style: this.getCheckListItemStyle()
+      }, _react["default"].createElement("div", {
+        style: this.firstLine
+      }, _react["default"].createElement("div", {
+        style: this.firstLineDesc,
+        onClick: this.descClickHandler.bind(this)
+      }, _react["default"].createElement("label", null, checklistItem.desc), checklistItem.requiredToClose === true && _react["default"].createElement("label", {
+        style: {
+          color: "red"
         }
-    }, {
-        key: 'render',
-        value: function render() {
-            var _this4 = this;
-
-            var checklistItem = this.state.checklistItem;
-
-            return _react2.default.createElement(
-                'div',
-                { style: this.getCheckListItemStyle() },
-                _react2.default.createElement(
-                    'div',
-                    { style: this.firstLine },
-                    _react2.default.createElement(
-                        'div',
-                        { style: this.firstLineDesc, onClick: this.descClickHandler.bind(this) },
-                        _react2.default.createElement(
-                            'label',
-                            null,
-                            checklistItem.desc
-                        ),
-                        checklistItem.requiredToClose === true && _react2.default.createElement(
-                            'label',
-                            { style: { color: "red" } },
-                            ' *'
-                        )
-                    ),
-                    this.renderChecklistItemInput()
-                ),
-                _react2.default.createElement(
-                    _Collapse2.default,
-                    { 'in': this.state.detailsVisible },
-                    _react2.default.createElement(
-                        'div',
-                        { style: this.checklistDetailsStyle },
-                        _react2.default.createElement(_ChecklistItemNotes2.default, { checklistItem: checklistItem,
-                            onChange: function onChange(value) {
-                                return _this4.onChange(value);
-                            } }),
-                        _react2.default.createElement(_ChecklistItemFollowUp2.default, {
-                            checklistItem: checklistItem,
-                            onChange: function onChange(value) {
-                                return _this4.onChange(value);
-                            },
-                            getWoLink: this.props.getWoLink
-                        })
-                    )
-                )
-            );
+      }, " *")), this.renderChecklistItemInput()), _react["default"].createElement(_Collapse["default"], {
+        "in": this.state.detailsVisible
+      }, _react["default"].createElement("div", {
+        style: this.checklistDetailsStyle
+      }, _react["default"].createElement(_ChecklistItemNotes["default"], {
+        checklistItem: checklistItem,
+        onChange: function onChange(value) {
+          return _this4.onChange(value);
         }
-    }]);
+      }), _react["default"].createElement(_ChecklistItemFollowUp["default"], {
+        checklistItem: checklistItem,
+        onChange: function onChange(value) {
+          return _this4.onChange(value);
+        },
+        getWoLink: this.props.getWoLink
+      }))));
+    }
+  }]);
 
-    return Checklist;
+  return Checklist;
 }(_react.Component);
 
-exports.default = Checklist;
+exports["default"] = Checklist;
