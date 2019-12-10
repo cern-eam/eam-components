@@ -42,20 +42,22 @@ class EISTable extends Component {
         fontSize: '0.8125rem'
     }
 
-    componentWillMount() {
+    componentDidMount() {
         window.addEventListener('resize', this.onWindowSizeChange);
-        //Set the data
-        this.setState(() => ({data: this.props.data}));
-    }
-
-    componentWillReceiveProps(nextProps) {
-        //Set the data
-        this.initialData = this.props.data;
-        this.setState(() => ({data: nextProps.data}));
     }
 
     componentWillUnmount() {
         window.removeEventListener('resize', this.onWindowSizeChange);
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        if (props.data !== state.data) {
+            return {
+                ...state,
+                data: props.data
+            }
+        }
+        return null;
     }
 
     onWindowSizeChange = () => {
@@ -178,6 +180,7 @@ class EISTable extends Component {
     }
 
     render() {
+
         const isMobile = this.state.windowWidth < this.props.maxMobileSize;
         const rowsSelectable = this.props.selectedRowIndexes && this.props.onRowClick;
 
@@ -357,4 +360,4 @@ EISTable.defaultProps = {
 };
 
 
-export default EISTable;
+export default React.memo(EISTable);

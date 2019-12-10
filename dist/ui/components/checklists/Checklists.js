@@ -75,7 +75,7 @@ function (_Component) {
     _this.expansionDetailsStyle = {
       marginRight: -24,
       marginLeft: -24,
-      marginTop: -7,
+      marginTop: -8,
       marginBottom: -24
     };
     return _this;

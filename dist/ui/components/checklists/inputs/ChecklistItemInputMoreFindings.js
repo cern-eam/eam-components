@@ -93,7 +93,7 @@ function (_Component) {
         onChange: this.handleChange.bind(this)
       }, _react["default"].createElement(_MenuItem["default"], {
         value: null
-      }), checklistItem.possibleFindings.map(function (finding) {
+      }, "\u200B"), checklistItem.possibleFindings.map(function (finding) {
         return _react["default"].createElement(_MenuItem["default"], {
           key: finding.code,
           value: finding.code

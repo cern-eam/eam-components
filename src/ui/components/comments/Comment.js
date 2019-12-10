@@ -8,7 +8,7 @@ import UserAvatar from 'react-user-avatar'
 import { withStyles } from '@material-ui/core/styles';
 import {FlagCheckered, PlusBoxOutline, Pencil} from 'mdi-material-ui';
 
-const iconStyle = {height: 17};
+const iconStyle = {height: 15};
 const initialContainerStyle = {opacity: 1.0, pointerEvents: 'all'};
 
 const mainColors = [

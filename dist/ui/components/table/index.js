@@ -283,28 +283,9 @@ function (_Component) {
   }
 
   _createClass(EISTable, [{
-    key: "componentWillMount",
-    value: function componentWillMount() {
-      var _this2 = this;
-
-      window.addEventListener('resize', this.onWindowSizeChange); //Set the data
-
-      this.setState(function () {
-        return {
-          data: _this2.props.data
-        };
-      });
-    }
-  }, {
-    key: "componentWillReceiveProps",
-    value: function componentWillReceiveProps(nextProps) {
-      //Set the data
-      this.initialData = this.props.data;
-      this.setState(function () {
-        return {
-          data: nextProps.data
-        };
-      });
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      window.addEventListener('resize', this.onWindowSizeChange);
     }
   }, {
     key: "componentWillUnmount",
@@ -314,7 +295,7 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this3 = this;
+      var _this2 = this;
 
       var isMobile = this.state.windowWidth < this.props.maxMobileSize;
       var rowsSelectable = this.props.selectedRowIndexes && this.props.onRowClick;
@@ -333,7 +314,7 @@ function (_Component) {
           // every second row is grey
           var style = index % 2 === 0 ? whiteBackground : greyBackground;
 
-          if (_this3.props.selectedRowIndexes && _this3.props.selectedRowIndexes.includes(index)) {
+          if (_this2.props.selectedRowIndexes && _this2.props.selectedRowIndexes.includes(index)) {
             style = _objectSpread({}, style, {
               backgroundColor: "#2b82ff"
             });
@@ -356,10 +337,10 @@ function (_Component) {
            */
 
 
-          if (_this3.props.stylesMap) {
-            Object.keys(_this3.props.stylesMap).forEach(function (key) {
+          if (_this2.props.stylesMap) {
+            Object.keys(_this2.props.stylesMap).forEach(function (key) {
               if (content[key]) {
-                style = _objectSpread({}, style, {}, _this3.props.stylesMap[key]);
+                style = _objectSpread({}, style, {}, _this2.props.stylesMap[key]);
               }
             });
           }
@@ -368,13 +349,13 @@ function (_Component) {
             key: index,
             style: style,
             onClick: rowsSelectable ? function () {
-              return _this3.props.onRowClick(content, index);
+              return _this2.props.onRowClick(content, index);
             } : function () {}
-          }, _this3.props.propCodes.map(function (prop, index) {
+          }, _this2.props.propCodes.map(function (prop, index) {
             return _react["default"].createElement(_TableRow["default"], {
               key: prop,
               style: style
-            }, _react["default"].createElement(_TableCell["default"], null, _this3.props.headers[index]), _react["default"].createElement(_TableCell["default"], null, _this3.renderContent(prop, content)));
+            }, _react["default"].createElement(_TableCell["default"], null, _this2.props.headers[index]), _react["default"].createElement(_TableCell["default"], null, _this2.renderContent(prop, content)));
           }));
         }));
       } else {
@@ -398,7 +379,7 @@ function (_Component) {
           return _react["default"].createElement(_MenuItem["default"], {
             key: key,
             value: key
-          }, _this3.props.filters[key].text);
+          }, _this2.props.filters[key].text);
         }))), _react["default"].createElement(_Table["default"], {
           className: "responsiveTable",
           style: {
@@ -409,20 +390,20 @@ function (_Component) {
         }, this.props.headers.map(function (header, index) {
           return _react["default"].createElement(_TableCell["default"], {
             key: header,
-            sortDirection: _this3.state.orderBy === index ? _this3.state.order : false
+            sortDirection: _this2.state.orderBy === index ? _this2.state.order : false
           }, _react["default"].createElement(_Tooltip["default"], {
             title: "Sort",
             placement: 'bottom-end',
             enterDelay: 300
           }, _react["default"].createElement(_TableSortLabel["default"], {
-            active: _this3.state.orderBy === index,
-            direction: _this3.state.order,
-            onClick: _this3.createSortHandler(index)
+            active: _this2.state.orderBy === index,
+            direction: _this2.state.order,
+            onClick: _this2.createSortHandler(index)
           }, header)));
         }))), _react["default"].createElement(_TableBody["default"], null, this.state.data.map(function (content, index) {
           var style = {};
 
-          if (_this3.props.selectedRowIndexes && _this3.props.selectedRowIndexes.includes(index)) {
+          if (_this2.props.selectedRowIndexes && _this2.props.selectedRowIndexes.includes(index)) {
             style = _objectSpread({}, style, {
               backgroundColor: "#2196f3"
             });
@@ -434,10 +415,10 @@ function (_Component) {
             });
           }
 
-          if (_this3.props.stylesMap) {
-            Object.keys(_this3.props.stylesMap).forEach(function (key) {
+          if (_this2.props.stylesMap) {
+            Object.keys(_this2.props.stylesMap).forEach(function (key) {
               if (content[key]) {
-                style = _objectSpread({}, style, {}, _this3.props.stylesMap[key]);
+                style = _objectSpread({}, style, {}, _this2.props.stylesMap[key]);
               }
             });
           }
@@ -446,15 +427,26 @@ function (_Component) {
             key: index,
             style: style,
             onClick: rowsSelectable ? function () {
-              return _this3.props.onRowClick(content, index);
+              return _this2.props.onRowClick(content, index);
             } : function () {}
-          }, _this3.props.propCodes.map(function (propCode) {
+          }, _this2.props.propCodes.map(function (propCode) {
             return _react["default"].createElement(_TableCell["default"], {
               key: propCode
-            }, _this3.renderContent(propCode, content));
+            }, _this2.renderContent(propCode, content));
           }));
         }))));
       }
+    }
+  }], [{
+    key: "getDerivedStateFromProps",
+    value: function getDerivedStateFromProps(props, state) {
+      if (props.data !== state.data) {
+        return _objectSpread({}, state, {
+          data: props.data
+        });
+      }
+
+      return null;
     }
   }]);
 
@@ -474,5 +466,7 @@ EISTable.defaultProps = {
   linksMap: new Map(),
   maxMobileSize: 540
 };
-var _default = EISTable;
+
+var _default = _react["default"].memo(EISTable);
+
 exports["default"] = _default;

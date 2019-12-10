@@ -34,7 +34,7 @@ export default class ChecklistItemInputMoreFindings extends Component {
                             value={checklistItem.finding || ''}
                             onChange={this.handleChange.bind(this)}
                     >
-                        <MenuItem value={null}></MenuItem>
+                        <MenuItem value={null}>&#8203;</MenuItem>
                         {checklistItem.possibleFindings.map(finding => (
                             <MenuItem key={finding.code} value={finding.code}>{finding.desc}</MenuItem>
                         ))}
