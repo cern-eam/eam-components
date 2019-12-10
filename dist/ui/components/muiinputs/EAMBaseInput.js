@@ -53,7 +53,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var numberReg = /^\-?(0|([1-9]\d*))(\.\d+)?$/;
 var typingNumberReg = /^\-?\d*\.?\d*?$/;
 
 var EAMBaseInput =
@@ -171,7 +170,12 @@ function (_Component) {
     _this.isNumber = function (label) {
       return {
         getResult: function getResult(value) {
-          return !value || numberReg.test(value);
+          // Convert if value is a {code, desc} object
+          if (value && (value.code || value.code === "")) {
+            value = value.code;
+          }
+
+          return !isNaN(value);
         },
         errorText: "*Number expected"
       };

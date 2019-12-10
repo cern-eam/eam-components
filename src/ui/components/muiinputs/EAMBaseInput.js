@@ -3,7 +3,6 @@ import IconButton from '@material-ui/core/IconButton';
 import OpenInNewIcon from 'mdi-material-ui/OpenInNew'
 import { Link } from 'react-router-dom'
 
-const numberReg = /^\-?(0|([1-9]\d*))(\.\d+)?$/
 const typingNumberReg = /^\-?\d*\.?\d*?$/
 
 export default class EAMBaseInput extends Component {
@@ -97,7 +96,13 @@ export default class EAMBaseInput extends Component {
     })
 
     isNumber = label => ({
-        getResult: value => !value || numberReg.test(value),
+        getResult: value => {
+            // Convert if value is a {code, desc} object
+            if (value && (value.code || value.code === "")) {
+                value = value.code
+            }
+            return !isNaN(value)
+        },
         errorText: `*Number expected` 
     })
 
