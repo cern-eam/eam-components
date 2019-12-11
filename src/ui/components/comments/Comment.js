@@ -8,6 +8,16 @@ import UserAvatar from 'react-user-avatar'
 import { withStyles } from '@material-ui/core/styles';
 import {FlagCheckered, PlusBoxOutline, Pencil} from 'mdi-material-ui';
 
+import CKEditor from '@ckeditor/ckeditor5-react';
+
+import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
+import InlineEditor from '@ckeditor/ckeditor5-editor-inline/src/inlineeditor';
+import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials';
+import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
+import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold';
+import Italic from '@ckeditor/ckeditor5-basic-styles/src/italic';
+import Heading from '@ckeditor/ckeditor5-heading/src/heading';
+
 const iconStyle = {height: 15};
 const initialContainerStyle = {opacity: 1.0, pointerEvents: 'all'};
 
@@ -90,7 +100,25 @@ class Comment extends Component {
 
     render() {
         return (
+            <div style={{height: '400px', height: '400px'}}>
+                <CKEditor
+                    onInit={ editor => { console.log( 'Editor is ready to use!', editor ) }}
+                    onChange={ ( event, editor ) => console.log( { event, editor } ) }
+                    // config={ {
+                    //     plugins: [ Essentials, Paragraph, Bold, Italic, Heading ],
+                    //     toolbar: [ 'heading', '|', 'bold', 'italic', '|', 'undo', 'redo', ]
+                    // } }
+                    editor={ InlineEditor }
+                    data={this.state.comment.text}
+                />
+            </div>
+        )
+  
+
+        return (
             <ListItem classes={{root: this.props.classes.root}}>
+                 
+
 
                 <UserAvatar size="48" name={this.state.comment.creationUserDesc} colors={mainColors}/>
 
@@ -124,9 +152,11 @@ class Comment extends Component {
 
 
                     <div className="commentTextContainer" onKeyDown={this.onKeyDownHandler}>
-                        <TextareaAutosize defaultValue={this.state.comment.text} className="commentText"
-                                          onInput={this.inputTextArea}/>
-
+                        <TextareaAutosize 
+                                defaultValue={this.state.comment.text} 
+                                className="commentText"
+                                onInput={this.inputTextArea}
+                        />
                     </div>
 
                 </div>
