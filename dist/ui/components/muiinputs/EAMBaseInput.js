@@ -171,7 +171,7 @@ function (_Component) {
       return {
         getResult: function getResult(value) {
           // Convert if value is a {code, desc} object
-          if (value && (value.code || value.code === "")) {
+          if (value && _typeof(value) === 'object' && value.hasOwnProperty('code')) {
             value = value.code;
           }
 

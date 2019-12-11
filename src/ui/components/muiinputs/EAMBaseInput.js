@@ -98,7 +98,7 @@ export default class EAMBaseInput extends Component {
     isNumber = label => ({
         getResult: value => {
             // Convert if value is a {code, desc} object
-            if (value && (value.code || value.code === "")) {
+            if (value && (typeof(value) === 'object') && value.hasOwnProperty('code')) {
                 value = value.code
             }
             return !isNaN(value)
