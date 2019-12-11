@@ -186,6 +186,7 @@ function (_Component) {
     value: function render() {
       var _this2 = this;
 
+      var allowHtml = this.props.allowHtml;
       return _react["default"].createElement(_panel["default"], {
         heading: this.props.title,
         detailsStyle: datatablePanelStyle
@@ -195,6 +196,7 @@ function (_Component) {
         }
       }, this.state.comments.map(function (comment) {
         return _react["default"].createElement(_Comment["default"], {
+          allowHtml: allowHtml,
           key: comment.pk,
           comment: comment,
           updateCommentHandler: _this2.updateComment
