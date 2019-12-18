@@ -252,24 +252,50 @@ export const QuestionMarkCircleIcon = props => (
     <HelpCircle />
 );
 
-export const TRECLogo = ({ size = "20",color = "#2196F3", fontSize = "20px", fontWeight = "900", ...otherProps}) => (
-    <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'center'}}>
-        <SvgIcon {...otherProps} viewBox='0 0 310 310' style={{width:size+"px", height:size+"px"}}>
+export const TRECLogo = props => {
+    const {
+        size = "20",
+        color = "#2196F3",
+        fontWeight = "900",
+        ...otherProps
+    } = props;
+    return (
+        <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'center'}}>
+            <RadiationIcon
+                style={{ width: `${size}px`, height: `${size}px` }}
+                color={color}
+                { ...otherProps }/>
+            <div style={{
+                color: color,
+                fontWeight: fontWeight,
+                marginLeft: 5,
+                fontSize: `${size}px`,
+                lineHeight: `${size}px`,
+                verticalAlign: "middle"
+            }}>
+                TREC
+            </div>
+        </div>
+    )
+};
+
+export const RadiationIcon = props => {
+    const { style, color, ...otherProps } = props;
+    return (
+        <SvgIcon
+            { ...otherProps }
+            viewBox='0 0 310 310'
+            style={style}>
             <g>
-                <path d="M155,0C69.533,0,0,69.533,0,155s69.533,155,155,155s155-69.533,155-155S240.467,0,155,0z M216.348,270.173l-41.33-76.279   c-6.004,3.103-12.807,4.867-20.018,4.867s-14.014-1.764-20.018-4.867l-41.33,76.279c-41.064-21.961-69.086-65.238-69.17-114.951   l86.789-0.155c-0.012-0.456-0.033-0.91-0.033-1.368c0-15.325,7.926-27.525,19.885-35.345l-44.889-74.24   C106.217,31.678,129.781,24.481,155,24.481c25.217,0,48.779,7.196,68.76,19.631l-44.875,74.25   c11.955,7.82,19.877,19.969,19.877,35.29c0,0.458-0.021,0.912-0.035,1.368l86.789,0.203   C285.432,204.935,257.412,248.212,216.348,270.173z" fill={color}/>
-                <circle cx="155" cy="155" r="28.052" fill={color}/>
+                <path
+                    d="M155,0C69.533,0,0,69.533,0,155s69.533,155,155,155s155-69.533,155-155S240.467,0,155,0z M216.348,270.173l-41.33-76.279   c-6.004,3.103-12.807,4.867-20.018,4.867s-14.014-1.764-20.018-4.867l-41.33,76.279c-41.064-21.961-69.086-65.238-69.17-114.951   l86.789-0.155c-0.012-0.456-0.033-0.91-0.033-1.368c0-15.325,7.926-27.525,19.885-35.345l-44.889-74.24   C106.217,31.678,129.781,24.481,155,24.481c25.217,0,48.779,7.196,68.76,19.631l-44.875,74.25   c11.955,7.82,19.877,19.969,19.877,35.29c0,0.458-0.021,0.912-0.035,1.368l86.789,0.203   C285.432,204.935,257.412,248.212,216.348,270.173z"
+                    fill={color}/>
+                <circle
+                    cx="155"
+                    cy="155"
+                    r="28.052"
+                    fill={color}/>
             </g>
         </SvgIcon>
-        <div style={{
-            color: color,
-            fontWeight: fontWeight,
-            marginLeft: 5,
-            fontSize: size+"px",
-            lineHeight: size+"px",
-            verticalAlign: "middle"
-        }}>
-            TREC
-        </div>
-    </div>
-);
-
+    )
+};
