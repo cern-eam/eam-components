@@ -25,6 +25,8 @@ var _mdiMaterialUi = require("mdi-material-ui");
 
 var _ckeditor5React = _interopRequireDefault(require("@ckeditor/ckeditor5-react"));
 
+var _ballooneditor = _interopRequireDefault(require("@ckeditor/ckeditor5-editor-balloon/src/ballooneditor"));
+
 var _classiceditor = _interopRequireDefault(require("@ckeditor/ckeditor5-editor-classic/src/classiceditor"));
 
 var _inlineeditor = _interopRequireDefault(require("@ckeditor/ckeditor5-editor-inline/src/inlineeditor"));
@@ -39,6 +41,8 @@ var _italic = _interopRequireDefault(require("@ckeditor/ckeditor5-basic-styles/s
 
 var _heading = _interopRequireDefault(require("@ckeditor/ckeditor5-heading/src/heading"));
 
+var _sanitizeHtml = _interopRequireDefault(require("sanitize-html"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
@@ -46,8 +50,6 @@ function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -150,34 +152,15 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      return _react["default"].createElement("div", {
-        style: _defineProperty({
-          height: '400px'
-        }, "height", '400px')
-      }, _react["default"].createElement(_ckeditor5React["default"], {
-        onInit: function onInit(editor) {
-          console.log('Editor is ready to use!', editor);
-        },
-        onChange: function onChange(event, editor) {
-          return console.log({
-            event: event,
-            editor: editor
-          });
-        } // config={ {
-        //     plugins: [ Essentials, Paragraph, Bold, Italic, Heading ],
-        //     toolbar: [ 'heading', '|', 'bold', 'italic', '|', 'undo', 'redo', ]
-        // } }
-        ,
-        editor: _inlineeditor["default"],
-        data: this.state.comment.text
-      }));
+      var allowHtml = this.props.allowHtml;
+      var comment = this.state.comment;
       return _react["default"].createElement(_ListItem["default"], {
         classes: {
           root: this.props.classes.root
         }
       }, _react["default"].createElement(_reactUserAvatar["default"], {
         size: "48",
-        name: this.state.comment.creationUserDesc,
+        name: comment.creationUserDesc,
         colors: mainColors
       }), _react["default"].createElement("div", {
         className: "commentContainer",
@@ -189,14 +172,14 @@ function (_Component) {
       }), _react["default"].createElement("div", {
         className: "commentInfoContainer"
       }, _react["default"].createElement("div", null, _react["default"].createElement(_CommentUser["default"], {
-        userDesc: this.state.comment.creationUserDesc,
-        userDate: this.state.comment.creationDate,
+        userDesc: comment.creationUserDesc,
+        userDate: comment.creationDate,
         icon: _react["default"].createElement(_mdiMaterialUi.PlusBoxOutline, {
           style: iconStyle
         })
       }), this.props.comment.updateUserCode && _react["default"].createElement(_CommentUser["default"], {
-        userDesc: this.state.comment.updateUserDesc,
-        userDate: this.state.comment.updateDate,
+        userDesc: comment.updateUserDesc,
+        userDate: comment.updateDate,
         icon: _react["default"].createElement(_mdiMaterialUi.Pencil, {
           style: iconStyle
         })
@@ -210,7 +193,7 @@ function (_Component) {
       }, _react["default"].createElement(_CommentBar["default"], {
         saveCommentHandler: this.props.updateCommentHandler,
         displayBar: this.state.displayBar,
-        comment: this.state.comment,
+        comment: comment,
         displayClosingCheck: false,
         showUpdatingHandler: this.showUpdating
       }), this.props.comment.typeCode === '+' && _react["default"].createElement(_mdiMaterialUi.FlagCheckered, {
@@ -218,8 +201,29 @@ function (_Component) {
       }))), _react["default"].createElement("div", {
         className: "commentTextContainer",
         onKeyDown: this.onKeyDownHandler
-      }, _react["default"].createElement(_reactAutosizeTextarea["default"], {
-        defaultValue: this.state.comment.text,
+      }, allowHtml && comment && comment.text && comment.text.startsWith("<html>") && comment.text.startsWith("</html>") ? _react["default"].createElement(_ckeditor5React["default"], {
+        style: {
+          height: '400px'
+        },
+        onInit: function onInit(editor) {
+          console.log('Editor is ready to use!', editor);
+        } //onChange={ ( event, editor ) => {debugger} }
+        ,
+        config: {
+          // plugins: [ Essentials, Paragraph, Bold, Italic, Heading ],
+          // toolbar: [ 'heading', '|', 'bold', 'italic', '|', 'undo', 'redo', ],
+          width: '500',
+          height: '100%' // ,
+          // extraPlugins: 'autogrow',
+          // autoGrow_minHeight: 250,
+          // autoGrow_maxHeight: 600
+          ,
+          balloonToolbar: ['bold', 'italic', '|', 'undo', 'redo']
+        },
+        editor: _ballooneditor["default"],
+        data: comment.text
+      }) : _react["default"].createElement(_reactAutosizeTextarea["default"], {
+        defaultValue: comment.text,
         className: "commentText",
         onInput: this.inputTextArea
       }))));

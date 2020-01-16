@@ -10,6 +10,7 @@ import {FlagCheckered, PlusBoxOutline, Pencil} from 'mdi-material-ui';
 
 import CKEditor from '@ckeditor/ckeditor5-react';
 
+import BalloonEditor from '@ckeditor/ckeditor5-editor-balloon/src/ballooneditor';
 import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
 import InlineEditor from '@ckeditor/ckeditor5-editor-inline/src/inlineeditor';
 import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials';
@@ -17,6 +18,8 @@ import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold';
 import Italic from '@ckeditor/ckeditor5-basic-styles/src/italic';
 import Heading from '@ckeditor/ckeditor5-heading/src/heading';
+import sanitizeHtml from 'sanitize-html';
+
 
 const iconStyle = {height: 15};
 const initialContainerStyle = {opacity: 1.0, pointerEvents: 'all'};
@@ -99,28 +102,12 @@ class Comment extends Component {
     }
 
     render() {
-        return (
-            <div style={{height: '400px', height: '400px'}}>
-                <CKEditor
-                    onInit={ editor => { console.log( 'Editor is ready to use!', editor ) }}
-                    onChange={ ( event, editor ) => console.log( { event, editor } ) }
-                    // config={ {
-                    //     plugins: [ Essentials, Paragraph, Bold, Italic, Heading ],
-                    //     toolbar: [ 'heading', '|', 'bold', 'italic', '|', 'undo', 'redo', ]
-                    // } }
-                    editor={ InlineEditor }
-                    data={this.state.comment.text}
-                />
-            </div>
-        )
-  
+        const { allowHtml } = this.props;
+        const { comment } = this.state;
 
         return (
             <ListItem classes={{root: this.props.classes.root}}>
-                 
-
-
-                <UserAvatar size="48" name={this.state.comment.creationUserDesc} colors={mainColors}/>
+                <UserAvatar size="48" name={comment.creationUserDesc} colors={mainColors}/>
 
                 <div className="commentContainer" style={this.state.containerStyle}>
 
@@ -130,20 +117,20 @@ class Comment extends Component {
                         <div className="commentInfoContainer">
 
                             <div>
-                                <CommentUser userDesc={this.state.comment.creationUserDesc}
-                                             userDate={this.state.comment.creationDate}
+                                <CommentUser userDesc={comment.creationUserDesc}
+                                             userDate={comment.creationDate}
                                              icon={<PlusBoxOutline style={iconStyle}/>}
                                 />
                                 {this.props.comment.updateUserCode &&
-                                <CommentUser userDesc={this.state.comment.updateUserDesc}
-                                             userDate={this.state.comment.updateDate}
+                                <CommentUser userDesc={comment.updateUserDesc}
+                                             userDate={comment.updateDate}
                                              icon={<Pencil style={iconStyle}/>}
                                 />}
                             </div>
 
                             <div style={{display: "flex", alignItems: "center", height: 25, marginRight: 7}}>
                                 <CommentBar saveCommentHandler={this.props.updateCommentHandler}
-                                            displayBar={this.state.displayBar} comment={this.state.comment}
+                                            displayBar={this.state.displayBar} comment={comment}
                                             displayClosingCheck={false} showUpdatingHandler={this.showUpdating}/>
 
                                 {this.props.comment.typeCode === '+' && <FlagCheckered color="primary"/>}
@@ -152,11 +139,31 @@ class Comment extends Component {
 
 
                     <div className="commentTextContainer" onKeyDown={this.onKeyDownHandler}>
-                        <TextareaAutosize 
-                                defaultValue={this.state.comment.text} 
-                                className="commentText"
-                                onInput={this.inputTextArea}
-                        />
+                        {(allowHtml && comment && comment.text && comment.text.startsWith("<html>") && comment.text.startsWith("</html>")) ?
+                            <CKEditor 
+                                style={{height: '400px'}}
+                                onInit={ editor => { console.log( 'Editor is ready to use!', editor ) }}
+                                //onChange={ ( event, editor ) => {debugger} }
+                                config={ {
+                                    // plugins: [ Essentials, Paragraph, Bold, Italic, Heading ],
+                                    // toolbar: [ 'heading', '|', 'bold', 'italic', '|', 'undo', 'redo', ],
+                                        width: '500',
+                                    height: '100%'
+                                    // ,
+                                    // extraPlugins: 'autogrow',
+                                    // autoGrow_minHeight: 250,
+                                    // autoGrow_maxHeight: 600
+                                    , balloonToolbar: [ 'bold', 'italic', '|', 'undo', 'redo' ]
+                                } }
+                                editor={ BalloonEditor }
+                                data={comment.text}
+                            />       
+                            :  <TextareaAutosize 
+                                    defaultValue={comment.text} 
+                                    className="commentText"
+                                    onInput={this.inputTextArea}
+                            />
+                        }
                     </div>
 
                 </div>
