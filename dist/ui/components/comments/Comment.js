@@ -135,6 +135,17 @@ function (_Component) {
       }
     };
 
+    _this.sanitizeText = function (text) {
+      return (0, _sanitizeHtml["default"])(text, {
+        allowedTags: ['h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul', 'ol', 'nl', 'li', 'b', 'i', 'u', 'strong', 'em', 'strike', 'code', 'hr', 'br', 'div', 'table', 'thead', 'caption', 'tbody', 'tr', 'th', 'td', 'pre', 'font', 'span'],
+        allowedAttributes: {
+          font: ['color', 'style'],
+          div: ['style'],
+          span: ['style']
+        }
+      });
+    };
+
     _this.state = {
       text: _this.props.comment.text,
       displayBar: false,
@@ -154,6 +165,7 @@ function (_Component) {
     value: function render() {
       var allowHtml = this.props.allowHtml;
       var comment = this.state.comment;
+      var a = allowHtml && comment && comment.text && comment.text.startsWith("<html>") && comment.text.endsWith("</html>");
       return _react["default"].createElement(_ListItem["default"], {
         classes: {
           root: this.props.classes.root
@@ -201,28 +213,31 @@ function (_Component) {
       }))), _react["default"].createElement("div", {
         className: "commentTextContainer",
         onKeyDown: this.onKeyDownHandler
-      }, allowHtml && comment && comment.text && comment.text.startsWith("<html>") && comment.text.startsWith("</html>") ? _react["default"].createElement(_ckeditor5React["default"], {
+      }, allowHtml && comment && comment.text && comment.text.startsWith("<html>") && comment.text.endsWith("</html>") ? _react["default"].createElement("div", {
         style: {
-          height: '400px'
-        },
+          width: '100%',
+          overflow: 'hidden'
+        }
+      }, _react["default"].createElement(_ckeditor5React["default"] //style={{height: '400px'}}
+      , {
         onInit: function onInit(editor) {
           console.log('Editor is ready to use!', editor);
-        } //onChange={ ( event, editor ) => {debugger} }
+        } //onChange={ ( event, editor ) => {1} }
+        // config={ {
+        //     // plugins: [ Essentials, Paragraph, Bold, Italic, Heading ],
+        //     // toolbar: [ 'heading', '|', 'bold', 'italic', '|', 'undo', 'redo', ],
+        //         width: '500',
+        //     height: '100%'
+        //     // ,
+        //     // extraPlugins: 'autogrow',
+        //     // autoGrow_minHeight: 250,
+        //     // autoGrow_maxHeight: 600
+        //     , balloonToolbar: [ 'bold', 'italic', '|', 'undo', 'redo' ]
+        // } }
         ,
-        config: {
-          // plugins: [ Essentials, Paragraph, Bold, Italic, Heading ],
-          // toolbar: [ 'heading', '|', 'bold', 'italic', '|', 'undo', 'redo', ],
-          width: '500',
-          height: '100%' // ,
-          // extraPlugins: 'autogrow',
-          // autoGrow_minHeight: 250,
-          // autoGrow_maxHeight: 600
-          ,
-          balloonToolbar: ['bold', 'italic', '|', 'undo', 'redo']
-        },
         editor: _ballooneditor["default"],
-        data: comment.text
-      }) : _react["default"].createElement(_reactAutosizeTextarea["default"], {
+        data: this.sanitizeText(comment.text)
+      })) : _react["default"].createElement(_reactAutosizeTextarea["default"], {
         defaultValue: comment.text,
         className: "commentText",
         onInput: this.inputTextArea

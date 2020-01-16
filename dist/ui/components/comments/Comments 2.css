@@ -34,7 +34,6 @@
     flex-direction: row;
     position: relative;
     margin-bottom: 8px;
-    word-break: break-all;
 }
 
 
@@ -91,6 +90,15 @@ div.innerTriangle {
 
 .commentMainContainer {
     width: 100%;
+}
+
+.commentSaveButton {
+    width: 25px;
+    height: 25px;
+}
+
+.commentBarContainer {
+
 }
 
 .commentBarClosing {
