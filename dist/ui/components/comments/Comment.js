@@ -217,25 +217,12 @@ function (_Component) {
         className: "commentText",
         style: {
           width: '100%',
-          overflow: 'hidden'
+          height: '100%'
         }
-      }, _react["default"].createElement(_ckeditor5React["default"] //style={{height: '400px'}}
-      , {
+      }, _react["default"].createElement(_ckeditor5React["default"], {
         onInit: function onInit(editor) {
           console.log('Editor is ready to use!', editor);
-        } //onChange={ ( event, editor ) => {1} }
-        // config={ {
-        //     // plugins: [ Essentials, Paragraph, Bold, Italic, Heading ],
-        //     // toolbar: [ 'heading', '|', 'bold', 'italic', '|', 'undo', 'redo', ],
-        //         width: '500',
-        //     height: '100%'
-        //     // ,
-        //     // extraPlugins: 'autogrow',
-        //     // autoGrow_minHeight: 250,
-        //     // autoGrow_maxHeight: 600
-        //     , balloonToolbar: [ 'bold', 'italic', '|', 'undo', 'redo' ]
-        // } }
-        ,
+        },
         editor: _ballooneditor["default"],
         data: this.sanitizeText(comment.text)
       })) : _react["default"].createElement(_reactAutosizeTextarea["default"], {

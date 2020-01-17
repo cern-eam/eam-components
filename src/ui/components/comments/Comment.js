@@ -145,22 +145,9 @@ class Comment extends Component {
 
                     <div className="commentTextContainer" onKeyDown={this.onKeyDownHandler}>
                         {(allowHtml && comment && comment.text && comment.text.startsWith("<html>") && comment.text.endsWith("</html>")) ?
-                            <div className="commentText" style={{width: '100%', overflow: 'hidden'}}>
+                            <div className="commentText" style={{width: '100%', height: '100%'}}>
                                 <CKEditor 
-                                    //style={{height: '400px'}}
                                     onInit={ editor => { console.log( 'Editor is ready to use!', editor) }}
-                                    //onChange={ ( event, editor ) => {1} }
-                                    // config={ {
-                                    //     // plugins: [ Essentials, Paragraph, Bold, Italic, Heading ],
-                                    //     // toolbar: [ 'heading', '|', 'bold', 'italic', '|', 'undo', 'redo', ],
-                                    //         width: '500',
-                                    //     height: '100%'
-                                    //     // ,
-                                    //     // extraPlugins: 'autogrow',
-                                    //     // autoGrow_minHeight: 250,
-                                    //     // autoGrow_maxHeight: 600
-                                    //     , balloonToolbar: [ 'bold', 'italic', '|', 'undo', 'redo' ]
-                                    // } }
                                     editor={ BalloonEditor }
                                     data={this.sanitizeText(comment.text)}
                                 />       
