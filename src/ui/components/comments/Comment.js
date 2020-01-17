@@ -145,7 +145,7 @@ class Comment extends Component {
 
                     <div className="commentTextContainer" onKeyDown={this.onKeyDownHandler}>
                         {(allowHtml && comment && comment.text && comment.text.startsWith("<html>") && comment.text.endsWith("</html>")) ?
-                            <div style={{width: '100%', overflow: 'hidden'}}>
+                            <div className="commentText" style={{width: '100%', overflow: 'hidden'}}>
                                 <CKEditor 
                                     //style={{height: '400px'}}
                                     onInit={ editor => { console.log( 'Editor is ready to use!', editor) }}

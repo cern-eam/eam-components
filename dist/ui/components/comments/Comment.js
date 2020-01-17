@@ -214,6 +214,7 @@ function (_Component) {
         className: "commentTextContainer",
         onKeyDown: this.onKeyDownHandler
       }, allowHtml && comment && comment.text && comment.text.startsWith("<html>") && comment.text.endsWith("</html>") ? _react["default"].createElement("div", {
+        className: "commentText",
         style: {
           width: '100%',
           overflow: 'hidden'
