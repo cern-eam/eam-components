@@ -1,13 +1,5 @@
 import React, {Component} from 'react';
 import ChecklistItemInput from './ChecklistItemInput';
-import ChecklistItemInputYesNo from './inputs/ChecklistItemInputYesNo';
-import ChecklistItemInput3Findings from './inputs/ChecklistItemInput3Findings';
-import ChecklistItemInput2Findings from './inputs/ChecklistItemInput2Findings';
-import ChecklistItemInput1Finding from './inputs/ChecklistItemInput1Finding';
-import ChecklistItemInputMoreFindings from './inputs/ChecklistItemInputMoreFindings';
-import ChecklistItemInputQuantitative from './inputs/ChecklistItemInputQuantitative';
-import ChecklistItemInputChecklist from './inputs/ChecklistItemInputChecklist';
-import ChecklistItemInputInspection from './inputs/ChecklistItemInputInspection';
 import ChecklistItemNotes from './ChecklistItemNotes';
 import Collapse from '@material-ui/core/Collapse';
 import ChecklistItemFollowUp from "./ChecklistItemFollowUp";

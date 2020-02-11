@@ -9,22 +9,6 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _ChecklistItemInput = _interopRequireDefault(require("./ChecklistItemInput"));
 
-var _ChecklistItemInputYesNo = _interopRequireDefault(require("./inputs/ChecklistItemInputYesNo"));
-
-var _ChecklistItemInput3Findings = _interopRequireDefault(require("./inputs/ChecklistItemInput3Findings"));
-
-var _ChecklistItemInput2Findings = _interopRequireDefault(require("./inputs/ChecklistItemInput2Findings"));
-
-var _ChecklistItemInput1Finding = _interopRequireDefault(require("./inputs/ChecklistItemInput1Finding"));
-
-var _ChecklistItemInputMoreFindings = _interopRequireDefault(require("./inputs/ChecklistItemInputMoreFindings"));
-
-var _ChecklistItemInputQuantitative = _interopRequireDefault(require("./inputs/ChecklistItemInputQuantitative"));
-
-var _ChecklistItemInputChecklist = _interopRequireDefault(require("./inputs/ChecklistItemInputChecklist"));
-
-var _ChecklistItemInputInspection = _interopRequireDefault(require("./inputs/ChecklistItemInputInspection"));
-
 var _ChecklistItemNotes = _interopRequireDefault(require("./ChecklistItemNotes"));
 
 var _Collapse = _interopRequireDefault(require("@material-ui/core/Collapse"));
