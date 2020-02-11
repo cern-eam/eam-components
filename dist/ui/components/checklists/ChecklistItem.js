@@ -222,8 +222,7 @@ function (_Component) {
         case "03":
           var MINIMUM_MIN_FINDINGS = 4;
           fields = [[_ChecklistItemInput["default"].FIELD.FINDING, {
-            dropdown: false //checklistItem.possibleFindings.length >= Math.min(this.props.minFindingsDropdown, MINIMUM_MIN_FINDINGS)
-
+            dropdown: checklistItem.possibleFindings.length >= Math.min(this.props.minFindingsDropdown, MINIMUM_MIN_FINDINGS)
           }]];
           break;
 

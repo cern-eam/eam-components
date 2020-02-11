@@ -140,8 +140,8 @@ export default class Checklist extends Component {
                 const MINIMUM_MIN_FINDINGS = 4;
                 fields = [
                     [ChecklistItemInput.FIELD.FINDING, {
-                        dropdown: false
-                            //checklistItem.possibleFindings.length >= Math.min(this.props.minFindingsDropdown, MINIMUM_MIN_FINDINGS)
+                        dropdown:
+                            checklistItem.possibleFindings.length >= Math.min(this.props.minFindingsDropdown, MINIMUM_MIN_FINDINGS)
                     }]
                 ];
                 break;
