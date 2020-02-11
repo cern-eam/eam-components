@@ -58,19 +58,6 @@ function (_Component) {
       position: "relative",
       marginLeft: 10
     };
-    _this.inputStyle = {
-      width: "1%",
-      flex: "1 1 auto",
-      border: "1px solid #ced4da",
-      padding: "5px 10px",
-      fontSize: 16,
-      transition: "border-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
-      borderRadius: 4,
-      backgroundColor: "#fff",
-      borderTopRightRadius: 0,
-      borderBottomRightRadius: 0,
-      zIndex: 20
-    };
     _this.labelUOMStyle = (_this$labelUOMStyle = {
       color: "black",
       fontSize: 15

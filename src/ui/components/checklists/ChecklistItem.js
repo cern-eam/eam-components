@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import ChecklistItemInput from './ChecklistItemInput';
 import ChecklistItemInputYesNo from './inputs/ChecklistItemInputYesNo';
 import ChecklistItemInput3Findings from './inputs/ChecklistItemInput3Findings';
 import ChecklistItemInput2Findings from './inputs/ChecklistItemInput2Findings';
@@ -116,44 +117,53 @@ export default class Checklist extends Component {
     }
 
     renderChecklistItemInput() {
-        let {checklistItem} = this.state
+        let {checklistItem} = this.state;
 
-        switch (checklistItem.type) {
+        let fields;
+        let options = {};
+
+        switch(checklistItem.type) {
             case "01":
-                return <ChecklistItemInputChecklist checklistItem={checklistItem}
-                                                    onChange={value => this.onChange(value)}/>
+                fields = [
+                    [ChecklistItemInput.FIELD.CHECKBOX, {code: "COMPLETED", desc:"Completed"}]
+                ];
+                options.style = ChecklistItemInput.STYLE.SINGLE;
+                break;
             case "02":
-                return <ChecklistItemInputYesNo checklistItem={checklistItem} onChange={value => this.onChange(value)}/>
+                fields = [
+                    [ChecklistItemInput.FIELD.CHECKBOX, {code: "YES", desc: "Yes"}],
+                    [ChecklistItemInput.FIELD.CHECKBOX, {code: "NO", desc: "No"}]
+                ];
+                options.style = ChecklistItemInput.STYLE.SAMELINE;
+                break;
             case "03":
-                if (checklistItem.possibleFindings.length >= this.props.minFindingsDropdown) {
-                    return <ChecklistItemInputMoreFindings checklistItem={checklistItem}
-                                                           onChange={value => this.onChange(value)}/>
-                } else {
-                    switch (checklistItem.possibleFindings.length) {
-                        case 1:
-                            return <ChecklistItemInput1Finding checklistItem={checklistItem}
-                                                               onChange={value => this.onChange(value)}/>
-                        case 2:
-                            return <ChecklistItemInput2Findings checklistItem={checklistItem}
-                                                                onChange={value => this.onChange(value)}/>
-                        case 3:
-                            return <ChecklistItemInput3Findings checklistItem={checklistItem}
-                                                                onChange={value => this.onChange(value)}/>
-                        default:
-                            return <ChecklistItemInputMoreFindings checklistItem={checklistItem}
-                                                                   onChange={value => this.onChange(value)}/>
-                    }
-                }
+                const MINIMUM_MIN_FINDINGS = 4;
+                fields = [
+                    [ChecklistItemInput.FIELD.FINDING, {
+                        dropdown: false
+                            //checklistItem.possibleFindings.length >= Math.min(this.props.minFindingsDropdown, MINIMUM_MIN_FINDINGS)
+                    }]
+                ];
+                break;
             case "04":
             case "05":
-                return <ChecklistItemInputQuantitative checklistItem={checklistItem}
-                                                       onChange={value => this.onChange(value)}/>
+                fields = [
+                    [ChecklistItemInput.FIELD.QUANTITATIVE]
+                ];
+                break;
             case "06":
-                return <ChecklistItemInputInspection checklistItem={checklistItem}
-                                                     onChange={value => this.onChange(value)}/>
-            default:
-                return <div/>
+                fields = [
+                    [ChecklistItemInput.FIELD.QUANTITATIVE],
+                    [ChecklistItemInput.FIELD.FINDING, {
+                        dropdown: true
+                    }]
+                ];
+                break;
         }
+
+        if(fields === undefined) return <div/>
+
+        return <ChecklistItemInput checklistItem={checklistItem} onChange={value => this.onChange(value)} fields={fields} options={options} />
     }
 
     render() {

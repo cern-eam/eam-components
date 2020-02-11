@@ -7,6 +7,8 @@ exports["default"] = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
+var _ChecklistItemInput = _interopRequireDefault(require("./ChecklistItemInput"));
+
 var _ChecklistItemInputYesNo = _interopRequireDefault(require("./inputs/ChecklistItemInputYesNo"));
 
 var _ChecklistItemInput3Findings = _interopRequireDefault(require("./inputs/ChecklistItemInput3Findings"));
@@ -194,88 +196,58 @@ function (_Component) {
       var _this3 = this;
 
       var checklistItem = this.state.checklistItem;
+      var fields;
+      var options = {};
 
       switch (checklistItem.type) {
         case "01":
-          return _react["default"].createElement(_ChecklistItemInputChecklist["default"], {
-            checklistItem: checklistItem,
-            onChange: function onChange(value) {
-              return _this3.onChange(value);
-            }
-          });
+          fields = [[_ChecklistItemInput["default"].FIELD.CHECKBOX, {
+            code: "COMPLETED",
+            desc: "Completed"
+          }]];
+          options.style = _ChecklistItemInput["default"].STYLE.SINGLE;
+          break;
 
         case "02":
-          return _react["default"].createElement(_ChecklistItemInputYesNo["default"], {
-            checklistItem: checklistItem,
-            onChange: function onChange(value) {
-              return _this3.onChange(value);
-            }
-          });
+          fields = [[_ChecklistItemInput["default"].FIELD.CHECKBOX, {
+            code: "YES",
+            desc: "Yes"
+          }], [_ChecklistItemInput["default"].FIELD.CHECKBOX, {
+            code: "NO",
+            desc: "No"
+          }]];
+          options.style = _ChecklistItemInput["default"].STYLE.SAMELINE;
+          break;
 
         case "03":
-          if (checklistItem.possibleFindings.length >= this.props.minFindingsDropdown) {
-            return _react["default"].createElement(_ChecklistItemInputMoreFindings["default"], {
-              checklistItem: checklistItem,
-              onChange: function onChange(value) {
-                return _this3.onChange(value);
-              }
-            });
-          } else {
-            switch (checklistItem.possibleFindings.length) {
-              case 1:
-                return _react["default"].createElement(_ChecklistItemInput1Finding["default"], {
-                  checklistItem: checklistItem,
-                  onChange: function onChange(value) {
-                    return _this3.onChange(value);
-                  }
-                });
+          var MINIMUM_MIN_FINDINGS = 4;
+          fields = [[_ChecklistItemInput["default"].FIELD.FINDING, {
+            dropdown: false //checklistItem.possibleFindings.length >= Math.min(this.props.minFindingsDropdown, MINIMUM_MIN_FINDINGS)
 
-              case 2:
-                return _react["default"].createElement(_ChecklistItemInput2Findings["default"], {
-                  checklistItem: checklistItem,
-                  onChange: function onChange(value) {
-                    return _this3.onChange(value);
-                  }
-                });
-
-              case 3:
-                return _react["default"].createElement(_ChecklistItemInput3Findings["default"], {
-                  checklistItem: checklistItem,
-                  onChange: function onChange(value) {
-                    return _this3.onChange(value);
-                  }
-                });
-
-              default:
-                return _react["default"].createElement(_ChecklistItemInputMoreFindings["default"], {
-                  checklistItem: checklistItem,
-                  onChange: function onChange(value) {
-                    return _this3.onChange(value);
-                  }
-                });
-            }
-          }
+          }]];
+          break;
 
         case "04":
         case "05":
-          return _react["default"].createElement(_ChecklistItemInputQuantitative["default"], {
-            checklistItem: checklistItem,
-            onChange: function onChange(value) {
-              return _this3.onChange(value);
-            }
-          });
+          fields = [[_ChecklistItemInput["default"].FIELD.QUANTITATIVE]];
+          break;
 
         case "06":
-          return _react["default"].createElement(_ChecklistItemInputInspection["default"], {
-            checklistItem: checklistItem,
-            onChange: function onChange(value) {
-              return _this3.onChange(value);
-            }
-          });
-
-        default:
-          return _react["default"].createElement("div", null);
+          fields = [[_ChecklistItemInput["default"].FIELD.QUANTITATIVE], [_ChecklistItemInput["default"].FIELD.FINDING, {
+            dropdown: true
+          }]];
+          break;
       }
+
+      if (fields === undefined) return _react["default"].createElement("div", null);
+      return _react["default"].createElement(_ChecklistItemInput["default"], {
+        checklistItem: checklistItem,
+        onChange: function onChange(value) {
+          return _this3.onChange(value);
+        },
+        fields: fields,
+        options: options
+      });
     }
   }, {
     key: "render",
