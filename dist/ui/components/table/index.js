@@ -29,10 +29,6 @@ var _reactRouterDom = require("react-router-dom");
 
 var _Checkbox = _interopRequireDefault(require("@material-ui/core/Checkbox"));
 
-var _MenuItem = _interopRequireDefault(require("@material-ui/core/MenuItem"));
-
-var _FilterList = _interopRequireDefault(require("@material-ui/icons/FilterList"));
-
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
 var _Constants = _interopRequireDefault(require("../../../enums/Constants"));
@@ -111,9 +107,6 @@ function (_Component) {
       orderBy: -1,
       order: _Constants["default"].SORT_ASC,
       data: []
-    };
-    _this.filterSelectStyle = {
-      fontSize: '0.8125rem'
     };
 
     _this.onWindowSizeChange = function () {
@@ -241,20 +234,6 @@ function (_Component) {
       _this.props.handleFilterChange(e.target.value);
     };
 
-    _this.renderFilterByValuesMobile = function () {
-      return _react["default"].createElement(_Select["default"], {
-        "native": true,
-        value: _this.props.activeFilter,
-        onChange: _this.propagateFilterChange,
-        className: "eamTableDropdown"
-      }, Object.keys(_this.props.filters).map(function (key) {
-        return _react["default"].createElement("option", {
-          key: key,
-          value: key
-        }, _this.props.filters[key].text);
-      }));
-    };
-
     _this.getSortedData = function (_ref) {
       var data = _ref.data,
           orderBy = _ref.orderBy,
@@ -291,8 +270,6 @@ function (_Component) {
           orderBy = _this$state.orderBy,
           windowWidth = _this$state.windowWidth;
       var _this$props = this.props,
-          activeFilter = _this$props.activeFilter,
-          filters = _this$props.filters,
           headers = _this$props.headers,
           maxMobileSize = _this$props.maxMobileSize,
           onRowClick = _this$props.onRowClick,
@@ -314,9 +291,7 @@ function (_Component) {
           style: {
             overflow: 'visible'
           }
-        }, _react["default"].createElement(_TableHead["default"], null, filters && Object.keys(filters).length && _react["default"].createElement(_TableRow["default"], {
-          key: "filterby"
-        }, _react["default"].createElement(_TableCell["default"], null, "Filter by:"), _react["default"].createElement(_TableCell["default"], null, this.renderFilterByValuesMobile())), _react["default"].createElement(_TableRow["default"], {
+        }, _react["default"].createElement(_TableHead["default"], null, _react["default"].createElement(_TableRow["default"], {
           key: "sortby"
         }, _react["default"].createElement(_TableCell["default"], null, "Sort by:"), _react["default"].createElement(_TableCell["default"], null, this.renderSortByValuesMobile()))), tableData.map(function (content, index) {
           // every second row is grey
@@ -367,28 +342,7 @@ function (_Component) {
           }));
         }));
       } else {
-        return _react["default"].createElement(_react["default"].Fragment, null, filters && Object.keys(filters).length && _react["default"].createElement("div", {
-          style: {
-            display: 'flex',
-            justifyContent: 'space-between'
-          }
-        }, _react["default"].createElement(_FilterList["default"], {
-          style: {
-            marginLeft: 'auto'
-          }
-        }), _react["default"].createElement(_Select["default"], {
-          style: this.filterSelectStyle,
-          value: filters[activeFilter].text,
-          onChange: this.propagateFilterChange,
-          renderValue: function renderValue(value) {
-            return _react["default"].createElement("span", null, value);
-          }
-        }, Object.keys(filters).map(function (key) {
-          return _react["default"].createElement(_MenuItem["default"], {
-            key: key,
-            value: key
-          }, filters[key].text);
-        }))), _react["default"].createElement(_Table["default"], {
+        return _react["default"].createElement(_react["default"].Fragment, null, _react["default"].createElement(_Table["default"], {
           className: "responsiveTable",
           style: {
             overflow: 'visible'

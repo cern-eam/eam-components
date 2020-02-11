@@ -10,8 +10,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 import './EISTable.css';
 import {Link} from 'react-router-dom';
 import Checkbox from '@material-ui/core/Checkbox';
-import MenuItem from '@material-ui/core/MenuItem';
-import FilterListIcon from '@material-ui/icons/FilterList';
 import PropTypes from 'prop-types';
 import Constants from '../../../enums/Constants';
 
@@ -38,10 +36,6 @@ class EISTable extends Component {
         order: Constants.SORT_ASC,
         data: []
     };
-
-    filterSelectStyle = {
-        fontSize: '0.8125rem'
-    }
 
     componentDidMount() {
         window.addEventListener('resize', this.onWindowSizeChange);
@@ -150,20 +144,6 @@ class EISTable extends Component {
         this.props.handleFilterChange(e.target.value);
     }
 
-    renderFilterByValuesMobile = () => {
-        return (
-            <Select
-                native
-                value={this.props.activeFilter}
-                onChange={this.propagateFilterChange}
-                className="eamTableDropdown">
-                {
-                    Object.keys(this.props.filters).map((key) => <option key={key} value={key}>{this.props.filters[key].text}</option>)
-                }
-            </Select>
-        );
-    }
-
     getSortedData = ({ data, orderBy, order, propCode }) => 
         orderBy < 0 ? data : order === Constants.SORT_DESC ?
             [...data].sort((a, b) => (this.getCompValue(b[propCode]) < this.getCompValue(a[propCode]) ? -1 : 1))
@@ -178,8 +158,6 @@ class EISTable extends Component {
             windowWidth
         } = this.state;
         const {
-            activeFilter,
-            filters,
             headers,
             maxMobileSize,
             onRowClick,
@@ -196,12 +174,6 @@ class EISTable extends Component {
             return (
                 <Table className="responsiveTable" style={{overflow:'visible'}}>
                     <TableHead>
-                        {filters && Object.keys(filters).length &&
-                        <TableRow key={"filterby"}>
-                            <TableCell>Filter by:</TableCell>
-                            <TableCell>{this.renderFilterByValuesMobile()}</TableCell>
-                        </TableRow>
-                        }
                         <TableRow key={"sortby"}>
                             <TableCell>Sort by:</TableCell>
                             <TableCell>{this.renderSortByValuesMobile()}</TableCell>
@@ -267,21 +239,6 @@ class EISTable extends Component {
         } else {
             return (
                 <React.Fragment>
-                    {filters && Object.keys(filters).length &&
-
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <FilterListIcon style={{ marginLeft: 'auto' }}/>
-                        <Select
-                        style={this.filterSelectStyle}
-                        value={filters[activeFilter].text}
-                        onChange={this.propagateFilterChange}
-                        renderValue={value => <span>{value}</span>}>
-                                {Object.keys(filters).map((key) => (
-                                    <MenuItem key={key} value={key}>{filters[key].text}</MenuItem>
-                                    ))}
-                            </Select>
-                    </div>
-                    }
                     <Table className="responsiveTable" style={{overflow:'visible'}}>
                         <TableHead>
                             <TableRow key={"key"}>
