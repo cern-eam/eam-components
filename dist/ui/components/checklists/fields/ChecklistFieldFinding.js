@@ -48,7 +48,8 @@ function ChecklistFieldFinding(props) {
       code: findingElement.code,
       desc: findingElement.desc,
       checked: finding === findingElement.code,
-      handleChange: handleChange
+      handleChange: handleChange,
+      key: findingElement.code
     });
   });
 }

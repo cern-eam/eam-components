@@ -31,6 +31,7 @@ export default function ChecklistFieldFinding(props) {
                 desc={findingElement.desc}
                 checked={finding === findingElement.code}
                 handleChange={handleChange}
+                key={findingElement.code}
         />)
 
 }

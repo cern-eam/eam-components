@@ -37,7 +37,7 @@ export default class ChecklistItemInput extends Component {
         this.props.onChange(newProps);
     }
 
-    renderField(field) {
+    renderField(field, key) {
         var {checklistItem} = this.props;
 
         const type = field[0];
@@ -50,6 +50,7 @@ export default class ChecklistItemInput extends Component {
                     desc={options.desc}
                     checked={checklistItem.result === options.code}
                     handleChange={code => this.handleChange(ChecklistItemInput.FIELD.CHECKBOX, code)}
+                    key={key}
                 />
             case ChecklistItemInput.FIELD.FINDING:
                 return <ChecklistFieldFinding
@@ -57,12 +58,14 @@ export default class ChecklistItemInput extends Component {
                     finding={checklistItem.finding || ''}
                     handleChange={code => this.handleChange(ChecklistItemInput.FIELD.FINDING, code)}
                     possibleFindings={checklistItem.possibleFindings}
+                    key={key}
                 />
             case ChecklistItemInput.FIELD.QUANTITATIVE:
                 return <ChecklistFieldQuantitative
                     value={checklistItem.numericValue || ''}
                     UOM={checklistItem.UOM}
                     handleChange={value => this.handleChange(ChecklistItemInput.FIELD.QUANTITATIVE, value)}
+                    key={key}
                 />
         }
     }
@@ -74,8 +77,9 @@ export default class ChecklistItemInput extends Component {
 
         let fieldsRender = [];
 
+        let key = 0;
         for(const field of fields) {
-            fieldsRender.push(this.renderField(field));
+            fieldsRender.push(this.renderField(field, ++key));
         }
 
         return <div style={options.style || ChecklistItemInput.STYLE.ROWS}>

@@ -92,7 +92,7 @@ function (_Component) {
     }
   }, {
     key: "renderField",
-    value: function renderField(field) {
+    value: function renderField(field, key) {
       var _this = this;
 
       var checklistItem = this.props.checklistItem;
@@ -107,7 +107,8 @@ function (_Component) {
             checked: checklistItem.result === options.code,
             handleChange: function handleChange(code) {
               return _this.handleChange(ChecklistItemInput.FIELD.CHECKBOX, code);
-            }
+            },
+            key: key
           });
 
         case ChecklistItemInput.FIELD.FINDING:
@@ -117,7 +118,8 @@ function (_Component) {
             handleChange: function handleChange(code) {
               return _this.handleChange(ChecklistItemInput.FIELD.FINDING, code);
             },
-            possibleFindings: checklistItem.possibleFindings
+            possibleFindings: checklistItem.possibleFindings,
+            key: key
           });
 
         case ChecklistItemInput.FIELD.QUANTITATIVE:
@@ -126,7 +128,8 @@ function (_Component) {
             UOM: checklistItem.UOM,
             handleChange: function handleChange(value) {
               return _this.handleChange(ChecklistItemInput.FIELD.QUANTITATIVE, value);
-            }
+            },
+            key: key
           });
       }
     }
@@ -138,6 +141,7 @@ function (_Component) {
           options = _this$props.options;
       this.options = options;
       var fieldsRender = [];
+      var key = 0;
       var _iteratorNormalCompletion = true;
       var _didIteratorError = false;
       var _iteratorError = undefined;
@@ -145,7 +149,7 @@ function (_Component) {
       try {
         for (var _iterator = fields[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
           var field = _step.value;
-          fieldsRender.push(this.renderField(field));
+          fieldsRender.push(this.renderField(field, ++key));
         }
       } catch (err) {
         _didIteratorError = true;
