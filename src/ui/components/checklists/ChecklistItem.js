@@ -215,8 +215,9 @@ export default class Checklist extends Component {
                 if(checklistItem.type === "12") {
                     fields.push([ChecklistItemInput.FIELD.NUMERIC])
                     options.beforeOnChange = (newProps, type, value) => {
-                        if(type === ChecklistItemInput.FIELD.NUMERIC)
-                            newProps.result = newProps.result === null ? "OK" : null;
+                        if(type === ChecklistItemInput.FIELD.NUMERIC && newProps.result === null) {
+                            newProps.result = "OK";
+                        }
                         return newProps;
                     }
                 }

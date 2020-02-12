@@ -307,7 +307,10 @@ function (_Component) {
             fields.push([_ChecklistItemInput["default"].FIELD.NUMERIC]);
 
             options.beforeOnChange = function (newProps, type, value) {
-              if (type === _ChecklistItemInput["default"].FIELD.NUMERIC) newProps.result = newProps.result === null ? "OK" : null;
+              if (type === _ChecklistItemInput["default"].FIELD.NUMERIC && newProps.result === null) {
+                newProps.result = "OK";
+              }
+
               return newProps;
             };
           }
