@@ -25,7 +25,10 @@ function ChecklistFieldCheckbox(props) {
     control: _react["default"].createElement(_Checkbox["default"], {
       color: "primary",
       checked: checked,
-      onChange: function onChange() {
+      onMouseDown: function onMouseDown() {
+        return handleChange(code);
+      },
+      onTouchStart: function onTouchStart() {
         return handleChange(code);
       }
     }),

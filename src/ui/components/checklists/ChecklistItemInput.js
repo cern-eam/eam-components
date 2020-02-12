@@ -7,8 +7,6 @@ export default class ChecklistItemInput extends Component {
     handleChange(type, value) {
         const {result, finding, numericValue} = this.props.checklistItem;
 
-        let key;
-
         let newResult,  newFinding, newNumericValue;
         
         switch(type) {
@@ -35,6 +33,7 @@ export default class ChecklistItemInput extends Component {
         }
 
         this.props.onChange(newProps);
+
     }
 
     renderField(field, key) {

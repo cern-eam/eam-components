@@ -61,7 +61,6 @@ function (_Component) {
           result = _this$props$checklist.result,
           finding = _this$props$checklist.finding,
           numericValue = _this$props$checklist.numericValue;
-      var key;
       var newResult, newFinding, newNumericValue;
 
       switch (type) {

@@ -10,7 +10,8 @@ export default function ChecklistFieldCheckbox(props) {
             <Checkbox
                 color="primary"
                 checked={checked}
-                onChange={() => handleChange(code)}/>
+                onMouseDown={() => handleChange(code)}
+                onTouchStart={() => handleChange(code)}/>
         }
         label={desc}
     />
