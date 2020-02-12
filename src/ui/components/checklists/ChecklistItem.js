@@ -7,7 +7,8 @@ export default class Checklist extends Component {
 
     state = {
         detailsVisible: false,
-        blocked: false
+        blocked: false,
+        requestTimeout: null
     }
 
     componentWillMount() {
@@ -85,18 +86,29 @@ export default class Checklist extends Component {
         //
         this.setState({checklistItem})
         // Update the checklist Item
-        this.props.updateChecklistItem(checklistItem)
-            .then(response => {
-                this.setState({blocked: false})
-            })
-            .catch(error => {
-                this.props.handleError(error)
-                // Unblock the UI and restore the UI
-                this.setState({
-                    blocked: false,
-                    checklistItem: oldChecklistItem
-                })
-            });
+
+        this.setState((state, props) => {
+            if(state.requestTimeout !== null)
+                clearTimeout(state.requestTimeout);
+
+            return {
+                requestTimeout: setTimeout(() => {
+                    this.setState({requestTimeout: null});
+                    this.props.updateChecklistItem(checklistItem)
+                    .then(response => {
+                        this.setState({blocked: false})
+                    })
+                    .catch(error => {
+                        this.props.handleError(error)
+                        // Unblock the UI and restore the UI
+                        this.setState({
+                            blocked: false,
+                            checklistItem: oldChecklistItem
+                        })
+                    });
+                }, 360)
+            }
+        });
     }
 
     descClickHandler() {

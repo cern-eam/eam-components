@@ -64,7 +64,8 @@ function (_Component) {
     _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Checklist)).call.apply(_getPrototypeOf2, [this].concat(args)));
     _this.state = {
       detailsVisible: false,
-      blocked: false
+      blocked: false,
+      requestTimeout: null
     };
 
     _this.init = function (checklistItem) {
@@ -150,18 +151,29 @@ function (_Component) {
         checklistItem: checklistItem
       }); // Update the checklist Item
 
-      this.props.updateChecklistItem(checklistItem).then(function (response) {
-        _this2.setState({
-          blocked: false
-        });
-      })["catch"](function (error) {
-        _this2.props.handleError(error); // Unblock the UI and restore the UI
+      this.setState(function (state, props) {
+        if (state.requestTimeout !== null) clearTimeout(state.requestTimeout);
+        return {
+          requestTimeout: setTimeout(function () {
+            _this2.setState({
+              requestTimeout: null
+            });
+
+            _this2.props.updateChecklistItem(checklistItem).then(function (response) {
+              _this2.setState({
+                blocked: false
+              });
+            })["catch"](function (error) {
+              _this2.props.handleError(error); // Unblock the UI and restore the UI
 
 
-        _this2.setState({
-          blocked: false,
-          checklistItem: oldChecklistItem
-        });
+              _this2.setState({
+                blocked: false,
+                checklistItem: oldChecklistItem
+              });
+            });
+          }, 360)
+        };
       });
     }
   }, {
