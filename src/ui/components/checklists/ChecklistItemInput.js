@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import ChecklistFieldQuantitative from './fields/ChecklistFieldQuantitative';
+import ChecklistFieldNumeric from './fields/ChecklistFieldNumeric';
 import ChecklistFieldCheckbox from './fields/ChecklistFieldCheckbox';
 import ChecklistFieldFinding from './fields/ChecklistFieldFinding';
 
@@ -18,7 +18,7 @@ export default class ChecklistItemInput extends Component {
             case ChecklistItemInput.FIELD.FINDING:
                 newFinding = (value === finding) ? null : value;
                 break;
-            case ChecklistItemInput.FIELD.QUANTITATIVE:
+            case ChecklistItemInput.FIELD.NUMERIC:
                 newNumericValue = value;
                 break;
         }
@@ -60,11 +60,11 @@ export default class ChecklistItemInput extends Component {
                     possibleFindings={checklistItem.possibleFindings}
                     key={key}
                 />
-            case ChecklistItemInput.FIELD.QUANTITATIVE:
-                return <ChecklistFieldQuantitative
+            case ChecklistItemInput.FIELD.NUMERIC:
+                return <ChecklistFieldNumeric
                     value={checklistItem.numericValue || ''}
                     UOM={checklistItem.UOM}
-                    handleChange={value => this.handleChange(ChecklistItemInput.FIELD.QUANTITATIVE, value)}
+                    handleChange={value => this.handleChange(ChecklistItemInput.FIELD.NUMERIC, value)}
                     key={key}
                 />
         }

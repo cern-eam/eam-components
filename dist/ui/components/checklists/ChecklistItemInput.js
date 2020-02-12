@@ -7,7 +7,7 @@ exports["default"] = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _ChecklistFieldQuantitative = _interopRequireDefault(require("./fields/ChecklistFieldQuantitative"));
+var _ChecklistFieldNumeric = _interopRequireDefault(require("./fields/ChecklistFieldNumeric"));
 
 var _ChecklistFieldCheckbox = _interopRequireDefault(require("./fields/ChecklistFieldCheckbox"));
 
@@ -73,7 +73,7 @@ function (_Component) {
           newFinding = value === finding ? null : value;
           break;
 
-        case ChecklistItemInput.FIELD.QUANTITATIVE:
+        case ChecklistItemInput.FIELD.NUMERIC:
           newNumericValue = value;
           break;
       }
@@ -122,12 +122,12 @@ function (_Component) {
             key: key
           });
 
-        case ChecklistItemInput.FIELD.QUANTITATIVE:
-          return _react["default"].createElement(_ChecklistFieldQuantitative["default"], {
+        case ChecklistItemInput.FIELD.NUMERIC:
+          return _react["default"].createElement(_ChecklistFieldNumeric["default"], {
             value: checklistItem.numericValue || '',
             UOM: checklistItem.UOM,
             handleChange: function handleChange(value) {
-              return _this.handleChange(ChecklistItemInput.FIELD.QUANTITATIVE, value);
+              return _this.handleChange(ChecklistItemInput.FIELD.NUMERIC, value);
             },
             key: key
           });

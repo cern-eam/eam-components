@@ -39,7 +39,7 @@ const outerStyle = {
     display: "flex"
 };
 
-export default function ChecklistFieldQuantitative(props) {
+export default function ChecklistFieldNumeric(props) {
     const {value, UOM, handleChange} = props;
 
     const [inputValue, setInputValue] = useState(value);

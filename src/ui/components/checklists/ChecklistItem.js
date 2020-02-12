@@ -146,14 +146,14 @@ export default class Checklist extends Component {
             case "04":
             case "05":
                 fields = [
-                    [ChecklistItemInput.FIELD.QUANTITATIVE]
+                    [ChecklistItemInput.FIELD.NUMERIC]
                 ];
                 options.beforeOnChange = clearResult;
                 break;
             case "06":
                 fields = [
                     [ChecklistItemInput.FIELD.FINDING],
-                    [ChecklistItemInput.FIELD.QUANTITATIVE]
+                    [ChecklistItemInput.FIELD.NUMERIC]
                 ];
 
                 options.beforeOnChange = clearResult;
@@ -200,7 +200,7 @@ export default class Checklist extends Component {
                 ];
 
                 if(checklistItem.type === "10") {
-                    fields.push([ChecklistItemInput.FIELD.QUANTITATIVE])
+                    fields.push([ChecklistItemInput.FIELD.NUMERIC])
                 }
 
                 options.style = ChecklistItemInput.STYLE.SAMELINE;
@@ -213,9 +213,9 @@ export default class Checklist extends Component {
                 ];
 
                 if(checklistItem.type === "12") {
-                    fields.push([ChecklistItemInput.FIELD.QUANTITATIVE])
+                    fields.push([ChecklistItemInput.FIELD.NUMERIC])
                     options.beforeOnChange = (newProps, type, value) => {
-                        if(type === ChecklistItemInput.FIELD.QUANTITATIVE)
+                        if(type === ChecklistItemInput.FIELD.NUMERIC)
                             newProps.result = newProps.result === null ? "OK" : null;
                         return newProps;
                     }

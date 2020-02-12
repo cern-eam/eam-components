@@ -217,12 +217,12 @@ function (_Component) {
 
         case "04":
         case "05":
-          fields = [[_ChecklistItemInput["default"].FIELD.QUANTITATIVE]];
+          fields = [[_ChecklistItemInput["default"].FIELD.NUMERIC]];
           options.beforeOnChange = clearResult;
           break;
 
         case "06":
-          fields = [[_ChecklistItemInput["default"].FIELD.FINDING], [_ChecklistItemInput["default"].FIELD.QUANTITATIVE]];
+          fields = [[_ChecklistItemInput["default"].FIELD.FINDING], [_ChecklistItemInput["default"].FIELD.NUMERIC]];
           options.beforeOnChange = clearResult;
           break;
 
@@ -287,7 +287,7 @@ function (_Component) {
           }]];
 
           if (checklistItem.type === "10") {
-            fields.push([_ChecklistItemInput["default"].FIELD.QUANTITATIVE]);
+            fields.push([_ChecklistItemInput["default"].FIELD.NUMERIC]);
           }
 
           options.style = _ChecklistItemInput["default"].STYLE.SAMELINE;
@@ -304,10 +304,10 @@ function (_Component) {
           }]];
 
           if (checklistItem.type === "12") {
-            fields.push([_ChecklistItemInput["default"].FIELD.QUANTITATIVE]);
+            fields.push([_ChecklistItemInput["default"].FIELD.NUMERIC]);
 
             options.beforeOnChange = function (newProps, type, value) {
-              if (type === _ChecklistItemInput["default"].FIELD.QUANTITATIVE) newProps.result = newProps.result === null ? "OK" : null;
+              if (type === _ChecklistItemInput["default"].FIELD.NUMERIC) newProps.result = newProps.result === null ? "OK" : null;
               return newProps;
             };
           }
