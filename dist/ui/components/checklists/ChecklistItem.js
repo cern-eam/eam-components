@@ -290,6 +290,7 @@ function (_Component) {
             fields.push([_ChecklistItemInput["default"].FIELD.QUANTITATIVE]);
           }
 
+          options.style = _ChecklistItemInput["default"].STYLE.SAMELINE;
           break;
 
         case "11":
@@ -311,6 +312,7 @@ function (_Component) {
             };
           }
 
+          options.style = _ChecklistItemInput["default"].STYLE.SAMELINE;
           break;
       }
 

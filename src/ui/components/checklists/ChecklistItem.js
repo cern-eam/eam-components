@@ -202,6 +202,8 @@ export default class Checklist extends Component {
                 if(checklistItem.type === "10") {
                     fields.push([ChecklistItemInput.FIELD.QUANTITATIVE])
                 }
+
+                options.style = ChecklistItemInput.STYLE.SAMELINE;
                 break;
             case "11":
             case "12":
@@ -218,6 +220,8 @@ export default class Checklist extends Component {
                         return newProps;
                     }
                 }
+
+                options.style = ChecklistItemInput.STYLE.SAMELINE;
                 break;
         }
 
