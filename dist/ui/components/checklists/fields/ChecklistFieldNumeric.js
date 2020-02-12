@@ -68,7 +68,7 @@ function ChecklistFieldNumeric(props) {
     },
     value: inputValue,
     onBlur: function onBlur(event) {
-      return handleChange(event.target.value);
+      return value === event.target.value && handleChange(event.target.value);
     }
   }), _react["default"].createElement("div", {
     style: labelUOMStyle

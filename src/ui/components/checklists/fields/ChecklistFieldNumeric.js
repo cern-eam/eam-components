@@ -48,7 +48,7 @@ export default function ChecklistFieldNumeric(props) {
         <input style={inputStyle}
             onChange={event => setInputValue(event.target.value)}
             value={inputValue}
-            onBlur={event => handleChange(event.target.value)}/>
+            onBlur={event => value === event.target.value && handleChange(event.target.value)}/>
         <div style={labelUOMStyle}>{UOM}</div>
     </div>
 }
