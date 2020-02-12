@@ -43,12 +43,19 @@ export default function ChecklistFieldNumeric(props) {
     const {value, UOM, handleChange} = props;
 
     const [inputValue, setInputValue] = useState(value);
+    const [lastUpdatedValue, setUpdatedValue] = useState(value);
 
     return <div style={outerStyle}>
         <input style={inputStyle}
             onChange={event => setInputValue(event.target.value)}
             value={inputValue}
-            onBlur={event => value === event.target.value && handleChange(event.target.value)}/>
+            onBlur={event => {
+                if(("" + lastUpdatedValue) === inputValue)
+                    return;
+
+                 setUpdatedValue(inputValue);
+                 handleChange(inputValue);
+            }}/>
         <div style={labelUOMStyle}>{UOM}</div>
     </div>
 }

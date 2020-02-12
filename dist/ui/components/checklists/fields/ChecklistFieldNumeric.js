@@ -59,6 +59,11 @@ function ChecklistFieldNumeric(props) {
       inputValue = _useState2[0],
       setInputValue = _useState2[1];
 
+  var _useState3 = (0, _react.useState)(value),
+      _useState4 = _slicedToArray(_useState3, 2),
+      lastUpdatedValue = _useState4[0],
+      setUpdatedValue = _useState4[1];
+
   return _react["default"].createElement("div", {
     style: outerStyle
   }, _react["default"].createElement("input", {
@@ -68,7 +73,9 @@ function ChecklistFieldNumeric(props) {
     },
     value: inputValue,
     onBlur: function onBlur(event) {
-      return value === event.target.value && handleChange(event.target.value);
+      if ("" + lastUpdatedValue === inputValue) return;
+      setUpdatedValue(inputValue);
+      handleChange(inputValue);
     }
   }), _react["default"].createElement("div", {
     style: labelUOMStyle
