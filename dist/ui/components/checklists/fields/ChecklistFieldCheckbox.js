@@ -19,6 +19,9 @@ function ChecklistFieldCheckbox(props) {
       checked = props.checked,
       handleChange = props.handleChange;
   return _react["default"].createElement(_FormControlLabel["default"], {
+    style: {
+      margin: 5
+    },
     control: _react["default"].createElement(_Checkbox["default"], {
       color: "primary",
       checked: checked,

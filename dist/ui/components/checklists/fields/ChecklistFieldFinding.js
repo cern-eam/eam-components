@@ -17,19 +17,17 @@ var _ChecklistFieldCheckbox = _interopRequireDefault(require("./ChecklistFieldCh
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-function _readOnlyError(name) { throw new Error("\"" + name + "\" is read-only"); }
-
 var selectStyle = {
   margin: 5,
+  marginLeft: 17,
   width: "100%"
 };
 
 function ChecklistFieldFinding(props) {
-  var dropdown = props.dropdown,
-      finding = props.finding,
+  var finding = props.finding,
       handleChange = props.handleChange,
       possibleFindings = props.possibleFindings;
-  if (dropdown === undefined) dropdown = (_readOnlyError("dropdown"), true);
+  var dropdown = props.dropdown === undefined ? true : props.dropdown;
   if (dropdown) return _react["default"].createElement(_FormControl["default"], {
     style: selectStyle
   }, _react["default"].createElement(_Select["default"], {

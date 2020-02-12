@@ -6,13 +6,13 @@ import ChecklistFieldCheckbox from './ChecklistFieldCheckbox';
 
 const selectStyle = {
     margin: 5,
+    marginLeft: 17,
     width: "100%"
 }
 
 export default function ChecklistFieldFinding(props) {
-    const {dropdown, finding, handleChange, possibleFindings} = props;
-
-    if(dropdown === undefined) dropdown = true;
+    const {finding, handleChange, possibleFindings} = props;
+    const dropdown = props.dropdown === undefined ? true : props.dropdown;
 
     if(dropdown)
         return <FormControl style={selectStyle}>

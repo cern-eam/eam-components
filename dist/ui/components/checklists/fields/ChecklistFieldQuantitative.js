@@ -42,6 +42,12 @@ var labelUOMStyle = (_labelUOMStyle = {
   color: "black",
   fontSize: 15
 }, _defineProperty(_labelUOMStyle, "color", "#495057"), _defineProperty(_labelUOMStyle, "textAlign", "center"), _defineProperty(_labelUOMStyle, "whiteSpace", "nowrap"), _defineProperty(_labelUOMStyle, "backgroundColor", "#e9ecef"), _defineProperty(_labelUOMStyle, "border", "1px solid #ced4da"), _defineProperty(_labelUOMStyle, "paddingLeft", 4), _defineProperty(_labelUOMStyle, "paddingRight", 4), _defineProperty(_labelUOMStyle, "borderTopRightRadius", 4), _defineProperty(_labelUOMStyle, "borderBottomRightRadius", 4), _defineProperty(_labelUOMStyle, "marginLeft", -1), _defineProperty(_labelUOMStyle, "zIndex", 10), _defineProperty(_labelUOMStyle, "display", "flex"), _defineProperty(_labelUOMStyle, "alignItems", "center"), _labelUOMStyle);
+var outerStyle = {
+  margin: 5,
+  marginLeft: 17,
+  width: "100%",
+  display: "flex"
+};
 
 function ChecklistFieldQuantitative(props) {
   var value = props.value,
@@ -54,11 +60,7 @@ function ChecklistFieldQuantitative(props) {
       setInputValue = _useState2[1];
 
   return _react["default"].createElement("div", {
-    style: {
-      margin: 5,
-      width: "100%",
-      display: "flex"
-    }
+    style: outerStyle
   }, _react["default"].createElement("input", {
     style: inputStyle,
     onChange: function onChange(event) {

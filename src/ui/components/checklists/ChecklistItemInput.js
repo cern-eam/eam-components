@@ -5,31 +5,43 @@ import ChecklistFieldFinding from './fields/ChecklistFieldFinding';
 
 export default class ChecklistItemInput extends Component {
     handleChange(type, value) {
+        const {result, finding, numericValue} = this.props.checklistItem;
+
         let key;
+
+        let newResult,  newFinding, newNumericValue;
+        
         switch(type) {
             case ChecklistItemInput.FIELD.CHECKBOX:
-                key = 'result'
-                value = (value === this.props.checklistItem.result) ? null : value;
+                newResult = (value === result) ? null : value;
                 break;
             case ChecklistItemInput.FIELD.FINDING:
-                key = 'finding'
-                value = (value === this.props.checklistItem.finding) ? null : value;
+                newFinding = (value === finding) ? null : value;
                 break;
             case ChecklistItemInput.FIELD.QUANTITATIVE:
-                key = 'result';
+                newNumericValue = value;
                 break;
         }
 
-        this.props.onChange({
+        let newProps = {
             ...this.props.checklistItem,
-            [key]: value
-        })
+            result: newResult === undefined ? result : newResult,
+            finding: newFinding === undefined ? finding : newFinding,
+            numericValue: newNumericValue === undefined ? numericValue : newNumericValue
+        };
+
+        if(this.options.beforeOnChange && typeof this.options.beforeOnChange === 'function') {
+            newProps = this.options.beforeOnChange(newProps, type, value);
+        }
+
+        this.props.onChange(newProps);
     }
 
     renderField(field) {
         var {checklistItem} = this.props;
 
-        const [type, options] = field;
+        const type = field[0];
+        const options = field[1] || {};
 
         switch(type) {
             case ChecklistItemInput.FIELD.CHECKBOX:
@@ -48,7 +60,7 @@ export default class ChecklistItemInput extends Component {
                 />
             case ChecklistItemInput.FIELD.QUANTITATIVE:
                 return <ChecklistFieldQuantitative
-                    value={checklistItem.result || ''}
+                    value={checklistItem.numericValue || ''}
                     UOM={checklistItem.UOM}
                     handleChange={value => this.handleChange(ChecklistItemInput.FIELD.QUANTITATIVE, value)}
                 />
@@ -57,6 +69,8 @@ export default class ChecklistItemInput extends Component {
 
     render() {
         var {fields, options} = this.props;
+
+        this.options = options;
 
         let fieldsRender = [];
 
@@ -77,13 +91,13 @@ ChecklistItemInput.FIELD = {
 }
 
 const SINGLE = {
-    flex: "0 0 170px",
+    flex: "0 0 240px",
     display: "flex",
     marginLeft: 10
 }
 
 const ROWS = {
-    flex: "0 0 170px",
+    flex: "0 0 240px",
     display: "flex",
     position: "relative",
     marginLeft: 10,
@@ -91,7 +105,7 @@ const ROWS = {
 }
 
 const SAMELINE = {
-    flex: "0 0 170px",
+    flex: "0 0 240px",
     display: "flex",
     marginLeft: 10,
     flexWrap: "wrap",

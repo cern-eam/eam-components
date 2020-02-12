@@ -180,8 +180,13 @@ function (_Component) {
       var _this3 = this;
 
       var checklistItem = this.state.checklistItem;
-      var fields;
-      var options = {};
+      var fields = [];
+      var options = {}; // use until use of numeric values in result field is deprecated
+
+      var clearResult = function clearResult(newProps, type, value) {
+        delete newProps.result;
+        return newProps;
+      };
 
       switch (checklistItem.type) {
         case "01":
@@ -213,12 +218,99 @@ function (_Component) {
         case "04":
         case "05":
           fields = [[_ChecklistItemInput["default"].FIELD.QUANTITATIVE]];
+          options.beforeOnChange = clearResult;
           break;
 
         case "06":
-          fields = [[_ChecklistItemInput["default"].FIELD.QUANTITATIVE], [_ChecklistItemInput["default"].FIELD.FINDING, {
-            dropdown: true
+          fields = [[_ChecklistItemInput["default"].FIELD.FINDING], [_ChecklistItemInput["default"].FIELD.QUANTITATIVE]];
+          options.beforeOnChange = clearResult;
+          break;
+
+        case "07":
+          fields = [[_ChecklistItemInput["default"].FIELD.CHECKBOX, {
+            code: "OK",
+            desc: "OK"
+          }], [_ChecklistItemInput["default"].FIELD.CHECKBOX, {
+            code: "REPAIRSNEEDED",
+            desc: "Repairs Needed"
+          }], [_ChecklistItemInput["default"].FIELD.FINDING]];
+
+          switch (checklistItem.result) {
+            case null:
+              checklistItem.possibleFindings = [];
+              break;
+
+            case "OK":
+              checklistItem.possibleFindings = [{
+                code: "AM",
+                desc: "Adjustments Made"
+              }];
+              break;
+
+            case "REPAIRSNEEDED":
+              checklistItem.possibleFindings = [{
+                code: "RC",
+                desc: "Repair Completed"
+              }, {
+                code: "TR",
+                desc: "Temporary Repair"
+              }];
+              break;
+          }
+
+          options.beforeOnChange = function (newProps, type, value) {
+            newProps.finding = type === _ChecklistItemInput["default"].FIELD.CHECKBOX ? undefined : newProps.finding;
+            return newProps;
+          };
+
+          break;
+
+        case "08":
+          fields = [[_ChecklistItemInput["default"].FIELD.CHECKBOX, {
+            code: "GOOD",
+            desc: "Good"
+          }], [_ChecklistItemInput["default"].FIELD.CHECKBOX, {
+            code: "POOR",
+            desc: "Poor"
           }]];
+          options.style = _ChecklistItemInput["default"].STYLE.SAMELINE;
+          break;
+
+        case "09":
+        case "10":
+          fields = [[_ChecklistItemInput["default"].FIELD.CHECKBOX, {
+            code: "OK",
+            desc: "OK"
+          }], [_ChecklistItemInput["default"].FIELD.CHECKBOX, {
+            code: "ADJUSTED",
+            desc: "Adjusted"
+          }]];
+
+          if (checklistItem.type === "10") {
+            fields.push([_ChecklistItemInput["default"].FIELD.QUANTITATIVE]);
+          }
+
+          break;
+
+        case "11":
+        case "12":
+          fields = [[_ChecklistItemInput["default"].FIELD.CHECKBOX, {
+            code: "OK",
+            desc: "OK"
+          }], [_ChecklistItemInput["default"].FIELD.CHECKBOX, {
+            code: "NONCONFORMITY",
+            desc: "Nonconformity"
+          }]];
+
+          if (checklistItem.type === "12") {
+            fields.push([_ChecklistItemInput["default"].FIELD.QUANTITATIVE]);
+
+            options.beforeOnChange = function (newProps, type, value) {
+              if (type === _ChecklistItemInput["default"].FIELD.QUANTITATIVE) newProps.result = newProps.result === null ? "OK" : null;
+              return newProps;
+            };
+          }
+
           break;
       }
 

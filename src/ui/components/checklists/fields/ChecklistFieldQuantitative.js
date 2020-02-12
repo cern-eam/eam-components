@@ -32,12 +32,19 @@ const labelUOMStyle = {
     alignItems: "center"
 }
 
+const outerStyle = {
+    margin: 5,
+    marginLeft: 17,
+    width: "100%",
+    display: "flex"
+};
+
 export default function ChecklistFieldQuantitative(props) {
     const {value, UOM, handleChange} = props;
 
     const [inputValue, setInputValue] = useState(value);
 
-    return <div style={{margin: 5, width: "100%", display: "flex"}}>
+    return <div style={outerStyle}>
         <input style={inputStyle}
             onChange={event => setInputValue(event.target.value)}
             value={inputValue}

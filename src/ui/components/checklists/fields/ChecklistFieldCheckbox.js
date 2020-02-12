@@ -5,7 +5,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 export default function ChecklistFieldCheckbox(props) {
     const {code, desc, checked, handleChange} = props;
 
-    return <FormControlLabel
+    return <FormControlLabel style={{margin: 5}}
         control={
             <Checkbox
                 color="primary"
