@@ -50,32 +50,12 @@ var Checklist =
 function (_Component) {
   _inherits(Checklist, _Component);
 
-  function Checklist() {
-    var _getPrototypeOf2;
-
+  function Checklist(props) {
     var _this;
 
     _classCallCheck(this, Checklist);
 
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Checklist)).call.apply(_getPrototypeOf2, [this].concat(args)));
-    _this.state = {
-      detailsVisible: false,
-      blocked: false,
-      requestTimeout: null
-    };
-
-    _this.init = function (checklistItem) {
-      if (checklistItem) {
-        _this.setState({
-          checklistItem: checklistItem,
-          detailsVisible: !!checklistItem.notes || !!checklistItem.followUpWorkOrder || checklistItem.followUp === '+'
-        });
-      }
-    };
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Checklist).call(this, props));
 
     _this.getCheckListItemStyle = function () {
       return {
@@ -107,6 +87,12 @@ function (_Component) {
       display: "flex",
       flexDirection: "row"
     };
+    _this.state = {
+      detailsVisible: false,
+      blocked: false,
+      requestTimeout: null
+    };
+    _this.notes = _react["default"].createRef();
     return _this;
   }
 
@@ -134,6 +120,16 @@ function (_Component) {
 
           this.init(checklistItem);
         }
+      }
+    }
+  }, {
+    key: "init",
+    value: function init(checklistItem) {
+      if (checklistItem) {
+        this.setState({
+          checklistItem: checklistItem,
+          detailsVisible: !!checklistItem.notes || !!checklistItem.followUpWorkOrder || checklistItem.followUp === '+'
+        });
       }
     }
   }, {
@@ -181,17 +177,27 @@ function (_Component) {
   }, {
     key: "descClickHandler",
     value: function descClickHandler() {
-      //if (!this.state.notesVisible) {
-      //    setTimeout(() => this.notesInput.focus(), 0)
-      //}
-      this.setState({
-        detailsVisible: !this.state.detailsVisible
+      var _this3 = this;
+
+      var notes = this.notes.current;
+      this.setState(function (state, props) {
+        var detailsVisible = !state.detailsVisible;
+
+        if (detailsVisible) {
+          setTimeout(function () {
+            return _this3.notes.current.focus();
+          }, 0);
+        }
+
+        return {
+          detailsVisible: detailsVisible
+        };
       });
     }
   }, {
     key: "renderChecklistItemInput",
     value: function renderChecklistItemInput() {
-      var _this3 = this;
+      var _this4 = this;
 
       var checklistItem = this.state.checklistItem;
       var fields = [];
@@ -343,7 +349,7 @@ function (_Component) {
       return _react["default"].createElement(_ChecklistItemInput["default"], {
         checklistItem: checklistItem,
         onChange: function onChange(value) {
-          return _this3.onChange(value);
+          return _this4.onChange(value);
         },
         fields: fields,
         options: options
@@ -352,7 +358,7 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this4 = this;
+      var _this5 = this;
 
       var checklistItem = this.state.checklistItem;
       return _react["default"].createElement("div", {
@@ -371,14 +377,15 @@ function (_Component) {
       }, _react["default"].createElement("div", {
         style: this.checklistDetailsStyle
       }, _react["default"].createElement(_ChecklistItemNotes["default"], {
+        ref: this.notes,
         checklistItem: checklistItem,
         onChange: function onChange(value) {
-          return _this4.onChange(value);
+          return _this5.onChange(value);
         }
       }), _react["default"].createElement(_ChecklistItemFollowUp["default"], {
         checklistItem: checklistItem,
         onChange: function onChange(value) {
-          return _this4.onChange(value);
+          return _this5.onChange(value);
         },
         getWoLink: this.props.getWoLink
       }))));

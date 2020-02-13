@@ -5,11 +5,15 @@ import Collapse from '@material-ui/core/Collapse';
 import ChecklistItemFollowUp from "./ChecklistItemFollowUp";
 
 export default class Checklist extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            detailsVisible: false,
+            blocked: false,
+            requestTimeout: null
+        }
 
-    state = {
-        detailsVisible: false,
-        blocked: false,
-        requestTimeout: null
+        this.notes = React.createRef();
     }
 
     componentWillMount() {
@@ -34,7 +38,7 @@ export default class Checklist extends Component {
         }
     }
 
-    init = checklistItem => {
+    init(checklistItem) {
         if (checklistItem) {
             this.setState({
                 checklistItem: checklistItem,
@@ -94,7 +98,7 @@ export default class Checklist extends Component {
                 clearTimeout(state.requestTimeout);
 
             const DEBOUNCE_TIME_MS = 360;
-            
+
             return {
                 requestTimeout: setTimeout(() => {
                     this.setState({requestTimeout: null});
@@ -116,12 +120,17 @@ export default class Checklist extends Component {
     }
 
     descClickHandler() {
-        //if (!this.state.notesVisible) {
-        //    setTimeout(() => this.notesInput.focus(), 0)
-        //}
-        this.setState({
-            detailsVisible: !this.state.detailsVisible
-        })
+        const notes = this.notes.current;
+
+        this.setState((state, props) => {
+            const detailsVisible = !state.detailsVisible;
+
+            if(detailsVisible) {
+                setTimeout(() => this.notes.current.focus(), 0);
+            }
+
+            return {detailsVisible}
+        });
     }
 
     renderChecklistItemInput() {
@@ -265,8 +274,11 @@ export default class Checklist extends Component {
 
                 <Collapse in={this.state.detailsVisible}>
                     <div style={this.checklistDetailsStyle} >
-                        <ChecklistItemNotes checklistItem={checklistItem}
-                                            onChange={value => this.onChange(value)}/>
+                        <ChecklistItemNotes 
+                            ref={this.notes}
+                            checklistItem={checklistItem}
+                            onChange={value => this.onChange(value)}
+                        />
                         <ChecklistItemFollowUp 
                                 checklistItem={checklistItem}
                                 onChange={value => this.onChange(value)}

@@ -1,7 +1,11 @@
 import React, {Component} from 'react';
 import CommentIcon from '@material-ui/icons/Comment';
 
-export default class ChecklistItemInputQuantitative extends Component {
+export default class ChecklistItemNotes extends Component {
+    constructor(props) {
+        super(props);
+        this.input = React.createRef();
+    }
 
     componentWillMount() {
         if (this.props.checklistItem) {
@@ -51,7 +55,6 @@ export default class ChecklistItemInputQuantitative extends Component {
         })
     }
 
-
     handleBlur = event => {
         this.props.onChange({
             ...this.props.checklistItem,
@@ -59,14 +62,20 @@ export default class ChecklistItemInputQuantitative extends Component {
         })
     }
 
-    render() {
+    focus() {
+        this.input.current.focus();
+    }
 
+    render() {
         return (
             <div style={this.mainDivStyle}>
-                <input style={this.notesStyle}
-                       onChange={this.handleChange}
-                       value={this.state.value || ''}
-                       onBlur={this.handleBlur}/>
+                <input
+                    style={this.notesStyle}
+                    onChange={this.handleChange}
+                    value={this.state.value || ''}
+                    onBlur={this.handleBlur}
+                    ref={this.input}
+                />
                 <CommentIcon style={this.commentIconStyle}/>
             </div>
         )
