@@ -24,10 +24,14 @@ var style = {
     margin: 5,
     marginLeft: 17,
     border: "1px solid #ced4da",
-    borderRadius: 4
+    borderRadius: 4,
+    fontSize: "0.95rem"
   },
   select: {
-    paddingLeft: 10
+    paddingLeft: 10,
+    width: 128,
+    overflow: "hidden",
+    textOverflow: "ellipsis"
   },
   icon: {
     paddingRight: 3
