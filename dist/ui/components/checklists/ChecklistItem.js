@@ -91,7 +91,8 @@ function (_Component) {
       display: "flex",
       alignItems: "center",
       minHeight: 48,
-      justifyContent: 'space-between'
+      justifyContent: 'space-between',
+      flexWrap: 'wrap'
     };
     _this.firstLineDesc = {
       "float": "left",

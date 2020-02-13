@@ -1,11 +1,22 @@
 import React from 'react';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { withStyles } from '@material-ui/core/styles';
 
-export default function ChecklistFieldCheckbox(props) {
-    const {code, desc, checked, handleChange} = props;
+const labelStyle = {
+    root: {
+        margin: 5
+    },
+    label: {
+        fontSize: "0.95rem"
+    }
+};
 
-    return <FormControlLabel style={{margin: 5}}
+const ChecklistFieldCheckbox = props => {
+    const {code, desc, checked, handleChange, classes} = props;
+
+    return <FormControlLabel
+        classes={{root: classes.root,label: classes.label}}
         control={
             <Checkbox
                 color="primary"
@@ -15,4 +26,6 @@ export default function ChecklistFieldCheckbox(props) {
         }
         label={desc}
     />
-}
+};
+
+export default withStyles(labelStyle)(ChecklistFieldCheckbox);

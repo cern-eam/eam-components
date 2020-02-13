@@ -181,19 +181,19 @@ ChecklistItemInput.FIELD = {
   FINDING: "FINDING"
 };
 var SINGLE = {
-  flex: "0 0 240px",
+  flex: "0 0 186px",
   display: "flex",
   marginLeft: 10
 };
 var ROWS = {
-  flex: "0 0 240px",
+  flex: "0 0 186px",
   display: "flex",
   position: "relative",
   marginLeft: 10,
   flexDirection: "column"
 };
 var SAMELINE = {
-  flex: "0 0 240px",
+  flex: "0 0 186px",
   display: "flex",
   marginLeft: 10,
   flexWrap: "wrap",

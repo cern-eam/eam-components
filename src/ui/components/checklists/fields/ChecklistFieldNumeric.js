@@ -35,7 +35,6 @@ const labelUOMStyle = {
 const outerStyle = {
     margin: 5,
     marginLeft: 17,
-    width: "100%",
     display: "flex"
 };
 

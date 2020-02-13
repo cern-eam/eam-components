@@ -94,13 +94,13 @@ ChecklistItemInput.FIELD = {
 }
 
 const SINGLE = {
-    flex: "0 0 240px",
+    flex: "0 0 186px",
     display: "flex",
     marginLeft: 10
 }
 
 const ROWS = {
-    flex: "0 0 240px",
+    flex: "0 0 186px",
     display: "flex",
     position: "relative",
     marginLeft: 10,
@@ -108,7 +108,7 @@ const ROWS = {
 }
 
 const SAMELINE = {
-    flex: "0 0 240px",
+    flex: "0 0 186px",
     display: "flex",
     marginLeft: 10,
     flexWrap: "wrap",

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = ChecklistFieldFinding;
+exports["default"] = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
@@ -15,22 +15,40 @@ var _MenuItem = _interopRequireDefault(require("@material-ui/core/MenuItem"));
 
 var _ChecklistFieldCheckbox = _interopRequireDefault(require("./ChecklistFieldCheckbox"));
 
+var _styles = require("@material-ui/core/styles");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var selectStyle = {
-  margin: 5,
-  marginLeft: 17,
-  width: "100%"
+var style = {
+  root: {
+    margin: 5,
+    marginLeft: 17,
+    border: "1px solid #ced4da",
+    borderRadius: 4
+  },
+  select: {
+    paddingLeft: 10
+  },
+  icon: {
+    paddingRight: 3
+  }
 };
 
-function ChecklistFieldFinding(props) {
+var ChecklistFieldFinding = function ChecklistFieldFinding(props) {
   var finding = props.finding,
       handleChange = props.handleChange,
-      possibleFindings = props.possibleFindings;
+      possibleFindings = props.possibleFindings,
+      classes = props.classes;
   var dropdown = props.dropdown === undefined ? true : props.dropdown;
   if (dropdown) return _react["default"].createElement(_FormControl["default"], {
-    style: selectStyle
+    classes: {
+      root: classes.root
+    }
   }, _react["default"].createElement(_Select["default"], {
+    classes: {
+      select: classes.select,
+      icon: classes.icon
+    },
     disableUnderline: true,
     value: finding,
     onChange: function onChange(event) {
@@ -52,4 +70,8 @@ function ChecklistFieldFinding(props) {
       key: findingElement.code
     });
   });
-}
+};
+
+var _default = (0, _styles.withStyles)(style)(ChecklistFieldFinding);
+
+exports["default"] = _default;

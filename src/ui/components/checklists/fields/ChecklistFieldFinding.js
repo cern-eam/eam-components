@@ -3,20 +3,31 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import ChecklistFieldCheckbox from './ChecklistFieldCheckbox';
+import { withStyles } from '@material-ui/core/styles';
 
-const selectStyle = {
-    margin: 5,
-    marginLeft: 17,
-    width: "100%"
+const style = {
+    root: {
+        margin: 5,
+        marginLeft: 17,
+        border: "1px solid #ced4da",
+        borderRadius: 4
+    },
+    select: {
+        paddingLeft: 10
+    },
+    icon: {
+        paddingRight: 3
+    }
 }
 
-export default function ChecklistFieldFinding(props) {
-    const {finding, handleChange, possibleFindings} = props;
+const ChecklistFieldFinding = props => {
+    const {finding, handleChange, possibleFindings, classes} = props;
     const dropdown = props.dropdown === undefined ? true : props.dropdown;
 
     if(dropdown)
-        return <FormControl style={selectStyle}>
-                <Select disableUnderline={true}
+        return <FormControl classes={{root: classes.root}}>
+                <Select classes={{select: classes.select, icon: classes.icon}}
+                        disableUnderline={true}
                         value={finding}
                         onChange={event => handleChange(event.target.value)}>
                     <MenuItem value={null}>&#8203;</MenuItem>
@@ -35,3 +46,5 @@ export default function ChecklistFieldFinding(props) {
         />)
 
 }
+
+export default withStyles(style)(ChecklistFieldFinding);

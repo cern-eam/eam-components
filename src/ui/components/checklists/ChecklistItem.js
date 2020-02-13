@@ -55,6 +55,7 @@ export default class Checklist extends Component {
         alignItems: "center",
         minHeight: 48,
         justifyContent: 'space-between',
+        flexWrap: 'wrap'
     };
 
     firstLineDesc = {
