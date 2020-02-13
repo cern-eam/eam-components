@@ -191,7 +191,7 @@ function (_Component) {
         style: this.statusStyle
       }, this.computeStatusBox(this.props.document.status), this.props.document.status)), this.state.filesVisible && _react["default"].createElement("div", {
         style: this.morePanelStyle
-      }, this.props.document.properties.edms_property && _react["default"].createElement(_MoreDetailsList["default"], {
+      }, this.props.document.properties && this.props.document.properties.edms_property && _react["default"].createElement(_MoreDetailsList["default"], {
         details: this.props.document.properties.edms_property
       }), _react["default"].createElement(_FileList["default"], {
         files: this.props.document.files,

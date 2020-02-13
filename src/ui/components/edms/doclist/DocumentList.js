@@ -46,7 +46,7 @@ class DocumentList extends Component {
     generateDocumentList() {
         if (this.props.documents) {
             return this.props.documents.map( (document, index) => {
-                return <DocumentRow document={document} index={index} filesUploadHandler={this.props.filesUploadHandler}/>
+                return <DocumentRow document={document} index={index} key={index} filesUploadHandler={this.props.filesUploadHandler}/>
             })
         } else {
             return <div/>

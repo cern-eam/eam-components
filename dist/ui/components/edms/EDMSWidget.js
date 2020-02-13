@@ -118,9 +118,11 @@ function (_Component) {
             _this.props.showSuccess('Files have been uploaded');
 
             _this.readDocuments(_this.props.objectID, _this.props.objectType);
-          })["catch"](function () {
+          })["catch"](function (reason) {
             //TODO enhance the error handling (partial fail/success)
-            _this.displayError('File upload was not successful');
+            var errorMessage = _this.getErrorMessage(reason);
+
+            _this.props.showError('File upload was not successful. Detailed error: ' + errorMessage);
 
             _this.readDocuments(_this.props.objectID, _this.props.objectType);
           });
@@ -142,7 +144,7 @@ function (_Component) {
       })["catch"](function (reason) {
         var errorMessage = _this.getErrorMessage(reason);
 
-        _this.displayError(errorMessage);
+        _this.props.showError(errorMessage);
 
         _this.unblockUI();
       });
@@ -193,9 +195,11 @@ function (_Component) {
         _this.props.showSuccess('Files have been uploaded');
 
         _this.readDocuments(_this.props.objectID, _this.props.objectType);
-      })["catch"](function () {
+      })["catch"](function (reason) {
         //TODO enhance the error handling (partial fail/success)
-        _this.displayError('File upload was not successful');
+        var errorMessage = _this.getErrorMessage(reason);
+
+        _this.props.showError('File upload was not successful. Detailed error: ' + errorMessage);
 
         _this.readDocuments(_this.props.objectID, _this.props.objectType);
       });
@@ -220,6 +224,8 @@ function (_Component) {
       })["catch"](function (reason) {
         var errorMessage = _this.getErrorMessage(reason);
 
+        _this.props.showError(errorMessage);
+
         _this.unblockUI(); //TODO handle the error message...
 
       });
@@ -234,12 +240,6 @@ function (_Component) {
       marginBottom: -20,
       marginTop: -8,
       minHeight: 300
-    };
-
-    _this.displayError = function (message) {
-      console.log('showing error', message);
-
-      _this.props.showError(message);
     };
 
     _this.getErrorMessage = function (reason) {
