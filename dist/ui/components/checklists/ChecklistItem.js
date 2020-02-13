@@ -45,17 +45,17 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var Checklist =
+var ChecklistItem =
 /*#__PURE__*/
 function (_Component) {
-  _inherits(Checklist, _Component);
+  _inherits(ChecklistItem, _Component);
 
-  function Checklist(props) {
+  function ChecklistItem(props) {
     var _this;
 
-    _classCallCheck(this, Checklist);
+    _classCallCheck(this, ChecklistItem);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Checklist).call(this, props));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(ChecklistItem).call(this, props));
 
     _this.getCheckListItemStyle = function () {
       return {
@@ -96,7 +96,7 @@ function (_Component) {
     return _this;
   }
 
-  _createClass(Checklist, [{
+  _createClass(ChecklistItem, [{
     key: "componentWillMount",
     value: function componentWillMount() {
       this.init(this.props.checklistItem);
@@ -395,7 +395,7 @@ function (_Component) {
     }
   }]);
 
-  return Checklist;
+  return ChecklistItem;
 }(_react.Component);
 
-exports["default"] = Checklist;
+exports["default"] = ChecklistItem;

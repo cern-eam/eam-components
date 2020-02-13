@@ -4,7 +4,7 @@ import ChecklistItemNotes from './ChecklistItemNotes';
 import Collapse from '@material-ui/core/Collapse';
 import ChecklistItemFollowUp from "./ChecklistItemFollowUp";
 
-export default class Checklist extends Component {
+export default class ChecklistItem extends Component {
     constructor(props) {
         super(props);
         this.state = {

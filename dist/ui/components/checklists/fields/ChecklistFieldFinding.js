@@ -24,7 +24,9 @@ var style = {
     margin: 5,
     marginLeft: 17,
     border: "1px solid #ced4da",
-    borderRadius: 4,
+    borderRadius: 4
+  },
+  selectRoot: {
     fontSize: "0.95rem"
   },
   select: {
@@ -50,6 +52,7 @@ var ChecklistFieldFinding = function ChecklistFieldFinding(props) {
     }
   }, _react["default"].createElement(_Select["default"], {
     classes: {
+      root: classes.selectRoot,
       select: classes.select,
       icon: classes.icon
     },
