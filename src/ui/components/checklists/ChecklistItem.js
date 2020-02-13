@@ -133,49 +133,52 @@ export default class Checklist extends Component {
             return newProps;
         };
 
+        const field = ChecklistItemInput.field;
+        const {CHECKBOX, FINDING, NUMERIC} = ChecklistItemInput.FIELD;
+
         switch(checklistItem.type) {
             case "01":
                 fields = [
-                    [ChecklistItemInput.FIELD.CHECKBOX, {code: "COMPLETED", desc:"Completed"}]
+                    field(CHECKBOX, {code: "COMPLETED", desc:"Completed"})
                 ];
                 options.style = ChecklistItemInput.STYLE.SINGLE;
                 break;
             case "02":
                 fields = [
-                    [ChecklistItemInput.FIELD.CHECKBOX, {code: "YES", desc: "Yes"}],
-                    [ChecklistItemInput.FIELD.CHECKBOX, {code: "NO", desc: "No"}]
+                    field(CHECKBOX, {code: "YES", desc: "Yes"}),
+                    field(CHECKBOX, {code: "NO", desc: "No"})
                 ];
                 options.style = ChecklistItemInput.STYLE.SAMELINE;
                 break;
             case "03":
                 const MINIMUM_MIN_FINDINGS = 4;
                 fields = [
-                    [ChecklistItemInput.FIELD.FINDING, {
+                    field(FINDING, {
                         dropdown:
                             checklistItem.possibleFindings.length >= Math.min(this.props.minFindingsDropdown, MINIMUM_MIN_FINDINGS)
-                    }]
+                    })
                 ];
                 break;
             case "04":
             case "05":
                 fields = [
-                    [ChecklistItemInput.FIELD.NUMERIC]
+                    field(NUMERIC)
                 ];
                 options.beforeOnChange = clearResult;
                 break;
             case "06":
                 fields = [
-                    [ChecklistItemInput.FIELD.FINDING],
-                    [ChecklistItemInput.FIELD.NUMERIC]
+                    field(FINDING),
+                    field(NUMERIC)
                 ];
 
                 options.beforeOnChange = clearResult;
                 break;
             case "07":
                 fields = [
-                    [ChecklistItemInput.FIELD.CHECKBOX, {code: "OK", desc: "OK"}],
-                    [ChecklistItemInput.FIELD.CHECKBOX, {code: "REPAIRSNEEDED", desc: "Repairs Needed"}],
-                    [ChecklistItemInput.FIELD.FINDING]
+                    field(CHECKBOX, {code: "OK", desc: "OK"}),
+                    field(CHECKBOX, {code: "REPAIRSNEEDED", desc: "Repairs Needed"}),
+                    field(FINDING)
                 ];
 
                 switch(checklistItem.result) {
@@ -200,20 +203,20 @@ export default class Checklist extends Component {
                 break;
             case "08":
                 fields = [
-                    [ChecklistItemInput.FIELD.CHECKBOX, {code: "GOOD", desc: "Good"}],
-                    [ChecklistItemInput.FIELD.CHECKBOX, {code: "POOR", desc: "Poor"}]
+                    field(CHECKBOX, {code: "GOOD", desc: "Good"}),
+                    field(CHECKBOX, {code: "POOR", desc: "Poor"})
                 ];
                 options.style = ChecklistItemInput.STYLE.SAMELINE;
                 break;
             case "09":
             case "10":
                 fields = [
-                    [ChecklistItemInput.FIELD.CHECKBOX, {code: "OK", desc: "OK"}],
-                    [ChecklistItemInput.FIELD.CHECKBOX, {code: "ADJUSTED", desc: "Adjusted"}]
+                    field(CHECKBOX, {code: "OK", desc: "OK"}),
+                    field(CHECKBOX, {code: "ADJUSTED", desc: "Adjusted"})
                 ];
 
                 if(checklistItem.type === "10") {
-                    fields.push([ChecklistItemInput.FIELD.NUMERIC])
+                    fields.push(field(NUMERIC))
                 }
 
                 options.style = ChecklistItemInput.STYLE.SAMELINE;
@@ -221,8 +224,8 @@ export default class Checklist extends Component {
             case "11":
             case "12":
                 fields = [
-                    [ChecklistItemInput.FIELD.CHECKBOX, {code: "OK", desc: "OK"}],
-                    [ChecklistItemInput.FIELD.CHECKBOX, {code: "NONCONFORMITY", desc: "Nonconformity"}]
+                    field(CHECKBOX, {code: "OK", desc: "OK"}),
+                    field(CHECKBOX, {code: "NONCONFORMITY", desc: "Nonconformity"})
                 ];
 
                 if(checklistItem.type === "12") {

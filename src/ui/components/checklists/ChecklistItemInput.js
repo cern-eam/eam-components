@@ -120,3 +120,5 @@ ChecklistItemInput.STYLE = {
     ROWS,
     SAMELINE
 };
+
+ChecklistItemInput.field = (type, options) => [type, options];

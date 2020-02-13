@@ -204,3 +204,7 @@ ChecklistItemInput.STYLE = {
   ROWS: ROWS,
   SAMELINE: SAMELINE
 };
+
+ChecklistItemInput.field = function (type, options) {
+  return [type, options];
+};

@@ -201,52 +201,58 @@ function (_Component) {
         return newProps;
       };
 
+      var field = _ChecklistItemInput["default"].field;
+      var _ChecklistItemInput$F = _ChecklistItemInput["default"].FIELD,
+          CHECKBOX = _ChecklistItemInput$F.CHECKBOX,
+          FINDING = _ChecklistItemInput$F.FINDING,
+          NUMERIC = _ChecklistItemInput$F.NUMERIC;
+
       switch (checklistItem.type) {
         case "01":
-          fields = [[_ChecklistItemInput["default"].FIELD.CHECKBOX, {
+          fields = [field(CHECKBOX, {
             code: "COMPLETED",
             desc: "Completed"
-          }]];
+          })];
           options.style = _ChecklistItemInput["default"].STYLE.SINGLE;
           break;
 
         case "02":
-          fields = [[_ChecklistItemInput["default"].FIELD.CHECKBOX, {
+          fields = [field(CHECKBOX, {
             code: "YES",
             desc: "Yes"
-          }], [_ChecklistItemInput["default"].FIELD.CHECKBOX, {
+          }), field(CHECKBOX, {
             code: "NO",
             desc: "No"
-          }]];
+          })];
           options.style = _ChecklistItemInput["default"].STYLE.SAMELINE;
           break;
 
         case "03":
           var MINIMUM_MIN_FINDINGS = 4;
-          fields = [[_ChecklistItemInput["default"].FIELD.FINDING, {
+          fields = [field(FINDING, {
             dropdown: checklistItem.possibleFindings.length >= Math.min(this.props.minFindingsDropdown, MINIMUM_MIN_FINDINGS)
-          }]];
+          })];
           break;
 
         case "04":
         case "05":
-          fields = [[_ChecklistItemInput["default"].FIELD.NUMERIC]];
+          fields = [field(NUMERIC)];
           options.beforeOnChange = clearResult;
           break;
 
         case "06":
-          fields = [[_ChecklistItemInput["default"].FIELD.FINDING], [_ChecklistItemInput["default"].FIELD.NUMERIC]];
+          fields = [field(FINDING), field(NUMERIC)];
           options.beforeOnChange = clearResult;
           break;
 
         case "07":
-          fields = [[_ChecklistItemInput["default"].FIELD.CHECKBOX, {
+          fields = [field(CHECKBOX, {
             code: "OK",
             desc: "OK"
-          }], [_ChecklistItemInput["default"].FIELD.CHECKBOX, {
+          }), field(CHECKBOX, {
             code: "REPAIRSNEEDED",
             desc: "Repairs Needed"
-          }], [_ChecklistItemInput["default"].FIELD.FINDING]];
+          }), field(FINDING)];
 
           switch (checklistItem.result) {
             case null:
@@ -279,28 +285,28 @@ function (_Component) {
           break;
 
         case "08":
-          fields = [[_ChecklistItemInput["default"].FIELD.CHECKBOX, {
+          fields = [field(CHECKBOX, {
             code: "GOOD",
             desc: "Good"
-          }], [_ChecklistItemInput["default"].FIELD.CHECKBOX, {
+          }), field(CHECKBOX, {
             code: "POOR",
             desc: "Poor"
-          }]];
+          })];
           options.style = _ChecklistItemInput["default"].STYLE.SAMELINE;
           break;
 
         case "09":
         case "10":
-          fields = [[_ChecklistItemInput["default"].FIELD.CHECKBOX, {
+          fields = [field(CHECKBOX, {
             code: "OK",
             desc: "OK"
-          }], [_ChecklistItemInput["default"].FIELD.CHECKBOX, {
+          }), field(CHECKBOX, {
             code: "ADJUSTED",
             desc: "Adjusted"
-          }]];
+          })];
 
           if (checklistItem.type === "10") {
-            fields.push([_ChecklistItemInput["default"].FIELD.NUMERIC]);
+            fields.push(field(NUMERIC));
           }
 
           options.style = _ChecklistItemInput["default"].STYLE.SAMELINE;
@@ -308,13 +314,13 @@ function (_Component) {
 
         case "11":
         case "12":
-          fields = [[_ChecklistItemInput["default"].FIELD.CHECKBOX, {
+          fields = [field(CHECKBOX, {
             code: "OK",
             desc: "OK"
-          }], [_ChecklistItemInput["default"].FIELD.CHECKBOX, {
+          }), field(CHECKBOX, {
             code: "NONCONFORMITY",
             desc: "Nonconformity"
-          }]];
+          })];
 
           if (checklistItem.type === "12") {
             fields.push([_ChecklistItemInput["default"].FIELD.NUMERIC]);
