@@ -38,11 +38,11 @@ const outerStyle = {
     display: "flex"
 };
 
-export default function ChecklistFieldNumeric(props) {
+const ChecklistFieldNumeric = props => {
     const {value, UOM, handleChange} = props;
 
-    const [inputValue, setInputValue] = useState(value);
-    const [lastUpdatedValue, setUpdatedValue] = useState(value);
+    const [inputValue, setInputValue] = useState(value || '');
+    const [lastUpdatedValue, setUpdatedValue] = useState(value || '');
 
     return <div style={outerStyle}>
         <input style={inputStyle}
@@ -57,4 +57,6 @@ export default function ChecklistFieldNumeric(props) {
             }}/>
         <div style={labelUOMStyle}>{UOM}</div>
     </div>
-}
+};
+
+export default ChecklistFieldNumeric;

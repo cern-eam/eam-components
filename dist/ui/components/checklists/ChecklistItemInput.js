@@ -113,7 +113,7 @@ function (_Component) {
         case ChecklistItemInput.FIELD.FINDING:
           return _react["default"].createElement(_ChecklistFieldFinding["default"], {
             dropdown: options.dropdown,
-            finding: checklistItem.finding || '',
+            finding: checklistItem.finding,
             handleChange: function handleChange(code) {
               return _this.handleChange(ChecklistItemInput.FIELD.FINDING, code);
             },
@@ -123,7 +123,7 @@ function (_Component) {
 
         case ChecklistItemInput.FIELD.NUMERIC:
           return _react["default"].createElement(_ChecklistFieldNumeric["default"], {
-            value: checklistItem.numericValue || '',
+            value: checklistItem.numericValue,
             UOM: checklistItem.UOM,
             handleChange: function handleChange(value) {
               return _this.handleChange(ChecklistItemInput.FIELD.NUMERIC, value);

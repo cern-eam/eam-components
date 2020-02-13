@@ -5,7 +5,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = ChecklistFieldNumeric;
+exports["default"] = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
@@ -48,17 +48,17 @@ var outerStyle = {
   display: "flex"
 };
 
-function ChecklistFieldNumeric(props) {
+var ChecklistFieldNumeric = function ChecklistFieldNumeric(props) {
   var value = props.value,
       UOM = props.UOM,
       handleChange = props.handleChange;
 
-  var _useState = (0, _react.useState)(value),
+  var _useState = (0, _react.useState)(value || ''),
       _useState2 = _slicedToArray(_useState, 2),
       inputValue = _useState2[0],
       setInputValue = _useState2[1];
 
-  var _useState3 = (0, _react.useState)(value),
+  var _useState3 = (0, _react.useState)(value || ''),
       _useState4 = _slicedToArray(_useState3, 2),
       lastUpdatedValue = _useState4[0],
       setUpdatedValue = _useState4[1];
@@ -79,4 +79,7 @@ function ChecklistFieldNumeric(props) {
   }), _react["default"].createElement("div", {
     style: labelUOMStyle
   }, UOM));
-}
+};
+
+var _default = ChecklistFieldNumeric;
+exports["default"] = _default;

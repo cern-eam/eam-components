@@ -54,14 +54,14 @@ export default class ChecklistItemInput extends Component {
             case ChecklistItemInput.FIELD.FINDING:
                 return <ChecklistFieldFinding
                     dropdown={options.dropdown}
-                    finding={checklistItem.finding || ''}
+                    finding={checklistItem.finding}
                     handleChange={code => this.handleChange(ChecklistItemInput.FIELD.FINDING, code)}
                     possibleFindings={checklistItem.possibleFindings}
                     key={key}
                 />
             case ChecklistItemInput.FIELD.NUMERIC:
                 return <ChecklistFieldNumeric
-                    value={checklistItem.numericValue || ''}
+                    value={checklistItem.numericValue}
                     UOM={checklistItem.UOM}
                     handleChange={value => this.handleChange(ChecklistItemInput.FIELD.NUMERIC, value)}
                     key={key}

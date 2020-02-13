@@ -28,7 +28,7 @@ const ChecklistFieldFinding = props => {
         return <FormControl classes={{root: classes.root}}>
                 <Select classes={{select: classes.select, icon: classes.icon}}
                         disableUnderline={true}
-                        value={finding}
+                        value={finding || ''}
                         onChange={event => handleChange(event.target.value)}>
                     <MenuItem value={null}>&#8203;</MenuItem>
                     {possibleFindings.map(finding => (
@@ -40,11 +40,10 @@ const ChecklistFieldFinding = props => {
         return possibleFindings.map(findingElement => <ChecklistFieldCheckbox 
                 code={findingElement.code}
                 desc={findingElement.desc}
-                checked={finding === findingElement.code}
+                checked={finding || '' === findingElement.code}
                 handleChange={handleChange}
                 key={findingElement.code}
         />)
-
-}
+};
 
 export default withStyles(style)(ChecklistFieldFinding);

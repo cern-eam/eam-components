@@ -3,6 +3,7 @@ import ChecklistItemInput from './ChecklistItemInput';
 import ChecklistItemNotes from './ChecklistItemNotes';
 import Collapse from '@material-ui/core/Collapse';
 import ChecklistItemFollowUp from "./ChecklistItemFollowUp";
+
 export default class Checklist extends Component {
 
     state = {
@@ -92,6 +93,8 @@ export default class Checklist extends Component {
             if(state.requestTimeout !== null)
                 clearTimeout(state.requestTimeout);
 
+            const DEBOUNCE_TIME_MS = 360;
+            
             return {
                 requestTimeout: setTimeout(() => {
                     this.setState({requestTimeout: null});
@@ -107,7 +110,7 @@ export default class Checklist extends Component {
                             checklistItem: oldChecklistItem
                         })
                     });
-                }, 360)
+                }, DEBOUNCE_TIME_MS)
             }
         });
     }

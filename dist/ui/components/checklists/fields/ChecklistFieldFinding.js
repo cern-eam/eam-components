@@ -50,7 +50,7 @@ var ChecklistFieldFinding = function ChecklistFieldFinding(props) {
       icon: classes.icon
     },
     disableUnderline: true,
-    value: finding,
+    value: finding || '',
     onChange: function onChange(event) {
       return handleChange(event.target.value);
     }
@@ -65,7 +65,7 @@ var ChecklistFieldFinding = function ChecklistFieldFinding(props) {
     return _react["default"].createElement(_ChecklistFieldCheckbox["default"], {
       code: findingElement.code,
       desc: findingElement.desc,
-      checked: finding === findingElement.code,
+      checked: finding || '' === findingElement.code,
       handleChange: handleChange,
       key: findingElement.code
     });

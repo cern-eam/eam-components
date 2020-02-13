@@ -154,6 +154,7 @@ function (_Component) {
 
       this.setState(function (state, props) {
         if (state.requestTimeout !== null) clearTimeout(state.requestTimeout);
+        var DEBOUNCE_TIME_MS = 360;
         return {
           requestTimeout: setTimeout(function () {
             _this2.setState({
@@ -173,7 +174,7 @@ function (_Component) {
                 checklistItem: oldChecklistItem
               });
             });
-          }, 360)
+          }, DEBOUNCE_TIME_MS)
         };
       });
     }
