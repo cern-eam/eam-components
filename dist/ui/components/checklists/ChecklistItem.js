@@ -285,7 +285,10 @@ function (_Component) {
           }
 
           options.beforeOnChange = function (newProps, type, value) {
-            newProps.finding = type === _ChecklistItemInput["default"].FIELD.CHECKBOX ? undefined : newProps.finding;
+            if (type === _ChecklistItemInput["default"].FIELD.CHECKBOX) {
+              delete newProps.finding;
+            }
+
             return newProps;
           };
 

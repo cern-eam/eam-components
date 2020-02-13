@@ -209,7 +209,9 @@ export default class Checklist extends Component {
                 }
 
                 options.beforeOnChange = (newProps, type, value) => {
-                    newProps.finding = type === ChecklistItemInput.FIELD.CHECKBOX ? undefined : newProps.finding;
+                    if(type === ChecklistItemInput.FIELD.CHECKBOX) {
+                        delete newProps.finding;
+                    }
                     return newProps;
                 }
                 break;

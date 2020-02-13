@@ -69,7 +69,7 @@ function (_Component) {
           break;
 
         case ChecklistItemInput.FIELD.FINDING:
-          newFinding = value === finding ? null : value;
+          newFinding = value;
           break;
 
         case ChecklistItemInput.FIELD.NUMERIC:
