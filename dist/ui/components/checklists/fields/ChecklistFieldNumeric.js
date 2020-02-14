@@ -15,6 +15,10 @@ function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return 
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
@@ -33,7 +37,6 @@ var inputStyle = {
   fontSize: 16,
   transition: "border-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
   borderRadius: 4,
-  backgroundColor: "#fff",
   borderTopRightRadius: 0,
   borderBottomRightRadius: 0,
   zIndex: 20
@@ -47,6 +50,8 @@ var outerStyle = {
   marginLeft: 17,
   display: "flex"
 };
+var OK_COLOR = "#fff";
+var ERROR_COLOR = "#f00";
 
 var ChecklistFieldNumeric = function ChecklistFieldNumeric(props) {
   var value = props.value,
@@ -63,18 +68,37 @@ var ChecklistFieldNumeric = function ChecklistFieldNumeric(props) {
       lastUpdatedValue = _useState4[0],
       setUpdatedValue = _useState4[1];
 
+  var _useState5 = (0, _react.useState)(OK_COLOR),
+      _useState6 = _slicedToArray(_useState5, 2),
+      backgroundColor = _useState6[0],
+      setBackgroundColor = _useState6[1];
+
   return _react["default"].createElement("div", {
     style: outerStyle
   }, _react["default"].createElement("input", {
-    style: inputStyle,
+    style: _objectSpread({}, inputStyle, {
+      backgroundColor: backgroundColor
+    }),
     onChange: function onChange(event) {
       return setInputValue(event.target.value);
     },
     value: inputValue,
     onBlur: function onBlur(event) {
       if ("" + lastUpdatedValue === inputValue) return;
-      setUpdatedValue(inputValue);
-      handleChange(inputValue);
+      var empty = inputValue === ""; // convert string to float to string to float
+      // this is to check for out of bounds values:
+      // "1000" -> 1000 -> "1000" -> 1000
+      // "1e1000" -> "Infinity" -> "Infinity" -> NaN
+
+      var _float = parseFloat("" + parseFloat(inputValue));
+
+      if (empty || !Number.isNaN(_float)) {
+        var str = empty ? "" : "" + _float;
+        setBackgroundColor(OK_COLOR);
+        setInputValue(str);
+        setUpdatedValue(str);
+        handleChange(str);
+      } else setBackgroundColor(ERROR_COLOR);
     }
   }), _react["default"].createElement("div", {
     style: labelUOMStyle

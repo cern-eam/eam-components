@@ -8,7 +8,6 @@ const inputStyle = {
     fontSize: 16,
     transition: "border-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
     borderRadius: 4,
-    backgroundColor: "#fff",
     borderTopRightRadius: 0,
     borderBottomRightRadius: 0,
     zIndex: 20
@@ -38,22 +37,40 @@ const outerStyle = {
     display: "flex"
 };
 
+const OK_COLOR = "#fff";
+const ERROR_COLOR = "#f00";
+
 const ChecklistFieldNumeric = props => {
     const {value, UOM, handleChange} = props;
 
     const [inputValue, setInputValue] = useState(value || '');
     const [lastUpdatedValue, setUpdatedValue] = useState(value || '');
+    const [backgroundColor, setBackgroundColor] = useState(OK_COLOR);
 
     return <div style={outerStyle}>
-        <input style={inputStyle}
+        <input style={{...inputStyle, backgroundColor: backgroundColor}}
             onChange={event => setInputValue(event.target.value)}
             value={inputValue}
             onBlur={event => {
                 if(("" + lastUpdatedValue) === inputValue)
                     return;
 
-                 setUpdatedValue(inputValue);
-                 handleChange(inputValue);
+                const empty = inputValue === "";
+
+                // convert string to float to string to float
+                // this is to check for out of bounds values:
+                // "1000" -> 1000 -> "1000" -> 1000
+                // "1e1000" -> "Infinity" -> "Infinity" -> NaN
+                const float = parseFloat("" + parseFloat(inputValue));
+
+                if(empty || !Number.isNaN(float)) {
+                    const str = empty ? "" : "" + float;
+
+                    setBackgroundColor(OK_COLOR);
+                    setInputValue(str);
+                    setUpdatedValue(str);
+                    handleChange(str);
+                } else setBackgroundColor(ERROR_COLOR);
             }}/>
         <div style={labelUOMStyle}>{UOM}</div>
     </div>
