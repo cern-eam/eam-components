@@ -32,14 +32,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 var inputStyle = {
   width: "1%",
   flex: "1 1 auto",
-  border: "1px solid #ced4da",
   padding: "5px 10px",
   fontSize: 16,
   transition: "border-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
   borderRadius: 4,
   borderTopRightRadius: 0,
   borderBottomRightRadius: 0,
-  zIndex: 20
+  zIndex: 20,
+  backgroundColor: "#fff"
 };
 var labelUOMStyle = (_labelUOMStyle = {
   color: "black",
@@ -50,8 +50,8 @@ var outerStyle = {
   marginLeft: 17,
   display: "flex"
 };
-var OK_COLOR = "#fff";
-var ERROR_COLOR = "#f00";
+var OK_BORDER = "solid 1px #ced4da";
+var ERROR_BORDER = "solid 1px #f44336";
 
 var ChecklistFieldNumeric = function ChecklistFieldNumeric(props) {
   var value = props.value,
@@ -68,16 +68,16 @@ var ChecklistFieldNumeric = function ChecklistFieldNumeric(props) {
       lastUpdatedValue = _useState4[0],
       setUpdatedValue = _useState4[1];
 
-  var _useState5 = (0, _react.useState)(OK_COLOR),
+  var _useState5 = (0, _react.useState)(OK_BORDER),
       _useState6 = _slicedToArray(_useState5, 2),
-      backgroundColor = _useState6[0],
-      setBackgroundColor = _useState6[1];
+      border = _useState6[0],
+      setBorder = _useState6[1];
 
   return _react["default"].createElement("div", {
     style: outerStyle
   }, _react["default"].createElement("input", {
     style: _objectSpread({}, inputStyle, {
-      backgroundColor: backgroundColor
+      border: border
     }),
     onChange: function onChange(event) {
       return setInputValue(event.target.value);
@@ -85,20 +85,12 @@ var ChecklistFieldNumeric = function ChecklistFieldNumeric(props) {
     value: inputValue,
     onBlur: function onBlur(event) {
       if ("" + lastUpdatedValue === inputValue) return;
-      var empty = inputValue === ""; // convert string to float to string to float
-      // this is to check for out of bounds values:
-      // "1000" -> 1000 -> "1000" -> 1000
-      // "1e1000" -> "Infinity" -> "Infinity" -> NaN
 
-      var _float = parseFloat("" + parseFloat(inputValue));
-
-      if (empty || !Number.isNaN(_float)) {
-        var str = empty ? "" : "" + _float;
-        setBackgroundColor(OK_COLOR);
-        setInputValue(str);
-        setUpdatedValue(str);
-        handleChange(str);
-      } else setBackgroundColor(ERROR_COLOR);
+      if (!isNaN(inputValue)) {
+        setBorder(OK_BORDER);
+        setUpdatedValue(inputValue);
+        handleChange(inputValue);
+      } else setBorder(ERROR_BORDER);
     }
   }), _react["default"].createElement("div", {
     style: labelUOMStyle
