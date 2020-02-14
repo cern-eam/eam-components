@@ -103,16 +103,13 @@ export default class ChecklistItem extends Component {
                 requestTimeout: setTimeout(() => {
                     this.setState({requestTimeout: null});
                     this.props.updateChecklistItem(checklistItem)
-                    .then(response => {
-                        this.setState({blocked: false})
-                    })
                     .catch(error => {
-                        this.props.handleError(error)
-                        // Unblock the UI and restore the UI
+                        this.props.handleError(error);
                         this.setState({
-                            blocked: false,
                             checklistItem: oldChecklistItem
-                        })
+                        });
+                    }).finally(() => {
+                        this.setState({blocked: false});
                     });
                 }, DEBOUNCE_TIME_MS)
             }

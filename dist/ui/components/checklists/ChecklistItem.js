@@ -157,17 +157,15 @@ function (_Component) {
               requestTimeout: null
             });
 
-            _this2.props.updateChecklistItem(checklistItem).then(function (response) {
+            _this2.props.updateChecklistItem(checklistItem)["catch"](function (error) {
+              _this2.props.handleError(error);
+
+              _this2.setState({
+                checklistItem: oldChecklistItem
+              });
+            })["finally"](function () {
               _this2.setState({
                 blocked: false
-              });
-            })["catch"](function (error) {
-              _this2.props.handleError(error); // Unblock the UI and restore the UI
-
-
-              _this2.setState({
-                blocked: false,
-                checklistItem: oldChecklistItem
               });
             });
           }, DEBOUNCE_TIME_MS)

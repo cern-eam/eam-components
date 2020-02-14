@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 
 const inputStyle = {
     width: "1%",
@@ -43,9 +43,14 @@ const ERROR_BORDER = "solid 1px #f44336";
 const ChecklistFieldNumeric = props => {
     const {value, UOM, handleChange} = props;
 
-    const [inputValue, setInputValue] = useState(value || '');
-    const [lastUpdatedValue, setUpdatedValue] = useState(value || '');
+    const [inputValue, setInputValue] = useState(value || "");
+    const [lastUpdatedValue, setUpdatedValue] = useState(value || "");
     const [border, setBorder] = useState(OK_BORDER);
+
+    useEffect(() => {
+        if(value !== inputValue)
+            setInputValue(value || "");
+    }, [value]);
 
     return <div style={outerStyle}>
         <input style={{...inputStyle, border: border}}

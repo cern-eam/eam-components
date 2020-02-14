@@ -58,12 +58,12 @@ var ChecklistFieldNumeric = function ChecklistFieldNumeric(props) {
       UOM = props.UOM,
       handleChange = props.handleChange;
 
-  var _useState = (0, _react.useState)(value || ''),
+  var _useState = (0, _react.useState)(value || ""),
       _useState2 = _slicedToArray(_useState, 2),
       inputValue = _useState2[0],
       setInputValue = _useState2[1];
 
-  var _useState3 = (0, _react.useState)(value || ''),
+  var _useState3 = (0, _react.useState)(value || ""),
       _useState4 = _slicedToArray(_useState3, 2),
       lastUpdatedValue = _useState4[0],
       setUpdatedValue = _useState4[1];
@@ -73,6 +73,9 @@ var ChecklistFieldNumeric = function ChecklistFieldNumeric(props) {
       border = _useState6[0],
       setBorder = _useState6[1];
 
+  (0, _react.useEffect)(function () {
+    if (value !== inputValue) setInputValue(value || "");
+  }, [value]);
   return _react["default"].createElement("div", {
     style: outerStyle
   }, _react["default"].createElement("input", {
