@@ -90,7 +90,7 @@ function (_Component) {
     _this.state = {
       detailsVisible: false,
       blocked: false,
-      requestTimeout: null
+      debounce: null
     };
     _this.notes = _react["default"].createRef();
     return _this;
@@ -137,38 +137,36 @@ function (_Component) {
     value: function onChange(checklistItem) {
       var _this2 = this;
 
-      // Block the UI
-      this.setState({
-        blocked: true
-      }); // Copy the current checklist item (will be used to restore the UI)
+      var handleError = this.props.handleError;
+      var DEBOUNCE_TIME_MS = 360;
 
-      var oldChecklistItem = Object.assign({}, this.state.checklistItem); //
+      var request = function request() {
+        _this2.props.updateChecklistItem(checklistItem)["catch"](function (error) {
+          handleError(error);
 
-      this.setState({
-        checklistItem: checklistItem
-      }); // Update the checklist Item
+          _this2.setState(function (state) {
+            return {
+              checklistItem: state.debounce.oldChecklistItem,
+              debounce: null
+            };
+          });
+        })["finally"](function () {
+          _this2.setState({
+            blocked: false
+          });
+        });
+      };
 
-      this.setState(function (state, props) {
-        if (state.requestTimeout !== null) clearTimeout(state.requestTimeout);
-        var DEBOUNCE_TIME_MS = 360;
+      this.setState(function (state) {
+        if (state.debounce !== null) clearTimeout(state.debounce.timeout);
         return {
-          requestTimeout: setTimeout(function () {
-            _this2.setState({
-              requestTimeout: null
-            });
-
-            _this2.props.updateChecklistItem(checklistItem)["catch"](function (error) {
-              _this2.props.handleError(error);
-
-              _this2.setState({
-                checklistItem: oldChecklistItem
-              });
-            })["finally"](function () {
-              _this2.setState({
-                blocked: false
-              });
-            });
-          }, DEBOUNCE_TIME_MS)
+          blocked: true,
+          checklistItem: checklistItem,
+          debounce: _objectSpread({}, state.debounce || {}, {
+            timeout: setTimeout(request, DEBOUNCE_TIME_MS),
+            // Copy the oldest checklist item (will be used to restore the UI)
+            oldChecklistItem: state.debounce ? state.debounce.oldChecklistItem : state.checklistItem
+          })
         };
       });
     }
@@ -206,7 +204,7 @@ function (_Component) {
         return newProps;
       };
 
-      var field = _ChecklistItemInput["default"].field;
+      var createField = _ChecklistItemInput["default"].createField;
       var _ChecklistItemInput$F = _ChecklistItemInput["default"].FIELD,
           CHECKBOX = _ChecklistItemInput$F.CHECKBOX,
           FINDING = _ChecklistItemInput$F.FINDING,
@@ -214,7 +212,7 @@ function (_Component) {
 
       switch (checklistItem.type) {
         case "01":
-          fields = [field(CHECKBOX, {
+          fields = [createField(CHECKBOX, {
             code: "COMPLETED",
             desc: "Completed"
           })];
@@ -222,10 +220,10 @@ function (_Component) {
           break;
 
         case "02":
-          fields = [field(CHECKBOX, {
+          fields = [createField(CHECKBOX, {
             code: "YES",
             desc: "Yes"
-          }), field(CHECKBOX, {
+          }), createField(CHECKBOX, {
             code: "NO",
             desc: "No"
           })];
@@ -234,30 +232,30 @@ function (_Component) {
 
         case "03":
           var MINIMUM_MIN_FINDINGS = 4;
-          fields = [field(FINDING, {
+          fields = [createField(FINDING, {
             dropdown: checklistItem.possibleFindings.length >= Math.min(this.props.minFindingsDropdown, MINIMUM_MIN_FINDINGS)
           })];
           break;
 
         case "04":
         case "05":
-          fields = [field(NUMERIC)];
+          fields = [createField(NUMERIC)];
           options.beforeOnChange = clearResult;
           break;
 
         case "06":
-          fields = [field(FINDING), field(NUMERIC)];
+          fields = [createField(FINDING), createField(NUMERIC)];
           options.beforeOnChange = clearResult;
           break;
 
         case "07":
-          fields = [field(CHECKBOX, {
+          fields = [createField(CHECKBOX, {
             code: "OK",
             desc: "OK"
-          }), field(CHECKBOX, {
+          }), createField(CHECKBOX, {
             code: "REPAIRSNEEDED",
             desc: "Repairs Needed"
-          }), field(FINDING)];
+          }), createField(FINDING)];
 
           switch (checklistItem.result) {
             case null:
@@ -293,10 +291,10 @@ function (_Component) {
           break;
 
         case "08":
-          fields = [field(CHECKBOX, {
+          fields = [createField(CHECKBOX, {
             code: "GOOD",
             desc: "Good"
-          }), field(CHECKBOX, {
+          }), createField(CHECKBOX, {
             code: "POOR",
             desc: "Poor"
           })];
@@ -305,16 +303,16 @@ function (_Component) {
 
         case "09":
         case "10":
-          fields = [field(CHECKBOX, {
+          fields = [createField(CHECKBOX, {
             code: "OK",
             desc: "OK"
-          }), field(CHECKBOX, {
+          }), createField(CHECKBOX, {
             code: "ADJUSTED",
             desc: "Adjusted"
           })];
 
           if (checklistItem.type === "10") {
-            fields.push(field(NUMERIC));
+            fields.push(createField(NUMERIC));
           }
 
           options.style = _ChecklistItemInput["default"].STYLE.SAMELINE;
@@ -322,16 +320,16 @@ function (_Component) {
 
         case "11":
         case "12":
-          fields = [field(CHECKBOX, {
+          fields = [createField(CHECKBOX, {
             code: "OK",
             desc: "OK"
-          }), field(CHECKBOX, {
+          }), createField(CHECKBOX, {
             code: "NONCONFORMITY",
             desc: "Nonconformity"
           })];
 
           if (checklistItem.type === "12") {
-            fields.push([_ChecklistItemInput["default"].FIELD.NUMERIC]);
+            fields.push(createField(_ChecklistItemInput["default"].FIELD.NUMERIC));
 
             options.beforeOnChange = function (newProps, type, value) {
               if (type === _ChecklistItemInput["default"].FIELD.NUMERIC && newProps.result === null) {

@@ -10,7 +10,7 @@ export default class ChecklistItem extends Component {
         this.state = {
             detailsVisible: false,
             blocked: false,
-            requestTimeout: null
+            debounce: null
         }
 
         this.notes = React.createRef();
@@ -85,33 +85,34 @@ export default class ChecklistItem extends Component {
 
 
     onChange(checklistItem) {
-        // Block the UI
-        this.setState({blocked: true})
-        // Copy the current checklist item (will be used to restore the UI)
-        let oldChecklistItem = Object.assign({}, this.state.checklistItem)
-        //
-        this.setState({checklistItem})
-        // Update the checklist Item
+        const handleError = this.props.handleError;
+        const DEBOUNCE_TIME_MS = 360;
+        
+        const request = () => {
+            this.props.updateChecklistItem(checklistItem)
+                .catch(error => {
+                    handleError(error);
+                    this.setState(state => { return {
+                        checklistItem: state.debounce.oldChecklistItem,
+                        debounce: null
+                    }});
+                }).finally(() => {
+                    this.setState({blocked: false});
+                });
+        };
 
-        this.setState((state, props) => {
-            if(state.requestTimeout !== null)
-                clearTimeout(state.requestTimeout);
-
-            const DEBOUNCE_TIME_MS = 360;
+        this.setState(state => {
+            if(state.debounce !== null) clearTimeout(state.debounce.timeout);
 
             return {
-                requestTimeout: setTimeout(() => {
-                    this.setState({requestTimeout: null});
-                    this.props.updateChecklistItem(checklistItem)
-                    .catch(error => {
-                        this.props.handleError(error);
-                        this.setState({
-                            checklistItem: oldChecklistItem
-                        });
-                    }).finally(() => {
-                        this.setState({blocked: false});
-                    });
-                }, DEBOUNCE_TIME_MS)
+                blocked: true,
+                checklistItem: checklistItem,
+                debounce: {
+                    ...(state.debounce || {}),
+                    timeout: setTimeout(request, DEBOUNCE_TIME_MS),
+                    // Copy the oldest checklist item (will be used to restore the UI)
+                    oldChecklistItem: state.debounce ? state.debounce.oldChecklistItem : state.checklistItem
+                }
             }
         });
     }
@@ -142,27 +143,27 @@ export default class ChecklistItem extends Component {
             return newProps;
         };
 
-        const field = ChecklistItemInput.field;
+        const createField = ChecklistItemInput.createField;
         const {CHECKBOX, FINDING, NUMERIC} = ChecklistItemInput.FIELD;
 
         switch(checklistItem.type) {
             case "01":
                 fields = [
-                    field(CHECKBOX, {code: "COMPLETED", desc:"Completed"})
+                    createField(CHECKBOX, {code: "COMPLETED", desc:"Completed"})
                 ];
                 options.style = ChecklistItemInput.STYLE.SINGLE;
                 break;
             case "02":
                 fields = [
-                    field(CHECKBOX, {code: "YES", desc: "Yes"}),
-                    field(CHECKBOX, {code: "NO", desc: "No"})
+                    createField(CHECKBOX, {code: "YES", desc: "Yes"}),
+                    createField(CHECKBOX, {code: "NO", desc: "No"})
                 ];
                 options.style = ChecklistItemInput.STYLE.SAMELINE;
                 break;
             case "03":
                 const MINIMUM_MIN_FINDINGS = 4;
                 fields = [
-                    field(FINDING, {
+                    createField(FINDING, {
                         dropdown:
                             checklistItem.possibleFindings.length >= Math.min(this.props.minFindingsDropdown, MINIMUM_MIN_FINDINGS)
                     })
@@ -171,23 +172,23 @@ export default class ChecklistItem extends Component {
             case "04":
             case "05":
                 fields = [
-                    field(NUMERIC)
+                    createField(NUMERIC)
                 ];
                 options.beforeOnChange = clearResult;
                 break;
             case "06":
                 fields = [
-                    field(FINDING),
-                    field(NUMERIC)
+                    createField(FINDING),
+                    createField(NUMERIC)
                 ];
 
                 options.beforeOnChange = clearResult;
                 break;
             case "07":
                 fields = [
-                    field(CHECKBOX, {code: "OK", desc: "OK"}),
-                    field(CHECKBOX, {code: "REPAIRSNEEDED", desc: "Repairs Needed"}),
-                    field(FINDING)
+                    createField(CHECKBOX, {code: "OK", desc: "OK"}),
+                    createField(CHECKBOX, {code: "REPAIRSNEEDED", desc: "Repairs Needed"}),
+                    createField(FINDING)
                 ];
 
                 switch(checklistItem.result) {
@@ -214,20 +215,20 @@ export default class ChecklistItem extends Component {
                 break;
             case "08":
                 fields = [
-                    field(CHECKBOX, {code: "GOOD", desc: "Good"}),
-                    field(CHECKBOX, {code: "POOR", desc: "Poor"})
+                    createField(CHECKBOX, {code: "GOOD", desc: "Good"}),
+                    createField(CHECKBOX, {code: "POOR", desc: "Poor"})
                 ];
                 options.style = ChecklistItemInput.STYLE.SAMELINE;
                 break;
             case "09":
             case "10":
                 fields = [
-                    field(CHECKBOX, {code: "OK", desc: "OK"}),
-                    field(CHECKBOX, {code: "ADJUSTED", desc: "Adjusted"})
+                    createField(CHECKBOX, {code: "OK", desc: "OK"}),
+                    createField(CHECKBOX, {code: "ADJUSTED", desc: "Adjusted"})
                 ];
 
                 if(checklistItem.type === "10") {
-                    fields.push(field(NUMERIC))
+                    fields.push(createField(NUMERIC))
                 }
 
                 options.style = ChecklistItemInput.STYLE.SAMELINE;
@@ -235,12 +236,12 @@ export default class ChecklistItem extends Component {
             case "11":
             case "12":
                 fields = [
-                    field(CHECKBOX, {code: "OK", desc: "OK"}),
-                    field(CHECKBOX, {code: "NONCONFORMITY", desc: "Nonconformity"})
+                    createField(CHECKBOX, {code: "OK", desc: "OK"}),
+                    createField(CHECKBOX, {code: "NONCONFORMITY", desc: "Nonconformity"}),
                 ];
 
                 if(checklistItem.type === "12") {
-                    fields.push([ChecklistItemInput.FIELD.NUMERIC])
+                    fields.push(createField(ChecklistItemInput.FIELD.NUMERIC))
                     options.beforeOnChange = (newProps, type, value) => {
                         if(type === ChecklistItemInput.FIELD.NUMERIC && newProps.result === null) {
                             newProps.result = "OK";

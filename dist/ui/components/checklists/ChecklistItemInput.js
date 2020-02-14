@@ -205,6 +205,6 @@ ChecklistItemInput.STYLE = {
   SAMELINE: SAMELINE
 };
 
-ChecklistItemInput.field = function (type, options) {
+ChecklistItemInput.createField = function (type, options) {
   return [type, options];
 };

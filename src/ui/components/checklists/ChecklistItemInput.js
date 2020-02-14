@@ -121,4 +121,4 @@ ChecklistItemInput.STYLE = {
     SAMELINE
 };
 
-ChecklistItemInput.field = (type, options) => [type, options];
+ChecklistItemInput.createField = (type, options) => [type, options];
