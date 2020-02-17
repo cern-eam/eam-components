@@ -86,7 +86,7 @@ export default class ChecklistItem extends Component {
 
     onChange(checklistItem) {
         const handleError = this.props.handleError;
-        const DEBOUNCE_TIME_MS = 360;
+        const DEBOUNCE_TIME_MS = 50;
         
         const request = () => {
             this.props.updateChecklistItem(checklistItem)

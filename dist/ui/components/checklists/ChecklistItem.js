@@ -138,7 +138,7 @@ function (_Component) {
       var _this2 = this;
 
       var handleError = this.props.handleError;
-      var DEBOUNCE_TIME_MS = 360;
+      var DEBOUNCE_TIME_MS = 50;
 
       var request = function request() {
         _this2.props.updateChecklistItem(checklistItem)["catch"](function (error) {
