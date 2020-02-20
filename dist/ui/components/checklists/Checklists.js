@@ -375,20 +375,47 @@ function (_Component) {
           equipment = filters.equipment;
       var activityCode = activity === "" ? null : activity === undefined ? undefined : activity.code;
       var equipmentCode = equipment === "" ? null : equipment === undefined ? undefined : equipment.code;
+      var collapseHeuristic = this.props.collapseHeuristic;
       this.setState(function (state, props) {
         // the activity and equipment codes that will be effectively used for the filtering
         // if any parameterized filter is unspecified (undefined), the value used is in state
         var effectiveActivityCode = activityCode === undefined ? state.filteredActivity : activityCode;
         var effectiveEquipmentCode = equipmentCode === undefined ? state.filteredEquipment : equipmentCode;
-        return {
+
+        var activityCollapsedPredicate = function activityCollapsedPredicate(activity, effectiveActivityCode) {};
+
+        var equipmentCollapsedPredicate = function equipmentCollapsedPredicate(equipmentCode, effectiveEquipmentCode) {};
+
+        if (effectiveActivityCode || effectiveEquipmentCode) {
+          // if we're filtering, collapse everything that is not equal to our filters
+          activityCollapsedPredicate = function activityCollapsedPredicate(activity) {
+            return activity.activityCode !== effectiveActivityCode && Object.keys(activity.equipments).every(function (equipmentCode2) {
+              return equipmentCode2 !== effectiveEquipmentCode;
+            });
+          };
+
+          equipmentCollapsedPredicate = function equipmentCollapsedPredicate(equipmentCode) {
+            return equipmentCode !== effectiveEquipmentCode;
+          };
+        } else {
+          // if nothing is being filter, uncollapse everything,
+          // to prepare for calling the collapse heuristic
+          activityCollapsedPredicate = function activityCollapsedPredicate() {
+            return false;
+          };
+
+          equipmentCollapsedPredicate = function equipmentCollapsedPredicate() {
+            return false;
+          };
+        }
+
+        var newState = {
           activities: state.activities.map(function (activity) {
             return _objectSpread({}, activity, {
-              collapsed: activity.activityCode !== effectiveActivityCode && Object.keys(activity.equipments).every(function (equipmentCode2) {
-                return equipmentCode2 !== effectiveEquipmentCode;
-              }),
+              collapsed: activityCollapsedPredicate(activity),
               equipments: Object.keys(activity.equipments).reduce(function (equipments, thisEquipmentCode) {
                 equipments[thisEquipmentCode] = _objectSpread({}, activity.equipments[thisEquipmentCode], {
-                  collapsed: thisEquipmentCode !== effectiveEquipmentCode
+                  collapsed: equipmentCollapsedPredicate(thisEquipmentCode)
                 });
                 return equipments;
               }, {})
@@ -397,6 +424,15 @@ function (_Component) {
           filteredActivity: effectiveActivityCode,
           filteredEquipment: effectiveEquipmentCode
         };
+
+        if (!effectiveActivityCode && !effectiveEquipmentCode) {
+          var checklists = newState.activities.reduce(function (checklists, activity) {
+            return checklists.concat(activity.checklists);
+          }, []);
+          collapseHeuristic(checklists, newState.activities);
+        }
+
+        return newState;
       });
     }
     /**s

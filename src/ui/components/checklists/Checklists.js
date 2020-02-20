@@ -243,7 +243,7 @@ class Checklists extends Component {
 
     setNewFilter(filters) {
         const {activity, equipment} = filters;
-
+        
         const activityCode = 
             activity === "" ? null : 
             activity === undefined ? undefined :
@@ -254,29 +254,55 @@ class Checklists extends Component {
             equipment === undefined ? undefined :
             equipment.code;
 
+        const { collapseHeuristic } = this.props;
+
         this.setState((state, props) => {
             // the activity and equipment codes that will be effectively used for the filtering
             // if any parameterized filter is unspecified (undefined), the value used is in state
             const effectiveActivityCode = activityCode === undefined ? state.filteredActivity : activityCode;
             const effectiveEquipmentCode = equipmentCode === undefined ? state.filteredEquipment : equipmentCode;
 
-            return {
+            let activityCollapsedPredicate = (activity, effectiveActivityCode) => {};
+            let equipmentCollapsedPredicate = (equipmentCode, effectiveEquipmentCode) => {};
+
+            if(effectiveActivityCode || effectiveEquipmentCode) {
+                // if we're filtering, collapse everything that is not equal to our filters
+                activityCollapsedPredicate = (activity) => 
+                    (activity.activityCode !== effectiveActivityCode)
+                    && Object.keys(activity.equipments)
+                        .every(equipmentCode2 => equipmentCode2 !== effectiveEquipmentCode);
+                equipmentCollapsedPredicate = (equipmentCode) => 
+                    equipmentCode !== effectiveEquipmentCode;
+            } else {
+                // if nothing is being filter, uncollapse everything,
+                // to prepare for calling the collapse heuristic
+                activityCollapsedPredicate = () => false;
+                equipmentCollapsedPredicate = () => false;
+            }
+
+            const newState = {
                 activities: state.activities.map(activity => ({
                     ...activity,
-                    collapsed: (activity.activityCode !== effectiveActivityCode)
-                        && Object.keys(activity.equipments)
-                            .every(equipmentCode2 => equipmentCode2 !== effectiveEquipmentCode),
+                    collapsed: activityCollapsedPredicate(activity),
                     equipments: Object.keys(activity.equipments).reduce((equipments, thisEquipmentCode) => {
                         equipments[thisEquipmentCode] = {
                             ...activity.equipments[thisEquipmentCode],
-                            collapsed: thisEquipmentCode !== effectiveEquipmentCode
+                            collapsed: equipmentCollapsedPredicate(thisEquipmentCode)
                         };
                         return equipments;
                     }, {})})
                 ),
                 filteredActivity: effectiveActivityCode,
                 filteredEquipment: effectiveEquipmentCode
+            };
+
+            if(!effectiveActivityCode && !effectiveEquipmentCode) {
+                const checklists = newState.activities.reduce((checklists, activity) => checklists.concat(activity.checklists), []);
+
+                collapseHeuristic(checklists, newState.activities);
             }
+
+            return newState;
         });
     }
 
