@@ -20,7 +20,7 @@ export default class ChecklistEquipment extends Component {
         return (
             <div style={this.mainStyle}>
                 <Settings style={this.settingsIconStyle}/>
-                {this.props.equipmentCode} ({this.props.equipmentDesc})
+                {this.props.equipmentCode} — {this.props.equipmentDesc}
             </div>
         )
     }

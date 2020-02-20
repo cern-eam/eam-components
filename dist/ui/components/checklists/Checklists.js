@@ -347,7 +347,7 @@ function (_Component) {
           style: {
             fontWeight: 500
           }
-        }, activity.activityCode, " - ", activity.activityNote), _react["default"].createElement(_Button["default"], {
+        }, activity.activityCode, " \u2014 ", activity.activityNote), _react["default"].createElement(_Button["default"], {
           key: activity.activityCode + '$createfuwo',
           onClick: function onClick(evt) {
             return _this5.createFollowUpWOs(evt, activity);
@@ -497,7 +497,7 @@ function (_Component) {
           }).map(function (activity) {
             return {
               code: activity.activityCode,
-              desc: activity.activityCode + " - " + activity.activityNote
+              desc: activity.activityCode + " — " + activity.activityNote
             };
           }))),
           value: filteredActivity ? filteredActivity : undefined,
@@ -521,7 +521,7 @@ function (_Component) {
             return equipments[key];
           }).map(function (equipment) {
             return _objectSpread({}, equipment, {
-              desc: equipment.code + " (" + equipment.desc + ")"
+              desc: equipment.code + " — " + equipment.desc
             });
           }))),
           value: filteredEquipment ? filteredEquipment : undefined,

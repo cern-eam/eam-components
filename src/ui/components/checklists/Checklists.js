@@ -223,7 +223,7 @@ class Checklists extends Component {
                                 display: "flex",
                                 alignItems: "center"
                             }}>
-                                <span style={{fontWeight: 500}}>{activity.activityCode} - {activity.activityNote}</span>
+                                <span style={{fontWeight: 500}}>{activity.activityCode} — {activity.activityNote}</span>
                                 <Button 
                                     key={activity.activityCode + '$createfuwo'}
                                     onClick={ evt => this.createFollowUpWOs(evt, activity) } 
@@ -345,7 +345,7 @@ class Checklists extends Component {
                                 values={[{code: null, desc: "\u200B"}, ...filteredActivities
                                     .filter(activity => filteredEquipment ? activity.equipments[filteredEquipment] !== undefined : true)
                                     .map(activity => 
-                                        ({code: activity.activityCode, desc: activity.activityCode + " - " + activity.activityNote}))]}
+                                        ({code: activity.activityCode, desc: activity.activityCode + " — " + activity.activityNote}))]}
                                 value={filteredActivity ? filteredActivity : undefined}
                                 onChange={obj => this.setNewFilter({activity: obj})}
                                 menuContainerStyle={{'zIndex': 999}}/>}
@@ -356,7 +356,7 @@ class Checklists extends Component {
                                     .filter(key => filteredActivity ? filteredActivityObject.equipments[key] !== undefined : true)
                                     .map(key => equipments[key])
                                     .map(equipment => (
-                                        {...equipment, desc: equipment.code + " (" + equipment.desc + ")"}))]}
+                                        {...equipment, desc: equipment.code + " — " + equipment.desc}))]}
                                 value={filteredEquipment ? filteredEquipment : undefined}
                                 onChange={obj => this.setNewFilter({equipment: obj})}
                                 menuContainerStyle={{'zIndex': 999}}/>}

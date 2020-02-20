@@ -71,7 +71,7 @@ function (_Component) {
         style: this.mainStyle
       }, _react["default"].createElement(_Settings["default"], {
         style: this.settingsIconStyle
-      }), this.props.equipmentCode, " (", this.props.equipmentDesc, ")");
+      }), this.props.equipmentCode, " \u2014 ", this.props.equipmentDesc);
     }
   }]);
 
