@@ -320,7 +320,7 @@ class Checklists extends Component {
                                     .filter(activity => filteredEquipment ? activity.equipments[filteredEquipment] !== undefined : true)
                                     .map(activity => 
                                         ({code: activity.activityCode, desc: activity.activityCode + " - " + activity.activityNote}))]}
-                                value={filteredActivity ? undefined : filteredActivity}
+                                value={filteredActivity ? filteredActivity : undefined}
                                 onChange={obj => this.setNewFilter({activity: obj})}
                                 menuContainerStyle={{'zIndex': 999}}/>}
                             {Object.keys(equipments).length > 1 && <EAMSelect
@@ -331,7 +331,7 @@ class Checklists extends Component {
                                     .map(key => equipments[key])
                                     .map(equipment => (
                                         {...equipment, desc: equipment.code + " (" + equipment.desc + ")"}))]}
-                                value={filteredActivity ? undefined : filteredActivity}
+                                value={filteredEquipment ? filteredEquipment : undefined}
                                 onChange={obj => this.setNewFilter({equipment: obj})}
                                 menuContainerStyle={{'zIndex': 999}}/>}
                         </div>

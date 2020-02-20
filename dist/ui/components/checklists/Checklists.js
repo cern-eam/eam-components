@@ -464,7 +464,7 @@ function (_Component) {
               desc: activity.activityCode + " - " + activity.activityNote
             };
           }))),
-          value: filteredActivity ? undefined : filteredActivity,
+          value: filteredActivity ? filteredActivity : undefined,
           onChange: function onChange(obj) {
             return _this6.setNewFilter({
               activity: obj
@@ -488,7 +488,7 @@ function (_Component) {
               desc: equipment.code + " (" + equipment.desc + ")"
             });
           }))),
-          value: filteredActivity ? undefined : filteredActivity,
+          value: filteredEquipment ? filteredEquipment : undefined,
           onChange: function onChange(obj) {
             return _this6.setNewFilter({
               equipment: obj
