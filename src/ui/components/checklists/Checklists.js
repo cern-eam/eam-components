@@ -242,8 +242,18 @@ class Checklists extends Component {
     }
 
     setNewFilter(filters) {
-        const {activityCode, equipmentCode} = filters;
-        
+        const {activity, equipment} = filters;
+
+        const activityCode = 
+            activity === "" ? null : 
+            activity === undefined ? undefined :
+            activity.code;
+
+        const equipmentCode =
+            equipment === "" ? null : 
+            equipment === undefined ? undefined :
+            equipment.code;
+
         this.setState((state, props) => {
             // the activity and equipment codes that will be effectively used for the filtering
             // if any parameterized filter is unspecified (undefined), the value used is in state
@@ -310,8 +320,8 @@ class Checklists extends Component {
                                     .filter(activity => filteredEquipment ? activity.equipments[filteredEquipment] !== undefined : true)
                                     .map(activity => 
                                         ({code: activity.activityCode, desc: activity.activityCode + " - " + activity.activityNote}))]}
-                                value={filteredActivity}
-                                onChange={key => this.setNewFilter({activityCode: key.code})}
+                                value={filteredActivity ? undefined : filteredActivity}
+                                onChange={obj => this.setNewFilter({activity: obj})}
                                 menuContainerStyle={{'zIndex': 999}}/>}
                             {Object.keys(equipments).length > 1 && <EAMSelect
                                 children={null}
@@ -321,8 +331,8 @@ class Checklists extends Component {
                                     .map(key => equipments[key])
                                     .map(equipment => (
                                         {...equipment, desc: equipment.code + " (" + equipment.desc + ")"}))]}
-                                value={filteredEquipment}
-                                onChange={key => this.setNewFilter({equipmentCode: key.code})}
+                                value={filteredActivity ? undefined : filteredActivity}
+                                onChange={obj => this.setNewFilter({equipment: obj})}
                                 menuContainerStyle={{'zIndex': 999}}/>}
                         </div>
                         {this.renderActivities(filteredActivity, filteredEquipment)}

@@ -371,8 +371,10 @@ function (_Component) {
   }, {
     key: "setNewFilter",
     value: function setNewFilter(filters) {
-      var activityCode = filters.activityCode,
-          equipmentCode = filters.equipmentCode;
+      var activity = filters.activity,
+          equipment = filters.equipment;
+      var activityCode = activity === "" ? null : activity === undefined ? undefined : activity.code;
+      var equipmentCode = equipment === "" ? null : equipment === undefined ? undefined : equipment.code;
       this.setState(function (state, props) {
         // the activity and equipment codes that will be effectively used for the filtering
         // if any parameterized filter is unspecified (undefined), the value used is in state
@@ -462,10 +464,10 @@ function (_Component) {
               desc: activity.activityCode + " - " + activity.activityNote
             };
           }))),
-          value: filteredActivity,
-          onChange: function onChange(key) {
+          value: filteredActivity ? undefined : filteredActivity,
+          onChange: function onChange(obj) {
             return _this6.setNewFilter({
-              activityCode: key.code
+              activity: obj
             });
           },
           menuContainerStyle: {
@@ -486,10 +488,10 @@ function (_Component) {
               desc: equipment.code + " (" + equipment.desc + ")"
             });
           }))),
-          value: filteredEquipment,
-          onChange: function onChange(key) {
+          value: filteredActivity ? undefined : filteredActivity,
+          onChange: function onChange(obj) {
             return _this6.setNewFilter({
-              equipmentCode: key.code
+              equipment: obj
             });
           },
           menuContainerStyle: {
