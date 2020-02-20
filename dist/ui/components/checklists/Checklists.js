@@ -385,11 +385,12 @@ function (_Component) {
   }, {
     key: "setNewFilter",
     value: function setNewFilter(filters) {
+      var _this6 = this;
+
       var activity = filters.activity,
           equipment = filters.equipment;
       var activityCode = activity === "" ? null : activity === undefined ? undefined : activity.code;
       var equipmentCode = equipment === "" ? null : equipment === undefined ? undefined : equipment.code;
-      var collapseHeuristic = this.props.collapseHeuristic;
       this.setState(function (state, props) {
         // the activity and equipment codes that will be effectively used for the filtering
         // if any parameterized filter is unspecified (undefined), the value used is in state
@@ -443,7 +444,8 @@ function (_Component) {
           var checklists = newState.activities.reduce(function (checklists, activity) {
             return checklists.concat(activity.checklists);
           }, []);
-          collapseHeuristic(checklists, newState.activities);
+
+          _this6.collapseHeuristic(checklists, newState.activities);
         }
 
         return newState;
@@ -458,7 +460,7 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this6 = this;
+      var _this7 = this;
 
       var _this$state2 = this.state,
           activities = _this$state2.activities,
@@ -516,7 +518,7 @@ function (_Component) {
           }))),
           value: filteredActivity ? filteredActivity : undefined,
           onChange: function onChange(obj) {
-            return _this6.setNewFilter({
+            return _this7.setNewFilter({
               activity: obj
             });
           },
@@ -540,7 +542,7 @@ function (_Component) {
           }))),
           value: filteredEquipment ? filteredEquipment : undefined,
           onChange: function onChange(obj) {
-            return _this6.setNewFilter({
+            return _this7.setNewFilter({
               equipment: obj
             });
           },

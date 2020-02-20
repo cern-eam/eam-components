@@ -278,8 +278,6 @@ class Checklists extends Component {
             equipment === undefined ? undefined :
             equipment.code;
 
-        const { collapseHeuristic } = this.props;
-
         this.setState((state, props) => {
             // the activity and equipment codes that will be effectively used for the filtering
             // if any parameterized filter is unspecified (undefined), the value used is in state
@@ -323,7 +321,7 @@ class Checklists extends Component {
             if(!effectiveActivityCode && !effectiveEquipmentCode) {
                 const checklists = newState.activities.reduce((checklists, activity) => checklists.concat(activity.checklists), []);
 
-                collapseHeuristic(checklists, newState.activities);
+                this.collapseHeuristic(checklists, newState.activities);
             }
 
             return newState;
