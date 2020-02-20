@@ -287,6 +287,8 @@ class Checklists extends Component {
         const filteredActivities =
             activities.filter(activity => (activity.checklists && activity.checklists.length > 0));
 
+        const filteredActivityObject = activities.find(activity => activity.activityCode === filteredActivity);
+
         const divStyle = {width: "100%"};
         if (this.props.readonly) {
             divStyle.pointerEvents = 'none';
@@ -304,8 +306,10 @@ class Checklists extends Component {
                             {activities.length > 1 && <EAMSelect
                                 children={null}
                                 label={"Activity"}
-                                values={[{code: null, desc: "\u200B"}, ...filteredActivities.map(activity => 
-                                    ({code: activity.activityCode, desc: activity.activityCode + " - " + activity.activityNote}))]}
+                                values={[{code: null, desc: "\u200B"}, ...filteredActivities
+                                    .filter(activity => filteredEquipment ? activity.equipments[filteredEquipment] !== undefined : true)
+                                    .map(activity => 
+                                        ({code: activity.activityCode, desc: activity.activityCode + " - " + activity.activityNote}))]}
                                 value={filteredActivity}
                                 onChange={key => this.setNewFilter({activityCode: key.code})}
                                 menuContainerStyle={{'zIndex': 999}}/>}
@@ -313,6 +317,7 @@ class Checklists extends Component {
                                 children={null}
                                 label={"Equipment"}
                                 values={[{code: null, desc: "\u200B"}, ...Object.keys(equipments)
+                                    .filter(key => filteredActivity ? filteredActivityObject.equipments[key] !== undefined : true)
                                     .map(key => equipments[key])
                                     .map(equipment => (
                                         {...equipment, desc: equipment.code + " (" + equipment.desc + ")"}))]}

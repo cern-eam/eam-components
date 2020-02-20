@@ -422,6 +422,9 @@ function (_Component) {
       var filteredActivities = activities.filter(function (activity) {
         return activity.checklists && activity.checklists.length > 0;
       });
+      var filteredActivityObject = activities.find(function (activity) {
+        return activity.activityCode === filteredActivity;
+      });
       var divStyle = {
         width: "100%"
       };
@@ -451,7 +454,9 @@ function (_Component) {
           values: [{
             code: null,
             desc: "\u200B"
-          }].concat(_toConsumableArray(filteredActivities.map(function (activity) {
+          }].concat(_toConsumableArray(filteredActivities.filter(function (activity) {
+            return filteredEquipment ? activity.equipments[filteredEquipment] !== undefined : true;
+          }).map(function (activity) {
             return {
               code: activity.activityCode,
               desc: activity.activityCode + " - " + activity.activityNote
@@ -472,7 +477,9 @@ function (_Component) {
           values: [{
             code: null,
             desc: "\u200B"
-          }].concat(_toConsumableArray(Object.keys(equipments).map(function (key) {
+          }].concat(_toConsumableArray(Object.keys(equipments).filter(function (key) {
+            return filteredActivity ? filteredActivityObject.equipments[key] !== undefined : true;
+          }).map(function (key) {
             return equipments[key];
           }).map(function (equipment) {
             return _objectSpread({}, equipment, {
