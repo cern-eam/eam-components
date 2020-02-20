@@ -9,9 +9,8 @@ import EISPanel from '../panel';
 import ChecklistEquipment from "./ChecklistEquipment";
 import ChecklistItem from './ChecklistItem';
 import BlockUi from 'react-block-ui';
-import { showError } from '../../../actions/uiActions'
-import ChecklistFieldFinding from './fields/ChecklistFieldFinding';
 import EAMSelect from '../inputs/EAMSelect'
+import { withStyles } from '@material-ui/core/styles';
 
 function getExpandedActivities(activities) {
     const makeEquipmentsFromActivity = activity =>
@@ -39,7 +38,7 @@ function getExpandedActivities(activities) {
 // External updates on the activities will not be reflected in this component
 // For instance, if the description of an activity is changed 
 // in "Activities and Booked Labor", it will not be reflected here
-export default class Checklists extends Component {
+class Checklists extends Component {
     state = {
         activities: [],
         blocking: false,
@@ -109,18 +108,19 @@ export default class Checklists extends Component {
 
         if(typeof collapsed !== 'boolean') collapsed = true;
 
+        const { classes } = this.props;
+
         return <ExpansionPanel
-            key={equipmentCode}
-            expanded={!collapsed}
-            TransitionProps={{ unmountOnExit: true, timeout: 0 }}
-            onChange={(_, expanded) => this.setCollapsedEquipment(!expanded, activity.index, equipmentCode)}>
-            <ExpansionPanelSummary expandIcon={
-                <ExpandMoreIcon/>}>
+                key={equipmentCode}
+                expanded={!collapsed}
+                TransitionProps={{ unmountOnExit: true, timeout: 0 }}
+                onChange={(_, expanded) => this.setCollapsedEquipment(!expanded, activity.index, equipmentCode)}
+                classes={{root: classes.before}}>
+            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
                 <ChecklistEquipment 
                     key={firstChecklist.checkListCode + "_equipment"}
                     equipmentCode={equipmentCode}
-                    equipmentDesc={firstChecklist.equipmentDesc}
-                />
+                    equipmentDesc={firstChecklist.equipmentDesc}/>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails style={{marginTop: -18}}>
                 <div style={{width: "100%"}}>
@@ -205,6 +205,7 @@ export default class Checklists extends Component {
 
     renderActivities(filteredActivity, filteredEquipment) {
         const { activities, blocking } = this.state;
+
         return activities.filter(activity => (
                 activity.checklists && activity.checklists.length > 0
                     && !(filteredEquipment && activity.equipments[filteredEquipment] === undefined)
@@ -222,17 +223,17 @@ export default class Checklists extends Component {
                                 display: "flex",
                                 alignItems: "center"
                             }}>
-                                {activity.activityCode} - {activity.activityNote}
+                                <span style={{fontWeight: 500}}>{activity.activityCode} - {activity.activityNote}</span>
                                 <Button 
                                     key={activity.activityCode + '$createfuwo'}
                                     onClick={ evt => this.createFollowUpWOs(evt, activity) } 
                                     color="primary" 
-                                    style={{marginLeft: 'auto', paddingRight: '40px'}}>
+                                    style={{marginLeft: 'auto'}}>
                                     Create Follow-up WO
                                 </Button>
                             </div>
                         </ExpansionPanelSummary>
-                        <ExpansionPanelDetails style={{marginTop: -18}}>
+                        <ExpansionPanelDetails style={{margin: 0, padding: 0}}>
                             <div style={{width: "100%"}}>{this.renderChecklistsForActivity(activity, filteredEquipment)}</div>
                         </ExpansionPanelDetails>
                     </ExpansionPanel>
@@ -300,15 +301,15 @@ export default class Checklists extends Component {
                           linkIcon="fa fa-print">
                     <div style={divStyle}>
                         <div style={{paddingLeft: 25, paddingRight: 25}}>
-                            <EAMSelect
+                            {activities.length > 1 && <EAMSelect
                                 children={null}
                                 label={"Activity"}
                                 values={[{code: null, desc: "\u200B"}, ...filteredActivities.map(activity => 
                                     ({code: activity.activityCode, desc: activity.activityCode + " - " + activity.activityNote}))]}
                                 value={filteredActivity}
                                 onChange={key => this.setNewFilter({activityCode: key.code})}
-                                menuContainerStyle={{'zIndex': 999}}/>
-                            <EAMSelect
+                                menuContainerStyle={{'zIndex': 999}}/>}
+                            {Object.keys(equipments).length > 1 && <EAMSelect
                                 children={null}
                                 label={"Equipment"}
                                 values={[{code: null, desc: "\u200B"}, ...Object.keys(equipments)
@@ -317,7 +318,7 @@ export default class Checklists extends Component {
                                         {...equipment, desc: equipment.code + " (" + equipment.desc + ")"}))]}
                                 value={filteredEquipment}
                                 onChange={key => this.setNewFilter({equipmentCode: key.code})}
-                                menuContainerStyle={{'zIndex': 999}}/>
+                                menuContainerStyle={{'zIndex': 999}}/>}
                         </div>
                         {this.renderActivities(filteredActivity, filteredEquipment)}
                     </div>
@@ -345,3 +346,14 @@ Checklists.defaultProps = {
         });
     }
 };
+
+const styles = {
+    before: {
+        boxShadow: "0px 2px 1px -1px rgba(0,0,0,0.05), 0px 1px 1px 0px rgba(0,0,0,0.03), 0px 1px 3px 0px rgba(0,0,0,0.03)",
+        '&::before': {
+            backgroundColor: "rgba(0, 0, 0, 0.05)"
+        }
+    },
+};
+
+export default withStyles(styles)(Checklists);

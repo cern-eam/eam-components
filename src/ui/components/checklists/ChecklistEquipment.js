@@ -7,7 +7,8 @@ export default class ChecklistEquipment extends Component {
         marginTop: 15,
         display: "flex",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        width: "100%"
     }
 
     settingsIconStyle = {

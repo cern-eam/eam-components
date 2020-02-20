@@ -54,7 +54,8 @@ function (_Component) {
       marginTop: 15,
       display: "flex",
       justifyContent: "center",
-      alignItems: "center"
+      alignItems: "center",
+      width: "100%"
     };
     _this.settingsIconStyle = {
       height: 20,

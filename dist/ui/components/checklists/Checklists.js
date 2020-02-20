@@ -27,11 +27,9 @@ var _ChecklistItem = _interopRequireDefault(require("./ChecklistItem"));
 
 var _reactBlockUi = _interopRequireDefault(require("react-block-ui"));
 
-var _uiActions = require("../../../actions/uiActions");
-
-var _ChecklistFieldFinding = _interopRequireDefault(require("./fields/ChecklistFieldFinding"));
-
 var _EAMSelect = _interopRequireDefault(require("../inputs/EAMSelect"));
+
+var _styles = require("@material-ui/core/styles");
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
@@ -208,6 +206,7 @@ function (_Component) {
       }
 
       if (typeof collapsed !== 'boolean') collapsed = (_readOnlyError("collapsed"), true);
+      var classes = this.props.classes;
       return _react["default"].createElement(_ExpansionPanel["default"], {
         key: equipmentCode,
         expanded: !collapsed,
@@ -217,6 +216,9 @@ function (_Component) {
         },
         onChange: function onChange(_, expanded) {
           return _this3.setCollapsedEquipment(!expanded, activity.index, equipmentCode);
+        },
+        classes: {
+          root: classes.before
         }
       }, _react["default"].createElement(_ExpansionPanelSummary["default"], {
         expandIcon: _react["default"].createElement(_ExpandMore["default"], null)
@@ -341,19 +343,23 @@ function (_Component) {
             display: "flex",
             alignItems: "center"
           }
-        }, activity.activityCode, " - ", activity.activityNote, _react["default"].createElement(_Button["default"], {
+        }, _react["default"].createElement("span", {
+          style: {
+            fontWeight: 500
+          }
+        }, activity.activityCode, " - ", activity.activityNote), _react["default"].createElement(_Button["default"], {
           key: activity.activityCode + '$createfuwo',
           onClick: function onClick(evt) {
             return _this5.createFollowUpWOs(evt, activity);
           },
           color: "primary",
           style: {
-            marginLeft: 'auto',
-            paddingRight: '40px'
+            marginLeft: 'auto'
           }
         }, "Create Follow-up WO"))), _react["default"].createElement(_ExpansionPanelDetails["default"], {
           style: {
-            marginTop: -18
+            margin: 0,
+            padding: 0
           }
         }, _react["default"].createElement("div", {
           style: {
@@ -439,7 +445,7 @@ function (_Component) {
             paddingLeft: 25,
             paddingRight: 25
           }
-        }, _react["default"].createElement(_EAMSelect["default"], {
+        }, activities.length > 1 && _react["default"].createElement(_EAMSelect["default"], {
           children: null,
           label: "Activity",
           values: [{
@@ -460,7 +466,7 @@ function (_Component) {
           menuContainerStyle: {
             'zIndex': 999
           }
-        }), _react["default"].createElement(_EAMSelect["default"], {
+        }), Object.keys(equipments).length > 1 && _react["default"].createElement(_EAMSelect["default"], {
           children: null,
           label: "Equipment",
           values: [{
@@ -490,7 +496,6 @@ function (_Component) {
   return Checklists;
 }(_react.Component);
 
-exports["default"] = Checklists;
 Checklists.defaultProps = {
   title: 'CHECKLISTS',
   getWorkOrderActivities: _WSChecklists["default"].getWorkOrderActivities,
@@ -509,3 +514,15 @@ Checklists.defaultProps = {
     });
   }
 };
+var styles = {
+  before: {
+    boxShadow: "0px 2px 1px -1px rgba(0,0,0,0.05), 0px 1px 1px 0px rgba(0,0,0,0.03), 0px 1px 3px 0px rgba(0,0,0,0.03)",
+    '&::before': {
+      backgroundColor: "rgba(0, 0, 0, 0.05)"
+    }
+  }
+};
+
+var _default = (0, _styles.withStyles)(styles)(Checklists);
+
+exports["default"] = _default;
