@@ -39,11 +39,34 @@ function getExpandedActivities(activities) {
 // For instance, if the description of an activity is changed 
 // in "Activities and Booked Labor", it will not be reflected here
 class Checklists extends Component {
-    state = {
-        activities: [],
-        blocking: false,
-        filteredActivity: null,
-        filteredEquipment: null
+    constructor(props) {
+        super(props);
+
+        
+        this.state = {
+            activities: [],
+            blocking: false,
+            filteredActivity: null,
+            filteredEquipment: null
+        }
+
+        this.addCollapseHeuristic();
+    }
+
+    addCollapseHeuristic() {
+        const { maxExpandedChecklistItems } = this.props;
+
+        this.collapseHeuristic = 
+            typeof this.props.collapseHeuristic === "function" ? this.props.collapseHeuristic : (checklists, activities) => {
+                // if there are less than 100 checklists, do not collapse anything
+                if(checklists.length < maxExpandedChecklistItems) return;
+                
+                // otherwise, collapse every activity and every equipment within each activity
+                activities.forEach(activity => {
+                    activity.collapse();
+                    Object.values(activity.equipments).forEach(equipment => equipment.collapse());
+                });
+            };
     }
 
     expansionDetailsStyle = {
@@ -58,20 +81,21 @@ class Checklists extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        this.addCollapseHeuristic();
         if (this.props.workorder !== nextProps.workorder) {
             this.readActivities(nextProps.workorder)
         }
     }
 
     readActivities(workorder) {
-        const { getWorkOrderActivities, collapseHeuristic } = this.props;
+        const { getWorkOrderActivities } = this.props;
 
         getWorkOrderActivities(workorder)
             .then(response => {
                 const activities = getExpandedActivities(response.body.data);
                 const checklists = activities.reduce((checklists, activity) => checklists.concat(activity.checklists), []);
 
-                collapseHeuristic(checklists, activities);
+                this.collapseHeuristic(checklists, activities);
 
                 this.setState({
                     activities,
@@ -375,17 +399,7 @@ Checklists.defaultProps = {
     updateChecklistItem: WSChecklists.updateChecklistItem,
     readonly: false,
     minFindingsDropdown: 3,
-    collapseHeuristic: (checklists, activities) => {
-        // if there are less than 100 checklists, do not collapse anything
-        if(checklists.length < 100)
-            return;
-        
-        // otherwise, collapse every activity and every equipment within each activity
-        activities.forEach(activity => {
-            activity.collapse();
-            Object.values(activity.equipments).forEach(equipment => equipment.collapse());
-        });
-    }
+    maxExpandedChecklistItems: 50
 };
 
 const styles = {

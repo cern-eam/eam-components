@@ -109,34 +109,47 @@ var Checklists =
 function (_Component) {
   _inherits(Checklists, _Component);
 
-  function Checklists() {
-    var _getPrototypeOf2;
-
+  function Checklists(props) {
     var _this;
 
     _classCallCheck(this, Checklists);
 
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Checklists)).call.apply(_getPrototypeOf2, [this].concat(args)));
-    _this.state = {
-      activities: [],
-      blocking: false,
-      filteredActivity: null,
-      filteredEquipment: null
-    };
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Checklists).call(this, props));
     _this.expansionDetailsStyle = {
       marginRight: -24,
       marginLeft: -24,
       marginTop: -8,
       marginBottom: -24
     };
+    _this.state = {
+      activities: [],
+      blocking: false,
+      filteredActivity: null,
+      filteredEquipment: null
+    };
+
+    _this.addCollapseHeuristic();
+
     return _this;
   }
 
   _createClass(Checklists, [{
+    key: "addCollapseHeuristic",
+    value: function addCollapseHeuristic() {
+      var maxExpandedChecklistItems = this.props.maxExpandedChecklistItems;
+      this.collapseHeuristic = typeof this.props.collapseHeuristic === "function" ? this.props.collapseHeuristic : function (checklists, activities) {
+        // if there are less than 100 checklists, do not collapse anything
+        if (checklists.length < maxExpandedChecklistItems) return; // otherwise, collapse every activity and every equipment within each activity
+
+        activities.forEach(function (activity) {
+          activity.collapse();
+          Object.values(activity.equipments).forEach(function (equipment) {
+            return equipment.collapse();
+          });
+        });
+      };
+    }
+  }, {
     key: "componentWillMount",
     value: function componentWillMount() {
       this.readActivities(this.props.workorder);
@@ -144,6 +157,8 @@ function (_Component) {
   }, {
     key: "componentWillReceiveProps",
     value: function componentWillReceiveProps(nextProps) {
+      this.addCollapseHeuristic();
+
       if (this.props.workorder !== nextProps.workorder) {
         this.readActivities(nextProps.workorder);
       }
@@ -153,15 +168,14 @@ function (_Component) {
     value: function readActivities(workorder) {
       var _this2 = this;
 
-      var _this$props = this.props,
-          getWorkOrderActivities = _this$props.getWorkOrderActivities,
-          collapseHeuristic = _this$props.collapseHeuristic;
+      var getWorkOrderActivities = this.props.getWorkOrderActivities;
       getWorkOrderActivities(workorder).then(function (response) {
         var activities = getExpandedActivities(response.body.data);
         var checklists = activities.reduce(function (checklists, activity) {
           return checklists.concat(activity.checklists);
         }, []);
-        collapseHeuristic(checklists, activities);
+
+        _this2.collapseHeuristic(checklists, activities);
 
         _this2.setState({
           activities: activities,
@@ -547,17 +561,7 @@ Checklists.defaultProps = {
   updateChecklistItem: _WSChecklists["default"].updateChecklistItem,
   readonly: false,
   minFindingsDropdown: 3,
-  collapseHeuristic: function collapseHeuristic(checklists, activities) {
-    // if there are less than 100 checklists, do not collapse anything
-    if (checklists.length < 100) return; // otherwise, collapse every activity and every equipment within each activity
-
-    activities.forEach(function (activity) {
-      activity.collapse();
-      Object.values(activity.equipments).forEach(function (equipment) {
-        return equipment.collapse();
-      });
-    });
-  }
+  maxExpandedChecklistItems: 50
 };
 var styles = {
   before: {
