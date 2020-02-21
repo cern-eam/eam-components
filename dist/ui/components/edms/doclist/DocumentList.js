@@ -97,6 +97,7 @@ function (_Component) {
           return _react["default"].createElement(_DocumentRow["default"], {
             document: document,
             index: index,
+            key: index,
             filesUploadHandler: _this2.props.filesUploadHandler
           });
         });

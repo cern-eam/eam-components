@@ -134,7 +134,7 @@ class DocumentRow extends Component {
 
                     {this.state.filesVisible &&
                         <div style={this.morePanelStyle}>
-                            {this.props.document.properties.edms_property &&
+                            {this.props.document.properties && this.props.document.properties.edms_property &&
                             <MoreDetailsList details={this.props.document.properties.edms_property}/>}
 
                             {<FileList files={this.props.document.files}

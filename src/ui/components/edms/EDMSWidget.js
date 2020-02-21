@@ -76,9 +76,10 @@ class EDMSWidget extends Component {
                         .then(() => {
                             this.props.showSuccess('Files have been uploaded');
                             this.readDocuments(this.props.objectID, this.props.objectType)
-                        }).catch(() => {
+                        }).catch((reason) => {
                         //TODO enhance the error handling (partial fail/success)
-                        this.displayError('File upload was not successful');
+                        const errorMessage = this.getErrorMessage(reason);
+                        this.props.showError('File upload was not successful. Detailed error: ' + errorMessage)
                         this.readDocuments(this.props.objectID, this.props.objectType)
                     });
 
@@ -88,9 +89,9 @@ class EDMSWidget extends Component {
                     this.setState(() => ({documentCreationVisible: false}))
                 }
             }).catch(reason => {
-            const errorMessage = this.getErrorMessage(reason);
-            this.displayError(errorMessage);
-            this.unblockUI();
+                const errorMessage = this.getErrorMessage(reason);
+                this.props.showError(errorMessage)
+                this.unblockUI();
         });
     };
 
@@ -146,9 +147,10 @@ class EDMSWidget extends Component {
             .then(() => {
                 this.props.showSuccess('Files have been uploaded');
                 this.readDocuments(this.props.objectID, this.props.objectType)
-            }).catch( () => {
+            }).catch( (reason) => {
             //TODO enhance the error handling (partial fail/success)
-            this.displayError('File upload was not successful');
+            const errorMessage = this.getErrorMessage(reason);
+            this.props.showError('File upload was not successful. Detailed error: ' + errorMessage)
             this.readDocuments(this.props.objectID, this.props.objectType)
         })
     };
@@ -170,6 +172,7 @@ class EDMSWidget extends Component {
                 }));
             }).catch(reason => {
             const errorMessage = this.getErrorMessage(reason);
+            this.props.showError(errorMessage)
             this.unblockUI();
             //TODO handle the error message...
         });
@@ -189,15 +192,9 @@ class EDMSWidget extends Component {
         marginTop: -8,
         minHeight: 300
     };
-
     //
     // ERROR HANDLING
     //
-    displayError = (message) => {
-        console.log('showing error', message)
-        this.props.showError(message);
-    };
-
     getErrorMessage = (reason) => {
         if (reason && reason.response && reason.response.body && reason.response.body.errors) {
             return reason.response.body.errors[0].message;
