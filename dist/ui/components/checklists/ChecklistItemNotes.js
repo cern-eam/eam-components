@@ -55,7 +55,8 @@ function (_Component) {
       position: "relative",
       flexGrow: "1",
       display: "flex",
-      alignItems: "center"
+      alignItems: "center",
+      height: 42
     };
     _this.notesStyle = {
       color: "rgb(117, 117, 117)",

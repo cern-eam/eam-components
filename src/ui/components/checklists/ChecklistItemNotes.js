@@ -28,7 +28,8 @@ export default class ChecklistItemNotes extends Component {
         position: "relative",
         flexGrow: "1",
         display: "flex",
-        alignItems: "center"
+        alignItems: "center",
+        height: 42
     }
 
     notesStyle = {

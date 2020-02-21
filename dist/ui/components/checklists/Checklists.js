@@ -27,7 +27,9 @@ var _ChecklistItem = _interopRequireDefault(require("./ChecklistItem"));
 
 var _reactBlockUi = _interopRequireDefault(require("react-block-ui"));
 
-var _uiActions = require("../../../actions/uiActions");
+var _EAMSelect = _interopRequireDefault(require("../inputs/EAMSelect"));
+
+var _styles = require("@material-ui/core/styles");
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
@@ -36,6 +38,16 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _readOnlyError(name) { throw new Error("\"" + name + "\" is read-only"); }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -53,37 +65,91 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function getExpandedActivities(activities) {
+  var makeEquipmentsFromActivity = function makeEquipmentsFromActivity(activity) {
+    return activity.checklists.reduce(function (equipments, checklist) {
+      if (equipments[checklist.equipmentCode] === undefined) {
+        equipments[checklist.equipmentCode] = {
+          code: checklist.equipmentCode,
+          desc: checklist.equipmentDesc,
+          collapse: function collapse() {
+            this.collapsed = true;
+          },
+          collapsed: false
+        };
+      }
+
+      return equipments;
+    }, {});
+  };
+
+  return activities.map(function (activity, index) {
+    return _objectSpread({}, activity, {
+      index: index,
+      equipments: makeEquipmentsFromActivity(activity),
+      collapse: function collapse() {
+        this.collapsed = true;
+      },
+      collapsed: false
+    });
+  });
+} // External updates on the activities will not be reflected in this component
+// For instance, if the description of an activity is changed 
+// in "Activities and Booked Labor", it will not be reflected here
+
+
 var Checklists =
 /*#__PURE__*/
 function (_Component) {
   _inherits(Checklists, _Component);
 
-  function Checklists() {
-    var _getPrototypeOf2;
-
+  function Checklists(props) {
     var _this;
 
     _classCallCheck(this, Checklists);
 
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Checklists)).call.apply(_getPrototypeOf2, [this].concat(args)));
-    _this.state = {
-      activities: [],
-      blocking: false
-    };
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Checklists).call(this, props));
     _this.expansionDetailsStyle = {
       marginRight: -24,
       marginLeft: -24,
       marginTop: -8,
       marginBottom: -24
     };
+    _this.state = {
+      activities: [],
+      blocking: false,
+      filteredActivity: null,
+      filteredEquipment: null
+    };
+
+    _this.addCollapseHeuristic();
+
     return _this;
   }
 
   _createClass(Checklists, [{
+    key: "addCollapseHeuristic",
+    value: function addCollapseHeuristic() {
+      var maxExpandedChecklistItems = this.props.maxExpandedChecklistItems;
+      this.collapseHeuristic = typeof this.props.collapseHeuristic === "function" ? this.props.collapseHeuristic : function (checklists, activities) {
+        // if there are less than 100 checklists, do not collapse anything
+        if (checklists.length < maxExpandedChecklistItems) return; // otherwise, collapse every activity and every equipment within each activity
+
+        activities.forEach(function (activity) {
+          activity.collapse();
+          Object.values(activity.equipments).forEach(function (equipment) {
+            return equipment.collapse();
+          });
+        });
+      };
+    }
+  }, {
     key: "componentWillMount",
     value: function componentWillMount() {
       this.readActivities(this.props.workorder);
@@ -91,6 +157,8 @@ function (_Component) {
   }, {
     key: "componentWillReceiveProps",
     value: function componentWillReceiveProps(nextProps) {
+      this.addCollapseHeuristic();
+
       if (this.props.workorder !== nextProps.workorder) {
         this.readActivities(nextProps.workorder);
       }
@@ -100,42 +168,125 @@ function (_Component) {
     value: function readActivities(workorder) {
       var _this2 = this;
 
-      this.props.getWorkOrderActivities(workorder).then(function (response) {
+      var getWorkOrderActivities = this.props.getWorkOrderActivities;
+      getWorkOrderActivities(workorder).then(function (response) {
+        var activities = getExpandedActivities(response.body.data);
+        var checklists = activities.reduce(function (checklists, activity) {
+          return checklists.concat(activity.checklists);
+        }, []);
+
+        _this2.collapseHeuristic(checklists, activities);
+
         _this2.setState({
-          activities: response.body.data,
+          activities: activities,
           blocking: false
         });
       });
     }
   }, {
-    key: "renderChecklistsForActivity",
-    value: function renderChecklistsForActivity(checklists) {
+    key: "setCollapsedEquipment",
+    value: function setCollapsedEquipment(collapsed, activityIndex, equipmentCode) {
+      this.setState(function (state, props) {
+        var activities = _toConsumableArray(state.activities);
+
+        var activity = _objectSpread({}, activities[activityIndex]);
+
+        var equipments = _objectSpread({}, activity.equipments);
+
+        var equipment = _objectSpread({}, equipments[equipmentCode], {
+          collapsed: collapsed
+        });
+
+        equipments[equipmentCode] = equipment;
+        activity.equipments = equipments;
+        activities[activityIndex] = activity;
+        return {
+          activities: activities
+        };
+      });
+    }
+  }, {
+    key: "renderChecklistsForEquipment",
+    value: function renderChecklistsForEquipment(checklists, activity) {
       var _this3 = this;
 
-      var equipmentCode; //If there are more than 1 equipment, at least one is different from the first
-      //TODO: const multipleEquipment = checklists.some(chk => chk.equipmentCode !== checklists[0].equipmentCode);
+      var firstChecklist = checklists[0];
+      var equipmentCode = firstChecklist.equipmentCode;
+      var collapsed = activity.equipments[equipmentCode].collapsed;
 
-      return checklists.reduce(function (acc, checklist) {
-        // In a multiequipment scenario, include header for equipment
-        if (equipmentCode !== checklist.equipmentCode) {
-          equipmentCode = checklist.equipmentCode;
-          acc.push(_react["default"].createElement(_ChecklistEquipment["default"], {
-            key: checklist.checkListCode + "_equipment",
-            equipmentCode: checklist.equipmentCode,
-            equipmentDesc: checklist.equipmentDesc
-          }));
+      if (firstChecklist === undefined) {
+        console.error("renderChecklistsForEquipment MUST be passed at least 1 checklist");
+        return _react["default"].createElement("div", null); // better to return a div than to crash
+      }
+
+      if (typeof collapsed !== 'boolean') collapsed = (_readOnlyError("collapsed"), true);
+      var classes = this.props.classes;
+      return _react["default"].createElement(_ExpansionPanel["default"], {
+        key: equipmentCode,
+        expanded: !collapsed,
+        TransitionProps: {
+          unmountOnExit: true,
+          timeout: 0
+        },
+        onChange: function onChange(_, expanded) {
+          return _this3.setCollapsedEquipment(!expanded, activity.index, equipmentCode);
+        },
+        classes: {
+          root: classes.before
         }
-
-        acc.push(_react["default"].createElement(_ChecklistItem["default"], {
+      }, _react["default"].createElement(_ExpansionPanelSummary["default"], {
+        expandIcon: _react["default"].createElement(_ExpandMore["default"], null)
+      }, _react["default"].createElement(_ChecklistEquipment["default"], {
+        key: firstChecklist.checkListCode + "_equipment",
+        equipmentCode: equipmentCode,
+        equipmentDesc: firstChecklist.equipmentDesc
+      })), _react["default"].createElement(_ExpansionPanelDetails["default"], {
+        style: {
+          marginTop: -18
+        }
+      }, _react["default"].createElement("div", {
+        style: {
+          width: "100%"
+        }
+      }, checklists.map(function (checklist) {
+        return _react["default"].createElement(_ChecklistItem["default"], {
           key: 'checklistItem$' + checklist.checkListCode,
           updateChecklistItem: _this3.props.updateChecklistItem,
           checklistItem: checklist,
           handleError: _this3.props.handleError,
           minFindingsDropdown: _this3.props.minFindingsDropdown,
           getWoLink: _this3.props.getWoLink
-        }));
-        return acc;
-      }, []);
+        });
+      }))));
+    }
+  }, {
+    key: "renderChecklistsForActivity",
+    value: function renderChecklistsForActivity(activity, filteredEquipment) {
+      var checklists = activity.checklists;
+      var result = []; // this stores the index of the checklists that are related to a different equipment than the one before them
+      // this includes the first checklist item since it has no equipment before it
+
+      var equipmentBoundaries = [];
+      var equipmentCode;
+      checklists.forEach(function (checklist, i) {
+        if (equipmentCode === checklist.equipmentCode) return;
+        equipmentCode = checklist.equipmentCode;
+        equipmentBoundaries.push(i);
+      }); // include the index after the last checklist as a boundary
+      // this makes the next section of the code much simpler, since we can loop over pairs of boundaries
+
+      equipmentBoundaries.push(checklists.length); // now that we have the equipment boundaries, we can make arrays of checklists
+      // for each equipment in the activity, and render a collapsible menu
+
+      for (var i = 1; i < equipmentBoundaries.length; ++i) {
+        var start = equipmentBoundaries[i - 1];
+        var end = equipmentBoundaries[i];
+        var _equipmentCode = checklists[start].equipmentCode;
+        if (filteredEquipment && _equipmentCode !== filteredEquipment) continue;
+        result.push(this.renderChecklistsForEquipment(checklists.slice(start, end), activity));
+      }
+
+      return result;
     }
   }, {
     key: "createFollowUpWOs",
@@ -160,19 +311,43 @@ function (_Component) {
       });
     }
   }, {
+    key: "setCollapsedActivity",
+    value: function setCollapsedActivity(collapsed, index) {
+      this.setState(function (state, props) {
+        var activities = _toConsumableArray(state.activities);
+
+        var activity = _objectSpread({}, activities[index]);
+
+        activity.collapsed = collapsed;
+        activities[index] = activity;
+        return {
+          activities: activities
+        };
+      });
+    }
+  }, {
     key: "renderActivities",
-    value: function renderActivities(activities) {
+    value: function renderActivities(filteredActivity, filteredEquipment) {
       var _this5 = this;
 
-      var blocking = this.state.blocking;
+      var _this$state = this.state,
+          activities = _this$state.activities,
+          blocking = _this$state.blocking;
       return activities.filter(function (activity) {
-        return activity.checklists && activity.checklists.length > 0;
+        return activity.checklists && activity.checklists.length > 0 && !(filteredEquipment && activity.equipments[filteredEquipment] === undefined) && !(filteredActivity && activity.activityCode !== filteredActivity);
       }).map(function (activity) {
         return _react["default"].createElement(_reactBlockUi["default"], {
           key: activity.activityCode,
           blocking: blocking
         }, _react["default"].createElement(_ExpansionPanel["default"], {
-          defaultExpanded: true
+          expanded: !activity.collapsed,
+          onChange: function onChange(_, expanded) {
+            return _this5.setCollapsedActivity(!expanded, activity.index);
+          },
+          TransitionProps: {
+            unmountOnExit: true,
+            timeout: 0
+          }
         }, _react["default"].createElement(_ExpansionPanelSummary["default"], {
           expandIcon: _react["default"].createElement(_ExpandMore["default"], null)
         }, _react["default"].createElement("div", {
@@ -182,25 +357,98 @@ function (_Component) {
             display: "flex",
             alignItems: "center"
           }
-        }, activity.activityCode, " - ", activity.activityNote, _react["default"].createElement(_Button["default"], {
+        }, _react["default"].createElement("span", {
+          style: {
+            fontWeight: 500
+          }
+        }, activity.activityCode, " \u2014 ", activity.activityNote), _react["default"].createElement(_Button["default"], {
           key: activity.activityCode + '$createfuwo',
           onClick: function onClick(evt) {
             return _this5.createFollowUpWOs(evt, activity);
           },
           color: "primary",
           style: {
-            marginLeft: 'auto',
-            paddingRight: '40px'
+            marginLeft: 'auto'
           }
         }, "Create Follow-up WO"))), _react["default"].createElement(_ExpansionPanelDetails["default"], {
           style: {
-            marginTop: -18
+            margin: 0,
+            padding: 0
           }
         }, _react["default"].createElement("div", {
           style: {
             width: "100%"
           }
-        }, _this5.renderChecklistsForActivity(activity.checklists)))));
+        }, _this5.renderChecklistsForActivity(activity, filteredEquipment)))));
+      });
+    }
+  }, {
+    key: "setNewFilter",
+    value: function setNewFilter(filters) {
+      var _this6 = this;
+
+      var activity = filters.activity,
+          equipment = filters.equipment;
+      var activityCode = activity === "" ? null : activity === undefined ? undefined : activity.code;
+      var equipmentCode = equipment === "" ? null : equipment === undefined ? undefined : equipment.code;
+      this.setState(function (state, props) {
+        // the activity and equipment codes that will be effectively used for the filtering
+        // if any parameterized filter is unspecified (undefined), the value used is in state
+        var effectiveActivityCode = activityCode === undefined ? state.filteredActivity : activityCode;
+        var effectiveEquipmentCode = equipmentCode === undefined ? state.filteredEquipment : equipmentCode;
+
+        var activityCollapsedPredicate = function activityCollapsedPredicate(activity, effectiveActivityCode) {};
+
+        var equipmentCollapsedPredicate = function equipmentCollapsedPredicate(equipmentCode, effectiveEquipmentCode) {};
+
+        if (effectiveActivityCode || effectiveEquipmentCode) {
+          // if we're filtering, collapse everything that is not equal to our filters
+          activityCollapsedPredicate = function activityCollapsedPredicate(activity) {
+            return activity.activityCode !== effectiveActivityCode && Object.keys(activity.equipments).every(function (equipmentCode2) {
+              return equipmentCode2 !== effectiveEquipmentCode;
+            });
+          };
+
+          equipmentCollapsedPredicate = function equipmentCollapsedPredicate(equipmentCode) {
+            return equipmentCode !== effectiveEquipmentCode;
+          };
+        } else {
+          // if nothing is being filter, uncollapse everything,
+          // to prepare for calling the collapse heuristic
+          activityCollapsedPredicate = function activityCollapsedPredicate() {
+            return false;
+          };
+
+          equipmentCollapsedPredicate = function equipmentCollapsedPredicate() {
+            return false;
+          };
+        }
+
+        var newState = {
+          activities: state.activities.map(function (activity) {
+            return _objectSpread({}, activity, {
+              collapsed: activityCollapsedPredicate(activity),
+              equipments: Object.keys(activity.equipments).reduce(function (equipments, thisEquipmentCode) {
+                equipments[thisEquipmentCode] = _objectSpread({}, activity.equipments[thisEquipmentCode], {
+                  collapsed: equipmentCollapsedPredicate(thisEquipmentCode)
+                });
+                return equipments;
+              }, {})
+            });
+          }),
+          filteredActivity: effectiveActivityCode,
+          filteredEquipment: effectiveEquipmentCode
+        };
+
+        if (!effectiveActivityCode && !effectiveEquipmentCode) {
+          var checklists = newState.activities.reduce(function (checklists, activity) {
+            return checklists.concat(activity.checklists);
+          }, []);
+
+          _this6.collapseHeuristic(checklists, newState.activities);
+        }
+
+        return newState;
       });
     }
     /**s
@@ -212,7 +460,25 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var activities = this.state.activities;
+      var _this7 = this;
+
+      var _this$state2 = this.state,
+          activities = _this$state2.activities,
+          filteredActivity = _this$state2.filteredActivity,
+          filteredEquipment = _this$state2.filteredEquipment; // makes a global equipments array, with all the different equipments from all activities
+
+      var equipments = activities.reduce(function (prev, activity) {
+        Object.keys(activity.equipments).forEach(function (key) {
+          return prev[key] = activity.equipments[key];
+        });
+        return prev;
+      }, {});
+      var filteredActivities = activities.filter(function (activity) {
+        return activity.checklists && activity.checklists.length > 0;
+      });
+      var filteredActivityObject = activities.find(function (activity) {
+        return activity.activityCode === filteredActivity;
+      });
       var divStyle = {
         width: "100%"
       };
@@ -221,9 +487,7 @@ function (_Component) {
         divStyle.pointerEvents = 'none';
       }
 
-      if (activities.filter(function (activity) {
-        return activity.checklists && activity.checklists.length > 0;
-      }).length === 0) {
+      if (filteredActivities.length === 0) {
         return _react["default"].createElement("div", null);
       } else {
         return _react["default"].createElement(_panel["default"], {
@@ -233,7 +497,59 @@ function (_Component) {
           linkIcon: "fa fa-print"
         }, _react["default"].createElement("div", {
           style: divStyle
-        }, this.renderActivities(activities)));
+        }, _react["default"].createElement("div", {
+          style: {
+            paddingLeft: 25,
+            paddingRight: 25
+          }
+        }, activities.length > 1 && _react["default"].createElement(_EAMSelect["default"], {
+          children: null,
+          label: "Activity",
+          values: [{
+            code: null,
+            desc: "\u200B"
+          }].concat(_toConsumableArray(filteredActivities.filter(function (activity) {
+            return filteredEquipment ? activity.equipments[filteredEquipment] !== undefined : true;
+          }).map(function (activity) {
+            return {
+              code: activity.activityCode,
+              desc: activity.activityCode + " — " + activity.activityNote
+            };
+          }))),
+          value: filteredActivity ? filteredActivity : undefined,
+          onChange: function onChange(obj) {
+            return _this7.setNewFilter({
+              activity: obj
+            });
+          },
+          menuContainerStyle: {
+            'zIndex': 999
+          }
+        }), Object.keys(equipments).length > 1 && _react["default"].createElement(_EAMSelect["default"], {
+          children: null,
+          label: "Equipment",
+          values: [{
+            code: null,
+            desc: "\u200B"
+          }].concat(_toConsumableArray(Object.keys(equipments).filter(function (key) {
+            return filteredActivity ? filteredActivityObject.equipments[key] !== undefined : true;
+          }).map(function (key) {
+            return equipments[key];
+          }).map(function (equipment) {
+            return _objectSpread({}, equipment, {
+              desc: equipment.code + " — " + equipment.desc
+            });
+          }))),
+          value: filteredEquipment ? filteredEquipment : undefined,
+          onChange: function onChange(obj) {
+            return _this7.setNewFilter({
+              equipment: obj
+            });
+          },
+          menuContainerStyle: {
+            'zIndex': 999
+          }
+        })), this.renderActivities(filteredActivity, filteredEquipment)));
       }
     }
   }]);
@@ -241,11 +557,23 @@ function (_Component) {
   return Checklists;
 }(_react.Component);
 
-exports["default"] = Checklists;
 Checklists.defaultProps = {
   title: 'CHECKLISTS',
   getWorkOrderActivities: _WSChecklists["default"].getWorkOrderActivities,
   updateChecklistItem: _WSChecklists["default"].updateChecklistItem,
   readonly: false,
-  minFindingsDropdown: 3
+  minFindingsDropdown: 3,
+  maxExpandedChecklistItems: 50
 };
+var styles = {
+  before: {
+    boxShadow: "0px 2px 1px -1px rgba(0,0,0,0.05), 0px 1px 1px 0px rgba(0,0,0,0.03), 0px 1px 3px 0px rgba(0,0,0,0.03)",
+    '&::before': {
+      backgroundColor: "rgba(0, 0, 0, 0.05)"
+    }
+  }
+};
+
+var _default = (0, _styles.withStyles)(styles)(Checklists);
+
+exports["default"] = _default;
