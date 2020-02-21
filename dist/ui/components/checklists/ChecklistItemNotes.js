@@ -39,23 +39,17 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var ChecklistItemInputQuantitative =
+var ChecklistItemNotes =
 /*#__PURE__*/
 function (_Component) {
-  _inherits(ChecklistItemInputQuantitative, _Component);
+  _inherits(ChecklistItemNotes, _Component);
 
-  function ChecklistItemInputQuantitative() {
-    var _getPrototypeOf2;
-
+  function ChecklistItemNotes(props) {
     var _this;
 
-    _classCallCheck(this, ChecklistItemInputQuantitative);
+    _classCallCheck(this, ChecklistItemNotes);
 
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(ChecklistItemInputQuantitative)).call.apply(_getPrototypeOf2, [this].concat(args)));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(ChecklistItemNotes).call(this, props));
     _this.mainDivStyle = {
       padding: 2,
       position: "relative",
@@ -92,10 +86,11 @@ function (_Component) {
       }));
     };
 
+    _this.input = _react["default"].createRef();
     return _this;
   }
 
-  _createClass(ChecklistItemInputQuantitative, [{
+  _createClass(ChecklistItemNotes, [{
     key: "componentWillMount",
     value: function componentWillMount() {
       if (this.props.checklistItem) {
@@ -114,6 +109,11 @@ function (_Component) {
       }
     }
   }, {
+    key: "focus",
+    value: function focus() {
+      this.input.current.focus();
+    }
+  }, {
     key: "render",
     value: function render() {
       return _react["default"].createElement("div", {
@@ -122,14 +122,15 @@ function (_Component) {
         style: this.notesStyle,
         onChange: this.handleChange,
         value: this.state.value || '',
-        onBlur: this.handleBlur
+        onBlur: this.handleBlur,
+        ref: this.input
       }), _react["default"].createElement(_Comment["default"], {
         style: this.commentIconStyle
       }));
     }
   }]);
 
-  return ChecklistItemInputQuantitative;
+  return ChecklistItemNotes;
 }(_react.Component);
 
-exports["default"] = ChecklistItemInputQuantitative;
+exports["default"] = ChecklistItemNotes;

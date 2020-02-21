@@ -9,6 +9,7 @@ import EISPanel from '../panel';
 import ChecklistEquipment from "./ChecklistEquipment";
 import ChecklistItem from './ChecklistItem';
 import BlockUi from 'react-block-ui';
+import { showError } from '../../../actions/uiActions'
 
 export default class Checklists extends Component {
     state = {
