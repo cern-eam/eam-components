@@ -279,11 +279,11 @@ export default class ChecklistItem extends Component {
                             checklistItem={checklistItem}
                             onChange={value => this.onChange(value)}
                         />
-                        <ChecklistItemFollowUp 
+                        {!checklistItem.hideFollowUp && <ChecklistItemFollowUp 
                                 checklistItem={checklistItem}
                                 onChange={value => this.onChange(value)}
                                 getWoLink={this.props.getWoLink}
-                        />
+                        />}
                     </div>
                 </Collapse>
             </div>

@@ -381,7 +381,7 @@ function (_Component) {
         onChange: function onChange(value) {
           return _this5.onChange(value);
         }
-      }), _react["default"].createElement(_ChecklistItemFollowUp["default"], {
+      }), !checklistItem.hideFollowUp && _react["default"].createElement(_ChecklistItemFollowUp["default"], {
         checklistItem: checklistItem,
         onChange: function onChange(value) {
           return _this5.onChange(value);
