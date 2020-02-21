@@ -19,6 +19,14 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -41,23 +49,26 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var ChecklistItemInputYesNo =
+var ChecklistItemInput =
 /*#__PURE__*/
 function (_Component) {
-  _inherits(ChecklistItemInputYesNo, _Component);
+  _inherits(ChecklistItemInput, _Component);
 
-  function ChecklistItemInputYesNo() {
+  function ChecklistItemInput() {
     var _getPrototypeOf2;
 
     var _this;
 
-    _classCallCheck(this, ChecklistItemInputYesNo);
+    _classCallCheck(this, ChecklistItemInput);
 
     for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
 
-    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(ChecklistItemInputYesNo)).call.apply(_getPrototypeOf2, [this].concat(args)));
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(ChecklistItemInput)).call.apply(_getPrototypeOf2, [this].concat(args)));
+    _this.CHECKBOX = "CHECKBOX";
+    _this.INSPECTION = "INSPECTION";
+    _this.NUMERIC = "NUMERIC";
     _this.mainStyle = {
       flex: "0 0 170px",
       display: "flex",
@@ -65,16 +76,12 @@ function (_Component) {
       justifyContent: "space-between"
     };
 
-    _this.handleChange = function (value) {
+    _this.handleChange = function (type, value) {
       var currentValue = _this.props.checklistItem.result;
 
-      switch (currentValue) {
-        case "YES":
-          value = value === 'YES' ? null : value;
-          break;
-
-        case "NO":
-          value = value === 'NO' ? null : value;
+      switch (type) {
+        case ChecklistItemInput.CHECKBOX:
+          value = value === currentValue ? null : value;
           break;
       }
 
@@ -86,37 +93,72 @@ function (_Component) {
     return _this;
   }
 
-  _createClass(ChecklistItemInputYesNo, [{
-    key: "render",
-    value: function render() {
+  _createClass(ChecklistItemInput, [{
+    key: "renderCheckbox",
+    value: function renderCheckbox(code, desc) {
       var _this2 = this;
 
       var checklistItem = this.props.checklistItem;
+      return _react["default"].createElement(_FormControlLabel["default"], {
+        control: _react["default"].createElement(_Checkbox["default"], {
+          color: "primary",
+          checked: checklistItem.result === code,
+          onChange: function onChange() {
+            return _this2.handleChange(ChecklistItemInput.CHECKBOX, code);
+          }
+        }),
+        label: desc
+      });
+    }
+  }, {
+    key: "renderField",
+    value: function renderField(field) {
+      var _field = _slicedToArray(field, 3),
+          type = _field[0],
+          code = _field[1],
+          desc = _field[2];
+
+      switch (type) {
+        case ChecklistItemInput.CHECKBOX:
+          return this.renderCheckbox(code, desc);
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var fields = this.props.fields;
+      var fieldsRender = [];
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = fields[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var field = _step.value;
+          fieldsRender.push(this.renderField(field));
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+            _iterator["return"]();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+
       return _react["default"].createElement("div", {
         style: this.mainStyle
-      }, _react["default"].createElement(_FormControlLabel["default"], {
-        control: _react["default"].createElement(_Checkbox["default"], {
-          color: "primary",
-          checked: checklistItem.result === 'YES',
-          onChange: function onChange() {
-            return _this2.handleChange('YES');
-          }
-        }),
-        label: "Yes"
-      }), _react["default"].createElement(_FormControlLabel["default"], {
-        control: _react["default"].createElement(_Checkbox["default"], {
-          color: "primary",
-          checked: checklistItem.result === 'NO',
-          onChange: function onChange() {
-            return _this2.handleChange('NO');
-          }
-        }),
-        label: "No"
-      }));
+      }, fieldsRender);
     }
   }]);
 
-  return ChecklistItemInputYesNo;
+  return ChecklistItemInput;
 }(_react.Component);
 
-exports["default"] = ChecklistItemInputYesNo;
+exports["default"] = ChecklistItemInput;

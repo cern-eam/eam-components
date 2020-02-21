@@ -54,7 +54,8 @@ function (_Component) {
       marginTop: 15,
       display: "flex",
       justifyContent: "center",
-      alignItems: "center"
+      alignItems: "center",
+      width: "100%"
     };
     _this.settingsIconStyle = {
       height: 20,
@@ -70,7 +71,7 @@ function (_Component) {
         style: this.mainStyle
       }, _react["default"].createElement(_Settings["default"], {
         style: this.settingsIconStyle
-      }), this.props.equipmentCode, " (", this.props.equipmentDesc, ")");
+      }), this.props.equipmentCode, " \u2014 ", this.props.equipmentDesc);
     }
   }]);
 

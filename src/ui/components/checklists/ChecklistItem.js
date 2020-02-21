@@ -1,20 +1,19 @@
 import React, {Component} from 'react';
-import ChecklistItemInputYesNo from './inputs/ChecklistItemInputYesNo';
-import ChecklistItemInput3Findings from './inputs/ChecklistItemInput3Findings';
-import ChecklistItemInput2Findings from './inputs/ChecklistItemInput2Findings';
-import ChecklistItemInput1Finding from './inputs/ChecklistItemInput1Finding';
-import ChecklistItemInputMoreFindings from './inputs/ChecklistItemInputMoreFindings';
-import ChecklistItemInputQuantitative from './inputs/ChecklistItemInputQuantitative';
-import ChecklistItemInputChecklist from './inputs/ChecklistItemInputChecklist';
-import ChecklistItemInputInspection from './inputs/ChecklistItemInputInspection';
+import ChecklistItemInput from './ChecklistItemInput';
 import ChecklistItemNotes from './ChecklistItemNotes';
 import Collapse from '@material-ui/core/Collapse';
 import ChecklistItemFollowUp from "./ChecklistItemFollowUp";
-export default class Checklist extends Component {
 
-    state = {
-        detailsVisible: false,
-        blocked: false
+export default class ChecklistItem extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            detailsVisible: false,
+            blocked: false,
+            debounce: null
+        }
+
+        this.notes = React.createRef();
     }
 
     componentWillMount() {
@@ -39,7 +38,7 @@ export default class Checklist extends Component {
         }
     }
 
-    init = checklistItem => {
+    init(checklistItem) {
         if (checklistItem) {
             this.setState({
                 checklistItem: checklistItem,
@@ -61,6 +60,7 @@ export default class Checklist extends Component {
         alignItems: "center",
         minHeight: 48,
         justifyContent: 'space-between',
+        flexWrap: 'wrap'
     };
 
     firstLineDesc = {
@@ -85,75 +85,178 @@ export default class Checklist extends Component {
 
 
     onChange(checklistItem) {
-        // Block the UI
-        this.setState({blocked: true})
-        // Copy the current checklist item (will be used to restore the UI)
-        let oldChecklistItem = Object.assign({}, this.state.checklistItem)
-        //
-        this.setState({checklistItem})
-        // Update the checklist Item
-        this.props.updateChecklistItem(checklistItem)
-            .then(response => {
-                this.setState({blocked: false})
-            })
-            .catch(error => {
-                this.props.handleError(error)
-                // Unblock the UI and restore the UI
-                this.setState({
-                    blocked: false,
-                    checklistItem: oldChecklistItem
-                })
-            });
+        const handleError = this.props.handleError;
+        const DEBOUNCE_TIME_MS = 50;
+        
+        const request = () => {
+            this.props.updateChecklistItem(checklistItem)
+                .catch(error => {
+                    handleError(error);
+                    this.setState(state => { return {
+                        checklistItem: state.debounce.oldChecklistItem,
+                        debounce: null
+                    }});
+                }).finally(() => {
+                    this.setState({blocked: false});
+                });
+        };
+
+        this.setState(state => {
+            if(state.debounce !== null) clearTimeout(state.debounce.timeout);
+
+            return {
+                blocked: true,
+                checklistItem: checklistItem,
+                debounce: {
+                    ...(state.debounce || {}),
+                    timeout: setTimeout(request, DEBOUNCE_TIME_MS),
+                    // Copy the oldest checklist item (will be used to restore the UI)
+                    oldChecklistItem: state.debounce ? state.debounce.oldChecklistItem : state.checklistItem
+                }
+            }
+        });
     }
 
     descClickHandler() {
-        //if (!this.state.notesVisible) {
-        //    setTimeout(() => this.notesInput.focus(), 0)
-        //}
-        this.setState({
-            detailsVisible: !this.state.detailsVisible
-        })
+        const notes = this.notes.current;
+
+        this.setState((state, props) => {
+            const detailsVisible = !state.detailsVisible;
+
+            if(detailsVisible) {
+                setTimeout(() => this.notes.current.focus(), 0);
+            }
+
+            return {detailsVisible}
+        });
     }
 
     renderChecklistItemInput() {
-        let {checklistItem} = this.state
+        let {checklistItem} = this.state;
 
-        switch (checklistItem.type) {
+        let fields = [];
+        let options = {};
+
+        // use until use of numeric values in result field is deprecated
+        const clearResult = (newProps, type, value) => {
+            delete newProps.result;
+            return newProps;
+        };
+
+        const createField = ChecklistItemInput.createField;
+        const {CHECKBOX, FINDING, NUMERIC} = ChecklistItemInput.FIELD;
+
+        switch(checklistItem.type) {
             case "01":
-                return <ChecklistItemInputChecklist checklistItem={checklistItem}
-                                                    onChange={value => this.onChange(value)}/>
+                fields = [
+                    createField(CHECKBOX, {code: "COMPLETED", desc:"Completed"})
+                ];
+                options.style = ChecklistItemInput.STYLE.SINGLE;
+                break;
             case "02":
-                return <ChecklistItemInputYesNo checklistItem={checklistItem} onChange={value => this.onChange(value)}/>
+                fields = [
+                    createField(CHECKBOX, {code: "YES", desc: "Yes"}),
+                    createField(CHECKBOX, {code: "NO", desc: "No"})
+                ];
+                options.style = ChecklistItemInput.STYLE.SAMELINE;
+                break;
             case "03":
-                if (checklistItem.possibleFindings.length >= this.props.minFindingsDropdown) {
-                    return <ChecklistItemInputMoreFindings checklistItem={checklistItem}
-                                                           onChange={value => this.onChange(value)}/>
-                } else {
-                    switch (checklistItem.possibleFindings.length) {
-                        case 1:
-                            return <ChecklistItemInput1Finding checklistItem={checklistItem}
-                                                               onChange={value => this.onChange(value)}/>
-                        case 2:
-                            return <ChecklistItemInput2Findings checklistItem={checklistItem}
-                                                                onChange={value => this.onChange(value)}/>
-                        case 3:
-                            return <ChecklistItemInput3Findings checklistItem={checklistItem}
-                                                                onChange={value => this.onChange(value)}/>
-                        default:
-                            return <ChecklistItemInputMoreFindings checklistItem={checklistItem}
-                                                                   onChange={value => this.onChange(value)}/>
-                    }
-                }
+                const MINIMUM_MIN_FINDINGS = 4;
+                fields = [
+                    createField(FINDING, {
+                        dropdown:
+                            checklistItem.possibleFindings.length >= Math.min(this.props.minFindingsDropdown, MINIMUM_MIN_FINDINGS)
+                    })
+                ];
+                break;
             case "04":
             case "05":
-                return <ChecklistItemInputQuantitative checklistItem={checklistItem}
-                                                       onChange={value => this.onChange(value)}/>
+                fields = [
+                    createField(NUMERIC)
+                ];
+                options.beforeOnChange = clearResult;
+                break;
             case "06":
-                return <ChecklistItemInputInspection checklistItem={checklistItem}
-                                                     onChange={value => this.onChange(value)}/>
-            default:
-                return <div/>
+                fields = [
+                    createField(FINDING),
+                    createField(NUMERIC)
+                ];
+
+                options.beforeOnChange = clearResult;
+                break;
+            case "07":
+                fields = [
+                    createField(CHECKBOX, {code: "OK", desc: "OK"}),
+                    createField(CHECKBOX, {code: "REPAIRSNEEDED", desc: "Repairs Needed"}),
+                    createField(FINDING)
+                ];
+
+                switch(checklistItem.result) {
+                    case null:
+                        checklistItem.possibleFindings = [];
+                        break;
+                    case "OK":
+                        checklistItem.possibleFindings = [{code: "AM", desc: "Adjustments Made"}];
+                        break;
+                    case "REPAIRSNEEDED":
+                        checklistItem.possibleFindings = [
+                            {code: "RC", desc: "Repair Completed"},
+                            {code: "TR", desc: "Temporary Repair"}
+                        ];
+                        break;
+                }
+
+                options.beforeOnChange = (newProps, type, value) => {
+                    if(type === ChecklistItemInput.FIELD.CHECKBOX) {
+                        delete newProps.finding;
+                    }
+                    return newProps;
+                }
+                break;
+            case "08":
+                fields = [
+                    createField(CHECKBOX, {code: "GOOD", desc: "Good"}),
+                    createField(CHECKBOX, {code: "POOR", desc: "Poor"})
+                ];
+                options.style = ChecklistItemInput.STYLE.SAMELINE;
+                break;
+            case "09":
+            case "10":
+                fields = [
+                    createField(CHECKBOX, {code: "OK", desc: "OK"}),
+                    createField(CHECKBOX, {code: "ADJUSTED", desc: "Adjusted"})
+                ];
+
+                if(checklistItem.type === "10") {
+                    fields.push(createField(NUMERIC))
+                }
+
+                options.style = ChecklistItemInput.STYLE.SAMELINE;
+                break;
+            case "11":
+            case "12":
+                fields = [
+                    createField(CHECKBOX, {code: "OK", desc: "OK"}),
+                    createField(CHECKBOX, {code: "NONCONFORMITY", desc: "Nonconformity"}),
+                ];
+
+                if(checklistItem.type === "12") {
+                    fields.push(createField(ChecklistItemInput.FIELD.NUMERIC))
+                    options.beforeOnChange = (newProps, type, value) => {
+                        if(type === ChecklistItemInput.FIELD.NUMERIC && newProps.result === null) {
+                            newProps.result = "OK";
+                        }
+                        return newProps;
+                    }
+                }
+
+                options.style = ChecklistItemInput.STYLE.SAMELINE;
+                break;
         }
+
+        if(fields === undefined) return <div/>
+
+        return <ChecklistItemInput checklistItem={checklistItem} onChange={value => this.onChange(value)} fields={fields} options={options} />
     }
 
     render() {
@@ -171,13 +274,16 @@ export default class Checklist extends Component {
 
                 <Collapse in={this.state.detailsVisible}>
                     <div style={this.checklistDetailsStyle} >
-                        <ChecklistItemNotes checklistItem={checklistItem}
-                                            onChange={value => this.onChange(value)}/>
-                        <ChecklistItemFollowUp 
+                        <ChecklistItemNotes 
+                            ref={this.notes}
+                            checklistItem={checklistItem}
+                            onChange={value => this.onChange(value)}
+                        />
+                        {!checklistItem.hideFollowUp && <ChecklistItemFollowUp 
                                 checklistItem={checklistItem}
                                 onChange={value => this.onChange(value)}
                                 getWoLink={this.props.getWoLink}
-                        />
+                        />}
                     </div>
                 </Collapse>
             </div>

@@ -10,9 +10,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import './EISTable.css';
 import {Link} from 'react-router-dom';
 import Checkbox from '@material-ui/core/Checkbox';
-import MenuItem from '@material-ui/core/MenuItem';
-import FilterListIcon from '@material-ui/icons/FilterList';
 import PropTypes from 'prop-types';
+import Constants from '../../../enums/Constants';
 
 const whiteBackground = {
     backgroundColor: "#ffffff"
@@ -34,13 +33,9 @@ class EISTable extends Component {
     state = {
         windowWidth: window.innerWidth,
         orderBy: -1,
-        order: 'asc',
+        order: Constants.SORT_ASC,
         data: []
     };
-
-    filterSelectStyle = {
-        fontSize: '0.8125rem'
-    }
 
     componentDidMount() {
         window.addEventListener('resize', this.onWindowSizeChange);
@@ -69,8 +64,8 @@ class EISTable extends Component {
     resetSort = () => {
         this.setState(() => ({
             orderBy: -1,
-            order: 'asc',})
-        )
+            order: Constants.SORT_ASC
+        }))
     }
     createSortHandler = property => event => {
         this.handleRequestSort(event, property);
@@ -82,32 +77,16 @@ class EISTable extends Component {
 
     handleRequestSort = (event, property) => {
         //By default asc
-        let order = 'asc';
-        //If negative, initial data
-        if (property < 0) {
-            this.setState(() => ({data: this.props.data, order, orderBy: property}));
-            return;
-        }
-
-        let orderBy = property;
-        if (property < this.props.propCodes.length) {
-            if (this.state.orderBy === property && this.state.order === 'asc') {
-                order = 'desc';
+        let order = Constants.SORT_ASC;
+        if (property >= 0 && property < this.props.propCodes.length) {
+            if (this.state.orderBy === property && this.state.order === Constants.SORT_ASC) {
+                order = Constants.SORT_DESC;
             }
         } else { /*It's desc*/
-            orderBy = property - this.props.propCodes.length;
-            order = 'desc';
+            order = Constants.SORT_DESC;
         }
-        //Property Code
-        const propCode = this.props.propCodes[orderBy];
-        //Perform sorting
-        const data =
-            order === 'desc'
-                ? [...this.state.data].sort((a, b) => (this.getCompValue(b[propCode]) < this.getCompValue(a[propCode]) ? -1 : 1))
-                : [...this.state.data].sort((a, b) => (this.getCompValue(a[propCode]) < this.getCompValue(b[propCode]) ? -1 : 1));
-
         //Assign final data
-        this.setState(() => ({data, order, orderBy: property}));
+        this.setState({ order, orderBy: property});
     };
 
     getCompValue = (value) => {
@@ -165,45 +144,46 @@ class EISTable extends Component {
         this.props.handleFilterChange(e.target.value);
     }
 
-    renderFilterByValuesMobile = () => {
-        return (
-            <Select
-                native
-                value={this.props.activeFilter}
-                onChange={this.propagateFilterChange}
-                className="eamTableDropdown">
-                {
-                    Object.keys(this.props.filters).map((key) => <option key={key} value={key}>{this.props.filters[key].text}</option>)
-                }
-            </Select>
-        );
-    }
+    getSortedData = ({ data, orderBy, order, propCode }) => 
+        orderBy < 0 ? data : order === Constants.SORT_DESC ?
+            [...data].sort((a, b) => (this.getCompValue(b[propCode]) < this.getCompValue(a[propCode]) ? -1 : 1))
+            :
+            [...data].sort((a, b) => (this.getCompValue(a[propCode]) < this.getCompValue(b[propCode]) ? -1 : 1));
 
     render() {
-
-        const isMobile = this.state.windowWidth < this.props.maxMobileSize;
-        const rowsSelectable = this.props.selectedRowIndexes && this.props.onRowClick;
+        const {
+            data,
+            order,
+            orderBy,
+            windowWidth
+        } = this.state;
+        const {
+            headers,
+            maxMobileSize,
+            onRowClick,
+            propCodes,
+            selectedRowIndexes,
+            stylesMap
+        } = this.props;
+        const isMobile = windowWidth < maxMobileSize;
+        const rowsSelectable = selectedRowIndexes && onRowClick;
+        const tableData = this.getSortedData({ data, orderBy, order, propCode: propCodes[orderBy] })
+        
 
         if (isMobile) {
             return (
                 <Table className="responsiveTable" style={{overflow:'visible'}}>
                     <TableHead>
-                        {this.props.filters && Object.keys(this.props.filters).length &&
-                        <TableRow key={"filterby"}>
-                            <TableCell>Filter by:</TableCell>
-                            <TableCell>{this.renderFilterByValuesMobile()}</TableCell>
-                        </TableRow>
-                        }
                         <TableRow key={"sortby"}>
                             <TableCell>Sort by:</TableCell>
                             <TableCell>{this.renderSortByValuesMobile()}</TableCell>
                         </TableRow>
                     </TableHead>
-                    {this.state.data.map((content, index) => {
+                    {tableData.map((content, index) => {
                         // every second row is grey
                         let style = index % 2 === 0 ? whiteBackground : greyBackground;
 
-                        if (this.props.selectedRowIndexes && this.props.selectedRowIndexes.includes(index)) {
+                        if (selectedRowIndexes && selectedRowIndexes.includes(index)) {
                             style = {
                                 ...style,
                                 backgroundColor: "#2b82ff",
@@ -227,24 +207,24 @@ class EISTable extends Component {
                          *      }
                          * }}
                          */
-                        if (this.props.stylesMap) {
-                            Object.keys(this.props.stylesMap)
+                        if (stylesMap) {
+                            Object.keys(stylesMap)
                                 .forEach(key => {
                                     if (content[key]) {
                                         style = {
                                             ...style,
-                                            ...this.props.stylesMap[key]
+                                            ...stylesMap[key]
                                         }
                                     }
                                 })
                         }
 
                         return (
-                            <TableBody key={index} style={style} onClick={rowsSelectable ? () => this.props.onRowClick(content, index) : () => {}}>
+                            <TableBody key={index} style={style} onClick={rowsSelectable ? () => onRowClick(content, index) : () => {}}>
                                 {
-                                    this.props.propCodes.map((prop, index) =>
+                                    propCodes.map((prop, index) =>
                                         <TableRow key={prop} style={style}>
-                                            <TableCell>{this.props.headers[index]}</TableCell>
+                                            <TableCell>{headers[index]}</TableCell>
                                             <TableCell>{
                                                 this.renderContent(prop, content)
                                             }</TableCell>
@@ -259,34 +239,19 @@ class EISTable extends Component {
         } else {
             return (
                 <React.Fragment>
-                    {this.props.filters && Object.keys(this.props.filters).length &&
-
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <FilterListIcon style={{ marginLeft: 'auto' }}/>
-                        <Select
-                        style={this.filterSelectStyle}
-                        value={this.props.filters[this.props.activeFilter].text}
-                        onChange={this.propagateFilterChange}
-                        renderValue={value => <span>{value}</span>}>
-                                {Object.keys(this.props.filters).map((key) => (
-                                    <MenuItem key={key} value={key}>{this.props.filters[key].text}</MenuItem>
-                                    ))}
-                            </Select>
-                    </div>
-                    }
                     <Table className="responsiveTable" style={{overflow:'visible'}}>
                         <TableHead>
                             <TableRow key={"key"}>
-                                {this.props.headers.map((header, index) => (
+                                {headers.map((header, index) => (
                                     <TableCell key={header}
-                                                sortDirection={this.state.orderBy === index ? this.state.order : false}>
+                                                sortDirection={orderBy === index ? order : false}>
                                             <Tooltip
                                                 title="Sort"
                                                 placement={'bottom-end'}
                                                 enterDelay={300}>
                                                 <TableSortLabel
-                                                    active={this.state.orderBy === index}
-                                                    direction={this.state.order}
+                                                    active={orderBy === index}
+                                                    direction={order}
                                                     onClick={this.createSortHandler(index)}>
                                                     {header}
                                                 </TableSortLabel>
@@ -297,10 +262,10 @@ class EISTable extends Component {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {this.state.data.map((content, index) => {
+                            {tableData.map((content, index) => {
                                 let style = {};
                                 
-                                if (this.props.selectedRowIndexes && this.props.selectedRowIndexes.includes(index)) {
+                                if (selectedRowIndexes && selectedRowIndexes.includes(index)) {
                                     style = {
                                         ...style,
                                         backgroundColor: "#2196f3",
@@ -314,21 +279,21 @@ class EISTable extends Component {
                                     }
                                 }
                                 
-                                if (this.props.stylesMap) {
-                                    Object.keys(this.props.stylesMap)
+                                if (stylesMap) {
+                                    Object.keys(stylesMap)
                                     .forEach(key => {
                                         if(content[key]) {
                                             style = {
                                                 ...style,
-                                                ...this.props.stylesMap[key]
+                                                ...stylesMap[key]
                                             }
                                         }
                                     })
                                 }
                                 
                                 return (
-                                    <TableRow key={index} style={style} onClick={rowsSelectable ? () => this.props.onRowClick(content, index) : () => {}}>
-                                        {this.props.propCodes.map(propCode =>
+                                    <TableRow key={index} style={style} onClick={rowsSelectable ? () => onRowClick(content, index) : () => {}}>
+                                        {propCodes.map(propCode =>
                                             <TableCell key={propCode}>{
                                                 this.renderContent(propCode, content)
                                             }</TableCell>

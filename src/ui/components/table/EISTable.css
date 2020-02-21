@@ -1,4 +1,4 @@
-.responsiveTable td, th {
+.responsiveTable td, .responsiveTable th {
     padding: 4px !important;
     min-width: 50px;
     text-align: left;

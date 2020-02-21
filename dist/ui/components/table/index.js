@@ -29,11 +29,9 @@ var _reactRouterDom = require("react-router-dom");
 
 var _Checkbox = _interopRequireDefault(require("@material-ui/core/Checkbox"));
 
-var _MenuItem = _interopRequireDefault(require("@material-ui/core/MenuItem"));
-
-var _FilterList = _interopRequireDefault(require("@material-ui/icons/FilterList"));
-
 var _propTypes = _interopRequireDefault(require("prop-types"));
+
+var _Constants = _interopRequireDefault(require("../../../enums/Constants"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -107,11 +105,8 @@ function (_Component) {
     _this.state = {
       windowWidth: window.innerWidth,
       orderBy: -1,
-      order: 'asc',
+      order: _Constants["default"].SORT_ASC,
       data: []
-    };
-    _this.filterSelectStyle = {
-      fontSize: '0.8125rem'
     };
 
     _this.onWindowSizeChange = function () {
@@ -126,7 +121,7 @@ function (_Component) {
       _this.setState(function () {
         return {
           orderBy: -1,
-          order: 'asc'
+          order: _Constants["default"].SORT_ASC
         };
       });
     };
@@ -143,47 +138,21 @@ function (_Component) {
 
     _this.handleRequestSort = function (event, property) {
       //By default asc
-      var order = 'asc'; //If negative, initial data
+      var order = _Constants["default"].SORT_ASC;
 
-      if (property < 0) {
-        _this.setState(function () {
-          return {
-            data: _this.props.data,
-            order: order,
-            orderBy: property
-          };
-        });
-
-        return;
-      }
-
-      var orderBy = property;
-
-      if (property < _this.props.propCodes.length) {
-        if (_this.state.orderBy === property && _this.state.order === 'asc') {
-          order = 'desc';
+      if (property >= 0 && property < _this.props.propCodes.length) {
+        if (_this.state.orderBy === property && _this.state.order === _Constants["default"].SORT_ASC) {
+          order = _Constants["default"].SORT_DESC;
         }
       } else {
         /*It's desc*/
-        orderBy = property - _this.props.propCodes.length;
-        order = 'desc';
-      } //Property Code
+        order = _Constants["default"].SORT_DESC;
+      } //Assign final data
 
 
-      var propCode = _this.props.propCodes[orderBy]; //Perform sorting
-
-      var data = order === 'desc' ? _toConsumableArray(_this.state.data).sort(function (a, b) {
-        return _this.getCompValue(b[propCode]) < _this.getCompValue(a[propCode]) ? -1 : 1;
-      }) : _toConsumableArray(_this.state.data).sort(function (a, b) {
-        return _this.getCompValue(a[propCode]) < _this.getCompValue(b[propCode]) ? -1 : 1;
-      }); //Assign final data
-
-      _this.setState(function () {
-        return {
-          data: data,
-          order: order,
-          orderBy: property
-        };
+      _this.setState({
+        order: order,
+        orderBy: property
       });
     };
 
@@ -265,18 +234,16 @@ function (_Component) {
       _this.props.handleFilterChange(e.target.value);
     };
 
-    _this.renderFilterByValuesMobile = function () {
-      return _react["default"].createElement(_Select["default"], {
-        "native": true,
-        value: _this.props.activeFilter,
-        onChange: _this.propagateFilterChange,
-        className: "eamTableDropdown"
-      }, Object.keys(_this.props.filters).map(function (key) {
-        return _react["default"].createElement("option", {
-          key: key,
-          value: key
-        }, _this.props.filters[key].text);
-      }));
+    _this.getSortedData = function (_ref) {
+      var data = _ref.data,
+          orderBy = _ref.orderBy,
+          order = _ref.order,
+          propCode = _ref.propCode;
+      return orderBy < 0 ? data : order === _Constants["default"].SORT_DESC ? _toConsumableArray(data).sort(function (a, b) {
+        return _this.getCompValue(b[propCode]) < _this.getCompValue(a[propCode]) ? -1 : 1;
+      }) : _toConsumableArray(data).sort(function (a, b) {
+        return _this.getCompValue(a[propCode]) < _this.getCompValue(b[propCode]) ? -1 : 1;
+      });
     };
 
     return _this;
@@ -297,8 +264,26 @@ function (_Component) {
     value: function render() {
       var _this2 = this;
 
-      var isMobile = this.state.windowWidth < this.props.maxMobileSize;
-      var rowsSelectable = this.props.selectedRowIndexes && this.props.onRowClick;
+      var _this$state = this.state,
+          data = _this$state.data,
+          order = _this$state.order,
+          orderBy = _this$state.orderBy,
+          windowWidth = _this$state.windowWidth;
+      var _this$props = this.props,
+          headers = _this$props.headers,
+          maxMobileSize = _this$props.maxMobileSize,
+          onRowClick = _this$props.onRowClick,
+          propCodes = _this$props.propCodes,
+          selectedRowIndexes = _this$props.selectedRowIndexes,
+          stylesMap = _this$props.stylesMap;
+      var isMobile = windowWidth < maxMobileSize;
+      var rowsSelectable = selectedRowIndexes && onRowClick;
+      var tableData = this.getSortedData({
+        data: data,
+        orderBy: orderBy,
+        order: order,
+        propCode: propCodes[orderBy]
+      });
 
       if (isMobile) {
         return _react["default"].createElement(_Table["default"], {
@@ -306,15 +291,13 @@ function (_Component) {
           style: {
             overflow: 'visible'
           }
-        }, _react["default"].createElement(_TableHead["default"], null, this.props.filters && Object.keys(this.props.filters).length && _react["default"].createElement(_TableRow["default"], {
-          key: "filterby"
-        }, _react["default"].createElement(_TableCell["default"], null, "Filter by:"), _react["default"].createElement(_TableCell["default"], null, this.renderFilterByValuesMobile())), _react["default"].createElement(_TableRow["default"], {
+        }, _react["default"].createElement(_TableHead["default"], null, _react["default"].createElement(_TableRow["default"], {
           key: "sortby"
-        }, _react["default"].createElement(_TableCell["default"], null, "Sort by:"), _react["default"].createElement(_TableCell["default"], null, this.renderSortByValuesMobile()))), this.state.data.map(function (content, index) {
+        }, _react["default"].createElement(_TableCell["default"], null, "Sort by:"), _react["default"].createElement(_TableCell["default"], null, this.renderSortByValuesMobile()))), tableData.map(function (content, index) {
           // every second row is grey
           var style = index % 2 === 0 ? whiteBackground : greyBackground;
 
-          if (_this2.props.selectedRowIndexes && _this2.props.selectedRowIndexes.includes(index)) {
+          if (selectedRowIndexes && selectedRowIndexes.includes(index)) {
             style = _objectSpread({}, style, {
               backgroundColor: "#2b82ff"
             });
@@ -337,10 +320,10 @@ function (_Component) {
            */
 
 
-          if (_this2.props.stylesMap) {
-            Object.keys(_this2.props.stylesMap).forEach(function (key) {
+          if (stylesMap) {
+            Object.keys(stylesMap).forEach(function (key) {
               if (content[key]) {
-                style = _objectSpread({}, style, {}, _this2.props.stylesMap[key]);
+                style = _objectSpread({}, style, {}, stylesMap[key]);
               }
             });
           }
@@ -349,61 +332,40 @@ function (_Component) {
             key: index,
             style: style,
             onClick: rowsSelectable ? function () {
-              return _this2.props.onRowClick(content, index);
+              return onRowClick(content, index);
             } : function () {}
-          }, _this2.props.propCodes.map(function (prop, index) {
+          }, propCodes.map(function (prop, index) {
             return _react["default"].createElement(_TableRow["default"], {
               key: prop,
               style: style
-            }, _react["default"].createElement(_TableCell["default"], null, _this2.props.headers[index]), _react["default"].createElement(_TableCell["default"], null, _this2.renderContent(prop, content)));
+            }, _react["default"].createElement(_TableCell["default"], null, headers[index]), _react["default"].createElement(_TableCell["default"], null, _this2.renderContent(prop, content)));
           }));
         }));
       } else {
-        return _react["default"].createElement(_react["default"].Fragment, null, this.props.filters && Object.keys(this.props.filters).length && _react["default"].createElement("div", {
-          style: {
-            display: 'flex',
-            justifyContent: 'space-between'
-          }
-        }, _react["default"].createElement(_FilterList["default"], {
-          style: {
-            marginLeft: 'auto'
-          }
-        }), _react["default"].createElement(_Select["default"], {
-          style: this.filterSelectStyle,
-          value: this.props.filters[this.props.activeFilter].text,
-          onChange: this.propagateFilterChange,
-          renderValue: function renderValue(value) {
-            return _react["default"].createElement("span", null, value);
-          }
-        }, Object.keys(this.props.filters).map(function (key) {
-          return _react["default"].createElement(_MenuItem["default"], {
-            key: key,
-            value: key
-          }, _this2.props.filters[key].text);
-        }))), _react["default"].createElement(_Table["default"], {
+        return _react["default"].createElement(_react["default"].Fragment, null, _react["default"].createElement(_Table["default"], {
           className: "responsiveTable",
           style: {
             overflow: 'visible'
           }
         }, _react["default"].createElement(_TableHead["default"], null, _react["default"].createElement(_TableRow["default"], {
           key: "key"
-        }, this.props.headers.map(function (header, index) {
+        }, headers.map(function (header, index) {
           return _react["default"].createElement(_TableCell["default"], {
             key: header,
-            sortDirection: _this2.state.orderBy === index ? _this2.state.order : false
+            sortDirection: orderBy === index ? order : false
           }, _react["default"].createElement(_Tooltip["default"], {
             title: "Sort",
             placement: 'bottom-end',
             enterDelay: 300
           }, _react["default"].createElement(_TableSortLabel["default"], {
-            active: _this2.state.orderBy === index,
-            direction: _this2.state.order,
+            active: orderBy === index,
+            direction: order,
             onClick: _this2.createSortHandler(index)
           }, header)));
-        }))), _react["default"].createElement(_TableBody["default"], null, this.state.data.map(function (content, index) {
+        }))), _react["default"].createElement(_TableBody["default"], null, tableData.map(function (content, index) {
           var style = {};
 
-          if (_this2.props.selectedRowIndexes && _this2.props.selectedRowIndexes.includes(index)) {
+          if (selectedRowIndexes && selectedRowIndexes.includes(index)) {
             style = _objectSpread({}, style, {
               backgroundColor: "#2196f3"
             });
@@ -415,10 +377,10 @@ function (_Component) {
             });
           }
 
-          if (_this2.props.stylesMap) {
-            Object.keys(_this2.props.stylesMap).forEach(function (key) {
+          if (stylesMap) {
+            Object.keys(stylesMap).forEach(function (key) {
               if (content[key]) {
-                style = _objectSpread({}, style, {}, _this2.props.stylesMap[key]);
+                style = _objectSpread({}, style, {}, stylesMap[key]);
               }
             });
           }
@@ -427,9 +389,9 @@ function (_Component) {
             key: index,
             style: style,
             onClick: rowsSelectable ? function () {
-              return _this2.props.onRowClick(content, index);
+              return onRowClick(content, index);
             } : function () {}
-          }, _this2.props.propCodes.map(function (propCode) {
+          }, propCodes.map(function (propCode) {
             return _react["default"].createElement(_TableCell["default"], {
               key: propCode
             }, _this2.renderContent(propCode, content));
