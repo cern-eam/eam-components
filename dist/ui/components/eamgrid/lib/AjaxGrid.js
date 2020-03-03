@@ -29,9 +29,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  */
 var DEFAULT_TIMEOUT = 20000;
 
-var AjaxGrid =
-/*#__PURE__*/
-function () {
+var AjaxGrid = /*#__PURE__*/function () {
   function AjaxGrid() {
     _classCallCheck(this, AjaxGrid);
   }

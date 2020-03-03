@@ -18,9 +18,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 /**
  * Handles all calls to REST Api
  */
-var WS =
-/*#__PURE__*/
-function () {
+var WS = /*#__PURE__*/function () {
   function WS() {
     _classCallCheck(this, WS);
   }

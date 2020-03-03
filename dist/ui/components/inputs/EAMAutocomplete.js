@@ -41,7 +41,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -75,9 +75,7 @@ var autocompleteOptionStyles = function autocompleteOptionStyles() {
   };
 };
 
-var AutocompleteOption =
-/*#__PURE__*/
-function (_Component) {
+var AutocompleteOption = /*#__PURE__*/function (_Component) {
   _inherits(AutocompleteOption, _Component);
 
   function AutocompleteOption() {
@@ -148,9 +146,7 @@ var autocompleteValueStyles = function autocompleteValueStyles() {
   };
 };
 
-var AutocompleteValue =
-/*#__PURE__*/
-function (_Component2) {
+var AutocompleteValue = /*#__PURE__*/function (_Component2) {
   _inherits(AutocompleteValue, _Component2);
 
   function AutocompleteValue() {
@@ -207,9 +203,7 @@ AutocompleteValue.propTypes = {
 };
 AutocompleteValue = (0, _styles.withStyles)(autocompleteValueStyles)(AutocompleteValue);
 
-var AutocompleteValueSingle =
-/*#__PURE__*/
-function (_Component3) {
+var AutocompleteValueSingle = /*#__PURE__*/function (_Component3) {
   _inherits(AutocompleteValueSingle, _Component3);
 
   function AutocompleteValueSingle() {
@@ -258,9 +252,7 @@ AutocompleteValueSingle = (0, _styles.withStyles)(autocompleteValueStyles)(Autoc
  * backspaceRemoves={false}
  */
 
-var EAMAutocomplete =
-/*#__PURE__*/
-function (_EAMBaseInput) {
+var EAMAutocomplete = /*#__PURE__*/function (_EAMBaseInput) {
   _inherits(EAMAutocomplete, _EAMBaseInput);
 
   function EAMAutocomplete(props) {

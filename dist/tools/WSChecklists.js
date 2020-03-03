@@ -18,9 +18,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 /**
  * Handles all calls to REST Api
  */
-var WSChecklists =
-/*#__PURE__*/
-function () {
+var WSChecklists = /*#__PURE__*/function () {
   function WSChecklists() {
     _classCallCheck(this, WSChecklists);
   }
