@@ -46,8 +46,8 @@ const ChecklistFieldFinding = props => {
         return possibleFindings.map(findingElement => <ChecklistFieldCheckbox 
                 code={findingElement.code}
                 desc={findingElement.desc}
-                checked={finding || '' === findingElement.code}
-                handleChange={handleChange}
+                checked={finding === findingElement.code}
+                handleChange={value => handleChange(value === finding ? null : value)}
                 key={findingElement.code}
         />)
 };
