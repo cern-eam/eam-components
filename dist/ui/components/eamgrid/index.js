@@ -326,7 +326,7 @@ var EAMGrid = function (_Component) {
             // get axios token to allow transaction cancellation
             this.cancelSource = _index2.default.CancelToken.source();
 
-            return _GridWS2.default.exportDataToCSV(request, {
+            return _GridWS2.default.exportDataToCSV(this.state.gridRequest, {
                 cancelToken: this.cancelSource.token
             }).then(function (data) {
                 // nullify info of current transaction
