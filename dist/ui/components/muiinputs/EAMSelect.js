@@ -27,6 +27,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -183,7 +191,7 @@ function (_EAMBaseInput) {
     };
 
     _this.onSuggestionChange = function (code, desc) {
-      _this.props.updateProperty(_this.props.valueKey, code);
+      _this.props.updateProperty(_this.props.valueKey, (code || '').toUpperCase());
 
       if (_this.props && _this.props.valueDesc) {
         _this.props.updateProperty(_this.props.valueDesc, desc);
@@ -236,7 +244,7 @@ function (_EAMBaseInput) {
 
       _this.setValue({
         code: newValue,
-        desc: newValue
+        desc: ''
       });
     };
 
@@ -254,23 +262,25 @@ function (_EAMBaseInput) {
   }
 
   _createClass(EAMSelect, [{
-    key: "renderSuggestion",
-    value: function renderSuggestion(suggestion) {
-      return _react["default"].createElement("div", null, suggestion.desc);
+    key: "renderValue",
+    value: function renderValue(value) {
+      return _toConsumableArray(new Set([value.code, value.desc])).filter(Boolean).join(' - ');
     }
   }, {
     key: "renderComponent",
     value: function renderComponent() {
-      var _this2 = this;
-
       var _this$props = this.props,
           classes = _this$props.classes,
-          elementInfo = _this$props.elementInfo;
+          elementInfo = _this$props.elementInfo,
+          renderSuggestion = _this$props.renderSuggestion,
+          renderValue = _this$props.renderValue;
       var _this$state = this.state,
           value = _this$state.value,
           error = _this$state.error,
           helperText = _this$state.helperText,
           disabled = _this$state.disabled;
+      var suggestionRenderer = renderSuggestion || this.renderValue;
+      var valueRenderer = renderValue || this.renderValue;
       if (!value) return null;
       return _react["default"].createElement(_reactAutosuggest["default"], {
         theme: {
@@ -288,7 +298,7 @@ function (_EAMBaseInput) {
         renderSuggestionsContainer: renderSuggestionsContainer,
         renderSuggestion: function renderSuggestion(suggestion, _ref4) {
           var isHighlighted = _ref4.isHighlighted;
-          return renderSuggestionContainer(_this2.renderSuggestion(suggestion), suggestion, isHighlighted);
+          return renderSuggestionContainer(suggestionRenderer(suggestion), suggestion, isHighlighted);
         },
         renderInputComponent: renderInput.bind(this),
         shouldRenderSuggestions: this.shouldRenderSuggestions,
@@ -297,7 +307,7 @@ function (_EAMBaseInput) {
           error: error,
           helperText: helperText,
           classes: classes,
-          value: value.desc,
+          value: valueRenderer(value),
           label: elementInfo && elementInfo.text,
           disabled: disabled || elementInfo && elementInfo.readonly,
           onChange: this.handleChange
