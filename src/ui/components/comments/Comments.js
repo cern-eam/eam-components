@@ -117,7 +117,7 @@ class Comments extends Component {
                         )
                     }
 
-                    <CommentNew userDesc={this.props.userDesc}
+                    <CommentNew userCode={this.props.userCode}
                                 createCommentHandler={this.createComment}
                                 entityCode={this.props.entityCode}
                                 entityKeyCode={this.props.entityKeyCode}

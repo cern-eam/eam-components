@@ -13,11 +13,11 @@ var _CommentUser = _interopRequireDefault(require("./CommentUser"));
 
 var _CommentBar = _interopRequireDefault(require("./CommentBar"));
 
+var _CommentAvatar = _interopRequireDefault(require("./CommentAvatar"));
+
 var _reactAutosizeTextarea = _interopRequireDefault(require("react-autosize-textarea"));
 
 var _ListItem = _interopRequireDefault(require("@material-ui/core/ListItem"));
-
-var _reactUserAvatar = _interopRequireDefault(require("react-user-avatar"));
 
 var _styles = require("@material-ui/core/styles");
 
@@ -29,7 +29,7 @@ function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return 
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -54,7 +54,6 @@ var initialContainerStyle = {
   opacity: 1.0,
   pointerEvents: 'all'
 };
-var mainColors = ['#E1BEE7', '#FFCDD2', '#F8BBD0', '#90CAF9', '#9FA8DA', '#B39DDB', '#DCEDC8', '#E6EE9C', '#81C784', '#FFF176', '#FFD54F', '#FFCC80', '#9E9E9E', '#E0E0E0', '#FFAB91', '#FF7043', '#B0BEC5'];
 var styles = {
   root: {
     alignItems: "start",
@@ -63,9 +62,7 @@ var styles = {
   }
 };
 
-var Comment =
-/*#__PURE__*/
-function (_Component) {
+var Comment = /*#__PURE__*/function (_Component) {
   _inherits(Comment, _Component);
 
   function Comment(props) {
@@ -136,10 +133,8 @@ function (_Component) {
         classes: {
           root: this.props.classes.root
         }
-      }, _react["default"].createElement(_reactUserAvatar["default"], {
-        size: "48",
-        name: this.state.comment.creationUserDesc,
-        colors: mainColors
+      }, _react["default"].createElement(_CommentAvatar["default"], {
+        name: this.state.comment.creationUserCode
       }), _react["default"].createElement("div", {
         className: "commentContainer",
         style: this.state.containerStyle
