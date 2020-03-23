@@ -219,7 +219,11 @@ function (_Component) {
       }
 
       if (_this.props.updateProperty) {
-        _this.props.updateProperty(_this.props.valueKey, value);
+        if (_this.props.valueKey) {
+          _this.props.updateProperty(_this.props.valueKey, value);
+        } else {
+          _this.props.updateProperty(value);
+        }
       } //Extra function if needed
 
 

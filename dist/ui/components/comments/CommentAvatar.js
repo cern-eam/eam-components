@@ -18,14 +18,18 @@ var DEFAULT_SIZE = 48;
 
 var CommentAvatar = function CommentAvatar(props) {
   var name = props.name;
+  var preferredInitials = name.toUpperCase().slice(0, 2);
   return _react["default"].createElement(_reactUserAvatar["default"], _extends({
     size: DEFAULT_SIZE,
     colors: userAvatarColors
   }, props, {
     style: {
       textTransform: "uppercase"
-    },
-    name: name.toUpperCase().slice(0, 2)
+    } // <name> (<preferred initials>)
+    // The name is still being sent so that the deterministic algorithm 
+    // for color selection does not return the same color for the same initials
+    ,
+    name: "".concat(name, " (").concat(preferredInitials, ")")
   }));
 };
 
