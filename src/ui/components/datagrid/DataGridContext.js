@@ -3,40 +3,34 @@ import { DATA_GRID_SORT_TYPES, DATA_GRID_SORT_DIRECTIONS } from "./Constants";
 
 const DataGridContext = React.createContext();
 
-const getValue = ({ row, column }) =>
-    column.getValue ? column.getValue({ row, column }) : row[column.id];
-
-const isColumnSortable = ({ sortableColumns = [], enableSorting }) => ({ columnID }) =>
-    enableSorting && sortableColumns.map(e => e.id).includes(columnID);
+const getDisplayValue = ({ row, columnMetadata }) =>
+    columnMetadata.getDisplayValue ? columnMetadata.getDisplayValue({ row, columnMetadata }) : row[columnMetadata.id];
 
 const DataGridProvider = props => {
-    const { rows, columns, sortableColumns = [], enableSorting } = props;
-    const [columnID, setColumnID] = React.useState();
-    const [direction, setDirection] = React.useState();
+    const { rows, columnsMetadata, isSortEnabled, sortBy = {} } = props;
+    const [columnID, setColumnID] = React.useState(sortBy.columnID);
+    const [direction, setDirection] = React.useState(sortBy.direction || DATA_GRID_SORT_DIRECTIONS.ASC);
 
-    let sortedRows = rows;
-    if (sortableColumns && sortableColumns.length && columnID) {
-        sortedRows = stableSort(rows, getComparator({
-            sortableColumn: sortableColumns.find(e => e.id === columnID),
+    let computedRows = rows;
+    if (isSortEnabled && columnID) {
+        computedRows = stableSort(rows, getComparator({
+            columnMetadata: columnsMetadata.find(c => c.id === columnID),
+            isSortEnabled,
             direction
         }))
-    }    
+    }
 
     const context = {
-        headers: columns.map(column => column.header),
-        getValue,
+        getDisplayValue,
         sortState: {
             columnID,
             setColumnID,
             direction,
             setDirection,
-            isColumnSortable: isColumnSortable({
-                sortableColumns,
-                enableSorting
-            })
+            isSortEnabled
         },
-        ...props,
-        rows: sortedRows
+        rows: computedRows,
+        columnsMetadata,
     };
 
     return (
@@ -66,18 +60,19 @@ const getNumericComparator = ({ direction, property }) => {
     return (a, b) => (direction === DATA_GRID_SORT_DIRECTIONS.DESC ? -1 : 1) * collator.compare(a[property], b[property]);
 }
 
-const getComparator = ({ sortableColumn, direction }) => {
-    if (!sortableColumn) return;
+const getComparator = ({ columnMetadata, isSortEnabled, direction }) => {
+    if (!isSortEnabled || !isSortEnabled(columnMetadata)) return;
 
-    if (sortableColumn.comparator) {
-        return sortableColumn.comparator({ direction, property });
+    if (columnMetadata.comparator) {
+        return columnMetadata.comparator({ direction, property });
     }
-    switch (sortableColumn.sortType) {
+
+    switch (columnMetadata.sortType) {
         case DATA_GRID_SORT_TYPES.NUMERIC:
-            return getNumericComparator({ direction, property: sortableColumn.id })
+            return getNumericComparator({ direction, property: columnMetadata.id })
         case DATA_GRID_SORT_TYPES.DEFAULT:
         default:
-            return getDefaultComparator({ direction, property: sortableColumn.id })
+            return getDefaultComparator({ direction, property: columnMetadata.id })
     }
 }
 

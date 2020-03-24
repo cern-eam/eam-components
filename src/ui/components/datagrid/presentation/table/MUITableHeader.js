@@ -13,28 +13,29 @@ const createSortHandler = ({ columnID, sortState }) => event => {
 };
 
 const defaultCellRender = ({
-    column,
+    columnMetadata,
     getHeader,
+    key,
     sortState,
-    CustomTableCell
+    CellComponent
 }) => {
     return (
-        <CustomTableCell
+        <CellComponent
             sortDirection={
-                sortState.columnID === column.id ? sortState.direction : false
+                sortState.columnID === columnMetadata.id ? sortState.direction : false
             }
-            key={column.id}
+            key={key}
         >
-            {sortState.isColumnSortable({ columnID: column.id }) ? (
+            {sortState.isSortEnabled && sortState.isSortEnabled(columnMetadata) ? (
                 <TableSortLabel
-                    active={sortState.columnID === column.id}
+                    active={sortState.columnID === columnMetadata.id}
                     direction={
-                        sortState.columnID === column.id
+                        sortState.columnID === columnMetadata.id
                             ? sortState.direction
                             : DATA_GRID_SORT_DIRECTIONS.ASC
                     }
                     onClick={createSortHandler({
-                        columnID: column.id,
+                        columnID: columnMetadata.id,
                         sortState
                     })}
                 >
@@ -43,33 +44,27 @@ const defaultCellRender = ({
             ) : (
                 getHeader()
             )}
-        </CustomTableCell>
+        </CellComponent>
     );
 };
 
 const MUITableHeader = props => {
-    const { CustomTableCell = TableCell, customCellRender = defaultCellRender } = props;
+    const { CellComponent = TableCell, customCellRender = defaultCellRender } = props;
     const {
-        columns,
-        sortState,
-        enableSorting,
-        enableFiltering,
-        sortableColumns
+        columnsMetadata,
+        sortState
     } = React.useContext(DataGridContext);
 
     return (
         <TableHead>
             <TableRow>
-                {columns.map(column =>
+                {columnsMetadata.map(columnMetadata =>
                     customCellRender({
-                        enableSorting,
-                        enableFiltering,
-                        column,
-                        sortableColumns,
+                        columnMetadata,
                         sortState,
-                        key: column.id,
-                        getHeader: () => column.header,
-                        CustomTableCell
+                        key: columnMetadata.id,
+                        getHeader: () => columnMetadata.header,
+                        CellComponent
                     })
                 )}
             </TableRow>
