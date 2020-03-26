@@ -300,7 +300,7 @@ class EAMAutocomplete extends EAMBaseInput {
 
     onFocusHandler = () => {
         //If no multi, set the value to be able to select it
-        if (!this.props.multi)
+        if (!this.props.multi && this.asyncComponent)
             this.asyncComponent.select.setState(({inputValue: this.props.value}));
     };
 

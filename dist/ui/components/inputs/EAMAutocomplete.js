@@ -393,7 +393,7 @@ function (_EAMBaseInput) {
 
     _this3.onFocusHandler = function () {
       //If no multi, set the value to be able to select it
-      if (!_this3.props.multi) _this3.asyncComponent.select.setState({
+      if (!_this3.props.multi && _this3.asyncComponent) _this3.asyncComponent.select.setState({
         inputValue: _this3.props.value
       });
     };
