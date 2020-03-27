@@ -43,7 +43,7 @@ class DataGridResultTable extends Component {
     render() {
         const {classes} = this.props;
         return (
-            <div style={{height: '100%'}}>
+            <div style={{flexGrow: 1, minHeight: 0}}>
 
                 <DataGridActions
                     selectButtons={this.props.allowRowSelection}
