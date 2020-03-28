@@ -96,7 +96,8 @@ function (_Component) {
       return _react["default"].createElement("div", {
         style: {
           flexGrow: 1,
-          minHeight: 0
+          minHeight: 0,
+          height: "100%"
         }
       }, _react["default"].createElement(_EAMGridActions["default"], {
         selectButtons: this.props.allowRowSelection,
