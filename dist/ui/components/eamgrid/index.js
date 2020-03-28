@@ -469,8 +469,8 @@ EAMGrid.defaultProps = {
   gridRequestAdapter: function gridRequestAdapter(gridRequest) {
     return gridRequest;
   },
-  heightFilterVisible: '175px',
-  heightFilterNotVisible: '145px',
+  heightFilterVisible: '128px',
+  heightFilterNotVisible: '97px',
   width: '100%',
   extraColumns: [],
   language: 'EN',
