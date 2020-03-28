@@ -95,9 +95,8 @@ function (_Component) {
       var classes = this.props.classes;
       return _react["default"].createElement("div", {
         style: {
-          flexGrow: 1,
-          minHeight: 0,
-          height: "100%"
+          flex: "1 0",
+          minHeight: 0
         }
       }, _react["default"].createElement(_EAMGridActions["default"], {
         selectButtons: this.props.allowRowSelection,
