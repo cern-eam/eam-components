@@ -17,48 +17,45 @@ var _DataGridContext = require("../..//DataGridContext");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var defaultCellRender = function defaultCellRender(_ref) {
-  var key = _ref.key,
-      getValue = _ref.getValue,
-      CustomTableCell = _ref.CustomTableCell;
-  return _react["default"].createElement(CustomTableCell, {
+var defaultCellRenderer = function defaultCellRenderer(_ref) {
+  var columnMetadata = _ref.columnMetadata,
+      getDisplayValue = _ref.getDisplayValue,
+      CellComponent = _ref.CellComponent;
+  return _react["default"].createElement(CellComponent, {
     align: "left",
-    key: key
-  }, getValue());
+    key: columnMetadata.id
+  }, getDisplayValue());
 };
 
 var MUITableBody = function MUITableBody(props) {
-  var _props$CustomTableCel = props.CustomTableCell,
-      CustomTableCell = _props$CustomTableCel === void 0 ? _TableCell["default"] : _props$CustomTableCel,
-      _props$customCellRend = props.customCellRender,
-      customCellRender = _props$customCellRend === void 0 ? defaultCellRender : _props$customCellRend;
+  var _props$CellComponent = props.CellComponent,
+      CellComponent = _props$CellComponent === void 0 ? _TableCell["default"] : _props$CellComponent,
+      _props$cellRenderer = props.cellRenderer,
+      cellRenderer = _props$cellRenderer === void 0 ? defaultCellRenderer : _props$cellRenderer;
 
   var _React$useContext = _react["default"].useContext(_DataGridContext.DataGridContext),
       rows = _React$useContext.rows,
-      columns = _React$useContext.columns,
-      primaryColumn = _React$useContext.primaryColumn,
-      _getValue = _React$useContext.getValue;
+      columnsMetadata = _React$useContext.columnsMetadata,
+      _getDisplayValue = _React$useContext.getDisplayValue;
 
   return _react["default"].createElement(_TableBody["default"], null, rows && rows.map(function (row, rowIndex) {
     return _react["default"].createElement(_TableRow["default"], {
-      key: primaryColumn ? _getValue({
+      key: rowIndex
+    }, columnsMetadata && columnsMetadata.map(function (columnMetadata) {
+      return columnMetadata && columnMetadata.id && _react["default"].createElement(_react["default"].Fragment, {
+        key: columnMetadata.id + rowIndex
+      }, cellRenderer({
         row: row,
-        column: columns[primaryColumn]
-      }) : rowIndex
-    }, columns && columns.map(function (column) {
-      return column && column.id && customCellRender({
-        row: row,
-        column: column,
-        key: column.id,
-        type: column.type || {},
-        getValue: function getValue() {
-          return _getValue({
+        columnMetadata: columnMetadata,
+        type: columnMetadata.type || {},
+        getDisplayValue: function getDisplayValue() {
+          return _getDisplayValue({
             row: row,
-            column: column
+            columnMetadata: columnMetadata
           });
         },
-        CustomTableCell: CustomTableCell
-      });
+        CellComponent: CellComponent
+      }));
     }));
   }));
 };

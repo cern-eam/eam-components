@@ -11,12 +11,6 @@ var _Constants = require("./Constants");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
@@ -29,74 +23,56 @@ var DataGridContext = _react["default"].createContext();
 
 exports.DataGridContext = DataGridContext;
 
-var getValue = function getValue(_ref) {
+var getDisplayValue = function getDisplayValue(_ref) {
   var row = _ref.row,
-      column = _ref.column;
-  return column.getValue ? column.getValue({
+      columnMetadata = _ref.columnMetadata;
+  return columnMetadata.getDisplayValue ? columnMetadata.getDisplayValue({
     row: row,
-    column: column
-  }) : row[column.id];
-};
-
-var isColumnSortable = function isColumnSortable(_ref2) {
-  var _ref2$sortableColumns = _ref2.sortableColumns,
-      sortableColumns = _ref2$sortableColumns === void 0 ? [] : _ref2$sortableColumns,
-      enableSorting = _ref2.enableSorting;
-  return function (_ref3) {
-    var columnID = _ref3.columnID;
-    return enableSorting && sortableColumns.map(function (e) {
-      return e.id;
-    }).includes(columnID);
-  };
+    columnMetadata: columnMetadata
+  }) : row[columnMetadata.id];
 };
 
 var DataGridProvider = function DataGridProvider(props) {
   var rows = props.rows,
-      columns = props.columns,
-      _props$sortableColumn = props.sortableColumns,
-      sortableColumns = _props$sortableColumn === void 0 ? [] : _props$sortableColumn,
-      enableSorting = props.enableSorting;
+      columnsMetadata = props.columnsMetadata,
+      isSortEnabled = props.isSortEnabled,
+      _props$sortBy = props.sortBy,
+      sortBy = _props$sortBy === void 0 ? {} : _props$sortBy;
 
-  var _React$useState = _react["default"].useState(),
+  var _React$useState = _react["default"].useState(sortBy.columnID),
       _React$useState2 = _slicedToArray(_React$useState, 2),
       columnID = _React$useState2[0],
       setColumnID = _React$useState2[1];
 
-  var _React$useState3 = _react["default"].useState(),
+  var _React$useState3 = _react["default"].useState(sortBy.direction || _Constants.DATA_GRID_SORT_DIRECTIONS.ASC),
       _React$useState4 = _slicedToArray(_React$useState3, 2),
       direction = _React$useState4[0],
       setDirection = _React$useState4[1];
 
-  var sortedRows = rows;
+  var computedRows = rows;
 
-  if (sortableColumns && sortableColumns.length && columnID) {
-    sortedRows = stableSort(rows, getComparator({
-      sortableColumn: sortableColumns.find(function (e) {
-        return e.id === columnID;
+  if (isSortEnabled && columnID) {
+    computedRows = stableSort(rows, getComparator({
+      columnMetadata: columnsMetadata.find(function (c) {
+        return c.id === columnID;
       }),
+      isSortEnabled: isSortEnabled,
       direction: direction
     }));
   }
 
-  var context = _objectSpread({
-    headers: columns.map(function (column) {
-      return column.header;
-    }),
-    getValue: getValue,
+  var context = {
+    getDisplayValue: getDisplayValue,
     sortState: {
       columnID: columnID,
       setColumnID: setColumnID,
       direction: direction,
       setDirection: setDirection,
-      isColumnSortable: isColumnSortable({
-        sortableColumns: sortableColumns,
-        enableSorting: enableSorting
-      })
-    }
-  }, props, {
-    rows: sortedRows
-  });
-
+      isSortEnabled: isSortEnabled
+    },
+    rows: computedRows,
+    columnsMetadata: columnsMetadata
+  };
   return _react["default"].createElement(DataGridContext.Provider, {
     value: context
   }, props.children);
@@ -104,10 +80,10 @@ var DataGridProvider = function DataGridProvider(props) {
 
 exports.DataGridProvider = DataGridProvider;
 
-var descendingComparator = function descendingComparator(_ref4) {
-  var a = _ref4.a,
-      b = _ref4.b,
-      property = _ref4.property;
+var descendingComparator = function descendingComparator(_ref2) {
+  var a = _ref2.a,
+      b = _ref2.b,
+      property = _ref2.property;
 
   if (b[property] < a[property]) {
     return -1;
@@ -120,9 +96,9 @@ var descendingComparator = function descendingComparator(_ref4) {
   return 0;
 };
 
-var getDefaultComparator = function getDefaultComparator(_ref5) {
-  var direction = _ref5.direction,
-      property = _ref5.property;
+var getDefaultComparator = function getDefaultComparator(_ref3) {
+  var direction = _ref3.direction,
+      property = _ref3.property;
   return function (a, b) {
     return (direction === _Constants.DATA_GRID_SORT_DIRECTIONS.DESC ? 1 : -1) * descendingComparator({
       a: a,
@@ -132,9 +108,9 @@ var getDefaultComparator = function getDefaultComparator(_ref5) {
   };
 };
 
-var getNumericComparator = function getNumericComparator(_ref6) {
-  var direction = _ref6.direction,
-      property = _ref6.property;
+var getNumericComparator = function getNumericComparator(_ref4) {
+  var direction = _ref4.direction,
+      property = _ref4.property;
   var collator = new Intl.Collator(undefined, {
     numeric: true,
     sensitivity: "base"
@@ -144,30 +120,31 @@ var getNumericComparator = function getNumericComparator(_ref6) {
   };
 };
 
-var getComparator = function getComparator(_ref7) {
-  var sortableColumn = _ref7.sortableColumn,
-      direction = _ref7.direction;
-  if (!sortableColumn) return;
+var getComparator = function getComparator(_ref5) {
+  var columnMetadata = _ref5.columnMetadata,
+      isSortEnabled = _ref5.isSortEnabled,
+      direction = _ref5.direction;
+  if (!isSortEnabled || !isSortEnabled(columnMetadata)) return;
 
-  if (sortableColumn.comparator) {
-    return sortableColumn.comparator({
+  if (columnMetadata.comparator) {
+    return columnMetadata.comparator({
       direction: direction,
       property: property
     });
   }
 
-  switch (sortableColumn.sortType) {
+  switch (columnMetadata.sortType) {
     case _Constants.DATA_GRID_SORT_TYPES.NUMERIC:
       return getNumericComparator({
         direction: direction,
-        property: sortableColumn.id
+        property: columnMetadata.id
       });
 
     case _Constants.DATA_GRID_SORT_TYPES.DEFAULT:
     default:
       return getDefaultComparator({
         direction: direction,
-        property: sortableColumn.id
+        property: columnMetadata.id
       });
   }
 };
