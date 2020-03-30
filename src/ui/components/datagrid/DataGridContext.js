@@ -64,7 +64,7 @@ const getComparator = ({ columnMetadata, isSortEnabled, direction }) => {
     if (!isSortEnabled || !isSortEnabled(columnMetadata)) return;
 
     if (columnMetadata.comparator) {
-        return columnMetadata.comparator({ direction, property });
+        return columnMetadata.comparator({ direction, property: columnMetadata.id });
     }
 
     switch (columnMetadata.sortType) {

@@ -129,7 +129,7 @@ var getComparator = function getComparator(_ref5) {
   if (columnMetadata.comparator) {
     return columnMetadata.comparator({
       direction: direction,
-      property: property
+      property: columnMetadata.id
     });
   }
 
