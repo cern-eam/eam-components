@@ -202,7 +202,7 @@ function (_Component) {
           updateCommentHandler: _this2.updateComment
         });
       }), _react["default"].createElement(_CommentNew["default"], {
-        userDesc: this.props.userDesc,
+        userCode: this.props.userCode,
         createCommentHandler: this.createComment,
         entityCode: this.props.entityCode,
         entityKeyCode: this.props.entityKeyCode,

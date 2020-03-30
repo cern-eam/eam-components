@@ -147,7 +147,11 @@ export default class EAMBaseInput extends Component {
         }
 
         if (this.props.updateProperty) {
-            this.props.updateProperty(this.props.valueKey, value);
+            if (this.props.valueKey) {
+                this.props.updateProperty(this.props.valueKey, value);
+            } else {
+                this.props.updateProperty(value);
+            }
         }
 
         //Extra function if needed

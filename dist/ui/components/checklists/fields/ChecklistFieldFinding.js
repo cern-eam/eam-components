@@ -42,7 +42,7 @@ var style = {
 
 var ChecklistFieldFinding = function ChecklistFieldFinding(props) {
   var finding = props.finding,
-      handleChange = props.handleChange,
+      _handleChange = props.handleChange,
       possibleFindings = props.possibleFindings,
       classes = props.classes;
   var dropdown = props.dropdown === undefined ? true : props.dropdown;
@@ -59,7 +59,7 @@ var ChecklistFieldFinding = function ChecklistFieldFinding(props) {
     disableUnderline: true,
     value: finding || '',
     onChange: function onChange(event) {
-      return handleChange(event.target.value);
+      return _handleChange(event.target.value);
     }
   }, _react["default"].createElement(_MenuItem["default"], {
     value: null
@@ -72,8 +72,10 @@ var ChecklistFieldFinding = function ChecklistFieldFinding(props) {
     return _react["default"].createElement(_ChecklistFieldCheckbox["default"], {
       code: findingElement.code,
       desc: findingElement.desc,
-      checked: finding || '' === findingElement.code,
-      handleChange: handleChange,
+      checked: finding === findingElement.code,
+      handleChange: function handleChange(value) {
+        return _handleChange(value === finding ? null : value);
+      },
       key: findingElement.code
     });
   });

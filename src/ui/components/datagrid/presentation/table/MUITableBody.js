@@ -4,45 +4,36 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import { DataGridContext } from "../..//DataGridContext";
 
-const defaultCellRender = ({ key, getValue, CustomTableCell }) => (
-    <CustomTableCell align="left" key={key}>
-        {getValue()}
-    </CustomTableCell>
+const defaultCellRenderer = ({ columnMetadata, getDisplayValue, CellComponent }) => (
+    <CellComponent align="left" key={columnMetadata.id}>
+        {getDisplayValue()}
+    </CellComponent>
 );
 
 const MUITableBody = props => {
-    const { CustomTableCell = TableCell, customCellRender = defaultCellRender } = props;
-    const { rows, columns, primaryColumn, getValue } = React.useContext(
+    const { CellComponent = TableCell, cellRenderer = defaultCellRenderer } = props;
+    const { rows, columnsMetadata, getDisplayValue } = React.useContext(
         DataGridContext
     );
     return (
         <TableBody>
             {rows &&
                 rows.map((row, rowIndex) => (
-                    <TableRow
-                        key={primaryColumn ?
-                            getValue({
-                                row,
-                                column: columns[primaryColumn]
-                            })
-                            :
-                            rowIndex
-                        }
-                    >
-                        {columns &&
-                            columns.map(
-                                column =>
-                                    column &&
-                                    column.id &&
-                                    customCellRender({
-                                        row,
-                                        column,
-                                        key: column.id,
-                                        type: column.type || {},
-                                        getValue: () =>
-                                            getValue({ row, column }),
-                                        CustomTableCell
-                                    })
+                    <TableRow key={rowIndex}>
+                        {columnsMetadata &&
+                            columnsMetadata.map(
+                                columnMetadata =>
+                                    columnMetadata &&
+                                    columnMetadata.id &&
+                                    <React.Fragment key={columnMetadata.id + rowIndex}>
+                                        {cellRenderer({
+                                            row,
+                                            columnMetadata,
+                                            type: columnMetadata.type || {},
+                                            getDisplayValue: () => getDisplayValue({ row, columnMetadata }),
+                                            CellComponent
+                                        })}
+                                    </React.Fragment>
                             )}
                     </TableRow>
                 ))}

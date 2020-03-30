@@ -32,50 +32,43 @@ var createSortHandler = function createSortHandler(_ref) {
 };
 
 var defaultCellRender = function defaultCellRender(_ref2) {
-  var column = _ref2.column,
+  var columnMetadata = _ref2.columnMetadata,
       getHeader = _ref2.getHeader,
+      key = _ref2.key,
       sortState = _ref2.sortState,
-      CustomTableCell = _ref2.CustomTableCell;
-  return _react["default"].createElement(CustomTableCell, {
-    sortDirection: sortState.columnID === column.id ? sortState.direction : false,
-    key: column.id
-  }, sortState.isColumnSortable({
-    columnID: column.id
-  }) ? _react["default"].createElement(_TableSortLabel["default"], {
-    active: sortState.columnID === column.id,
-    direction: sortState.columnID === column.id ? sortState.direction : _Constants.DATA_GRID_SORT_DIRECTIONS.ASC,
+      CellComponent = _ref2.CellComponent;
+  return _react["default"].createElement(CellComponent, {
+    sortDirection: sortState.columnID === columnMetadata.id ? sortState.direction : false,
+    key: key
+  }, sortState.isSortEnabled && sortState.isSortEnabled(columnMetadata) ? _react["default"].createElement(_TableSortLabel["default"], {
+    active: sortState.columnID === columnMetadata.id,
+    direction: sortState.columnID === columnMetadata.id ? sortState.direction : _Constants.DATA_GRID_SORT_DIRECTIONS.ASC,
     onClick: createSortHandler({
-      columnID: column.id,
+      columnID: columnMetadata.id,
       sortState: sortState
     })
   }, getHeader()) : getHeader());
 };
 
 var MUITableHeader = function MUITableHeader(props) {
-  var _props$CustomTableCel = props.CustomTableCell,
-      CustomTableCell = _props$CustomTableCel === void 0 ? _TableCell["default"] : _props$CustomTableCel,
+  var _props$CellComponent = props.CellComponent,
+      CellComponent = _props$CellComponent === void 0 ? _TableCell["default"] : _props$CellComponent,
       _props$customCellRend = props.customCellRender,
       customCellRender = _props$customCellRend === void 0 ? defaultCellRender : _props$customCellRend;
 
   var _React$useContext = _react["default"].useContext(_DataGridContext.DataGridContext),
-      columns = _React$useContext.columns,
-      sortState = _React$useContext.sortState,
-      enableSorting = _React$useContext.enableSorting,
-      enableFiltering = _React$useContext.enableFiltering,
-      sortableColumns = _React$useContext.sortableColumns;
+      columnsMetadata = _React$useContext.columnsMetadata,
+      sortState = _React$useContext.sortState;
 
-  return _react["default"].createElement(_TableHead["default"], null, _react["default"].createElement(_TableRow["default"], null, columns.map(function (column) {
+  return _react["default"].createElement(_TableHead["default"], null, _react["default"].createElement(_TableRow["default"], null, columnsMetadata.map(function (columnMetadata) {
     return customCellRender({
-      enableSorting: enableSorting,
-      enableFiltering: enableFiltering,
-      column: column,
-      sortableColumns: sortableColumns,
+      columnMetadata: columnMetadata,
       sortState: sortState,
-      key: column.id,
+      key: columnMetadata.id,
       getHeader: function getHeader() {
-        return column.header;
+        return columnMetadata.header;
       },
-      CustomTableCell: CustomTableCell
+      CellComponent: CellComponent
     });
   })));
 };

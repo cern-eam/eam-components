@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import './Comments.css';
 import CommentBar from "./CommentBar";
+import CommentAvatar from "./CommentAvatar"
 import TextareaAutosize from 'react-autosize-textarea';
 import ListItem from '@material-ui/core/ListItem';
-import UserAvatar from 'react-user-avatar'
 import {withStyles} from "@material-ui/core/styles/index";
 
 const initialContainerStyle = {opacity: 1.0, pointerEvents: 'all'};
@@ -15,26 +15,6 @@ const styles = {
         paddingBottom: 6
     }
 };
-
-const mainColors = [
-    '#E1BEE7',
-    '#FFCDD2',
-    '#F8BBD0',
-    '#90CAF9',
-    '#9FA8DA',
-    '#B39DDB',
-    '#DCEDC8',
-    '#E6EE9C',
-    '#81C784',
-    '#FFF176',
-    '#FFD54F',
-    '#FFCC80',
-    '#9E9E9E',
-    '#E0E0E0',
-    '#FFAB91',
-    '#FF7043',
-    '#B0BEC5',
-];
 
 class CommentNew extends Component {
 
@@ -96,7 +76,7 @@ class CommentNew extends Component {
         return (
             <ListItem classes={{root: this.props.classes.root}}>
 
-                <UserAvatar size="48" name={this.props.userDesc} colors={mainColors}/>
+                <CommentAvatar name={this.props.userCode} />
 
                 <div className="commentContainer" style={this.state.containerStyle}>
 

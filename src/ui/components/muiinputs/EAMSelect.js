@@ -117,7 +117,7 @@ class EAMSelect extends EAMBaseInput {
     }
 
     onSuggestionChange = (code, desc) => {
-        this.props.updateProperty(this.props.valueKey, code);
+        this.props.updateProperty(this.props.valueKey, (code || '').toUpperCase());
         if (this.props && this.props.valueDesc) {
             this.props.updateProperty(this.props.valueDesc, desc);
         }
@@ -160,7 +160,7 @@ class EAMSelect extends EAMBaseInput {
     }
 
     handleChange = (event, { newValue }) => {
-        this.setValue({code: newValue, desc: newValue});
+        this.setValue({code: newValue, desc: ''});
     };
 
     getSuggestionValue = (suggestion) => {
@@ -173,14 +173,15 @@ class EAMSelect extends EAMBaseInput {
         return true
     }
 
-    renderSuggestion(suggestion) {
-        return (<div>{suggestion.desc}</div>);
+    renderValue(value) {
+        return [...new Set([value.code, value.desc])].filter(Boolean).join(' - ');
     }
 
     renderComponent() {
-        const { classes, elementInfo } = this.props;
+        const { classes, elementInfo, renderSuggestion, renderValue } = this.props;
         const { value, error, helperText, disabled } = this.state;
-
+        const suggestionRenderer = renderSuggestion || this.renderValue;
+        const valueRenderer = renderValue || this.renderValue;
         if (!value) return null
 
         return (
@@ -198,7 +199,7 @@ class EAMSelect extends EAMBaseInput {
                 onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
                 getSuggestionValue={this.getSuggestionValue}
                 renderSuggestionsContainer={renderSuggestionsContainer}
-                renderSuggestion={(suggestion, { isHighlighted }) => renderSuggestionContainer(this.renderSuggestion(suggestion), suggestion, isHighlighted)}
+                renderSuggestion={(suggestion, { isHighlighted }) => renderSuggestionContainer(suggestionRenderer(suggestion), suggestion, isHighlighted)}
                 renderInputComponent={renderInput.bind(this)}
                 shouldRenderSuggestions={this.shouldRenderSuggestions}
                 inputProps={{
@@ -206,7 +207,7 @@ class EAMSelect extends EAMBaseInput {
                     error,
                     helperText,
                     classes,
-                    value: value.desc,
+                    value: valueRenderer(value),
                     label: elementInfo && elementInfo.text,
                     disabled: disabled || ( elementInfo && elementInfo.readonly),
                     onChange: this.handleChange,

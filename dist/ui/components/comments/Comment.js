@@ -13,11 +13,11 @@ var _CommentUser = _interopRequireDefault(require("./CommentUser"));
 
 var _CommentBar = _interopRequireDefault(require("./CommentBar"));
 
+var _CommentAvatar = _interopRequireDefault(require("./CommentAvatar"));
+
 var _reactAutosizeTextarea = _interopRequireDefault(require("react-autosize-textarea"));
 
 var _ListItem = _interopRequireDefault(require("@material-ui/core/ListItem"));
-
-var _reactUserAvatar = _interopRequireDefault(require("react-user-avatar"));
 
 var _styles = require("@material-ui/core/styles");
 
@@ -74,7 +74,6 @@ var initialContainerStyle = {
   opacity: 1.0,
   pointerEvents: 'all'
 };
-var mainColors = ['#E1BEE7', '#FFCDD2', '#F8BBD0', '#90CAF9', '#9FA8DA', '#B39DDB', '#DCEDC8', '#E6EE9C', '#81C784', '#FFF176', '#FFD54F', '#FFCC80', '#9E9E9E', '#E0E0E0', '#FFAB91', '#FF7043', '#B0BEC5'];
 var styles = {
   root: {
     alignItems: "start",
@@ -170,10 +169,8 @@ function (_Component) {
         classes: {
           root: this.props.classes.root
         }
-      }, _react["default"].createElement(_reactUserAvatar["default"], {
-        size: "48",
-        name: comment.creationUserDesc,
-        colors: mainColors
+      }, _react["default"].createElement(_CommentAvatar["default"], {
+        name: this.state.comment.creationUserCode
       }), _react["default"].createElement("div", {
         className: "commentContainer",
         style: this.state.containerStyle
