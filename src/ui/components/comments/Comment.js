@@ -8,6 +8,19 @@ import ListItem from '@material-ui/core/ListItem';
 import { withStyles } from '@material-ui/core/styles';
 import {FlagCheckered, PlusBoxOutline, Pencil} from 'mdi-material-ui';
 
+import CKEditor from '@ckeditor/ckeditor5-react';
+
+import BalloonEditor from '@ckeditor/ckeditor5-editor-balloon/src/ballooneditor';
+import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
+import InlineEditor from '@ckeditor/ckeditor5-editor-inline/src/inlineeditor';
+import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials';
+import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
+import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold';
+import Italic from '@ckeditor/ckeditor5-basic-styles/src/italic';
+import Heading from '@ckeditor/ckeditor5-heading/src/heading';
+import sanitizeHtml from 'sanitize-html';
+
+
 const iconStyle = {height: 15};
 const initialContainerStyle = {opacity: 1.0, pointerEvents: 'all'};
 
@@ -69,8 +82,17 @@ class Comment extends Component {
     }
 
     render() {
+        const { allowHtml } = this.props;
+        const { comment } = this.state;
+
+        let a = allowHtml && comment && comment.text 
+            && comment.text.startsWith("<html>") 
+            && comment.text.endsWith("</html>")
+
+
         return (
             <ListItem classes={{root: this.props.classes.root}}>
+
 
                 <CommentAvatar name={this.state.comment.creationUserCode} />
 
@@ -82,20 +104,20 @@ class Comment extends Component {
                         <div className="commentInfoContainer">
 
                             <div>
-                                <CommentUser userDesc={this.state.comment.creationUserDesc}
-                                             userDate={this.state.comment.creationDate}
+                                <CommentUser userDesc={comment.creationUserDesc}
+                                             userDate={comment.creationDate}
                                              icon={<PlusBoxOutline style={iconStyle}/>}
                                 />
                                 {this.props.comment.updateUserCode &&
-                                <CommentUser userDesc={this.state.comment.updateUserDesc}
-                                             userDate={this.state.comment.updateDate}
+                                <CommentUser userDesc={comment.updateUserDesc}
+                                             userDate={comment.updateDate}
                                              icon={<Pencil style={iconStyle}/>}
                                 />}
                             </div>
 
                             <div style={{display: "flex", alignItems: "center", height: 25, marginRight: 7}}>
                                 <CommentBar saveCommentHandler={this.props.updateCommentHandler}
-                                            displayBar={this.state.displayBar} comment={this.state.comment}
+                                            displayBar={this.state.displayBar} comment={comment}
                                             displayClosingCheck={false} showUpdatingHandler={this.showUpdating}/>
 
                                 {this.props.comment.typeCode === '+' && <FlagCheckered color="primary"/>}
@@ -104,9 +126,21 @@ class Comment extends Component {
 
 
                     <div className="commentTextContainer" onKeyDown={this.onKeyDownHandler}>
-                        <TextareaAutosize defaultValue={this.state.comment.text} className="commentText"
-                                          onInput={this.inputTextArea}/>
-
+                        {(allowHtml && comment && comment.text && comment.text.startsWith("<html>") && comment.text.endsWith("</html>")) ?
+                            <div className="commentText" style={{width: '100%', height: '100%'}}>
+                                <CKEditor 
+                                    onInit={ editor => { console.log( 'Editor is ready to use!', editor) }}
+                                    editor={ BalloonEditor }
+                                    data={this.sanitizeText(comment.text)}
+                                />       
+                            </div>
+                            :  <TextareaAutosize 
+                                    defaultValue={comment.text} 
+                                    className="commentText"
+                                    onInput={this.inputTextArea}
+                            />
+                            
+                        }
                     </div>
 
                 </div>
@@ -115,6 +149,22 @@ class Comment extends Component {
             </ListItem>
         );
     }
+
+    sanitizeText = (text) =>        
+        sanitizeHtml(text, {
+            allowedTags: [ 'h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul', 'ol',
+                'nl', 'li', 'b', 'i', 'u', 'strong', 'em', 'strike', 'code', 'hr', 'br', 'div',
+                'table', 'thead', 'caption', 'tbody', 'tr', 'th', 'td', 'pre', 'font', 'span'
+            ],
+            allowedAttributes: {
+                font: [ 'color',  'style'],
+                div: ['style'],
+                span: ['style']
+            }
+        })
 }
+
+
+
 
 export default withStyles(styles)(Comment)

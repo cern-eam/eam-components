@@ -108,12 +108,14 @@ class Comments extends Component {
     };
 
     render() {
+        const { allowHtml } = this.props;
+
         return (
             <EISPanel heading={this.props.title} detailsStyle={datatablePanelStyle}>
                 <List style={{width: "100%"}}>
                     {
                         this.state.comments.map(comment =>
-                            <Comment key={comment.pk} comment={comment} updateCommentHandler={this.updateComment}/>
+                            <Comment allowHtml={allowHtml} key={comment.pk} comment={comment} updateCommentHandler={this.updateComment}/>
                         )
                     }
 
