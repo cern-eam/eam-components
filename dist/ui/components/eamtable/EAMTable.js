@@ -13,6 +13,8 @@ var _table = require("../datagrid/presentation/table");
 
 var _core = require("@material-ui/core");
 
+var _reactBlockUi = _interopRequireDefault(require("react-block-ui"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
@@ -108,7 +110,9 @@ var EAMTable = function EAMTable(props) {
       transitionDelay: loading ? "200ms" : "0ms"
     },
     unmountOnExit: true
-  }, _react["default"].createElement(_core.CircularProgress, null))) : _react["default"].createElement(_datagrid.DataGrid, {
+  }, _react["default"].createElement(_reactBlockUi["default"], {
+    blocking: loading
+  }))) : _react["default"].createElement(_datagrid.DataGrid, {
     rows: rows,
     columnsMetadata: computedColumnsMetadata,
     isSortEnabled: isSortEnabled,
