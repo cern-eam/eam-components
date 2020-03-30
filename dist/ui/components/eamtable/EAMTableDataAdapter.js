@@ -78,7 +78,7 @@ var EAMTableDataAdapter = function EAMTableDataAdapter(props) {
               return _context.stop();
           }
         }
-      }, null, null, null, Promise);
+      });
     })();
   }, [fetchData, convertRowData, convertColumnMetadata]);
 
