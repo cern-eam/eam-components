@@ -60,7 +60,7 @@ class EAMGrid extends Component {
 
     clearFilters = clearFilters.bind(this);
 
-    
+
     componentDidMount() {
         if (this.props.onRef) {
             this.props.onRef(this);
@@ -76,7 +76,7 @@ class EAMGrid extends Component {
     }
 
     componentDidUpdate (prevProps) {
-        if (this.props.gridId !== prevProps.gridId 
+        if (this.props.gridId !== prevProps.gridId
                 || this.props.screenCode !== prevProps.screenCode
                 || this.props.dataspyId !== prevProps.dataspyId) {
             this.init(this.props);
@@ -92,6 +92,7 @@ class EAMGrid extends Component {
         if (props.gridId) {
             this._initGrid({
                 ...initialGridRequest,
+                ...props.initialGridRequest,
                 gridID: props.gridId,
                 dataspyID: props.dataspyId || null,
                 gridName: props.screenCode,
@@ -120,7 +121,7 @@ class EAMGrid extends Component {
                         // sort field based on their order
                         this._orderGridFieldsBasedOnTheirOrderProperty(metadata.gridField);
                     }
-                   
+
 
                     // set metadata info in state
                     this.setState({
@@ -151,8 +152,8 @@ class EAMGrid extends Component {
                     alert("Metadata for this grid does not exist");
                 }
             })
-        ); 
-        
+        );
+
     };
 
     getCellWidth = cellTagname => this.fieldsWidthInfo.get(cellTagname)

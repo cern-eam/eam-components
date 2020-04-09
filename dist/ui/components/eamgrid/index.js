@@ -105,7 +105,7 @@ var EAMGrid = function (_Component) {
             filterVisible: _this.props.filterVisible
         }, _this.filterMap = {}, _this.fieldsWidthInfo = new Map(), _this.toggleSortField = _sorting.toggleSortField.bind(_this), _this.setFilter = _filtering.setFilter.bind(_this), _this.getFilters = _filtering.getFilters.bind(_this), _this.clearFilters = _filtering.clearFilters.bind(_this), _this.init = function (props) {
             if (props.gridId) {
-                _this._initGrid(_extends({}, initialGridRequest, {
+                _this._initGrid(_extends({}, initialGridRequest, props.initialGridRequest, {
                     gridID: props.gridId,
                     dataspyID: props.dataspyId || null,
                     gridName: props.screenCode,
