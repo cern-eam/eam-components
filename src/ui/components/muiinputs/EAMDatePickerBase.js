@@ -41,7 +41,7 @@ export default class EAMDatePicker extends EAMBaseInput {
         if (value instanceof Date
                 || (typeof value === 'string' && this.props.timestamp)
                 || (typeof value === 'number' && !this.props.timestamp)) {
-            this.onChangeHandler(this.props.valueKey, this.convert(value))
+            this.onChangeHandler(this.convert(value))
         }
     }
 

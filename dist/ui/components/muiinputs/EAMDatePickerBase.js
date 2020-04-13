@@ -95,7 +95,7 @@ function (_EAMBaseInput) {
       var value = this.props.value;
 
       if (value instanceof Date || typeof value === 'string' && this.props.timestamp || typeof value === 'number' && !this.props.timestamp) {
-        this.onChangeHandler(this.props.valueKey, this.convert(value));
+        this.onChangeHandler(this.convert(value));
       }
     }
   }, {
