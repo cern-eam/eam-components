@@ -252,7 +252,7 @@ class EAMGrid extends Component {
         // get axios token to allow transaction cancellation
         this.cancelSource = axios.CancelToken.source();
 
-        return GridWS.exportDataToCSV(request, {
+        return GridWS.exportDataToCSV(this.state.gridRequest, {
             cancelToken: this.cancelSource.token
         }).then(data => {
             // nullify info of current transaction
