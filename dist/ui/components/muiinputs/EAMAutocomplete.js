@@ -130,20 +130,6 @@ function renderSuggestionContainer(suggestion, isHighlighted) {
     );
 }
 
-/**
- * Global container containing all suggestions
- */
-function renderSuggestionsContainer(options) {
-    var containerProps = options.containerProps,
-        children = options.children;
-
-    return _react2.default.createElement(
-        _Paper2.default,
-        _extends({}, containerProps, { square: true }),
-        children
-    );
-}
-
 var styles = function styles(theme) {
     return {
         container: {
@@ -199,6 +185,7 @@ var EAMAutocomplete = function (_EAMBaseInput) {
             var value = _ref2.value;
 
             clearTimeout(_this.timeout);
+            _this.setState({ loading: true });
             _this.timeout = setTimeout(function () {
 
                 if (!!_this.cancelSource) _this.cancelSource.cancel();
@@ -209,13 +196,15 @@ var EAMAutocomplete = function (_EAMBaseInput) {
                     _this.setState({
                         suggestions: result.body.data
                     });
-                }).catch(function (error) {});
+                }).catch(function (error) {}).finally(function (_) {
+                    return _this.setState({ loading: false });
+                });
             }, 200);
         }, _this.handleChange = function (event, _ref3) {
             var newValue = _ref3.newValue;
 
             // Initially, the onChange only happened on lose focus (onBlur) event. However, both events
-            //(onChange and onBlur) are fired at the same time, causing the onBlur() event to not have 
+            //(onChange and onBlur) are fired at the same time, causing the onBlur() event to not have
             //the updated state. Therefore, and until a complete redesign is in place, either the parent shall
             //be updated at every key stroke, or thehandleSuggestionsClearRequested must contain a workaround
             var valueFound = _this.findValueInSuggestions(newValue, _this.state.suggestions);
@@ -232,7 +221,7 @@ var EAMAutocomplete = function (_EAMBaseInput) {
             });
         }, _this.handleSuggestionsClearRequested = function () {
             return _this.setState({ suggestions: [] }, function (_) {
-                // Not the cleaniest of ways to achieve the parent update on the value: the parent should save 
+                // Not the cleaniest of ways to achieve the parent update on the value: the parent should save
                 //a ref and call getValue for that purpose. However, and to avoid manipulating state directly,
                 //we update it as a callback which should have the state updated
                 (function (_ref4) {
@@ -261,6 +250,28 @@ var EAMAutocomplete = function (_EAMBaseInput) {
 
 
     _createClass(EAMAutocomplete, [{
+        key: 'renderSuggestionsContainer',
+
+
+        /**
+         * Global container containing all suggestions
+         */
+        value: function renderSuggestionsContainer(options) {
+            var loading = this.state.loading;
+            var containerProps = options.containerProps,
+                children = options.children;
+
+            return _react2.default.createElement(
+                _Paper2.default,
+                _extends({}, containerProps, { square: true }),
+                loading ? _react2.default.createElement(
+                    'div',
+                    null,
+                    'Loading...'
+                ) : children
+            );
+        }
+    }, {
         key: 'renderComponent',
         value: function renderComponent() {
             var _props = this.props,
@@ -285,7 +296,7 @@ var EAMAutocomplete = function (_EAMBaseInput) {
                 onSuggestionsFetchRequested: this.handleSuggestionsFetchRequested,
                 onSuggestionsClearRequested: this.handleSuggestionsClearRequested,
                 getSuggestionValue: this.getSuggestionValue,
-                renderSuggestionsContainer: renderSuggestionsContainer,
+                renderSuggestionsContainer: this.renderSuggestionsContainer.bind(this),
                 renderSuggestion: function renderSuggestion(suggestion, _ref6) {
                     var isHighlighted = _ref6.isHighlighted;
                     return renderSuggestionContainer(suggestion, isHighlighted);

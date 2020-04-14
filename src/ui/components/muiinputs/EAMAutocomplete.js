@@ -68,19 +68,6 @@ function renderSuggestionContainer(suggestion, isHighlighted) {
     );
 }
 
-/**
- * Global container containing all suggestions
- */
-function renderSuggestionsContainer(options) {
-    const { containerProps, children } = options;
-    return (
-        <Paper {...containerProps} square>
-            {children}
-        </Paper>
-    );
-}
-
-
 const styles = theme => ({
     container: {
         flexGrow: 1,
@@ -115,7 +102,7 @@ class EAMAutocomplete extends EAMBaseInput {
     };
 
     init = props => this.setValue({code: props.value || '', desc: props.valueDesc || ''}, false)
-    
+
     onSuggestionChange = (code, desc) => {
         this.props.updateProperty(this.props.valueKey, code);
         this.props.updateProperty(this.props.descKey, desc);
@@ -127,6 +114,7 @@ class EAMAutocomplete extends EAMBaseInput {
     // Fetch suggestions
     handleSuggestionsFetchRequested = ({ value }) => {
         clearTimeout(this.timeout)
+        this.setState({loading: true});
         this.timeout = setTimeout(() => {
 
             if (!!this.cancelSource) this.cancelSource.cancel();
@@ -140,13 +128,14 @@ class EAMAutocomplete extends EAMBaseInput {
                     });
                 }).catch(error => {
 
-                });
+                })
+                .finally(_ => this.setState({loading: false}));
         }, 200)
     };
 
     handleChange = (event, { newValue }) => {
         // Initially, the onChange only happened on lose focus (onBlur) event. However, both events
-        //(onChange and onBlur) are fired at the same time, causing the onBlur() event to not have 
+        //(onChange and onBlur) are fired at the same time, causing the onBlur() event to not have
         //the updated state. Therefore, and until a complete redesign is in place, either the parent shall
         //be updated at every key stroke, or thehandleSuggestionsClearRequested must contain a workaround
         const valueFound = this.findValueInSuggestions(newValue, this.state.suggestions)
@@ -168,7 +157,7 @@ class EAMAutocomplete extends EAMBaseInput {
     // Clear suggestions
     handleSuggestionsClearRequested = () =>
         this.setState({suggestions: []}, _ => {
-            // Not the cleaniest of ways to achieve the parent update on the value: the parent should save 
+            // Not the cleaniest of ways to achieve the parent update on the value: the parent should save
             //a ref and call getValue for that purpose. However, and to avoid manipulating state directly,
             //we update it as a callback which should have the state updated
             (({ value }) => value && this.onSuggestionChange(value.code, value.desc))(this.state)
@@ -181,7 +170,22 @@ class EAMAutocomplete extends EAMBaseInput {
     onSuggestionSelected = (event, { suggestion }) => {
         if (suggestion) this.onSuggestionChange(suggestion.code, suggestion.desc)
     }
-    
+
+    /**
+     * Global container containing all suggestions
+     */
+    renderSuggestionsContainer(options) {
+        const { loading } = this.state;
+        const { containerProps, children } = options;
+        return <Paper {...containerProps} square>
+                 { loading ?
+                    <div>Loading...</div>
+                    :children
+                 }
+            </Paper>
+        ;
+    }
+
     renderComponent () {
         const { classes, elementInfo } = this.props;
         const { value } = this.state;
@@ -203,7 +207,7 @@ class EAMAutocomplete extends EAMBaseInput {
                 onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
                 onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
                 getSuggestionValue={this.getSuggestionValue}
-                renderSuggestionsContainer={renderSuggestionsContainer}
+                renderSuggestionsContainer={this.renderSuggestionsContainer.bind(this)}
                 renderSuggestion={(suggestion, { isHighlighted }) => renderSuggestionContainer(suggestion, isHighlighted)}
                 renderInputComponent={this.renderInput.bind(this)}
                 shouldRenderSuggestions={this.shouldRenderSuggestions.bind(this)}
