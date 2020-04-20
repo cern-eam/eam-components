@@ -38,10 +38,17 @@ export default class EAMBaseInput extends Component {
 
     componentDidMount () {
         this.initBase(this.props)
+        // Fire the onChangeValue callback also on the component mount
+        if (this.props.onChangeValue && this.props.value) {
+            this.props.onChangeValue(this.props.value, true)
+        }
     }
 
     componentWillReceiveProps (nextProps) {
         this.initBase(nextProps)
+        if (this.props.onChangeValue && this.props.value !== nextProps.value ) {
+            this.props.onChangeValue(nextProps.value, false)
+        }
     }
 
     initBase = props => {
@@ -156,11 +163,12 @@ export default class EAMBaseInput extends Component {
 
         //Extra function if needed
         if (executeExtra && this.props.onChangeValue) {
-            this.props.onChangeValue(value, valueFound);
+            //this.props.onChangeValue(value, valueFound);
         }
     };
 
     render () {
+
         if (this.isHidden() || !this.renderComponent) {
             return null
         }
