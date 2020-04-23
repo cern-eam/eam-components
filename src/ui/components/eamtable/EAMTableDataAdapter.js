@@ -21,7 +21,7 @@ const EAMTableDataAdapter = props => {
             setColumnsMetadata(convertColumnMetadata(responseBody));
             setLoading(false);
         })();
-    }, [fetchData, convertRowData, convertColumnMetadata]);
+    }, []);
 
     const context = {
         loading,

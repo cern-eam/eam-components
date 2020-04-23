@@ -6,7 +6,6 @@ const EAMTableGridRequestAdapter = props => {
     const { gridRequest, headers } = props;
 
     const convertRowData = (responseBody) => {
-
         return flattenGridRow((responseBody.data || {}).row || [])
     }
     

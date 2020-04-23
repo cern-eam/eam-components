@@ -2,9 +2,7 @@ import React, {Component} from 'react';
 import BlockUi from 'react-block-ui'
 import EDMSGalleria from './galleria/EDMSGalleria'
 import DocumentList from './doclist/DocumentList'
-import DocumentListTest from './doclist/DocumentListTest'
 import WSEDMS from "../../../tools/WSEDMS";
-import EISPanel from '../panel';
 import EDMSWidgetToolbar from "./EDMSWidgetToolbar";
 import NCRCreation from "./ncrwidget/ncrcreation/NCRCreation";
 import DocumentCreation from "./documentwidget/doccreation/DocumentCreation";
@@ -188,8 +186,6 @@ class EDMSWidget extends Component {
     //
     mainDivStyle = {
         width: "100%",
-        marginBottom: -20,
-        marginTop: -8,
         minHeight: 300
     };
     //
@@ -215,37 +211,34 @@ class EDMSWidget extends Component {
     render() {
         const { hideLink } = this.props;
         return (
-            <EISPanel heading={this.props.title}
-                      detailsStyle={{marginLeft: '-24px', marginRight: '-24px'}}
-                      link={hideLink ? undefined : this.props.edmsDocListLink + this.props.objectType + ":" + this.props.objectID + "::"}>
-                <BlockUi tag="div" blocking={this.state.isLoading} style={this.mainDivStyle}>
+            <BlockUi tag="div" blocking={this.state.isLoading} style={this.mainDivStyle}>
+                <EDMSWidgetToolbar 
+                                    link={hideLink ? undefined : this.props.edmsDocListLink + this.props.objectType + ":" + this.props.objectID + "::"}
+                                    currentView={this.state.currentView}
+                                    documentCreationVisible={this.state.documentCreationVisible}
+                                    documentCreationDisabled={this.props.creationMode === noCreationMode}
+                                    galleriaClickHandler={() => this.setState({currentView: "GALLERIA"})}
+                                    doclistClickHandler={() => this.setState({currentView: "DOCLIST"})}
+                                    documentCreationHandler={() => this.setState({documentCreationVisible: !this.state.documentCreationVisible})}
+                />
 
-                    <EDMSWidgetToolbar currentView={this.state.currentView}
-                                       documentCreationVisible={this.state.documentCreationVisible}
-                                       documentCreationDisabled={this.props.creationMode === noCreationMode}
-                                       galleriaClickHandler={() => this.setState({currentView: "GALLERIA"})}
-                                       doclistClickHandler={() => this.setState({currentView: "DOCLIST"})}
-                                       documentCreationHandler={() => this.setState({documentCreationVisible: !this.state.documentCreationVisible})}
+                {this.state.documentCreationVisible &&
+                    this.generateDocumentCreation(this.props.creationMode)}
+
+
+                <div style={{display: this.state.currentView === 'GALLERIA' ? 'block' : 'none', margin: 5, minWidth: 514}}>
+                    <EDMSGalleria documentList={this.state.documentList}
+                                    handleFilesUpload={this.handleFilesUpload}
+                                    {...this.props}/>
+                </div>
+
+
+                <div style={{display: this.state.currentView === 'DOCLIST' ? 'block' : 'none', margin: 5}}>
+                    <DocumentList documents={this.state.documentList}
+                                    filesUploadHandler={this.handleFilesUpload}
                     />
-
-                    {this.state.documentCreationVisible &&
-                        this.generateDocumentCreation(this.props.creationMode)}
-
-
-                    <div style={{display: this.state.currentView === 'GALLERIA' ? 'block' : 'none', margin: 5, minWidth: 514}}>
-                        <EDMSGalleria documentList={this.state.documentList}
-                                      handleFilesUpload={this.handleFilesUpload}
-                                      {...this.props}/>
-                    </div>
-
-
-                    <div style={{display: this.state.currentView === 'DOCLIST' ? 'block' : 'none', margin: 5}}>
-                        <DocumentList documents={this.state.documentList}
-                                      filesUploadHandler={this.handleFilesUpload}
-                        />
-                    </div>
-                </BlockUi>
-            </EISPanel>
+                </div>
+            </BlockUi>
         )
     }
 }
