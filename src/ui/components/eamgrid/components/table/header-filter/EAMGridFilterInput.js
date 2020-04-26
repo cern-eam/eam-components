@@ -27,7 +27,8 @@ export default class EAMGridFilterInput extends Component {
                    style={this.inputStyle}
                    value={this.props.value}
                    onChange={this.props.onChange}
-                   onKeyPress = {this.props.onKeyPress}/>
+                   onKeyPress = {this.props.onKeyPress}
+                   onClick={this.props.onClick}/>
         )
     }
 }
