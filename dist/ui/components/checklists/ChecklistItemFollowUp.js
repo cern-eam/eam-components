@@ -72,8 +72,9 @@ function (_Component) {
     };
 
     _this.handleChange = function (event) {
+      // invert the input since we are using an onMouseDown/onTouchStart handler, before the input is changed
       _this.props.onChange(_objectSpread({}, _this.props.checklistItem, {
-        followUp: event.target.checked
+        followUp: !event.target.checked
       }));
     };
 
@@ -102,7 +103,8 @@ function (_Component) {
           color: "primary",
           checked: checklistItem.followUp === '+' || checklistItem.followUp === true,
           disabled: Boolean(checklistItem.followUpWorkOrder),
-          onChange: this.handleChange
+          onMouseDown: this.handleChange,
+          onTouchStart: this.handleChange
         }),
         labelPlacement: "start",
         label: "Follow-up"
