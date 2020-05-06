@@ -3,18 +3,14 @@ import IconButton from '@material-ui/core/IconButton';
 import ImageFilter from 'mdi-material-ui/ImageFilter'
 import FormatListBulleted from 'mdi-material-ui/FormatListBulleted'
 import PlusBox from 'mdi-material-ui/PlusBox'
+import OpenInNewIcon from 'mdi-material-ui/OpenInNew';
 
 class EDMSWidgetToolbar extends Component {
 
-    //
-    // STYLES
-    //
     mainDivStyle = {
         width: "100%",
         display: "flex",
         alignItems: "center",
-        backgroundColor: "#fafafa",
-        height: 50,
         borderBottom: "1px solid rgb(238, 238, 238)"
     };
 
@@ -34,9 +30,19 @@ class EDMSWidgetToolbar extends Component {
         color: this.props.currentView === 'DOCLIST' ? 'rgb(0, 170, 255)' : 'rgba(0, 0, 0, 0.54)'
     });
 
+    linkClickHandler() {
+        window.open(this.props.link, '_blank');
+    }
+
     render() {
         return (
             <div style={this.mainDivStyle}>
+
+                {this.props.link && (
+                    <IconButton onClick={this.linkClickHandler.bind(this)} style={{ color: "#00aaff" }}>
+                        <OpenInNewIcon />
+                    </IconButton>
+                )}
 
                 {!this.props.documentCreationDisabled &&
                     <IconButton onClick={this.props.documentCreationHandler}

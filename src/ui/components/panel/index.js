@@ -6,6 +6,8 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import FontIcon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import OpenInNewIcon from 'mdi-material-ui/OpenInNew';
+import Fullscreen from '@material-ui/icons/Fullscreen'
+import { FullscreenExit } from 'mdi-material-ui';
 
 class EISPanel extends Component {
 
@@ -65,16 +67,10 @@ class EISPanel extends Component {
     }
 
     render() {
-        const detailsStyle = {
-            overflow: "visible",
-            ...this.props.detailsStyle
-        };
-
-        const panelStyle = this.state.panelExpanded ? {display: 'inherit', overflow: 'visible'} : {overflow: 'hidden'};
 
         return (
             <ExpansionPanel defaultExpanded expanded={this.props.alwaysExpanded ? true : this.state.panelExpanded}
-                            TransitionProps={{style: {...panelStyle}, unmountOnExit: true, timeout: 300}}
+                            TransitionProps={{ timeout: 300 }}
                             onChange={this._onPanelChange}>
                 <ExpansionPanelSummary expandIcon={this.props.alwaysExpanded ? undefined : <ExpandMoreIcon/>}
                                        style={this.summaryStyle}>
@@ -90,15 +86,26 @@ class EISPanel extends Component {
                                 <OpenInNewIcon style={this.linkIconStyle}/>
                             </IconButton>
                         )}
+                        {this.props.headingBar}
+
                     </div>
                 </ExpansionPanelSummary>
 
-                <ExpansionPanelDetails style={detailsStyle}>
+                <ExpansionPanelDetails style={{...this.props.detailsStyle}}>
                     {this.props.children}
                 </ExpansionPanelDetails>
             </ExpansionPanel>
         )
     }
+}
+
+export const withFullscreen = (props) => (Component) => {
+    const { isOpen, onFullscreenOpen, onFullscreenClose } = props;
+    return (props) => <Component headingBar={
+        isOpen
+        ? <IconButton onClick={(e) => { e.stopPropagation(); onFullscreenOpen() }}><Fullscreen /></IconButton>
+        : <IconButton onClick={(e) => { e.stopPropagation(); onFullscreenClose() }}><FullscreenExit /></IconButton> 
+        } {...props}/>
 }
 
 EISPanel.defaultProps = {

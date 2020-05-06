@@ -111,23 +111,21 @@ class Comments extends Component {
         const { allowHtml } = this.props;
 
         return (
-            <EISPanel heading={this.props.title} detailsStyle={datatablePanelStyle}>
-                <List style={{width: "100%"}}>
-                    {
-                        this.state.comments.map(comment =>
-                            <Comment allowHtml={allowHtml} key={comment.pk} comment={comment} updateCommentHandler={this.updateComment}/>
-                        )
-                    }
+            <List style={{width: "100%"}}>
+                {
+                    this.state.comments.map(comment =>
+                        <Comment allowHtml={allowHtml} key={comment.pk} comment={comment} updateCommentHandler={this.updateComment}/>
+                    )
+                }
 
-                    <CommentNew userCode={this.props.userCode}
-                                createCommentHandler={this.createComment}
-                                entityCode={this.props.entityCode}
-                                entityKeyCode={this.props.entityKeyCode}
-                                newCommentText={this.state.newCommentText}
-                                updateNewCommentText={this.updateNewCommentText}/>
+                <CommentNew userCode={this.props.userCode}
+                            createCommentHandler={this.createComment}
+                            entityCode={this.props.entityCode}
+                            entityKeyCode={this.props.entityKeyCode}
+                            newCommentText={this.state.newCommentText}
+                            updateNewCommentText={this.updateNewCommentText}/>
 
-                </List>
-            </EISPanel>
+            </List>
         );
     }
 }
