@@ -8,6 +8,8 @@ import { Icon } from '@material-ui/core';
 import { format } from 'date-fns';
 import EAMGridFilterInput from './EAMGridFilterInput'
 import Constants from '../../../../../../enums/Constants'
+import Tooltip from '@material-ui/core/Tooltip';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
 const styles = {
     filterCell: {
@@ -106,38 +108,78 @@ class DataGridTableFilter extends Component {
     }
 
     render() {
-        const { classes } = this.props;
+        const { classes, dataType, filter, width } = this.props;
         const { filterValue } = this.state;
+        const dataTypes = [
+            'VARCHAR',
+            'MIXVARCHAR',
+            'DECIMAL',
+            'NUMBER',
+            'DATETIME',
+            'DATE',
+        ]
+
+        const tooltips = {
+            'DATE': Constants.DATE_FORMAT_DISPLAY.toUpperCase(),
+            'DATETIME': Constants.DATETIME_FORMAT_DISPLAY.toUpperCase()
+        }
 
         return (
             <div className={classes.filterCell}>
                 <DataGridFilterTypeMenu
-                    filter={this.props.filter}
+                    filter={filter}
                     onChange={this._onChange.bind(this)}
-                    dataType={this.props.dataType}
+                    dataType={dataType}
                 />
 
-                {
-                    (this.props.dataType &&
-                        (this.props.dataType === 'VARCHAR'
-                        || this.props.dataType === 'MIXVARCHAR'
-                        || this.props.dataType === 'DECIMAL'
-                        || this.props.dataType === 'NUMBER'
-                        || this.props.dataType === 'DATETIME'
-                        || this.props.dataType === 'DATE')) &&
-
-                    <EAMGridFilterInput
-                        disabled={this.state.inputDisabled}
-                        width={this.props.width}
-                        value={filterValue}
-                        onChange={this._handleChangeValue}
-                        onKeyPress = {this._handleKeyPress}
-                        dataType={this.props.dataType}
-                    />
+                {dataType && dataTypes.includes(dataType) &&
+                    <TooltipWrapper text={tooltips[dataType]} enabled={tooltips[dataType]}>
+                        {({ openTooltip }) => (
+                            <EAMGridFilterInput
+                                onClick={openTooltip}
+                                disabled={this.state.inputDisabled}
+                                width={width}
+                                value={filterValue}
+                                onChange={this._handleChangeValue}
+                                onKeyPress = {this._handleKeyPress}
+                                dataType={dataType}/>
+                        )}
+                    </TooltipWrapper>
                 }
             </div>
         );
     }
+}
+
+const CustomTooltip = withStyles(() => ({
+    tooltip: {
+      fontSize: 'small',
+    },
+  }))(Tooltip);
+
+const TooltipWrapper = (props) => {
+    const { children, text, enabled } = props;
+    const [open, setOpen] = React.useState(false);
+    const closeTooltip = () => setOpen(false);
+    const openTooltip = () => setOpen(true);
+
+    return (
+        enabled
+        ? (
+            <ClickAwayListener onClickAway={closeTooltip}>
+                <CustomTooltip
+                    onClose={closeTooltip}
+                    open={open}
+                    disableFocusListener
+                    disableHoverListener
+                    disableTouchListener
+                    title={text}
+                    arrow>
+                    {children({ openTooltip })}
+                </CustomTooltip>
+            </ClickAwayListener>
+        ): children({})
+    )
 }
 
 export default withStyles(styles)(DataGridTableFilter);
