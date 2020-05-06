@@ -18,9 +18,10 @@ export default class ChecklistItemFollowUp extends Component {
     }
 
     handleChange = event => {
+        // invert the input since we are using an onMouseDown/onTouchStart handler, before the input is changed
         this.props.onChange({
             ...this.props.checklistItem,
-            followUp: event.target.checked
+            followUp: !event.target.checked
         })
     }
 
@@ -41,7 +42,8 @@ export default class ChecklistItemFollowUp extends Component {
                                 color="primary"
                                 checked={checklistItem.followUp === '+' || checklistItem.followUp === true}
                                 disabled={Boolean(checklistItem.followUpWorkOrder)}
-                                onChange={this.handleChange}/>
+                                onMouseDown={this.handleChange}
+                                onTouchStart={this.handleChange} />
                         }
                         labelPlacement='start'
                         label={"Follow-up"}

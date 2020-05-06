@@ -15,14 +15,6 @@ export default class ChecklistItemNotes extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.checklistItem) {
-            this.setState({
-                value: nextProps.checklistItem.notes
-            })
-        }
-    }
-
     mainDivStyle = {
         padding: 2,
         position: "relative",

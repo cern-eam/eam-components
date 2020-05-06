@@ -101,15 +101,6 @@ function (_Component) {
       }
     }
   }, {
-    key: "componentWillReceiveProps",
-    value: function componentWillReceiveProps(nextProps) {
-      if (nextProps.checklistItem) {
-        this.setState({
-          value: nextProps.checklistItem.notes
-        });
-      }
-    }
-  }, {
     key: "focus",
     value: function focus() {
       this.input.current.focus();
