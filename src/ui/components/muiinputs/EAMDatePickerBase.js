@@ -26,7 +26,7 @@ export default class EAMDatePicker extends EAMBaseInput {
 
     /* Reads the Date it receives to the format wanted (TIMESTAMP or FORMATTED STRING) */
     readDate = date =>
-        !date ? null
+        !date ? (this.props.timestamp ? null : '')
             : this.props.timestamp ? date.getTime()
             : format(date, this.props.dateFormatValue)
 
