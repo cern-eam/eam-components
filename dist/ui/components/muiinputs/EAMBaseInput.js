@@ -227,8 +227,7 @@ function (_Component) {
       } //Extra function if needed
 
 
-      if (executeExtra && _this.props.onChangeValue) {
-        _this.props.onChangeValue(value, valueFound);
+      if (executeExtra && _this.props.onChangeValue) {//this.props.onChangeValue(value, valueFound);
       }
     };
 
@@ -238,12 +237,20 @@ function (_Component) {
   _createClass(EAMBaseInput, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      this.initBase(this.props);
+      this.initBase(this.props); // Fire the onChangeValue callback also on the component mount
+
+      if (this.props.onChangeValue && this.props.value) {
+        this.props.onChangeValue(this.props.value, true);
+      }
     }
   }, {
     key: "componentWillReceiveProps",
     value: function componentWillReceiveProps(nextProps) {
       this.initBase(nextProps);
+
+      if (this.props.onChangeValue && this.props.value !== nextProps.value) {
+        this.props.onChangeValue(nextProps.value, false);
+      }
     }
   }, {
     key: "validate",
