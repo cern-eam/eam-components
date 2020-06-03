@@ -31,7 +31,7 @@ var EAMTableGridRequestAdapter = function EAMTableGridRequestAdapter(props) {
     return getGridFieldsColumns((responseBody.data || {}).gridField, headers);
   };
 
-  return /*#__PURE__*/_react["default"].createElement(_EAMTableDataAdapter["default"], {
+  return _react["default"].createElement(_EAMTableDataAdapter["default"], {
     fetchData: function _callee() {
       return regeneratorRuntime.async(function _callee$(_context) {
         while (1) {
@@ -44,7 +44,7 @@ var EAMTableGridRequestAdapter = function EAMTableGridRequestAdapter(props) {
               return _context.stop();
           }
         }
-      }, null, null, null, Promise);
+      });
     },
     convertRowData: convertRowData,
     convertColumnMetadata: convertColumnMetadata

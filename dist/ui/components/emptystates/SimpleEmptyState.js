@@ -33,13 +33,13 @@ var SimpleEmptyState = function SimpleEmptyState(props) {
       style = props.style,
       iconStyle = props.iconStyle,
       classes = props.classes;
-  return /*#__PURE__*/_react["default"].createElement("div", {
+  return _react["default"].createElement("div", {
     className: classes.root,
     style: style
-  }, /*#__PURE__*/_react["default"].createElement(_Info["default"], {
+  }, _react["default"].createElement(_Info["default"], {
     className: classes.icon,
     style: iconStyle
-  }), /*#__PURE__*/_react["default"].createElement(_core.Typography, {
+  }), _react["default"].createElement(_core.Typography, {
     variant: "caption"
   }, message));
 };
