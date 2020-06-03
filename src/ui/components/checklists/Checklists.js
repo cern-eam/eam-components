@@ -167,6 +167,7 @@ class Checklists extends Component {
         return <EquipmentExpansionPanel
                 key={equipmentCode}
                 expanded={!collapsed}
+                TransitionProps={{ unmountOnExit: true, timeout: 0 }}
                 onChange={(_, expanded) => this.setCollapsedEquipment(!expanded, activity.index, equipmentCode)}>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
                 <ChecklistEquipment 
@@ -265,6 +266,7 @@ class Checklists extends Component {
             )).map(activity => (
                 <ActivityExpansionPanel
                     expanded={!activity.collapsed}
+                    TransitionProps={{ unmountOnExit: true, timeout: 0 }}
                     onChange={(_, expanded) => this.setCollapsedActivity(!expanded, activity.index)}>
                     <ExpansionPanelSummary expandIcon={
                         <ExpandMoreIcon/>}>

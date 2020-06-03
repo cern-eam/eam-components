@@ -253,6 +253,10 @@ function (_Component) {
       return _react["default"].createElement(EquipmentExpansionPanel, {
         key: equipmentCode,
         expanded: !collapsed,
+        TransitionProps: {
+          unmountOnExit: true,
+          timeout: 0
+        },
         onChange: function onChange(_, expanded) {
           return _this3.setCollapsedEquipment(!expanded, activity.index, equipmentCode);
         }
@@ -360,6 +364,10 @@ function (_Component) {
       }).map(function (activity) {
         return _react["default"].createElement(ActivityExpansionPanel, {
           expanded: !activity.collapsed,
+          TransitionProps: {
+            unmountOnExit: true,
+            timeout: 0
+          },
           onChange: function onChange(_, expanded) {
             return _this5.setCollapsedActivity(!expanded, activity.index);
           }
