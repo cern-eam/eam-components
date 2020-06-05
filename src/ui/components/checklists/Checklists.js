@@ -151,7 +151,35 @@ class Checklists extends Component {
         });
     }
 
+    onUpdateChecklistItem = checklistItem => {
+        const activityCode = checklistItem.activityCode;
+        const checkListCode = checklistItem.checkListCode;
+
+        this.setState(state => {
+            const activityIndex = state.activities.findIndex(activity => activity.activityCode === activityCode);
+            const activity = {...state.activities[activityIndex]};
+
+            const checklists = [...activity.checklists];
+            const checklistIndex = checklists.findIndex(checklistItem => checklistItem.checkListCode === checkListCode);
+            checklists[checklistIndex] = {...checklistItem};
+
+            activity.checklists = checklists;
+
+            const activities = state.activities;
+            activities[activityIndex] = activity;
+
+            return {activities};
+        });
+    }
+
     renderChecklistsForEquipment(checklists, activity) {
+        const {
+            updateChecklistItem,
+            minFindingsDropdown,
+            handleError,
+            getWoLink
+        } = this.props;
+
         const firstChecklist = checklists[0];
         const equipmentCode = firstChecklist.equipmentCode;
         const collapsed = activity.equipments[equipmentCode].collapsed;
@@ -179,11 +207,12 @@ class Checklists extends Component {
                 <div style={{width: "100%"}}>
                     {checklists.map(checklist => <ChecklistItem 
                         key={'checklistItem$' + checklist.checkListCode}
-                        updateChecklistItem={this.props.updateChecklistItem}
+                        updateChecklistItem={updateChecklistItem}
+                        onUpdateChecklistItem={this.onUpdateChecklistItem}
                         checklistItem={checklist}
-                        handleError={this.props.handleError}
-                        minFindingsDropdown={this.props.minFindingsDropdown}
-                        getWoLink={this.props.getWoLink}
+                        handleError={handleError}
+                        minFindingsDropdown={minFindingsDropdown}
+                        getWoLink={getWoLink}
                     />)}
                 </div>
             </ExpansionPanelDetails>
@@ -265,6 +294,7 @@ class Checklists extends Component {
                     && !(filteredActivity && activity.activityCode !== filteredActivity)
             )).map(activity => (
                 <ActivityExpansionPanel
+                    key={activity.activityCode}
                     expanded={!activity.collapsed}
                     TransitionProps={{ unmountOnExit: true, timeout: 0 }}
                     onChange={(_, expanded) => this.setCollapsedActivity(!expanded, activity.index)}>

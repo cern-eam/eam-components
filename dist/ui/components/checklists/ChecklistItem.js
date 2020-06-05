@@ -21,7 +21,7 @@ function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return 
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -35,31 +35,27 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var ChecklistItem = /*#__PURE__*/function (_Component) {
-  _inherits(ChecklistItem, _Component);
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-  var _super = _createSuper(ChecklistItem);
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var ChecklistItem =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(ChecklistItem, _Component);
 
   function ChecklistItem(props) {
     var _this;
 
     _classCallCheck(this, ChecklistItem);
 
-    _this = _super.call(this, props);
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(ChecklistItem).call(this, props));
 
     _this.getCheckListItemStyle = function () {
       return {
@@ -106,10 +102,19 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       this.init(this.props.checklistItem);
     }
   }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      var debounce = this.state.debounce;
+
+      if (debounce !== null) {
+        clearTimeout(debounce.timeout);
+      }
+    }
+  }, {
     key: "componentWillReceiveProps",
     value: function componentWillReceiveProps(nextProps) {
       var checklistItemProps = nextProps.checklistItem;
-      var checklistItemState = this.state.checklistItem;
+      var checklistItemState = this.props.checklistItem;
 
       if (checklistItemProps && checklistItemState) {
         if (checklistItemProps.workOrderCode !== checklistItemState.workOrderCode) {
@@ -131,7 +136,6 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
     value: function init(checklistItem) {
       if (checklistItem) {
         this.setState({
-          checklistItem: checklistItem,
           detailsVisible: !!checklistItem.notes || !!checklistItem.followUpWorkOrder || checklistItem.followUp === '+'
         });
       }
@@ -148,11 +152,10 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
         _this2.props.updateChecklistItem(checklistItem)["catch"](function (error) {
           handleError(error);
 
-          _this2.setState(function (state) {
-            return {
-              checklistItem: state.debounce.oldChecklistItem,
-              debounce: null
-            };
+          _this2.props.onUpdateChecklistItem(checklistItem);
+
+          _this2.setState({
+            debounce: null
           });
         })["finally"](function () {
           _this2.setState({
@@ -162,14 +165,18 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       };
 
       this.setState(function (state) {
-        if (state.debounce !== null) clearTimeout(state.debounce.timeout);
+        if (state.debounce !== null) {
+          clearTimeout(state.debounce.timeout);
+        }
+
+        _this2.props.onUpdateChecklistItem(checklistItem);
+
         return {
           blocked: true,
-          checklistItem: checklistItem,
           debounce: _objectSpread({}, state.debounce || {}, {
             timeout: setTimeout(request, DEBOUNCE_TIME_MS),
             // Copy the oldest checklist item (will be used to restore the UI)
-            oldChecklistItem: state.debounce ? state.debounce.oldChecklistItem : state.checklistItem
+            oldChecklistItem: state.debounce ? state.debounce.oldChecklistItem : _this2.props.checklistItem
           })
         };
       });
@@ -199,7 +206,7 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
     value: function renderChecklistItemInput() {
       var _this4 = this;
 
-      var checklistItem = this.state.checklistItem;
+      var checklistItem = this.props.checklistItem;
       var fields = [];
       var options = {}; // use until use of numeric values in result field is deprecated
 
@@ -348,8 +355,8 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
           break;
       }
 
-      if (fields === undefined) return /*#__PURE__*/_react["default"].createElement("div", null);
-      return /*#__PURE__*/_react["default"].createElement(_ChecklistItemInput["default"], {
+      if (fields === undefined) return _react["default"].createElement("div", null);
+      return _react["default"].createElement(_ChecklistItemInput["default"], {
         checklistItem: checklistItem,
         onChange: function onChange(value) {
           return _this4.onChange(value);
@@ -363,29 +370,29 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
     value: function render() {
       var _this5 = this;
 
-      var checklistItem = this.state.checklistItem;
-      return /*#__PURE__*/_react["default"].createElement("div", {
+      var checklistItem = this.props.checklistItem;
+      return _react["default"].createElement("div", {
         style: this.getCheckListItemStyle()
-      }, /*#__PURE__*/_react["default"].createElement("div", {
+      }, _react["default"].createElement("div", {
         style: this.firstLine
-      }, /*#__PURE__*/_react["default"].createElement("div", {
+      }, _react["default"].createElement("div", {
         style: this.firstLineDesc,
         onClick: this.descClickHandler.bind(this)
-      }, /*#__PURE__*/_react["default"].createElement("label", null, checklistItem.desc), checklistItem.requiredToClose === true && /*#__PURE__*/_react["default"].createElement("label", {
+      }, _react["default"].createElement("label", null, checklistItem.desc), checklistItem.requiredToClose === true && _react["default"].createElement("label", {
         style: {
           color: "red"
         }
-      }, " *")), this.renderChecklistItemInput()), /*#__PURE__*/_react["default"].createElement(_Collapse["default"], {
+      }, " *")), this.renderChecklistItemInput()), _react["default"].createElement(_Collapse["default"], {
         "in": this.state.detailsVisible
-      }, /*#__PURE__*/_react["default"].createElement("div", {
+      }, _react["default"].createElement("div", {
         style: this.checklistDetailsStyle
-      }, /*#__PURE__*/_react["default"].createElement(_ChecklistItemNotes["default"], {
+      }, _react["default"].createElement(_ChecklistItemNotes["default"], {
         ref: this.notes,
         checklistItem: checklistItem,
         onChange: function onChange(value) {
           return _this5.onChange(value);
         }
-      }), !checklistItem.hideFollowUp && /*#__PURE__*/_react["default"].createElement(_ChecklistItemFollowUp["default"], {
+      }), !checklistItem.hideFollowUp && _react["default"].createElement(_ChecklistItemFollowUp["default"], {
         checklistItem: checklistItem,
         onChange: function onChange(value) {
           return _this5.onChange(value);
