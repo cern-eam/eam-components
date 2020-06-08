@@ -156,17 +156,15 @@ class Checklists extends Component {
         const checkListCode = checklistItem.checkListCode;
 
         this.setState(state => {
-            const activityIndex = state.activities.findIndex(activity => activity.activityCode === activityCode);
-            const activity = {...state.activities[activityIndex]};
+            const activities = [...state.activities];
+            const activityIndex = activities.findIndex(activity => activity.activityCode === activityCode);
+            const activity = {...activities[activityIndex]};
+            activities[activityIndex] = activity;
 
             const checklists = [...activity.checklists];
             const checklistIndex = checklists.findIndex(checklistItem => checklistItem.checkListCode === checkListCode);
             checklists[checklistIndex] = {...checklistItem};
-
             activity.checklists = checklists;
-
-            const activities = state.activities;
-            activities[activityIndex] = activity;
 
             return {activities};
         });

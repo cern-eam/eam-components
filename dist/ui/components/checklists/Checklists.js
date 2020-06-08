@@ -157,11 +157,15 @@ function (_Component) {
       var checkListCode = checklistItem.checkListCode;
 
       _this.setState(function (state) {
-        var activityIndex = state.activities.findIndex(function (activity) {
+        var activities = _toConsumableArray(state.activities);
+
+        var activityIndex = activities.findIndex(function (activity) {
           return activity.activityCode === activityCode;
         });
 
-        var activity = _objectSpread({}, state.activities[activityIndex]);
+        var activity = _objectSpread({}, activities[activityIndex]);
+
+        activities[activityIndex] = activity;
 
         var checklists = _toConsumableArray(activity.checklists);
 
@@ -170,8 +174,6 @@ function (_Component) {
         });
         checklists[checklistIndex] = _objectSpread({}, checklistItem);
         activity.checklists = checklists;
-        var activities = state.activities;
-        activities[activityIndex] = activity;
         return {
           activities: activities
         };
