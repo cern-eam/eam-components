@@ -12,7 +12,7 @@ var _DataGridContext = require("./DataGridContext");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var DataGrid = function DataGrid(props) {
-  return _react["default"].createElement(_DataGridContext.DataGridProvider, props, props.children);
+  return /*#__PURE__*/_react["default"].createElement(_DataGridContext.DataGridProvider, props, props.children);
 };
 
 var _default = DataGrid;

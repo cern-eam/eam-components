@@ -46,11 +46,11 @@ var ChecklistFieldFinding = function ChecklistFieldFinding(props) {
       possibleFindings = props.possibleFindings,
       classes = props.classes;
   var dropdown = props.dropdown === undefined ? true : props.dropdown;
-  if (dropdown) return _react["default"].createElement(_FormControl["default"], {
+  if (dropdown) return /*#__PURE__*/_react["default"].createElement(_FormControl["default"], {
     classes: {
       root: classes.root
     }
-  }, _react["default"].createElement(_Select["default"], {
+  }, /*#__PURE__*/_react["default"].createElement(_Select["default"], {
     classes: {
       root: classes.selectRoot,
       select: classes.select,
@@ -61,15 +61,15 @@ var ChecklistFieldFinding = function ChecklistFieldFinding(props) {
     onChange: function onChange(event) {
       return _handleChange(event.target.value);
     }
-  }, _react["default"].createElement(_MenuItem["default"], {
+  }, /*#__PURE__*/_react["default"].createElement(_MenuItem["default"], {
     value: null
   }, "\u200B"), possibleFindings.map(function (finding) {
-    return _react["default"].createElement(_MenuItem["default"], {
+    return /*#__PURE__*/_react["default"].createElement(_MenuItem["default"], {
       key: finding.code,
       value: finding.code
     }, finding.desc);
   })));else return possibleFindings.map(function (findingElement) {
-    return _react["default"].createElement(_ChecklistFieldCheckbox["default"], {
+    return /*#__PURE__*/_react["default"].createElement(_ChecklistFieldCheckbox["default"], {
       code: findingElement.code,
       desc: findingElement.desc,
       checked: finding === findingElement.code,

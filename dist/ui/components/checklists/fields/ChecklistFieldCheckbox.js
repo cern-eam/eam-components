@@ -30,12 +30,12 @@ var ChecklistFieldCheckbox = function ChecklistFieldCheckbox(props) {
       checked = props.checked,
       handleChange = props.handleChange,
       classes = props.classes;
-  return _react["default"].createElement(_FormControlLabel["default"], {
+  return /*#__PURE__*/_react["default"].createElement(_FormControlLabel["default"], {
     classes: {
       root: classes.root,
       label: classes.label
     },
-    control: _react["default"].createElement(_Checkbox["default"], {
+    control: /*#__PURE__*/_react["default"].createElement(_Checkbox["default"], {
       color: "primary",
       checked: checked,
       onMouseDown: function onMouseDown() {

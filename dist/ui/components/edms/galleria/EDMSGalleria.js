@@ -21,7 +21,7 @@ var _ChevronRight = _interopRequireDefault(require("mdi-material-ui/ChevronRight
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -29,25 +29,29 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var EDMSGalleria =
-/*#__PURE__*/
-function (_React$Component) {
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+var EDMSGalleria = /*#__PURE__*/function (_React$Component) {
   _inherits(EDMSGalleria, _React$Component);
+
+  var _super = _createSuper(EDMSGalleria);
 
   function EDMSGalleria() {
     _classCallCheck(this, EDMSGalleria);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(EDMSGalleria).apply(this, arguments));
+    return _super.apply(this, arguments);
   }
 
   _createClass(EDMSGalleria, [{
@@ -67,7 +71,7 @@ function (_React$Component) {
   }, {
     key: "renderLeftNav",
     value: function renderLeftNav(onClick, disabled) {
-      return _react["default"].createElement(_ChevronLeft["default"], {
+      return /*#__PURE__*/_react["default"].createElement(_ChevronLeft["default"], {
         className: "image-gallery-left-nav",
         onClick: onClick
       });
@@ -75,7 +79,7 @@ function (_React$Component) {
   }, {
     key: "renderRightNav",
     value: function renderRightNav(onClick, disabled) {
-      return _react["default"].createElement(_ChevronRight["default"], {
+      return /*#__PURE__*/_react["default"].createElement(_ChevronRight["default"], {
         className: "image-gallery-right-nav",
         onClick: onClick
       });
@@ -83,14 +87,14 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      if (!this.props.documentList) return _react["default"].createElement("div", null);
+      if (!this.props.documentList) return /*#__PURE__*/_react["default"].createElement("div", null);
       var images = this.generateImagesList();
-      return _react["default"].createElement("div", {
+      return /*#__PURE__*/_react["default"].createElement("div", {
         style: {
           width: "100%",
           marginTop: 0
         }
-      }, _react["default"].createElement(_reactImageGallery["default"], {
+      }, /*#__PURE__*/_react["default"].createElement(_reactImageGallery["default"], {
         showPlayButton: false,
         showFullscreenButton: false,
         items: images,

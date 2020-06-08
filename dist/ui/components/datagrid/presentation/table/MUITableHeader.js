@@ -37,10 +37,10 @@ var defaultCellRender = function defaultCellRender(_ref2) {
       key = _ref2.key,
       sortState = _ref2.sortState,
       CellComponent = _ref2.CellComponent;
-  return _react["default"].createElement(CellComponent, {
+  return /*#__PURE__*/_react["default"].createElement(CellComponent, {
     sortDirection: sortState.columnID === columnMetadata.id ? sortState.direction : false,
     key: key
-  }, sortState.isSortEnabled && sortState.isSortEnabled(columnMetadata) ? _react["default"].createElement(_TableSortLabel["default"], {
+  }, sortState.isSortEnabled && sortState.isSortEnabled(columnMetadata) ? /*#__PURE__*/_react["default"].createElement(_TableSortLabel["default"], {
     active: sortState.columnID === columnMetadata.id,
     direction: sortState.columnID === columnMetadata.id ? sortState.direction : _Constants.DATA_GRID_SORT_DIRECTIONS.ASC,
     onClick: createSortHandler({
@@ -60,7 +60,7 @@ var MUITableHeader = function MUITableHeader(props) {
       columnsMetadata = _React$useContext.columnsMetadata,
       sortState = _React$useContext.sortState;
 
-  return _react["default"].createElement(_TableHead["default"], null, _react["default"].createElement(_TableRow["default"], null, columnsMetadata.map(function (columnMetadata) {
+  return /*#__PURE__*/_react["default"].createElement(_TableHead["default"], null, /*#__PURE__*/_react["default"].createElement(_TableRow["default"], null, columnsMetadata.map(function (columnMetadata) {
     return customCellRender({
       columnMetadata: columnMetadata,
       sortState: sortState,

@@ -21,7 +21,7 @@ var defaultCellRenderer = function defaultCellRenderer(_ref) {
   var columnMetadata = _ref.columnMetadata,
       getDisplayValue = _ref.getDisplayValue,
       CellComponent = _ref.CellComponent;
-  return _react["default"].createElement(CellComponent, {
+  return /*#__PURE__*/_react["default"].createElement(CellComponent, {
     align: "left",
     key: columnMetadata.id
   }, getDisplayValue());
@@ -38,11 +38,11 @@ var MUITableBody = function MUITableBody(props) {
       columnsMetadata = _React$useContext.columnsMetadata,
       _getDisplayValue = _React$useContext.getDisplayValue;
 
-  return _react["default"].createElement(_TableBody["default"], null, rows && rows.map(function (row, rowIndex) {
-    return _react["default"].createElement(_TableRow["default"], {
+  return /*#__PURE__*/_react["default"].createElement(_TableBody["default"], null, rows && rows.map(function (row, rowIndex) {
+    return /*#__PURE__*/_react["default"].createElement(_TableRow["default"], {
       key: rowIndex
     }, columnsMetadata && columnsMetadata.map(function (columnMetadata) {
-      return columnMetadata && columnMetadata.id && _react["default"].createElement(_react["default"].Fragment, {
+      return columnMetadata && columnMetadata.id && /*#__PURE__*/_react["default"].createElement(_react["default"].Fragment, {
         key: columnMetadata.id + rowIndex
       }, cellRenderer({
         row: row,

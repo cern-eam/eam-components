@@ -43,10 +43,10 @@ var EAMGridHeaderCell = function EAMGridHeaderCell(props) {
     'width': '80px',
     'minWidth': '80px'
   } : _props$style;
-  return _react["default"].createElement("div", {
+  return /*#__PURE__*/_react["default"].createElement("div", {
     className: classes.headerCellContainer,
     style: style
-  }, _react["default"].createElement("div", {
+  }, /*#__PURE__*/_react["default"].createElement("div", {
     className: classes.headerCell
   }, children));
 };

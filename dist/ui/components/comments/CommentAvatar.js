@@ -19,7 +19,7 @@ var DEFAULT_SIZE = 48;
 var CommentAvatar = function CommentAvatar(props) {
   var name = props.name;
   var preferredInitials = name.toUpperCase().slice(0, 2);
-  return _react["default"].createElement(_reactUserAvatar["default"], _extends({
+  return /*#__PURE__*/_react["default"].createElement(_reactUserAvatar["default"], _extends({
     size: DEFAULT_SIZE,
     colors: userAvatarColors
   }, props, {

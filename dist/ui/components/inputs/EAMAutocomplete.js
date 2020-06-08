@@ -41,7 +41,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -49,15 +49,19 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 var autocompleteOptionStyles = function autocompleteOptionStyles() {
   return {
@@ -75,15 +79,15 @@ var autocompleteOptionStyles = function autocompleteOptionStyles() {
   };
 };
 
-var AutocompleteOption =
-/*#__PURE__*/
-function (_Component) {
+var AutocompleteOption = /*#__PURE__*/function (_Component) {
   _inherits(AutocompleteOption, _Component);
+
+  var _super = _createSuper(AutocompleteOption);
 
   function AutocompleteOption() {
     _classCallCheck(this, AutocompleteOption);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(AutocompleteOption).apply(this, arguments));
+    return _super.apply(this, arguments);
   }
 
   _createClass(AutocompleteOption, [{
@@ -95,13 +99,13 @@ function (_Component) {
           classes = _this$props.classes,
           columnsCodes = _this$props.columnsCodes,
           columnsWidth = _this$props.columnsWidth;
-      return _react["default"].createElement("div", {
+      return /*#__PURE__*/_react["default"].createElement("div", {
         className: this.props.className,
         title: this.props.option.code
-      }, _react["default"].createElement("div", {
+      }, /*#__PURE__*/_react["default"].createElement("div", {
         className: classes.rowMenuDiv
       }, columnsCodes.map(function (columnCode, index) {
-        return _react["default"].createElement("div", {
+        return /*#__PURE__*/_react["default"].createElement("div", {
           key: index,
           className: classes.cell,
           style: {
@@ -148,14 +152,12 @@ var autocompleteValueStyles = function autocompleteValueStyles() {
   };
 };
 
-var AutocompleteValue =
-/*#__PURE__*/
-function (_Component2) {
+var AutocompleteValue = /*#__PURE__*/function (_Component2) {
   _inherits(AutocompleteValue, _Component2);
 
-  function AutocompleteValue() {
-    var _getPrototypeOf2;
+  var _super2 = _createSuper(AutocompleteValue);
 
+  function AutocompleteValue() {
     var _this2;
 
     _classCallCheck(this, AutocompleteValue);
@@ -164,7 +166,7 @@ function (_Component2) {
       args[_key] = arguments[_key];
     }
 
-    _this2 = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(AutocompleteValue)).call.apply(_getPrototypeOf2, [this].concat(args)));
+    _this2 = _super2.call.apply(_super2, [this].concat(args));
 
     _this2.removeOption = function () {
       if (_this2.props.onRemove) {
@@ -179,20 +181,20 @@ function (_Component2) {
     key: "render",
     value: function render() {
       var classes = this.props.classes;
-      return _react["default"].createElement("div", {
+      return /*#__PURE__*/_react["default"].createElement("div", {
         className: "Select-value",
         title: this.props.value.code
-      }, _react["default"].createElement("span", {
+      }, /*#__PURE__*/_react["default"].createElement("span", {
         className: "Select-value-icon",
         "aria-hidden": "true",
         onClick: this.removeOption
-      }, "x"), _react["default"].createElement("span", {
+      }, "x"), /*#__PURE__*/_react["default"].createElement("span", {
         className: "Select-value-label"
-      }, _react["default"].createElement("div", {
+      }, /*#__PURE__*/_react["default"].createElement("div", {
         className: classes.rowMenuDiv
-      }, _react["default"].createElement("div", {
+      }, /*#__PURE__*/_react["default"].createElement("div", {
         className: (0, _classnames["default"])(classes.cell, classes.cellCode)
-      }, this.props.value.code), this.props.value.desc && _react["default"].createElement("div", {
+      }, this.props.value.code), this.props.value.desc && /*#__PURE__*/_react["default"].createElement("div", {
         className: (0, _classnames["default"])(classes.cell, classes.cellDesc)
       }, "- ", this.props.value.desc))));
     }
@@ -207,31 +209,31 @@ AutocompleteValue.propTypes = {
 };
 AutocompleteValue = (0, _styles.withStyles)(autocompleteValueStyles)(AutocompleteValue);
 
-var AutocompleteValueSingle =
-/*#__PURE__*/
-function (_Component3) {
+var AutocompleteValueSingle = /*#__PURE__*/function (_Component3) {
   _inherits(AutocompleteValueSingle, _Component3);
+
+  var _super3 = _createSuper(AutocompleteValueSingle);
 
   function AutocompleteValueSingle() {
     _classCallCheck(this, AutocompleteValueSingle);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(AutocompleteValueSingle).apply(this, arguments));
+    return _super3.apply(this, arguments);
   }
 
   _createClass(AutocompleteValueSingle, [{
     key: "render",
     value: function render() {
       var classes = this.props.classes;
-      return _react["default"].createElement("div", {
+      return /*#__PURE__*/_react["default"].createElement("div", {
         className: "Select-value",
         title: this.props.value.code
-      }, _react["default"].createElement("span", {
+      }, /*#__PURE__*/_react["default"].createElement("span", {
         className: "Select-value-label"
-      }, _react["default"].createElement("div", {
+      }, /*#__PURE__*/_react["default"].createElement("div", {
         className: classes.rowMenuDiv
-      }, _react["default"].createElement("div", {
+      }, /*#__PURE__*/_react["default"].createElement("div", {
         className: (0, _classnames["default"])(classes.cell, classes.cellCode)
-      }, this.props.value.code), this.props.value.desc && _react["default"].createElement("div", {
+      }, this.props.value.code), this.props.value.desc && /*#__PURE__*/_react["default"].createElement("div", {
         className: (0, _classnames["default"])(classes.cell, classes.cellDesc)
       }, "- ", this.props.value.desc))));
     }
@@ -258,17 +260,17 @@ AutocompleteValueSingle = (0, _styles.withStyles)(autocompleteValueStyles)(Autoc
  * backspaceRemoves={false}
  */
 
-var EAMAutocomplete =
-/*#__PURE__*/
-function (_EAMBaseInput) {
+var EAMAutocomplete = /*#__PURE__*/function (_EAMBaseInput) {
   _inherits(EAMAutocomplete, _EAMBaseInput);
+
+  var _super4 = _createSuper(EAMAutocomplete);
 
   function EAMAutocomplete(props) {
     var _this3;
 
     _classCallCheck(this, EAMAutocomplete);
 
-    _this3 = _possibleConstructorReturn(this, _getPrototypeOf(EAMAutocomplete).call(this, props));
+    _this3 = _super4.call(this, props);
     _this3.fetchingDesc = false;
 
     _this3.fetchAutocompleteDescription = function () {
@@ -438,7 +440,7 @@ function (_EAMBaseInput) {
       var _this4 = this;
 
       if (this.isHidden()) {
-        return _react["default"].createElement("div", null);
+        return /*#__PURE__*/_react["default"].createElement("div", null);
       }
 
       var _this$props2 = this.props,
@@ -457,14 +459,14 @@ function (_EAMBaseInput) {
 
       var AsyncComponent = this.props.creatable ? _reactSelect["default"].AsyncCreatable : _reactSelect["default"].Async;
       var selectClasses = this.props.selectStyle ? (0, _classnames["default"])(classes.select, this.props.selectStyle) : classes.select;
-      return _react["default"].createElement("div", {
+      return /*#__PURE__*/_react["default"].createElement("div", {
         className: classes.fieldContainer
-      }, _react["default"].createElement(_EAMFormLabel["default"], {
+      }, /*#__PURE__*/_react["default"].createElement(_EAMFormLabel["default"], {
         required: this.isRequired(),
         label: label || elementInfo && elementInfo.text,
         labelStyle: labelStyle,
         error: this.state.error
-      }), _react["default"].createElement(AsyncComponent, _extends({
+      }), /*#__PURE__*/_react["default"].createElement(AsyncComponent, _extends({
         ref: function ref(_ref) {
           return _this4.asyncComponent = _ref;
         },
@@ -481,7 +483,7 @@ function (_EAMBaseInput) {
         },
         backspaceRemoves: this.props.backspaceRemoves,
         optionRenderer: function optionRenderer(option) {
-          return _react["default"].createElement(AutocompleteOption, {
+          return /*#__PURE__*/_react["default"].createElement(AutocompleteOption, {
             option: option,
             columnsCodes: columnsCodes,
             columnsWidth: columnsWidth
@@ -494,7 +496,7 @@ function (_EAMBaseInput) {
         searchPromptText: this.props.searchPromptText,
         promptTextCreator: this.props.promptTextCreator,
         arrowRenderer: function arrowRenderer() {
-          return _react["default"].createElement("span", null);
+          return /*#__PURE__*/_react["default"].createElement("span", null);
         },
         filterOptions: this.props.creatable ? undefined : function (options) {
           return options;

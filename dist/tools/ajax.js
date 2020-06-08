@@ -29,9 +29,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
  */
 var DEFAULT_TIMEOUT = 20000;
 
-var Ajax =
-/*#__PURE__*/
-function () {
+var Ajax = /*#__PURE__*/function () {
   function Ajax() {
     _classCallCheck(this, Ajax);
   }

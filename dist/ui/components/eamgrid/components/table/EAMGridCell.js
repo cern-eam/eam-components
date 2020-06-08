@@ -42,10 +42,10 @@ var EAMGridCell = function EAMGridCell(props) {
     'width': '80px',
     'minWidth': '80px'
   } : _props$style;
-  return _react["default"].createElement("div", {
+  return /*#__PURE__*/_react["default"].createElement("div", {
     className: classes.searchRowCell,
     style: style
-  }, _react["default"].createElement("div", {
+  }, /*#__PURE__*/_react["default"].createElement("div", {
     className: classes.searchRowCellContent
   }, children));
 };

@@ -28,24 +28,24 @@ var EISTableFilter = function EISTableFilter(props) {
     handleFilterChange(e.target.value);
   };
 
-  return filters && Object.keys(filters).length && _react["default"].createElement("div", {
+  return filters && Object.keys(filters).length && /*#__PURE__*/_react["default"].createElement("div", {
     style: {
       display: "flex",
       justifyContent: "space-between"
     }
-  }, _react["default"].createElement(_FilterList["default"], {
+  }, /*#__PURE__*/_react["default"].createElement(_FilterList["default"], {
     style: {
       marginLeft: "auto"
     }
-  }), _react["default"].createElement(_Select["default"], {
+  }), /*#__PURE__*/_react["default"].createElement(_Select["default"], {
     style: filterSelectStyle,
     value: filters[activeFilter].text,
     onChange: propagateFilterChange,
     renderValue: function renderValue(value) {
-      return _react["default"].createElement("span", null, value);
+      return /*#__PURE__*/_react["default"].createElement("span", null, value);
     }
   }, Object.keys(filters).map(function (key) {
-    return _react["default"].createElement(_MenuItem["default"], {
+    return /*#__PURE__*/_react["default"].createElement(_MenuItem["default"], {
       key: key,
       value: key
     }, filters[key].text);

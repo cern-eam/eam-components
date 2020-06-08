@@ -21,7 +21,7 @@ var _ListItemText = _interopRequireDefault(require("@material-ui/core/ListItemTe
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -35,15 +35,19 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 var styles = function styles() {
   return {
@@ -61,111 +65,111 @@ var options = {
   VARCHAR: [{
     'value': 'BEGINS',
     'label': 'Starts with',
-    'icon': _react["default"].createElement(_mdiMaterialUi.ContainStart, null)
+    'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.ContainStart, null)
   }, {
     'value': 'CONTAINS',
     'label': 'Contains',
-    'icon': _react["default"].createElement(_mdiMaterialUi.Contain, null)
+    'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.Contain, null)
   }, //{'value':'NOT_CONTAINS','label':'Does not contain', 'icon': <Minus/>},
   {
     'value': 'ENDS',
     'label': 'Ends with',
-    'icon': _react["default"].createElement(_mdiMaterialUi.ContainEnd, null)
+    'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.ContainEnd, null)
   }, {
     'value': '=',
     'label': 'Equals',
-    'icon': _react["default"].createElement(_mdiMaterialUi.Equal, null)
+    'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.Equal, null)
   }, {
     'value': '!=',
     'label': 'Does not equal',
-    'icon': _react["default"].createElement(_mdiMaterialUi.NotEqualVariant, null)
+    'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.NotEqualVariant, null)
   }, {
     'value': 'IS EMPTY',
     'label': 'Is empty',
-    'icon': _react["default"].createElement(_mdiMaterialUi.RhombusOutline, null)
+    'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.RhombusOutline, null)
   }, {
     'value': 'NOT EMPTY',
     'label': 'Is not empty',
-    'icon': _react["default"].createElement(_mdiMaterialUi.Rhombus, null)
+    'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.Rhombus, null)
   }],
   DATE: [{
     'value': 'GREATER_THAN',
     'label': 'Greater than',
-    'icon': _react["default"].createElement(_mdiMaterialUi.GreaterThan, null)
+    'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.GreaterThan, null)
   }, {
     'value': '=',
     'label': 'Equals',
-    'icon': _react["default"].createElement(_mdiMaterialUi.Equal, null)
+    'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.Equal, null)
   }, {
     'value': 'LESS_THAN',
     'label': 'Less than',
-    'icon': _react["default"].createElement(_mdiMaterialUi.LessThan, null)
+    'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.LessThan, null)
   }, {
     'value': 'LESS_THAN_EQUALS',
     'label': 'Less than or equals',
-    'icon': _react["default"].createElement(_mdiMaterialUi.LessThanOrEqual, null)
+    'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.LessThanOrEqual, null)
   }, {
     'value': 'GREATER_THAN_EQUALS',
     'label': 'Greater than or equals',
-    'icon': _react["default"].createElement(_mdiMaterialUi.GreaterThan, null)
+    'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.GreaterThan, null)
   }, {
     'value': 'IS EMPTY',
     'label': 'Is empty',
-    'icon': _react["default"].createElement(_mdiMaterialUi.RhombusOutline, null)
+    'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.RhombusOutline, null)
   }, {
     'value': 'NOT EMPTY',
     'label': 'Is not empty',
-    'icon': _react["default"].createElement(_mdiMaterialUi.Rhombus, null)
+    'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.Rhombus, null)
   }, {
     'value': '!=',
     'label': 'Does not equal',
-    'icon': _react["default"].createElement(_mdiMaterialUi.NotEqualVariant, null)
+    'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.NotEqualVariant, null)
   }],
   NUMBER: [{
     'value': '=',
     'label': 'Equals',
-    'icon': _react["default"].createElement(_mdiMaterialUi.Equal, null)
+    'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.Equal, null)
   }, {
     'value': 'LESS_THAN',
     'label': 'Less than',
-    'icon': _react["default"].createElement(_mdiMaterialUi.LessThan, null)
+    'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.LessThan, null)
   }, {
     'value': 'GREATER_THAN',
     'label': 'Greater than',
-    'icon': _react["default"].createElement(_mdiMaterialUi.GreaterThan, null)
+    'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.GreaterThan, null)
   }, {
     'value': 'LESS_THAN_EQUALS',
     'label': 'Less than or equals',
-    'icon': _react["default"].createElement(_mdiMaterialUi.LessThanOrEqual, null)
+    'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.LessThanOrEqual, null)
   }, {
     'value': 'GREATER_THAN_EQUALS',
     'label': 'Greater than or equals',
-    'icon': _react["default"].createElement(_mdiMaterialUi.GreaterThanOrEqual, null)
+    'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.GreaterThanOrEqual, null)
   }, {
     'value': 'IS EMPTY',
     'label': 'Is empty',
-    'icon': _react["default"].createElement(_mdiMaterialUi.RhombusOutline, null)
+    'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.RhombusOutline, null)
   }, {
     'value': 'NOT EMPTY',
     'label': 'Is not empty',
-    'icon': _react["default"].createElement(_mdiMaterialUi.Rhombus, null)
+    'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.Rhombus, null)
   }, {
     'value': '!=',
     'label': 'Does not equal',
-    'icon': _react["default"].createElement(_mdiMaterialUi.NotEqualVariant, null)
+    'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.NotEqualVariant, null)
   }],
   CHKBOOLEAN: [{
     'value': 'INDETERMINATE',
     'label': 'Either Selected or Not Selected',
-    'icon': _react["default"].createElement(_mdiMaterialUi.CheckboxIntermediate, null)
+    'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.CheckboxIntermediate, null)
   }, {
     'value': '=',
     'label': 'Selected',
-    'icon': _react["default"].createElement(_mdiMaterialUi.CheckboxMarkedOutline, null)
+    'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.CheckboxMarkedOutline, null)
   }, {
     'value': '=',
     'label': 'Not selected',
-    'icon': _react["default"].createElement(_mdiMaterialUi.CheckboxBlankOutline, null)
+    'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.CheckboxBlankOutline, null)
   }]
 };
 
@@ -198,17 +202,17 @@ var menuItems = function menuItems(dataType) {
  */
 
 
-var DataGridFilterTypeMenu =
-/*#__PURE__*/
-function (_React$Component) {
+var DataGridFilterTypeMenu = /*#__PURE__*/function (_React$Component) {
   _inherits(DataGridFilterTypeMenu, _React$Component);
+
+  var _super = _createSuper(DataGridFilterTypeMenu);
 
   function DataGridFilterTypeMenu(props) {
     var _this;
 
     _classCallCheck(this, DataGridFilterTypeMenu);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(DataGridFilterTypeMenu).call(this, props)); // get the current operator
+    _this = _super.call(this, props); // get the current operator
 
     _this.filterTypeMenuButtonStyle = function () {
       var style = {
@@ -273,14 +277,14 @@ function (_React$Component) {
           _this$props$dataType = _this$props.dataType,
           dataType = _this$props$dataType === void 0 ? "VARCHAR" : _this$props$dataType;
       var anchorEl = this.state.anchorEl;
-      return _react["default"].createElement("div", {
+      return /*#__PURE__*/_react["default"].createElement("div", {
         style: this.filterTypeMenuButtonStyle()
-      }, _react["default"].createElement("div", {
+      }, /*#__PURE__*/_react["default"].createElement("div", {
         className: classes.filterIconButton,
         "aria-label": "More",
         "aria-owns": anchorEl ? 'long-menu' : null,
         onClick: this.handleClick
-      }, this.state.option.icon), _react["default"].createElement(_Menu["default"], {
+      }, this.state.option.icon), /*#__PURE__*/_react["default"].createElement(_Menu["default"], {
         id: "long-menu",
         anchorEl: this.state.anchorEl,
         open: Boolean(anchorEl),
@@ -291,13 +295,13 @@ function (_React$Component) {
           style: {}
         }
       }, menuItems(dataType).map(function (option) {
-        return _react["default"].createElement(_MenuItem["default"], {
+        return /*#__PURE__*/_react["default"].createElement(_MenuItem["default"], {
           key: option.value,
           selected: option === _this2.state.option,
           onClick: function onClick() {
             _this2.onChange(option);
           }
-        }, _react["default"].createElement(_ListItemIcon["default"], null, option.icon && option.icon), _react["default"].createElement(_ListItemText["default"], {
+        }, /*#__PURE__*/_react["default"].createElement(_ListItemIcon["default"], null, option.icon && option.icon), /*#__PURE__*/_react["default"].createElement(_ListItemText["default"], {
           inset: true,
           primary: option.label
         }));

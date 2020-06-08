@@ -18,9 +18,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 /**
  * Handles all calls to REST Api
  */
-var WSComments =
-/*#__PURE__*/
-function () {
+var WSComments = /*#__PURE__*/function () {
   function WSComments() {
     _classCallCheck(this, WSComments);
   }

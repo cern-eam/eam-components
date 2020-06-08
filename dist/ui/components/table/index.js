@@ -39,7 +39,7 @@ function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return 
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -47,13 +47,17 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -61,15 +65,19 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 var whiteBackground = {
   backgroundColor: "#ffffff"
@@ -85,14 +93,12 @@ var greyBackground = {
  * linksMap: Information of the columns that will be displayed as links
  */
 
-var EISTable =
-/*#__PURE__*/
-function (_Component) {
+var EISTable = /*#__PURE__*/function (_Component) {
   _inherits(EISTable, _Component);
 
-  function EISTable() {
-    var _getPrototypeOf2;
+  var _super = _createSuper(EISTable);
 
+  function EISTable() {
     var _this;
 
     _classCallCheck(this, EISTable);
@@ -101,7 +107,7 @@ function (_Component) {
       args[_key] = arguments[_key];
     }
 
-    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(EISTable)).call.apply(_getPrototypeOf2, [this].concat(args)));
+    _this = _super.call.apply(_super, [this].concat(args));
     _this.state = {
       windowWidth: window.innerWidth,
       orderBy: -1,
@@ -170,7 +176,7 @@ function (_Component) {
       if (!_this.props.linksMap.get(propCode)) {
         if (content[propCode] === 'true' || content[propCode] === 'false') {
           //Checkbox
-          return _react["default"].createElement(_Checkbox["default"], {
+          return /*#__PURE__*/_react["default"].createElement(_Checkbox["default"], {
             checked: content[propCode] === 'true',
             value: content[propCode],
             disabled: true
@@ -184,19 +190,19 @@ function (_Component) {
       var link = _this.props.linksMap.get(propCode);
 
       if (link.linkType === 'fixed') {
-        return _react["default"].createElement(_reactRouterDom.Link, {
+        return /*#__PURE__*/_react["default"].createElement(_reactRouterDom.Link, {
           to: {
             pathname: "".concat(link.linkPrefix).concat(link.linkValue).concat(content[propCode])
           }
         }, content[propCode]);
       } else if (link.linkType === 'absolute') {
-        return _react["default"].createElement("a", {
+        return /*#__PURE__*/_react["default"].createElement("a", {
           href: "".concat(link.linkValue).concat(content[propCode]),
           target: "_blank"
         }, content[propCode]);
       } else {
         /*Dynamic link*/
-        return _react["default"].createElement(_reactRouterDom.Link, {
+        return /*#__PURE__*/_react["default"].createElement(_reactRouterDom.Link, {
           to: {
             pathname: "".concat(link.linkPrefix).concat(link.linkValue)
           }
@@ -213,15 +219,15 @@ function (_Component) {
       listValues = listValues.concat(_this.props.headers.map(function (elem) {
         return "".concat(elem, " (Desc)");
       }));
-      return _react["default"].createElement(_Select["default"], {
+      return /*#__PURE__*/_react["default"].createElement(_Select["default"], {
         "native": true,
         value: _this.state.orderBy,
         onChange: _this.createSortHandlerMobile,
         className: "eamTableDropdown"
-      }, _react["default"].createElement("option", {
+      }, /*#__PURE__*/_react["default"].createElement("option", {
         value: -1
       }, "Select sort column..."), listValues.map(function (elem, index) {
-        return _react["default"].createElement("option", {
+        return /*#__PURE__*/_react["default"].createElement("option", {
           key: index,
           value: index
         }, elem);
@@ -286,14 +292,14 @@ function (_Component) {
       });
 
       if (isMobile) {
-        return _react["default"].createElement(_Table["default"], {
+        return /*#__PURE__*/_react["default"].createElement(_Table["default"], {
           className: "responsiveTable",
           style: {
             overflow: 'visible'
           }
-        }, _react["default"].createElement(_TableHead["default"], null, _react["default"].createElement(_TableRow["default"], {
+        }, /*#__PURE__*/_react["default"].createElement(_TableHead["default"], null, /*#__PURE__*/_react["default"].createElement(_TableRow["default"], {
           key: "sortby"
-        }, _react["default"].createElement(_TableCell["default"], null, "Sort by:"), _react["default"].createElement(_TableCell["default"], null, this.renderSortByValuesMobile()))), tableData.map(function (content, index) {
+        }, /*#__PURE__*/_react["default"].createElement(_TableCell["default"], null, "Sort by:"), /*#__PURE__*/_react["default"].createElement(_TableCell["default"], null, this.renderSortByValuesMobile()))), tableData.map(function (content, index) {
           // every second row is grey
           var style = index % 2 === 0 ? whiteBackground : greyBackground;
 
@@ -328,41 +334,41 @@ function (_Component) {
             });
           }
 
-          return _react["default"].createElement(_TableBody["default"], {
+          return /*#__PURE__*/_react["default"].createElement(_TableBody["default"], {
             key: index,
             style: style,
             onClick: rowsSelectable ? function () {
               return onRowClick(content, index);
             } : function () {}
           }, propCodes.map(function (prop, index) {
-            return _react["default"].createElement(_TableRow["default"], {
+            return /*#__PURE__*/_react["default"].createElement(_TableRow["default"], {
               key: prop,
               style: style
-            }, _react["default"].createElement(_TableCell["default"], null, headers[index]), _react["default"].createElement(_TableCell["default"], null, _this2.renderContent(prop, content)));
+            }, /*#__PURE__*/_react["default"].createElement(_TableCell["default"], null, headers[index]), /*#__PURE__*/_react["default"].createElement(_TableCell["default"], null, _this2.renderContent(prop, content)));
           }));
         }));
       } else {
-        return _react["default"].createElement(_react["default"].Fragment, null, _react["default"].createElement(_Table["default"], {
+        return /*#__PURE__*/_react["default"].createElement(_react["default"].Fragment, null, /*#__PURE__*/_react["default"].createElement(_Table["default"], {
           className: "responsiveTable",
           style: {
             overflow: 'visible'
           }
-        }, _react["default"].createElement(_TableHead["default"], null, _react["default"].createElement(_TableRow["default"], {
+        }, /*#__PURE__*/_react["default"].createElement(_TableHead["default"], null, /*#__PURE__*/_react["default"].createElement(_TableRow["default"], {
           key: "key"
         }, headers.map(function (header, index) {
-          return _react["default"].createElement(_TableCell["default"], {
+          return /*#__PURE__*/_react["default"].createElement(_TableCell["default"], {
             key: header,
             sortDirection: orderBy === index ? order : false
-          }, _react["default"].createElement(_Tooltip["default"], {
+          }, /*#__PURE__*/_react["default"].createElement(_Tooltip["default"], {
             title: "Sort",
             placement: 'bottom-end',
             enterDelay: 300
-          }, _react["default"].createElement(_TableSortLabel["default"], {
+          }, /*#__PURE__*/_react["default"].createElement(_TableSortLabel["default"], {
             active: orderBy === index,
             direction: order,
             onClick: _this2.createSortHandler(index)
           }, header)));
-        }))), _react["default"].createElement(_TableBody["default"], null, tableData.map(function (content, index) {
+        }))), /*#__PURE__*/_react["default"].createElement(_TableBody["default"], null, tableData.map(function (content, index) {
           var style = {};
 
           if (selectedRowIndexes && selectedRowIndexes.includes(index)) {
@@ -385,14 +391,14 @@ function (_Component) {
             });
           }
 
-          return _react["default"].createElement(_TableRow["default"], {
+          return /*#__PURE__*/_react["default"].createElement(_TableRow["default"], {
             key: index,
             style: style,
             onClick: rowsSelectable ? function () {
               return onRowClick(content, index);
             } : function () {}
           }, propCodes.map(function (propCode) {
-            return _react["default"].createElement(_TableCell["default"], {
+            return /*#__PURE__*/_react["default"].createElement(_TableCell["default"], {
               key: propCode
             }, _this2.renderContent(propCode, content));
           }));

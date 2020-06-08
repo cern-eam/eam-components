@@ -76,7 +76,7 @@ class EAMGrid extends Component {
     }
 
     componentDidUpdate (prevProps) {
-        if (this.props.gridId !== prevProps.gridId 
+        if (this.props.gridId !== prevProps.gridId
                 || this.props.screenCode !== prevProps.screenCode
                 || this.props.dataspyId !== prevProps.dataspyId) {
             this.init(this.props);
@@ -106,11 +106,14 @@ class EAMGrid extends Component {
      * To be called only when the Grid changes (GRID ID)
      */
     _initGrid = (gridRequest) => {
+        // clean filter by removing filters without value
+        let request = this.props.gridRequestAdapter(gridRequest);
+
         this.setState({
             isloading: true,
             rows: []
         },
-            () => GridWS.getGridData(gridRequest)
+            () => GridWS.getGridData(request)
                 .then(data => {
                     const metadata = data.body.data;
 
@@ -150,8 +153,8 @@ class EAMGrid extends Component {
                     alert("Metadata for this grid does not exist");
                 }
             })
-        ); 
-        
+        );
+
     };
 
     getCellWidth = cellTagname => this.fieldsWidthInfo.get(cellTagname)
@@ -193,6 +196,16 @@ class EAMGrid extends Component {
         })
     };
 
+    _cleanFilters = () => {
+        // clean filter by removing filters without value
+        let request = {
+            ...this.state.gridRequest,
+            gridFilter: Object.values(this.filterMap)
+        };
+        request.gridFilter = request.gridFilter.filter(f => f.operator !== 'INDETERMINATE' && ((f.fieldValue && f.fieldValue !== "") || f.operator === 'SELECTED' || f.operator === 'NOT_SELECTED'|| f.operator === 'IS_EMPTY' || f.operator === 'NOT_EMPTY'));
+        return request;
+    };
+
     loadMoreData () {
         // cancel current transaction if any
         if (!!this.cancelSource) {
@@ -212,7 +225,10 @@ class EAMGrid extends Component {
                 isloading: true
             }), () => {
 
-                GridWS.getGridData(this.state.gridRequest, {
+                // clean filter by removing filters without value
+                let request = this.props.gridRequestAdapter(this._cleanFilters());
+
+                GridWS.getGridData(request, {
                     cancelToken: this.cancelSource.token
                 }).then(data => {
                     // nullify info of current transaction
@@ -252,7 +268,10 @@ class EAMGrid extends Component {
         // get axios token to allow transaction cancellation
         this.cancelSource = axios.CancelToken.source();
 
-        return GridWS.exportDataToCSV(this.state.gridRequest, {
+        // clean filter by removing filters without value
+        let request = this.props.gridRequestAdapter(this._cleanFilters());
+
+        return GridWS.exportDataToCSV(request, {
             cancelToken: this.cancelSource.token
         }).then(data => {
             // nullify info of current transaction

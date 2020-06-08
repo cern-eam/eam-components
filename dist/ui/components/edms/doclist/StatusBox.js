@@ -20,7 +20,7 @@ var StatusBox = function StatusBox(_ref) {
     borderRadius: 5,
     backgroundColor: color
   };
-  return _react["default"].createElement("div", {
+  return /*#__PURE__*/_react["default"].createElement("div", {
     style: style
   });
 };
