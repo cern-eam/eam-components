@@ -20,9 +20,17 @@ export default class ChecklistItem extends Component {
         this.init(this.props.checklistItem);
     }
 
+    componentWillUnmount() {
+        const { debounce } = this.state;
+
+        if(debounce !== null) {
+            clearTimeout(debounce.timeout);
+        }
+    }
+
     componentWillReceiveProps(nextProps) {
         let checklistItemProps = nextProps.checklistItem;
-        let checklistItemState = this.state.checklistItem;
+        let checklistItemState = this.props.checklistItem;
         if (checklistItemProps && checklistItemState) {
             if (checklistItemProps.workOrderCode !== checklistItemState.workOrderCode) {
                 console.log('new wo!')
@@ -41,7 +49,6 @@ export default class ChecklistItem extends Component {
     init(checklistItem) {
         if (checklistItem) {
             this.setState({
-                checklistItem: checklistItem,
                 detailsVisible: !!checklistItem.notes || !!checklistItem.followUpWorkOrder  || checklistItem.followUp === '+'
             })
         }
@@ -92,26 +99,27 @@ export default class ChecklistItem extends Component {
             this.props.updateChecklistItem(checklistItem)
                 .catch(error => {
                     handleError(error);
-                    this.setState(state => { return {
-                        checklistItem: state.debounce.oldChecklistItem,
-                        debounce: null
-                    }});
+                    this.props.onUpdateChecklistItem(checklistItem);
+                    this.setState({debounce: null});
                 }).finally(() => {
                     this.setState({blocked: false});
                 });
         };
 
         this.setState(state => {
-            if(state.debounce !== null) clearTimeout(state.debounce.timeout);
+            if(state.debounce !== null) {
+                clearTimeout(state.debounce.timeout);
+            }
+
+            this.props.onUpdateChecklistItem(checklistItem);
 
             return {
                 blocked: true,
-                checklistItem: checklistItem,
                 debounce: {
                     ...(state.debounce || {}),
                     timeout: setTimeout(request, DEBOUNCE_TIME_MS),
                     // Copy the oldest checklist item (will be used to restore the UI)
-                    oldChecklistItem: state.debounce ? state.debounce.oldChecklistItem : state.checklistItem
+                    oldChecklistItem: state.debounce ? state.debounce.oldChecklistItem : this.props.checklistItem
                 }
             }
         });
@@ -132,7 +140,7 @@ export default class ChecklistItem extends Component {
     }
 
     renderChecklistItemInput() {
-        let {checklistItem} = this.state;
+        let {checklistItem} = this.props;
 
         let fields = [];
         let options = {};
@@ -260,7 +268,7 @@ export default class ChecklistItem extends Component {
     }
 
     render() {
-        let {checklistItem} = this.state;
+        let {checklistItem} = this.props;
         return (
             <div style={this.getCheckListItemStyle()}>
 
