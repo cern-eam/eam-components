@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import IconButton from '@material-ui/core/IconButton';
-import OpenInNewIcon from 'mdi-material-ui/OpenInNew'
+import OpenInApp from 'mdi-material-ui/OpenInApp'
+import OpenInNew from 'mdi-material-ui/OpenInNew'
 import { Link } from 'react-router-dom'
 
 const typingNumberReg = /^\-?\d*\.?\d*?$/
@@ -188,7 +189,7 @@ export default class EAMBaseInput extends Component {
                 {this.renderComponent()}
                 {this.props.link && this.props.link(this.state.value) &&
                     <IconButton style={this.linkButtonStyle} component={eamLink}>
-                        <OpenInNewIcon/>
+                        {this.props.link().startsWith("http") ? <OpenInNew/> : <OpenInApp/>}
                     </IconButton>
                 }
             </div>

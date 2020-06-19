@@ -5,7 +5,8 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import FontIcon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
-import OpenInNewIcon from 'mdi-material-ui/OpenInNew';
+import OpenInApp from 'mdi-material-ui/OpenInApp';
+import OpenInNew from 'mdi-material-ui/OpenInApp';
 import Fullscreen from '@material-ui/icons/Fullscreen'
 import { FullscreenExit } from 'mdi-material-ui';
 
@@ -83,7 +84,7 @@ class EISPanel extends Component {
                         </div>
                         {this.props.link && (
                             <IconButton onClick={this.linkClickHandler.bind(this)} style={{height: "auto", width: 35}}>
-                                <OpenInNewIcon style={this.linkIconStyle}/>
+                                {this.props.isExternalLink ? <OpenInNew/> : <OpenInApp/>}
                             </IconButton>
                         )}
                         {this.props.headingBar}

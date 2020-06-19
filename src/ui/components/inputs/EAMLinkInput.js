@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import IconButton from '@material-ui/core/IconButton';
-import OpenInNewIcon from 'mdi-material-ui/OpenInNew';
+import OpenInApp from 'mdi-material-ui/OpenInApp';
+import OpenInNew from 'mdi-material-ui/OpenInNew';
 import {Link} from 'react-router-dom';
 
 class EAMLinkInput extends Component {
@@ -35,7 +36,7 @@ class EAMLinkInput extends Component {
                 {this.props.children}
 
                 <IconButton style={iconButtonStyle} component={EAMLink}>
-                    <OpenInNewIcon/>
+                {this.props.isExternalLink ? <OpenInNew/> : <OpenInApp/>}
                 </IconButton>
             </div>
         )
