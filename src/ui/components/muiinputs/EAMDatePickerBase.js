@@ -2,7 +2,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import Icon from '@material-ui/core/Icon';
 import { format } from 'date-fns';
 import parse from "date-fns/parse";
-import { DatePicker, DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { DatePicker, DateTimePicker } from '@material-ui/pickers';
 import PropTypes from 'prop-types';
 import React from 'react';
 import EAMBaseInput from './EAMBaseInput';
@@ -71,32 +71,27 @@ export default class EAMDatePicker extends EAMBaseInput {
             leftArrowIcon: <Icon> keyboard_arrow_left </Icon>,
             rightArrowIcon: <Icon> keyboard_arrow_right </Icon>,
             TextFieldComponent: EAMTextField,
-            KeyboardButtonProps: {style: {paddingRight: 2}}
         }
     }
 
     renderComponent () {
         const { showTime } = this.props;
 
-        return (
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                {showTime ? 
-                    <DateTimePicker
-                        {...this.getPickerProps(this.state, this.props)}
-                        ampm={false}
-                        InputProps={{
-                            endAdornment: <DefaultEndAdornment/>
-                        }}
-    
-                    />
-                    : <DatePicker
-                        {...this.getPickerProps(this.state, this.props)}
-                        InputProps={{
-                            endAdornment: <DefaultEndAdornment/>
-                        }}
-                    />
-                }
-            </MuiPickersUtilsProvider>
+        return (showTime ? 
+            <DateTimePicker
+                {...this.getPickerProps(this.state, this.props)}
+                ampm={false}
+                InputProps={{
+                    endAdornment: <DefaultEndAdornment/>
+                }}
+
+            />
+            : <DatePicker
+                {...this.getPickerProps(this.state, this.props)}
+                InputProps={{
+                    endAdornment: <DefaultEndAdornment/>
+                }}
+            />
         )
     }
 }
