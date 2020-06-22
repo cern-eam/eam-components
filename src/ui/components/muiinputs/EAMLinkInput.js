@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import IconButton from '@material-ui/core/IconButton';
-import OpenInNew from 'mdi-material-ui/OpenInNew'
+import OpenInNewIcon from 'mdi-material-ui/OpenInNew'
 import { Link } from 'react-router-dom'
 
 class EAMLinkInput extends Component {
@@ -38,7 +38,7 @@ class EAMLinkInput extends Component {
 }
 
 EAMLinkInput.defaultProps = {
-    icon: <OpenInNew/> 
+    icon: <OpenInNewIcon/> 
 }
 
 export default EAMLinkInput

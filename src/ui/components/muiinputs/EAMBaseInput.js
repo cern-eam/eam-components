@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import IconButton from '@material-ui/core/IconButton';
-import OpenInNew from 'mdi-material-ui/OpenInNew'
+import OpenInNewIcon from 'mdi-material-ui/OpenInNew'
 import { Link } from 'react-router-dom'
 
 const typingNumberReg = /^\-?\d*\.?\d*?$/
@@ -198,5 +198,5 @@ export default class EAMBaseInput extends Component {
 
 EAMBaseInput.defaultProps = {
     customValidators: [],
-    icon: <OpenInNew/> 
+    icon: <OpenInNewIcon/> 
 }
