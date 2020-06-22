@@ -66,10 +66,11 @@ class EISPanel extends Component {
         return null;
     }
 
-   linkIcon = this.props.icon;
+   
 
     render() {
 
+        const linkIcon = this.props.icon;
         return (
             <ExpansionPanel defaultExpanded expanded={this.props.alwaysExpanded ? true : this.state.panelExpanded}
                             TransitionProps={{ timeout: 300 }}
