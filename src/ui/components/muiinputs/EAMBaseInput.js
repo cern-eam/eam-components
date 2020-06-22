@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import IconButton from '@material-ui/core/IconButton';
-import OpenInApp from 'mdi-material-ui/OpenInApp'
 import OpenInNew from 'mdi-material-ui/OpenInNew'
 import { Link } from 'react-router-dom'
 
@@ -189,7 +188,7 @@ export default class EAMBaseInput extends Component {
                 {this.renderComponent()}
                 {this.props.link && this.props.link(this.state.value) &&
                     <IconButton style={this.linkButtonStyle} component={eamLink}>
-                        {this.props.link().startsWith("http") ? <OpenInNew/> : <OpenInApp/>}
+                        {this.props.icon}
                     </IconButton>
                 }
             </div>
@@ -198,5 +197,6 @@ export default class EAMBaseInput extends Component {
 }
 
 EAMBaseInput.defaultProps = {
-    customValidators: []
+    customValidators: [],
+    icon: <OpenInNew/> 
 }

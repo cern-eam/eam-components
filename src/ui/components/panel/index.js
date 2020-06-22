@@ -5,8 +5,7 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import FontIcon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
-import OpenInApp from 'mdi-material-ui/OpenInApp';
-import OpenInNew from 'mdi-material-ui/OpenInApp';
+import OpenInNew from 'mdi-material-ui/OpenInNew';
 import Fullscreen from '@material-ui/icons/Fullscreen'
 import { FullscreenExit } from 'mdi-material-ui';
 
@@ -35,7 +34,9 @@ class EISPanel extends Component {
     };
 
     linkIconStyle = {
-        color: "#00aaff"
+        color: "#00aaff",
+        height: "auto",
+        width: 35
     };
     linkClickHandler() {
         window.open(this.props.link, '_blank');
@@ -83,8 +84,8 @@ class EISPanel extends Component {
                             {this.props.heading}
                         </div>
                         {this.props.link && (
-                            <IconButton onClick={this.linkClickHandler.bind(this)} style={{height: "auto", width: 35}}>
-                                {this.props.isExternalLink ? <OpenInNew/> : <OpenInApp/>}
+                            <IconButton onClick={this.linkClickHandler.bind(this)} style={this.linkIconStyle}>
+                                {this.props.icon}
                             </IconButton>
                         )}
                         {this.props.headingBar}
@@ -111,7 +112,8 @@ export const withFullscreen = (props) => (Component) => {
 
 EISPanel.defaultProps = {
     alwaysExpanded: false,
-    onPanelChange: undefined
+    onPanelChange: undefined,
+    icon: <OpenInNew/>
 };
 
 export default EISPanel;
