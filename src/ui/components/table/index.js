@@ -117,7 +117,7 @@ class EISTable extends Component {
             return (<a href={`${link.linkValue}${content[propCode]}`} target="_blank">{content[propCode]}</a>);
         }
         else {/*Dynamic link*/
-            return (<Link to={{pathname: `${link.linkPrefix}${content[link.linkValue]}`}}>{content[propCode]}</Link>);
+            return (<Link to={{pathname: `${link.linkPrefix}${content.link}`}}>{content[propCode]}</Link>);
         }
     };
 
