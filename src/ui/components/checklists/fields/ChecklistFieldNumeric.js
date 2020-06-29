@@ -42,15 +42,17 @@ const ERROR_BORDER = "solid 1px #f44336";
 
 const ChecklistFieldNumeric = props => {
     const {value, UOM, handleChange} = props;
+    const stringValue = value === null ? '' : value;
 
-    const [inputValue, setInputValue] = useState(value || "");
-    const [lastUpdatedValue, setUpdatedValue] = useState(value || "");
+    const [inputValue, setInputValue] = useState(stringValue);
+    const [lastUpdatedValue, setUpdatedValue] = useState(stringValue);
     const [border, setBorder] = useState(OK_BORDER);
 
     useEffect(() => {
-        if(value !== inputValue)
-            setInputValue(value || "");
-    }, [value]);
+        if(stringValue !== inputValue) {
+            setInputValue(stringValue);
+        }
+    }, [stringValue]);
 
     return <div style={outerStyle}>
         <input style={{...inputStyle, border: border}}

@@ -86,6 +86,12 @@ var ChecklistItemNotes = /*#__PURE__*/function (_Component) {
     };
 
     _this.handleBlur = function (event) {
+      var oldValue = _this.props.checklistItem.notes;
+
+      if ((oldValue === null ? '' : oldValue) === event.target.value) {
+        return;
+      }
+
       _this.props.onChange(_objectSpread({}, _this.props.checklistItem, {
         notes: event.target.value
       }));

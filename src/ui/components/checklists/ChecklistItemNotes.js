@@ -49,6 +49,11 @@ export default class ChecklistItemNotes extends Component {
     }
 
     handleBlur = event => {
+        const oldValue = this.props.checklistItem.notes;
+        if((oldValue === null ? '' : oldValue) === event.target.value) {
+            return;
+        }
+
         this.props.onChange({
             ...this.props.checklistItem,
             notes: event.target.value
