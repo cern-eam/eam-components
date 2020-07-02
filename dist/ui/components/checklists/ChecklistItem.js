@@ -23,18 +23,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -73,14 +61,12 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
 
     _this = _super.call(this, props);
 
-    _this.getCheckListItemStyle = function (checklistItem) {
+    _this.getCheckListItemStyle = function (blocked) {
       return {
         paddingTop: 5,
         paddingBottom: 5,
-        //paddingLeft: checklistItem.color ? 20 : 25,
-        pointerEvents: _this.state.blocked ? 'none' : 'auto',
-        flex: '1 1 auto' //borderLeft: checklistItem.color ? `5px ridge #${checklistItem.color}` : undefined,
-
+        pointerEvents: blocked ? 'none' : 'auto',
+        flex: '1 1 auto'
       };
     };
 
@@ -92,9 +78,9 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       flexWrap: 'wrap'
     };
     _this.firstLineDesc = {
-      display: 'flex',
+      "float": "left",
+      display: "flex",
       alignItems: "center",
-      //float: "left",
       pointerEvents: "initial",
       color: "rgba(0, 0, 0, 0.87)"
     };
@@ -107,16 +93,30 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       flexDirection: "row"
     };
 
-    _this.test = function () {
-      return _defineProperty({
+    _this.colorStyle = function (color) {
+      var _ref;
+
+      return _ref = {
         display: "flex",
         marginRight: "15px",
-        backgroundColor: _this.props.checklistItem.color ? "#".concat(_this.props.checklistItem.color) : undefined,
-        border: '1px dashed #ccc',
+        backgroundColor: color ? "#".concat(color) : undefined,
+        border: 'solid 1px #d1d3d4',
         flex: '0 1 auto',
         width: '5px',
         margin: '10px 15px 10px 0px'
-      }, "marginRight", '15px');
+      }, _defineProperty(_ref, "marginRight", '15px'), _defineProperty(_ref, "borderRadius", '30px'), _ref;
+    };
+
+    _this.containerStyle = function (blocked) {
+      return {
+        display: 'flex',
+        alignItems: "stretch",
+        minHeight: 48,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        borderBottom: "dashed 1px #d1d3d4",
+        opacity: blocked ? 0.5 : 1
+      };
     };
 
     _this.state = {
@@ -179,25 +179,9 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
 
       var handleError = this.props.handleError;
       var DEBOUNCE_TIME_MS = 50;
-      var oldChecklistItem = this.props.checklistItem;
 
       var request = function request() {
-        var requestObject = {
-          checkListCode: oldChecklistItem.checkListCode
-        };
-        console.log(oldChecklistItem, checklistItem);
-
-        for (var _i = 0, _Object$entries = Object.entries(checklistItem); _i < _Object$entries.length; _i++) {
-          var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
-              key = _Object$entries$_i[0],
-              value = _Object$entries$_i[1];
-
-          if (value !== oldChecklistItem[key]) {
-            requestObject[key] = value;
-          }
-        }
-
-        _this2.props.updateChecklistItem(requestObject)["catch"](function (error) {
+        _this2.props.updateChecklistItem(checklistItem)["catch"](function (error) {
           handleError(error);
 
           _this2.props.onUpdateChecklistItem(checklistItem);
@@ -420,19 +404,11 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
 
       var checklistItem = this.props.checklistItem;
       return /*#__PURE__*/_react["default"].createElement("div", {
-        style: {
-          display: 'flex',
-          alignItems: "stretch",
-          minHeight: 48,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          borderBottom: "dashed 1px #d1d3d4",
-          opacity: this.state.blocked ? 0.5 : 1
-        }
+        style: this.containerStyle(this.state.blocked)
       }, checklistItem.color ? /*#__PURE__*/_react["default"].createElement("div", {
-        style: this.test()
+        style: this.colorStyle(checklistItem.color)
       }) : null, /*#__PURE__*/_react["default"].createElement("div", {
-        style: this.getCheckListItemStyle(checklistItem)
+        style: this.getCheckListItemStyle(this.state.blocked)
       }, /*#__PURE__*/_react["default"].createElement("div", {
         style: this.firstLine
       }, /*#__PURE__*/_react["default"].createElement("div", {
