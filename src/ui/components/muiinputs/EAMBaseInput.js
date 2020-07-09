@@ -188,7 +188,7 @@ export default class EAMBaseInput extends Component {
                 {this.renderComponent()}
                 {this.props.link && this.props.link(this.state.value) &&
                     <IconButton style={this.linkButtonStyle} component={eamLink}>
-                        <OpenInNewIcon/>
+                        {this.props.icon}
                     </IconButton>
                 }
             </div>
@@ -197,5 +197,6 @@ export default class EAMBaseInput extends Component {
 }
 
 EAMBaseInput.defaultProps = {
-    customValidators: []
+    customValidators: [],
+    icon: <OpenInNewIcon/> 
 }

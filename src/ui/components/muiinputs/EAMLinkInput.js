@@ -29,12 +29,16 @@ class EAMLinkInput extends Component {
                     {this.props.children}
 
                     <IconButton style={iconButtonStyle} component={EAMLink}>
-                        <OpenInNewIcon />
+                        {this.props.icon}
                     </IconButton>
                 </div>
             )
-    }
+    } 
 
+}
+
+EAMLinkInput.defaultProps = {
+    icon: <OpenInNewIcon/> 
 }
 
 export default EAMLinkInput

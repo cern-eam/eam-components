@@ -66,8 +66,11 @@ class EISPanel extends Component {
         return null;
     }
 
+   
+
     render() {
 
+        const linkIcon = this.props.icon;
         return (
             <ExpansionPanel defaultExpanded expanded={this.props.alwaysExpanded ? true : this.state.panelExpanded}
                             TransitionProps={{ timeout: 300 }}
@@ -83,7 +86,7 @@ class EISPanel extends Component {
                         </div>
                         {this.props.link && (
                             <IconButton onClick={this.linkClickHandler.bind(this)} style={{height: "auto", width: 35}}>
-                                <OpenInNewIcon style={this.linkIconStyle}/>
+                                <linkIcon style={this.linkIconStyle}/>
                             </IconButton>
                         )}
                         {this.props.headingBar}
@@ -110,7 +113,8 @@ export const withFullscreen = (props) => (Component) => {
 
 EISPanel.defaultProps = {
     alwaysExpanded: false,
-    onPanelChange: undefined
+    onPanelChange: undefined,
+    icon: <OpenInNewIcon/>
 };
 
 export default EISPanel;

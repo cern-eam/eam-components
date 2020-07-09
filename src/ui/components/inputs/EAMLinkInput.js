@@ -35,7 +35,7 @@ class EAMLinkInput extends Component {
                 {this.props.children}
 
                 <IconButton style={iconButtonStyle} component={EAMLink}>
-                    <OpenInNewIcon/>
+                    {this.props.icon}
                 </IconButton>
             </div>
         )
@@ -45,6 +45,7 @@ class EAMLinkInput extends Component {
 
 EAMLinkInput.defaultProps = {
     isExternalLink: false,
+    icon: <OpenInNewIcon/>    
 };
 
 export default EAMLinkInput;
