@@ -170,7 +170,7 @@ class Checklists extends Component {
         });
     }
 
-    renderChecklistsForEquipment(checklists, activity) {
+    renderChecklistsForEquipment(key, checklists, activity) {
         const {
             updateChecklistItem,
             minFindingsDropdown,
@@ -184,14 +184,11 @@ class Checklists extends Component {
 
         if(firstChecklist === undefined) {
             console.error("renderChecklistsForEquipment MUST be passed at least 1 checklist");
-            return <div/>; // better to return a div than to crash
+            return null;
         }
 
-        if(typeof collapsed !== 'boolean') collapsed = true;
-
-
         return <EquipmentExpansionPanel
-                key={equipmentCode}
+                key={key}
                 expanded={!collapsed}
                 TransitionProps={{ unmountOnExit: true, timeout: 0 }}
                 onChange={(_, expanded) => this.setCollapsedEquipment(!expanded, activity.index, equipmentCode)}>
@@ -218,7 +215,11 @@ class Checklists extends Component {
     }
 
     renderChecklistsForActivity(activity, filteredEquipment) {
-        const { checklists } = activity;
+        const { checklists: originalChecklists } = activity;
+
+        const checklists = filteredEquipment ?
+            originalChecklists.filter(checklist => checklist.equipmentCode === filteredEquipment)
+            : originalChecklists;
 
         const result = [];
 
@@ -244,10 +245,8 @@ class Checklists extends Component {
             const start = equipmentBoundaries[i-1];
             const end = equipmentBoundaries[i];
             const equipmentCode = checklists[start].equipmentCode;
-
-            if(filteredEquipment && equipmentCode !== filteredEquipment) continue;
             
-            result.push(this.renderChecklistsForEquipment(checklists.slice(start, end), activity));
+            result.push(this.renderChecklistsForEquipment(equipmentCode + start, checklists.slice(start, end), activity));
         }
 
 
@@ -348,8 +347,9 @@ class Checklists extends Component {
                     (activity.activityCode !== effectiveActivityCode)
                     && Object.keys(activity.equipments)
                         .every(equipmentCode2 => equipmentCode2 !== effectiveEquipmentCode);
-                equipmentCollapsedPredicate = (equipmentCode) => 
-                    equipmentCode !== effectiveEquipmentCode;
+                
+                equipmentCollapsedPredicate = (equipmentCode) => effectiveEquipmentCode
+                    && equipmentCode !== effectiveEquipmentCode;
             } else {
                 // if nothing is being filter, uncollapse everything,
                 // to prepare for calling the collapse heuristic

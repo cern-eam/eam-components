@@ -39,8 +39,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _readOnlyError(name) { throw new Error("\"" + name + "\" is read-only"); }
-
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -274,7 +272,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
     }
   }, {
     key: "renderChecklistsForEquipment",
-    value: function renderChecklistsForEquipment(checklists, activity) {
+    value: function renderChecklistsForEquipment(key, checklists, activity) {
       var _this3 = this;
 
       var _this$props = this.props,
@@ -288,12 +286,11 @@ var Checklists = /*#__PURE__*/function (_Component) {
 
       if (firstChecklist === undefined) {
         console.error("renderChecklistsForEquipment MUST be passed at least 1 checklist");
-        return /*#__PURE__*/_react["default"].createElement("div", null); // better to return a div than to crash
+        return null;
       }
 
-      if (typeof collapsed !== 'boolean') collapsed = (_readOnlyError("collapsed"), true);
       return /*#__PURE__*/_react["default"].createElement(EquipmentExpansionPanel, {
-        key: equipmentCode,
+        key: key,
         expanded: !collapsed,
         TransitionProps: {
           unmountOnExit: true,
@@ -331,7 +328,10 @@ var Checklists = /*#__PURE__*/function (_Component) {
   }, {
     key: "renderChecklistsForActivity",
     value: function renderChecklistsForActivity(activity, filteredEquipment) {
-      var checklists = activity.checklists;
+      var originalChecklists = activity.checklists;
+      var checklists = filteredEquipment ? originalChecklists.filter(function (checklist) {
+        return checklist.equipmentCode === filteredEquipment;
+      }) : originalChecklists;
       var result = []; // this stores the index of the checklists that are related to a different equipment than the one before them
       // this includes the first checklist item since it has no equipment before it
 
@@ -351,8 +351,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
         var start = equipmentBoundaries[i - 1];
         var end = equipmentBoundaries[i];
         var _equipmentCode = checklists[start].equipmentCode;
-        if (filteredEquipment && _equipmentCode !== filteredEquipment) continue;
-        result.push(this.renderChecklistsForEquipment(checklists.slice(start, end), activity));
+        result.push(this.renderChecklistsForEquipment(_equipmentCode + start, checklists.slice(start, end), activity));
       }
 
       return result;
@@ -477,7 +476,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
           };
 
           equipmentCollapsedPredicate = function equipmentCollapsedPredicate(equipmentCode) {
-            return equipmentCode !== effectiveEquipmentCode;
+            return effectiveEquipmentCode && equipmentCode !== effectiveEquipmentCode;
           };
         } else {
           // if nothing is being filter, uncollapse everything,
