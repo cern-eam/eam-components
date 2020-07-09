@@ -54,17 +54,16 @@ export default class ChecklistItem extends Component {
         }
     }
 
-    getCheckListItemStyle = () => ({
+    getCheckListItemStyle = blocked => ({
         paddingTop: 5,
         paddingBottom: 5,
-        borderBottom: "dashed 1px #d1d3d4",
-        opacity: this.state.blocked ? 0.5 : 1,
-        pointerEvents: this.state.blocked ? 'none' : 'auto'
+        pointerEvents: blocked ? 'none' : 'auto',
+        flex: '1 1 auto',
     })
 
     firstLine = {
         display: "flex",
-        alignItems: "center",
+        alignItems: "stretch",
         minHeight: 48,
         justifyContent: 'space-between',
         flexWrap: 'wrap'
@@ -72,6 +71,8 @@ export default class ChecklistItem extends Component {
 
     firstLineDesc = {
         float: "left",
+        display: "flex",
+        alignItems: "center",
         pointerEvents: "initial",
         color: "rgba(0, 0, 0, 0.87)"
     };
@@ -96,6 +97,7 @@ export default class ChecklistItem extends Component {
         const DEBOUNCE_TIME_MS = 50;
         
         const request = () => {
+
             this.props.updateChecklistItem(checklistItem)
                 .catch(error => {
                     handleError(error);
@@ -267,33 +269,57 @@ export default class ChecklistItem extends Component {
         return <ChecklistItemInput checklistItem={checklistItem} onChange={value => this.onChange(value)} fields={fields} options={options} />
     }
 
+    colorStyle = color => ({
+        display: "flex",
+        marginRight: "15px",
+        backgroundColor: color ? `#${color}` : undefined,
+        border: 'solid 1px #d1d3d4',
+        flex: '0 1 auto',
+        width: '5px',
+        margin: '10px 15px 10px 0px',
+        marginRight: '15px',
+        borderRadius: '30px'
+    })
+
+    containerStyle = blocked => ({
+        display: 'flex',
+        alignItems: "stretch",
+        minHeight: 48,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        borderBottom: "dashed 1px #d1d3d4",
+        opacity: blocked ? 0.5 : 1
+    })
+
     render() {
         let {checklistItem} = this.props;
         return (
-            <div style={this.getCheckListItemStyle()}>
-
-                <div style={this.firstLine}>
-                    <div style={this.firstLineDesc} onClick={this.descClickHandler.bind(this)}>
-                        <label>{checklistItem.desc}</label>
-                        {checklistItem.requiredToClose === true && <label style={{color: "red"}}> *</label>}
+            <div style={this.containerStyle(this.state.blocked)}>
+                {checklistItem.color ? <div style={this.colorStyle(checklistItem.color)}></div> : null}
+                <div style={this.getCheckListItemStyle(this.state.blocked)}>
+                    <div style={this.firstLine}>
+                        <div style={this.firstLineDesc} onClick={this.descClickHandler.bind(this)}>
+                            <label>{checklistItem.desc}</label>
+                            {checklistItem.requiredToClose === true && <label style={{color: "red"}}> *</label>}
+                        </div>
+                        {this.renderChecklistItemInput()}
                     </div>
-                    {this.renderChecklistItemInput()}
-                </div>
 
-                <Collapse in={this.state.detailsVisible}>
-                    <div style={this.checklistDetailsStyle} >
-                        <ChecklistItemNotes 
-                            ref={this.notes}
-                            checklistItem={checklistItem}
-                            onChange={value => this.onChange(value)}
-                        />
-                        {!checklistItem.hideFollowUp && <ChecklistItemFollowUp 
+                    <Collapse in={this.state.detailsVisible}>
+                        <div style={this.checklistDetailsStyle} >
+                            <ChecklistItemNotes 
+                                ref={this.notes}
                                 checklistItem={checklistItem}
                                 onChange={value => this.onChange(value)}
-                                getWoLink={this.props.getWoLink}
-                        />}
-                    </div>
-                </Collapse>
+                            />
+                            {!checklistItem.hideFollowUp && <ChecklistItemFollowUp 
+                                    checklistItem={checklistItem}
+                                    onChange={value => this.onChange(value)}
+                                    getWoLink={this.props.getWoLink}
+                            />}
+                        </div>
+                    </Collapse>
+                </div>
             </div>
         )
     }

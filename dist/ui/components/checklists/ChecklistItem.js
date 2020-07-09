@@ -61,25 +61,26 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
 
     _this = _super.call(this, props);
 
-    _this.getCheckListItemStyle = function () {
+    _this.getCheckListItemStyle = function (blocked) {
       return {
         paddingTop: 5,
         paddingBottom: 5,
-        borderBottom: "dashed 1px #d1d3d4",
-        opacity: _this.state.blocked ? 0.5 : 1,
-        pointerEvents: _this.state.blocked ? 'none' : 'auto'
+        pointerEvents: blocked ? 'none' : 'auto',
+        flex: '1 1 auto'
       };
     };
 
     _this.firstLine = {
       display: "flex",
-      alignItems: "center",
+      alignItems: "stretch",
       minHeight: 48,
       justifyContent: 'space-between',
       flexWrap: 'wrap'
     };
     _this.firstLineDesc = {
       "float": "left",
+      display: "flex",
+      alignItems: "center",
       pointerEvents: "initial",
       color: "rgba(0, 0, 0, 0.87)"
     };
@@ -91,6 +92,33 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       display: "flex",
       flexDirection: "row"
     };
+
+    _this.colorStyle = function (color) {
+      var _ref;
+
+      return _ref = {
+        display: "flex",
+        marginRight: "15px",
+        backgroundColor: color ? "#".concat(color) : undefined,
+        border: 'solid 1px #d1d3d4',
+        flex: '0 1 auto',
+        width: '5px',
+        margin: '10px 15px 10px 0px'
+      }, _defineProperty(_ref, "marginRight", '15px'), _defineProperty(_ref, "borderRadius", '30px'), _ref;
+    };
+
+    _this.containerStyle = function (blocked) {
+      return {
+        display: 'flex',
+        alignItems: "stretch",
+        minHeight: 48,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        borderBottom: "dashed 1px #d1d3d4",
+        opacity: blocked ? 0.5 : 1
+      };
+    };
+
     _this.state = {
       detailsVisible: false,
       blocked: false,
@@ -376,7 +404,11 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
 
       var checklistItem = this.props.checklistItem;
       return /*#__PURE__*/_react["default"].createElement("div", {
-        style: this.getCheckListItemStyle()
+        style: this.containerStyle(this.state.blocked)
+      }, checklistItem.color ? /*#__PURE__*/_react["default"].createElement("div", {
+        style: this.colorStyle(checklistItem.color)
+      }) : null, /*#__PURE__*/_react["default"].createElement("div", {
+        style: this.getCheckListItemStyle(this.state.blocked)
       }, /*#__PURE__*/_react["default"].createElement("div", {
         style: this.firstLine
       }, /*#__PURE__*/_react["default"].createElement("div", {
@@ -402,7 +434,7 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
           return _this5.onChange(value);
         },
         getWoLink: this.props.getWoLink
-      }))));
+      })))));
     }
   }]);
 
