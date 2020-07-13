@@ -125,6 +125,7 @@ var EISPanel = /*#__PURE__*/function (_Component) {
   }, {
     key: "render",
     value: function render() {
+      var linkIcon = this.props.icon;
       return /*#__PURE__*/_react["default"].createElement(_ExpansionPanel["default"], {
         defaultExpanded: true,
         expanded: this.props.alwaysExpanded ? true : this.state.panelExpanded,
@@ -146,7 +147,7 @@ var EISPanel = /*#__PURE__*/function (_Component) {
           height: "auto",
           width: 35
         }
-      }, /*#__PURE__*/_react["default"].createElement(_OpenInNew["default"], {
+      }, /*#__PURE__*/_react["default"].createElement("linkIcon", {
         style: this.linkIconStyle
       })), this.props.headingBar)), /*#__PURE__*/_react["default"].createElement(_ExpansionPanelDetails["default"], {
         style: _objectSpread({}, this.props.detailsStyle)
@@ -197,7 +198,8 @@ var withFullscreen = function withFullscreen(props) {
 exports.withFullscreen = withFullscreen;
 EISPanel.defaultProps = {
   alwaysExpanded: false,
-  onPanelChange: undefined
+  onPanelChange: undefined,
+  icon: /*#__PURE__*/_react["default"].createElement(_OpenInNew["default"], null)
 };
 var _default = EISPanel;
 exports["default"] = _default;

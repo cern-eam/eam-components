@@ -305,7 +305,7 @@ var EAMBaseInput = /*#__PURE__*/function (_Component) {
       }, this.renderComponent(), this.props.link && this.props.link(this.state.value) && /*#__PURE__*/_react["default"].createElement(_IconButton["default"], {
         style: this.linkButtonStyle,
         component: eamLink
-      }, /*#__PURE__*/_react["default"].createElement(_OpenInNew["default"], null)));
+      }, this.props.icon));
     }
   }]);
 
@@ -314,5 +314,6 @@ var EAMBaseInput = /*#__PURE__*/function (_Component) {
 
 exports["default"] = EAMBaseInput;
 EAMBaseInput.defaultProps = {
-  customValidators: []
+  customValidators: [],
+  icon: /*#__PURE__*/_react["default"].createElement(_OpenInNew["default"], null)
 };

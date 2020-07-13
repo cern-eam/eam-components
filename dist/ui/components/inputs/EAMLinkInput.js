@@ -98,7 +98,7 @@ var EAMLinkInput = /*#__PURE__*/function (_Component) {
       }, this.props.children, /*#__PURE__*/_react["default"].createElement(_IconButton["default"], {
         style: iconButtonStyle,
         component: EAMLink
-      }, /*#__PURE__*/_react["default"].createElement(_OpenInNew["default"], null)));
+      }, this.props.icon));
     }
   }]);
 
@@ -106,7 +106,8 @@ var EAMLinkInput = /*#__PURE__*/function (_Component) {
 }(_react.Component);
 
 EAMLinkInput.defaultProps = {
-  isExternalLink: false
+  isExternalLink: false,
+  icon: /*#__PURE__*/_react["default"].createElement(_OpenInNew["default"], null)
 };
 var _default = EAMLinkInput;
 exports["default"] = _default;

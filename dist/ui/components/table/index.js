@@ -204,7 +204,7 @@ var EISTable = /*#__PURE__*/function (_Component) {
         /*Dynamic link*/
         return /*#__PURE__*/_react["default"].createElement(_reactRouterDom.Link, {
           to: {
-            pathname: "".concat(link.linkPrefix).concat(link.linkValue)
+            pathname: "".concat(link.linkPrefix).concat(content[link.linkValue])
           }
         }, content[propCode]);
       }
