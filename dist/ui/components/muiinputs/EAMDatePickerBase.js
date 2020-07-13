@@ -23,7 +23,9 @@ var _EAMBaseInput2 = _interopRequireDefault(require("./EAMBaseInput"));
 
 var _EAMTextField = _interopRequireDefault(require("./EAMTextField"));
 
-var _locale = require("date-fns/locale");
+var _Event = _interopRequireDefault(require("@material-ui/icons/Event"));
+
+var _core = require("@material-ui/core");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -50,6 +52,14 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+var DefaultEndAdornment = function DefaultEndAdornment() {
+  return /*#__PURE__*/_react["default"].createElement(_core.InputAdornment, {
+    position: "end"
+  }, /*#__PURE__*/_react["default"].createElement(_core.IconButton, {
+    size: "small"
+  }, /*#__PURE__*/_react["default"].createElement(_Event["default"], null)));
+};
 
 var EAMDatePicker = /*#__PURE__*/function (_EAMBaseInput) {
   _inherits(EAMDatePicker, _EAMBaseInput);
@@ -145,9 +155,16 @@ var EAMDatePicker = /*#__PURE__*/function (_EAMBaseInput) {
       var showTime = this.props.showTime;
       return /*#__PURE__*/_react["default"].createElement(_pickers.MuiPickersUtilsProvider, {
         utils: _dateFns["default"]
-      }, showTime ? /*#__PURE__*/_react["default"].createElement(_pickers.KeyboardDateTimePicker, _extends({}, this.getPickerProps(this.state, this.props), {
-        ampm: false
-      })) : /*#__PURE__*/_react["default"].createElement(_pickers.KeyboardDatePicker, this.getPickerProps(this.state, this.props)));
+      }, showTime ? /*#__PURE__*/_react["default"].createElement(_pickers.DateTimePicker, _extends({}, this.getPickerProps(this.state, this.props), {
+        ampm: false,
+        InputProps: {
+          endAdornment: /*#__PURE__*/_react["default"].createElement(DefaultEndAdornment, null)
+        }
+      })) : /*#__PURE__*/_react["default"].createElement(_pickers.DatePicker, _extends({}, this.getPickerProps(this.state, this.props), {
+        InputProps: {
+          endAdornment: /*#__PURE__*/_react["default"].createElement(DefaultEndAdornment, null)
+        }
+      })));
     }
   }]);
 

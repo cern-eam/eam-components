@@ -2,12 +2,21 @@ import DateFnsUtils from '@date-io/date-fns';
 import Icon from '@material-ui/core/Icon';
 import { format } from 'date-fns';
 import parse from "date-fns/parse";
-import { KeyboardDatePicker, KeyboardDateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { DatePicker, DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import PropTypes from 'prop-types';
 import React from 'react';
 import EAMBaseInput from './EAMBaseInput';
 import EAMTextField from './EAMTextField';
-import { th } from 'date-fns/locale';
+import EventIcon from '@material-ui/icons/Event';
+import { InputAdornment, IconButton } from "@material-ui/core";
+
+const DefaultEndAdornment = () => (
+    <InputAdornment position="end">
+      <IconButton size="small">
+        <EventIcon />
+      </IconButton>
+    </InputAdornment>
+)
 
 export default class EAMDatePicker extends EAMBaseInput {
 
@@ -72,12 +81,19 @@ export default class EAMDatePicker extends EAMBaseInput {
         return (
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 {showTime ? 
-                    <KeyboardDateTimePicker
+                    <DateTimePicker
                         {...this.getPickerProps(this.state, this.props)}
                         ampm={false}
+                        InputProps={{
+                            endAdornment: <DefaultEndAdornment/>
+                        }}
+    
                     />
-                    : <KeyboardDatePicker
+                    : <DatePicker
                         {...this.getPickerProps(this.state, this.props)}
+                        InputProps={{
+                            endAdornment: <DefaultEndAdornment/>
+                        }}
                     />
                 }
             </MuiPickersUtilsProvider>
