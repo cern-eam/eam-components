@@ -141,21 +141,14 @@ var EAMDatePicker = /*#__PURE__*/function (_EAMBaseInput) {
         label: elementInfo && elementInfo.text,
         leftArrowIcon: /*#__PURE__*/_react["default"].createElement(_Icon["default"], null, " keyboard_arrow_left "),
         rightArrowIcon: /*#__PURE__*/_react["default"].createElement(_Icon["default"], null, " keyboard_arrow_right "),
-        TextFieldComponent: _EAMTextField["default"],
-        KeyboardButtonProps: {
-          style: {
-            paddingRight: 2
-          }
-        }
+        TextFieldComponent: _EAMTextField["default"]
       };
     }
   }, {
     key: "renderComponent",
     value: function renderComponent() {
       var showTime = this.props.showTime;
-      return /*#__PURE__*/_react["default"].createElement(_pickers.MuiPickersUtilsProvider, {
-        utils: _dateFns["default"]
-      }, showTime ? /*#__PURE__*/_react["default"].createElement(_pickers.DateTimePicker, _extends({}, this.getPickerProps(this.state, this.props), {
+      return showTime ? /*#__PURE__*/_react["default"].createElement(_pickers.DateTimePicker, _extends({}, this.getPickerProps(this.state, this.props), {
         ampm: false,
         InputProps: {
           endAdornment: /*#__PURE__*/_react["default"].createElement(DefaultEndAdornment, null)
@@ -164,7 +157,7 @@ var EAMDatePicker = /*#__PURE__*/function (_EAMBaseInput) {
         InputProps: {
           endAdornment: /*#__PURE__*/_react["default"].createElement(DefaultEndAdornment, null)
         }
-      })));
+      }));
     }
   }]);
 
