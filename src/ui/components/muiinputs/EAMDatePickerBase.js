@@ -42,7 +42,9 @@ export default class EAMDatePicker extends EAMBaseInput {
     convert = value => this.readDate(this.readValue(value || ''))
 
     shouldComponentUpdate(nextProps, nextState) {
-        return this.props && this.props.value !== nextProps.value
+        return this.props.value !== nextProps.value
+            || this.state.error !== nextState.error
+            || this.state.helperText !== this.state.helperText;
     }
 
     componentDidUpdate() {
