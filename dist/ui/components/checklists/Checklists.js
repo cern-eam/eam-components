@@ -398,9 +398,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
     value: function renderActivities(filteredActivity, filteredEquipment) {
       var _this5 = this;
 
-      var _this$state = this.state,
-          activities = _this$state.activities,
-          blocking = _this$state.blocking;
+      var activities = this.state.activities;
       return activities.filter(function (activity) {
         return activity.checklists && activity.checklists.length > 0 && !(filteredEquipment && activity.equipments[filteredEquipment] === undefined) && !(filteredActivity && activity.activityCode !== filteredActivity);
       }).map(function (activity) {
@@ -427,7 +425,9 @@ var Checklists = /*#__PURE__*/function (_Component) {
           style: {
             fontWeight: 500
           }
-        }, activity.activityCode, " \u2014 ", activity.activityNote), /*#__PURE__*/_react["default"].createElement(_Button["default"], {
+        }, activity.activityCode, " \u2014 ", activity.activityNote), activity.checklists.some(function (checklist) {
+          return !checklist.hideFollowUp;
+        }) && /*#__PURE__*/_react["default"].createElement(_Button["default"], {
           key: activity.activityCode + '$createfuwo',
           onClick: function onClick(evt) {
             return _this5.createFollowUpWOs(evt, activity);
@@ -528,11 +528,11 @@ var Checklists = /*#__PURE__*/function (_Component) {
     value: function render() {
       var _this7 = this;
 
-      var _this$state2 = this.state,
-          activities = _this$state2.activities,
-          filteredActivity = _this$state2.filteredActivity,
-          filteredEquipment = _this$state2.filteredEquipment,
-          blocking = _this$state2.blocking; // makes a global equipments array, with all the different equipments from all activities
+      var _this$state = this.state,
+          activities = _this$state.activities,
+          filteredActivity = _this$state.filteredActivity,
+          filteredEquipment = _this$state.filteredEquipment,
+          blocking = _this$state.blocking; // makes a global equipments array, with all the different equipments from all activities
 
       var equipments = activities.reduce(function (prev, activity) {
         Object.keys(activity.equipments).forEach(function (key) {

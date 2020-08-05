@@ -283,7 +283,7 @@ class Checklists extends Component {
     }
 
     renderActivities(filteredActivity, filteredEquipment) {
-        const { activities, blocking } = this.state;
+        const { activities } = this.state;
 
         return activities.filter(activity => (
                 activity.checklists && activity.checklists.length > 0
@@ -303,13 +303,13 @@ class Checklists extends Component {
                             alignItems: "center"
                         }}>
                             <span style={{fontWeight: 500}}>{activity.activityCode} — {activity.activityNote}</span>
-                            <Button 
+                            {activity.checklists.some(checklist => !checklist.hideFollowUp) && <Button 
                                 key={activity.activityCode + '$createfuwo'}
                                 onClick={ evt => this.createFollowUpWOs(evt, activity) } 
                                 color="primary" 
                                 style={{marginLeft: 'auto'}}>
                                 Create Follow-up WO
-                            </Button>
+                            </Button>}
                         </div>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails style={{margin: 0, padding: 0}}>
