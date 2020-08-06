@@ -157,7 +157,7 @@ var EAMGrid = /*#__PURE__*/function (_Component) {
               dataspyID: metadata.dataSpyId,
               gridName: metadata.gridName,
               userFunctionName: metadata.gridName,
-              cursorPosition: 1,
+              cursorPosition: metadata.cursorPosition + 1,
               includeMetadata: false
             })
           });
