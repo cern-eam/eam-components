@@ -2,9 +2,9 @@ import {createMuiTheme} from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
 import lightBlue from '@material-ui/core/colors/lightBlue';
 
-const muiSettings = {
+const muiSettings = primaryColor => ({
     palette: {
-        primary: {main: blue[500]}, //EAMLight blue '#2196F3'
+        primary: {main: primaryColor}, //EAMLight blue '#2196F3'
         secondary: {main: lightBlue[900]} //Darker blue '#01579b'
     },
     typography: {
@@ -19,34 +19,11 @@ const muiSettings = {
             }
         }
     }
-};
-
-export const theme = createMuiTheme(muiSettings);
-
-export const BLUE = createMuiTheme({
-    ...muiSettings,
-    custom: {
-        topBarColor: '#00aaff'
-    }
 });
 
-export const GREEN = createMuiTheme({
-    ...muiSettings,
-    custom: {
-        topBarColor: '#6ac860'
-    }
-});
+export const theme = createMuiTheme(muiSettings('#2196F3'));
 
-export const RED = createMuiTheme({
-    ...muiSettings,
-    custom: {
-        topBarColor: '#c86060'
-    }
-});
-
-export const DANGER = createMuiTheme({
-    ...muiSettings,
-    custom: {
-        topBarColor: '#ff0000'
-    }
-});
+export const BLUE = createMuiTheme(muiSettings('#00aaff'));
+export const GREEN = createMuiTheme(muiSettings('#6ac860'));
+export const RED = createMuiTheme(muiSettings('#c86060'));
+export const DANGER = createMuiTheme(muiSettings('#ff0000'));
