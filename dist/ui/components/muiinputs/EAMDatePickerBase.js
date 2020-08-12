@@ -99,7 +99,7 @@ var EAMDatePicker = /*#__PURE__*/function (_EAMBaseInput) {
   _createClass(EAMDatePicker, [{
     key: "shouldComponentUpdate",
     value: function shouldComponentUpdate(nextProps, nextState) {
-      return this.props.value !== nextProps.value || this.state.error !== nextState.error || this.state.helperText !== this.state.helperText;
+      return this.props.value !== nextProps.value || this.state.error !== nextState.error || this.state.helperText !== nextState.helperText;
     }
   }, {
     key: "componentDidUpdate",
