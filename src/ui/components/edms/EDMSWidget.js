@@ -6,6 +6,8 @@ import WSEDMS from "../../../tools/WSEDMS";
 import EDMSWidgetToolbar from "./EDMSWidgetToolbar";
 import NCRCreation from "./ncrwidget/ncrcreation/NCRCreation";
 import DocumentCreation from "./documentwidget/doccreation/DocumentCreation";
+import ErrorOutline from "@material-ui/icons/ErrorOutline";
+import SimpleEmptyState from "../emptystates/SimpleEmptyState";
 
 const noCreationMode = 'DISABLED';
 const regularCreationMode = 'REGULAR';
@@ -16,7 +18,9 @@ class EDMSWidget extends Component {
     state = {
         isLoading: true,
         currentView: 'DOCLIST',
-        documentCreationVisible: false
+        documentCreationVisible: false,
+        errorMessage: '',
+        documentList: [],
     };
 
     componentDidMount() {
@@ -48,6 +52,15 @@ class EDMSWidget extends Component {
                 return <DocumentCreation createDocument={this.createDocument}/>;
         }
     };
+
+    getEmptyStateMessage = (creationMode) => {
+        switch (creationMode) {
+            case NCRCreationMode:
+                return 'No NCRs to show.'
+            default:
+                return 'No documents to show.'
+        }
+    } 
 
     createDocument = (document, files, documentLink) => {
         //creating document
@@ -170,7 +183,7 @@ class EDMSWidget extends Component {
                 }));
             }).catch(reason => {
             const errorMessage = this.getErrorMessage(reason);
-            this.props.showError(errorMessage)
+            this.setState({ errorMessage })
             this.unblockUI();
             //TODO handle the error message...
         });
@@ -186,7 +199,6 @@ class EDMSWidget extends Component {
     //
     mainDivStyle = {
         width: "100%",
-        minHeight: 300
     };
     //
     // ERROR HANDLING
@@ -210,6 +222,8 @@ class EDMSWidget extends Component {
 
     render() {
         const { hideLink } = this.props;
+        const { documentList, isLoading } = this.state;
+        const isEmptyState = !documentList.length && !isLoading;
         return (
             <BlockUi tag="div" blocking={this.state.isLoading} style={this.mainDivStyle}>
                 <EDMSWidgetToolbar 
@@ -225,19 +239,35 @@ class EDMSWidget extends Component {
                 {this.state.documentCreationVisible &&
                     this.generateDocumentCreation(this.props.creationMode)}
 
-
-                <div style={{display: this.state.currentView === 'GALLERIA' ? 'block' : 'none', margin: 5, minWidth: 514}}>
-                    <EDMSGalleria documentList={this.state.documentList}
-                                    handleFilesUpload={this.handleFilesUpload}
-                                    {...this.props}/>
-                </div>
+                
 
 
-                <div style={{display: this.state.currentView === 'DOCLIST' ? 'block' : 'none', margin: 5}}>
-                    <DocumentList documents={this.state.documentList}
-                                    filesUploadHandler={this.handleFilesUpload}
-                    />
-                </div>
+                {this.state.errorMessage ?
+                    <div style={{ display: 'flex', padding: 16, justifyContent: 'center', alignItems: 'center' }}>
+                        <ErrorOutline style={{ padding: 4 }}/>
+                        <span>{this.state.errorMessage}</span>
+                    </div>
+                    :
+                    isEmptyState ?
+                        <SimpleEmptyState message={this.getEmptyStateMessage(this.props.creationMode)}/>
+                        :
+                        !isLoading && 
+                            <>
+                                <div style={{display: this.state.currentView === 'GALLERIA' ? 'block' : 'none', margin: 5, minWidth: 514}}>
+                                    <EDMSGalleria
+                                        documentList={documentList}
+                                        handleFilesUpload={this.handleFilesUpload}
+                                        {...this.props}
+                                        />
+                                </div>
+                                <div style={{display: this.state.currentView === 'DOCLIST' ? 'block' : 'none', margin: 5}}>
+                                    <DocumentList
+                                        documents={documentList}
+                                        filesUploadHandler={this.handleFilesUpload}
+                                        />
+                                </div>        
+                            </>        
+                }
             </BlockUi>
         )
     }

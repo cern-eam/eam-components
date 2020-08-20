@@ -37,8 +37,7 @@ class NCRCreation extends Component {
     // STYLES
     //
     mainDivStyle = {
-        borderBottom: "3px solid rgb(238, 238, 238)",
-        borderTop: "2px solid rgb(238, 238, 238)",
+        borderBottom: "1px solid rgb(238, 238, 238)",
         margin: 5
     }
 

@@ -21,6 +21,10 @@ var _NCRCreation = _interopRequireDefault(require("./ncrwidget/ncrcreation/NCRCr
 
 var _DocumentCreation = _interopRequireDefault(require("./documentwidget/doccreation/DocumentCreation"));
 
+var _ErrorOutline = _interopRequireDefault(require("@material-ui/icons/ErrorOutline"));
+
+var _SimpleEmptyState = _interopRequireDefault(require("../emptystates/SimpleEmptyState"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
@@ -73,7 +77,9 @@ var EDMSWidget = /*#__PURE__*/function (_Component) {
     _this.state = {
       isLoading: true,
       currentView: 'DOCLIST',
-      documentCreationVisible: false
+      documentCreationVisible: false,
+      errorMessage: '',
+      documentList: []
     };
 
     _this.generateDocumentCreation = function (creationMode) {
@@ -89,6 +95,16 @@ var EDMSWidget = /*#__PURE__*/function (_Component) {
           return /*#__PURE__*/_react["default"].createElement(_DocumentCreation["default"], {
             createDocument: _this.createDocument
           });
+      }
+    };
+
+    _this.getEmptyStateMessage = function (creationMode) {
+      switch (creationMode) {
+        case NCRCreationMode:
+          return 'No NCRs to show.';
+
+        default:
+          return 'No documents to show.';
       }
     };
 
@@ -222,7 +238,9 @@ var EDMSWidget = /*#__PURE__*/function (_Component) {
       })["catch"](function (reason) {
         var errorMessage = _this.getErrorMessage(reason);
 
-        _this.props.showError(errorMessage);
+        _this.setState({
+          errorMessage: errorMessage
+        });
 
         _this.unblockUI(); //TODO handle the error message...
 
@@ -234,8 +252,7 @@ var EDMSWidget = /*#__PURE__*/function (_Component) {
     };
 
     _this.mainDivStyle = {
-      width: "100%",
-      minHeight: 300
+      width: "100%"
     };
 
     _this.getErrorMessage = function (reason) {
@@ -289,6 +306,10 @@ var EDMSWidget = /*#__PURE__*/function (_Component) {
       var _this2 = this;
 
       var hideLink = this.props.hideLink;
+      var _this$state = this.state,
+          documentList = _this$state.documentList,
+          isLoading = _this$state.isLoading;
+      var isEmptyState = !documentList.length && !isLoading;
       return /*#__PURE__*/_react["default"].createElement(_reactBlockUi["default"], {
         tag: "div",
         blocking: this.state.isLoading,
@@ -313,14 +334,27 @@ var EDMSWidget = /*#__PURE__*/function (_Component) {
             documentCreationVisible: !_this2.state.documentCreationVisible
           });
         }
-      }), this.state.documentCreationVisible && this.generateDocumentCreation(this.props.creationMode), /*#__PURE__*/_react["default"].createElement("div", {
+      }), this.state.documentCreationVisible && this.generateDocumentCreation(this.props.creationMode), this.state.errorMessage ? /*#__PURE__*/_react["default"].createElement("div", {
+        style: {
+          display: 'flex',
+          padding: 16,
+          justifyContent: 'center',
+          alignItems: 'center'
+        }
+      }, /*#__PURE__*/_react["default"].createElement(_ErrorOutline["default"], {
+        style: {
+          padding: 4
+        }
+      }), /*#__PURE__*/_react["default"].createElement("span", null, this.state.errorMessage)) : isEmptyState ? /*#__PURE__*/_react["default"].createElement(_SimpleEmptyState["default"], {
+        message: this.getEmptyStateMessage(this.props.creationMode)
+      }) : !isLoading && /*#__PURE__*/_react["default"].createElement(_react["default"].Fragment, null, /*#__PURE__*/_react["default"].createElement("div", {
         style: {
           display: this.state.currentView === 'GALLERIA' ? 'block' : 'none',
           margin: 5,
           minWidth: 514
         }
       }, /*#__PURE__*/_react["default"].createElement(_EDMSGalleria["default"], _extends({
-        documentList: this.state.documentList,
+        documentList: documentList,
         handleFilesUpload: this.handleFilesUpload
       }, this.props))), /*#__PURE__*/_react["default"].createElement("div", {
         style: {
@@ -328,9 +362,9 @@ var EDMSWidget = /*#__PURE__*/function (_Component) {
           margin: 5
         }
       }, /*#__PURE__*/_react["default"].createElement(_DocumentList["default"], {
-        documents: this.state.documentList,
+        documents: documentList,
         filesUploadHandler: this.handleFilesUpload
-      })));
+      }))));
     }
   }]);
 

@@ -92,8 +92,7 @@ var NCRCreation = /*#__PURE__*/function (_Component) {
       currentEquipmentWorkOrder: null
     };
     _this.mainDivStyle = {
-      borderBottom: "3px solid rgb(238, 238, 238)",
-      borderTop: "2px solid rgb(238, 238, 238)",
+      borderBottom: "1px solid rgb(238, 238, 238)",
       margin: 5
     };
     _this.newDocStyle = {
