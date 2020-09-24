@@ -19,6 +19,10 @@ class WSChecklists {
     createFolowUpWorkOrders(activity, config = {}) {
         return WS._post('/checklists/workorders', activity, config);
     }
+
+    esignChecklist(checklistSignature, config = {}) {
+        return WS._put('/checklists/esign', checklistSignature);
+    }
 }
 
 export default new WSChecklists();

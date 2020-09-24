@@ -7,6 +7,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import WSChecklists from '../../../tools/WSChecklists';
 import ChecklistEquipment from "./ChecklistEquipment";
 import ChecklistItem from './ChecklistItem';
+import ChecklistSignature from './ChecklistSignature';
 import BlockUi from 'react-block-ui';
 import EAMSelect from '../inputs/EAMSelect'
 import SimpleEmptyState from '../../components/emptystates/SimpleEmptyState';
@@ -78,7 +79,8 @@ class Checklists extends Component {
             activities: [],
             blocking: true,
             filteredActivity: null,
-            filteredEquipment: null
+            filteredEquipment: null,
+            // signatures: [{type: "prfBy0", name: "Boyko Borisov"}]
         }
 
         this.addCollapseHeuristic();
@@ -313,7 +315,17 @@ class Checklists extends Component {
                         </div>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails style={{margin: 0, padding: 0}}>
-                        <div style={{width: "100%"}}>{this.renderChecklistsForActivity(activity, filteredEquipment)}</div>
+                        <div style={{width: "100%"}}>{this.renderChecklistsForActivity(activity, filteredEquipment)}
+                        </div>
+                    </ExpansionPanelDetails>
+                    <ExpansionPanelDetails style={{margin: 0, padding: 0}}>
+                        <div style={{width: "100%"}}>
+                            {/* activity.signatures.map(signature => ( */}
+                            <ChecklistSignature 
+                            signature =  {{type: 'PB01', name: 'Boyko Borisov'}} //signature
+                            workOrderCode='28096976' //this.props.workOrderCode
+                            activityNumber='5'/> {/*this.props.activityCode */}
+                        </div>
                     </ExpansionPanelDetails>
                 </ActivityExpansionPanel>
         ));
@@ -422,7 +434,7 @@ class Checklists extends Component {
                                         values={[{code: null, desc: "\u200B"}, ...filteredActivities
                                         .filter(activity => filteredEquipment ? activity.equipments[filteredEquipment] !== undefined : true)
                                         .map(activity => 
-                                            ({code: activity.activityCode, desc: activity.activityCode + " — " + activity.activityNote}))]}
+                                        ({code: activity.activityCode, desc: activity.activityCode + " — " + activity.activityNote}))]}
                                             value={filteredActivity ? filteredActivity : undefined}
                                             onChange={obj => this.setNewFilter({activity: obj})}
                                             menuContainerStyle={{'zIndex': 999}}/>}

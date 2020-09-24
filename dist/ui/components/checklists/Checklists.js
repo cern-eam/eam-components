@@ -23,6 +23,8 @@ var _ChecklistEquipment = _interopRequireDefault(require("./ChecklistEquipment")
 
 var _ChecklistItem = _interopRequireDefault(require("./ChecklistItem"));
 
+var _ChecklistSignature = _interopRequireDefault(require("./ChecklistSignature"));
+
 var _reactBlockUi = _interopRequireDefault(require("react-block-ui"));
 
 var _EAMSelect = _interopRequireDefault(require("../inputs/EAMSelect"));
@@ -190,7 +192,8 @@ var Checklists = /*#__PURE__*/function (_Component) {
       activities: [],
       blocking: true,
       filteredActivity: null,
-      filteredEquipment: null
+      filteredEquipment: null // signatures: [{type: "prfBy0", name: "Boyko Borisov"}]
+
     };
 
     _this.addCollapseHeuristic();
@@ -445,7 +448,25 @@ var Checklists = /*#__PURE__*/function (_Component) {
           style: {
             width: "100%"
           }
-        }, _this5.renderChecklistsForActivity(activity, filteredEquipment))));
+        }, _this5.renderChecklistsForActivity(activity, filteredEquipment))), /*#__PURE__*/_react["default"].createElement(_ExpansionPanelDetails["default"], {
+          style: {
+            margin: 0,
+            padding: 0
+          }
+        }, /*#__PURE__*/_react["default"].createElement("div", {
+          style: {
+            width: "100%"
+          }
+        }, /*#__PURE__*/_react["default"].createElement(_ChecklistSignature["default"], {
+          signature: {
+            type: 'PB01',
+            name: 'Boyko Borisov'
+          } //signature
+          ,
+          workOrderCode: "28096976" //this.props.workOrderCode
+          ,
+          activityNumber: "5"
+        }), " ")));
       });
     }
   }, {
