@@ -12,6 +12,7 @@ import BlockUi from 'react-block-ui';
 import EAMSelect from '../inputs/EAMSelect'
 import SimpleEmptyState from '../../components/emptystates/SimpleEmptyState';
 import { withStyles } from '@material-ui/core/styles';
+import { Console } from 'mdi-material-ui';
 
 const ActivityExpansionPanel = withStyles({
     root: {
@@ -219,6 +220,8 @@ class Checklists extends Component {
     renderChecklistsForActivity(activity, filteredEquipment) {
         const { checklists: originalChecklists } = activity;
 
+        // console.log(activity);
+
         const checklists = filteredEquipment ?
             originalChecklists.filter(checklist => checklist.equipmentCode === filteredEquipment)
             : originalChecklists;
@@ -250,7 +253,7 @@ class Checklists extends Component {
             
             result.push(this.renderChecklistsForEquipment(equipmentCode + start, checklists.slice(start, end), activity));
         }
-
+        
 
         return result;
     }
@@ -284,6 +287,18 @@ class Checklists extends Component {
         });
     }
 
+    renderSignatures(activity){
+        //console.log(activity.signatures);
+        if(!activity.signatures)
+          return;
+        return activity.signatures.map(signature => {
+            return <ChecklistSignature signature= {signature}
+                                workOrderCode = {activity.workOrderNumber}
+                                activityCode = {activity.activityCode}
+                                showError = {this.props.showError}/>
+        });
+    }
+
     renderActivities(filteredActivity, filteredEquipment) {
         const { activities } = this.state;
 
@@ -291,7 +306,7 @@ class Checklists extends Component {
                 activity.checklists && activity.checklists.length > 0
                     && !(filteredEquipment && activity.equipments[filteredEquipment] === undefined)
                     && !(filteredActivity && activity.activityCode !== filteredActivity)
-            )).map(activity => (
+            )).map(activity => (     
                 <ActivityExpansionPanel
                     key={activity.activityCode}
                     expanded={!activity.collapsed}
@@ -314,19 +329,23 @@ class Checklists extends Component {
                             </Button>}
                         </div>
                     </ExpansionPanelSummary>
+                    
                     <ExpansionPanelDetails style={{margin: 0, padding: 0}}>
                         <div style={{width: "100%"}}>{this.renderChecklistsForActivity(activity, filteredEquipment)}
                         </div>
                     </ExpansionPanelDetails>
-                    <ExpansionPanelDetails style={{margin: 0, padding: 0}}>
-                        <div style={{width: "100%"}}>
-                            {/* activity.signatures.map(signature => ( */}
-                            <ChecklistSignature 
-                            signature =  {{type: 'PB01', name: 'Boyko Borisov'}} //signature
-                            workOrderCode='28096976' //this.props.workOrderCode
-                            activityNumber='5'/> {/*this.props.activityCode */}
-                        </div>
-                    </ExpansionPanelDetails>
+                    {activity.signatures &&
+                        <ActivityExpansionPanel style = {{backgroundColor: 'white', borderLeft: '0px', borderRight: '0px'}}>
+                            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
+                                <span style={{fontWeight: 500}}>E-SIGNATURES</span>
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails style={{margin: 0, padding: '0 24px 0 24px', backgroundColor: 'white', minHeight: '80px'}}>
+                            <div style={{width: "100%"}}>
+                                    {this.renderSignatures(activity)}
+                                </div>
+                            </ExpansionPanelDetails>               
+                        </ActivityExpansionPanel>
+                    }
                 </ActivityExpansionPanel>
         ));
     }

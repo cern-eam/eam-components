@@ -33,6 +33,8 @@ var _SimpleEmptyState = _interopRequireDefault(require("../../components/emptyst
 
 var _styles = require("@material-ui/core/styles");
 
+var _mdiMaterialUi = require("mdi-material-ui");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
@@ -331,7 +333,8 @@ var Checklists = /*#__PURE__*/function (_Component) {
   }, {
     key: "renderChecklistsForActivity",
     value: function renderChecklistsForActivity(activity, filteredEquipment) {
-      var originalChecklists = activity.checklists;
+      var originalChecklists = activity.checklists; // console.log(activity);
+
       var checklists = filteredEquipment ? originalChecklists.filter(function (checklist) {
         return checklist.equipmentCode === filteredEquipment;
       }) : originalChecklists;
@@ -397,9 +400,25 @@ var Checklists = /*#__PURE__*/function (_Component) {
       });
     }
   }, {
+    key: "renderSignatures",
+    value: function renderSignatures(activity) {
+      var _this5 = this;
+
+      //console.log(activity.signatures);
+      if (!activity.signatures) return;
+      return activity.signatures.map(function (signature) {
+        return /*#__PURE__*/_react["default"].createElement(_ChecklistSignature["default"], {
+          signature: signature,
+          workOrderCode: activity.workOrderNumber,
+          activityCode: activity.activityCode,
+          showError: _this5.props.showError
+        });
+      });
+    }
+  }, {
     key: "renderActivities",
     value: function renderActivities(filteredActivity, filteredEquipment) {
-      var _this5 = this;
+      var _this6 = this;
 
       var activities = this.state.activities;
       return activities.filter(function (activity) {
@@ -413,7 +432,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
             timeout: 0
           },
           onChange: function onChange(_, expanded) {
-            return _this5.setCollapsedActivity(!expanded, activity.index);
+            return _this6.setCollapsedActivity(!expanded, activity.index);
           }
         }, /*#__PURE__*/_react["default"].createElement(_ExpansionPanelSummary["default"], {
           expandIcon: /*#__PURE__*/_react["default"].createElement(_ExpandMore["default"], null)
@@ -433,7 +452,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
         }) && /*#__PURE__*/_react["default"].createElement(_Button["default"], {
           key: activity.activityCode + '$createfuwo',
           onClick: function onClick(evt) {
-            return _this5.createFollowUpWOs(evt, activity);
+            return _this6.createFollowUpWOs(evt, activity);
           },
           color: "primary",
           style: {
@@ -448,31 +467,36 @@ var Checklists = /*#__PURE__*/function (_Component) {
           style: {
             width: "100%"
           }
-        }, _this5.renderChecklistsForActivity(activity, filteredEquipment))), /*#__PURE__*/_react["default"].createElement(_ExpansionPanelDetails["default"], {
+        }, _this6.renderChecklistsForActivity(activity, filteredEquipment))), activity.signatures && /*#__PURE__*/_react["default"].createElement(ActivityExpansionPanel, {
+          style: {
+            backgroundColor: 'white',
+            borderLeft: '0px',
+            borderRight: '0px'
+          }
+        }, /*#__PURE__*/_react["default"].createElement(_ExpansionPanelSummary["default"], {
+          expandIcon: /*#__PURE__*/_react["default"].createElement(_ExpandMore["default"], null)
+        }, /*#__PURE__*/_react["default"].createElement("span", {
+          style: {
+            fontWeight: 500
+          }
+        }, "E-SIGNATURES")), /*#__PURE__*/_react["default"].createElement(_ExpansionPanelDetails["default"], {
           style: {
             margin: 0,
-            padding: 0
+            padding: '0 24px 0 24px',
+            backgroundColor: 'white',
+            minHeight: '80px'
           }
         }, /*#__PURE__*/_react["default"].createElement("div", {
           style: {
             width: "100%"
           }
-        }, /*#__PURE__*/_react["default"].createElement(_ChecklistSignature["default"], {
-          signature: {
-            type: 'PB01',
-            name: 'Boyko Borisov'
-          } //signature
-          ,
-          workOrderCode: "28096976" //this.props.workOrderCode
-          ,
-          activityNumber: "5"
-        }), " ")));
+        }, _this6.renderSignatures(activity)))));
       });
     }
   }, {
     key: "setNewFilter",
     value: function setNewFilter(filters) {
-      var _this6 = this;
+      var _this7 = this;
 
       var activity = filters.activity,
           equipment = filters.equipment;
@@ -532,7 +556,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
             return checklists.concat(activity.checklists);
           }, []);
 
-          _this6.collapseHeuristic(checklists, newState.activities);
+          _this7.collapseHeuristic(checklists, newState.activities);
         }
 
         return newState;
@@ -547,7 +571,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this7 = this;
+      var _this8 = this;
 
       var _this$state = this.state,
           activities = _this$state.activities,
@@ -603,7 +627,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
         }))),
         value: filteredActivity ? filteredActivity : undefined,
         onChange: function onChange(obj) {
-          return _this7.setNewFilter({
+          return _this8.setNewFilter({
             activity: obj
           });
         },
@@ -627,7 +651,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
         }))),
         value: filteredEquipment ? filteredEquipment : undefined,
         onChange: function onChange(obj) {
-          return _this7.setNewFilter({
+          return _this8.setNewFilter({
             equipment: obj
           });
         },

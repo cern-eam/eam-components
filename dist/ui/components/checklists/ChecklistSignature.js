@@ -17,6 +17,8 @@ var _Dialog = _interopRequireDefault(require("@material-ui/core/Dialog"));
 
 var _WSChecklists = _interopRequireDefault(require("../../../tools/WSChecklists"));
 
+var _Grid = _interopRequireDefault(require("@material-ui/core/Grid"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
@@ -73,7 +75,6 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
     _this = _super.call(this, props);
 
     _this.openDialogue = function () {
-      // console.log("Called");
       _this.setState({
         open: true
       });
@@ -100,26 +101,39 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
     };
 
     _this.sign = function () {
-      //call WS with woCode and actCode, signatureType (from props) and credentials then
       var signature = {
         workOrderCode: _this.props.workOrderCode,
-        activityCodeValue: _this.props.activityNumber,
-        userCode: _this.state.username,
+        activityCodeValue: _this.props.activityCode,
+        userCode: _this.state.username.toUpperCase(),
         password: _this.state.password,
         signatureType: _this.props.signature.type
       };
 
-      _WSChecklists["default"].esignChecklist(signature).then(_this.closeDialogue());
+      _WSChecklists["default"].esignChecklist(signature).then(function () {
+        _this.setState({
+          signer: _this.state.username
+        });
+
+        _this.closeDialogue();
+      })["catch"](function (err) {
+        _this.closeDialogue();
+
+        _this.props.showError(err.response.body.errors[0].message);
+      });
     };
 
     _this.cancel = function () {
       _this.closeDialogue();
     };
 
+    console.log("CHECKLIST");
     _this.state = {
       open: false,
       username: null,
-      password: null
+      password: null,
+      signer: props.signature.signer,
+      time: _this.props.signature.time,
+      qualification: _this.props.signature.responsibilityDescription
     };
     return _this;
   }
@@ -129,32 +143,38 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
     value: function signatureTypeSwitch(type) {
       switch (type) {
         case 'PB01':
-          return 'PERFORMER';
+          return 'Performer';
 
         case 'PB02':
-          return 'PERFORMER 2';
+          return 'Performer 2';
 
         case 'RB01':
-          return 'REVIEWER';
+          return 'Reviewer';
 
         default:
-          return 'UNKNOWN SIGNATURE TYPE';
+          return 'Unknown signature type';
       }
     }
   }, {
     key: "render",
     value: function render() {
-      var name;
-      if (this.props.signature.name) name = this.props.signature.name;else name = '_____________';
+      var time;
+      if (this.state.time) time = this.state.time;else time = '';
+      var label;
+      if (this.state.qualification) label = this.state.qualification;else label = this.signatureTypeSwitch(this.props.signature.type);
 
       var dialog = /*#__PURE__*/_react["default"].createElement(_Paper["default"], {
         elevation: 3,
         style: modalStyle
-      }, /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement(_TextField["default"], {
+      }, /*#__PURE__*/_react["default"].createElement("div", {
+        style: {
+          fontSize: '25px'
+        }
+      }, "E-Signature"), /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement(_TextField["default"], {
         required: true,
         onChange: this.onUsercodeTextFieldChange,
         id: "standard-required",
-        label: "Usercode"
+        label: "Username"
       })), /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement(_TextField["default"], {
         required: true,
         onChange: this.onPasswordTextFieldChange,
@@ -167,12 +187,49 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
         onClick: this.sign
       }, "Sign")));
 
-      return /*#__PURE__*/_react["default"].createElement("div", null, this.signatureTypeSwitch(this.props.signature.type), ": ", name, /*#__PURE__*/_react["default"].createElement(_Button["default"], {
+      return /*#__PURE__*/_react["default"].createElement("div", {
+        style: {
+          display: 'flex',
+          alignItems: 'stretch',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          borderTop: '1px dashed rgb(209, 211, 212)',
+          minHeight: '35px'
+        }
+      }, /*#__PURE__*/_react["default"].createElement("label", {
+        style: {
+          fontSize: '0.825rem',
+          color: 'rgb(20, 88, 134)'
+        }
+      }, label), /*#__PURE__*/_react["default"].createElement(_Grid["default"], {
+        container: true,
+        spacing: 1,
+        className: "activityDetails"
+      }, /*#__PURE__*/_react["default"].createElement(_Grid["default"], {
+        item: true,
+        xs: 5,
+        md: 5,
+        lg: 5
+      }, this.state.signer), /*#__PURE__*/_react["default"].createElement(_Grid["default"], {
+        item: true,
+        xs: 5,
+        md: 5,
+        lg: 5
+      }, time), this.props.signature.viewAsPerformer && /*#__PURE__*/_react["default"].createElement(_Grid["default"], {
+        item: true,
+        xs: 2,
+        md: 2,
+        lg: 2
+      }, /*#__PURE__*/_react["default"].createElement(_Button["default"], {
         color: "primary",
-        onClick: this.openDialogue
-      }, "Sign as ", this.signatureTypeSwitch(this.props.signature.type)), /*#__PURE__*/_react["default"].createElement(_Dialog["default"], {
+        onClick: this.openDialogue,
+        style: {
+          padding: '0px',
+          "float": 'right'
+        }
+      }, "Sign"), /*#__PURE__*/_react["default"].createElement(_Dialog["default"], {
         open: this.state.open
-      }, dialog));
+      }, dialog))));
     }
   }]);
 

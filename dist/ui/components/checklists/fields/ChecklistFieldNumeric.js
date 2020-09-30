@@ -58,6 +58,7 @@ var OK_BORDER = "solid 1px #ced4da";
 var ERROR_BORDER = "solid 1px #f44336";
 
 var ChecklistFieldNumeric = function ChecklistFieldNumeric(props) {
+  console.log(props);
   var value = props.value,
       UOM = props.UOM,
       handleChange = props.handleChange;
