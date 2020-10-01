@@ -194,8 +194,8 @@ var Checklists = /*#__PURE__*/function (_Component) {
       activities: [],
       blocking: true,
       filteredActivity: null,
-      filteredEquipment: null // signatures: [{type: "prfBy0", name: "Boyko Borisov"}]
-
+      filteredEquipment: null,
+      signaturesCollapsed: new Map()
     };
 
     _this.addCollapseHeuristic();
@@ -333,8 +333,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
   }, {
     key: "renderChecklistsForActivity",
     value: function renderChecklistsForActivity(activity, filteredEquipment) {
-      var originalChecklists = activity.checklists; // console.log(activity);
-
+      var originalChecklists = activity.checklists;
       var checklists = filteredEquipment ? originalChecklists.filter(function (checklist) {
         return checklist.equipmentCode === filteredEquipment;
       }) : originalChecklists;
@@ -400,11 +399,15 @@ var Checklists = /*#__PURE__*/function (_Component) {
       });
     }
   }, {
+    key: "expandSignature",
+    value: function expandSignature(activity) {
+      this.setState(this.state.signaturesCollapsed.set(activity, !this.state.signaturesCollapsed.get(activity)));
+    }
+  }, {
     key: "renderSignatures",
     value: function renderSignatures(activity) {
       var _this5 = this;
 
-      //console.log(activity.signatures);
       if (!activity.signatures) return;
       return activity.signatures.map(function (signature) {
         return /*#__PURE__*/_react["default"].createElement(_ChecklistSignature["default"], {
@@ -433,6 +436,9 @@ var Checklists = /*#__PURE__*/function (_Component) {
           },
           onChange: function onChange(_, expanded) {
             return _this6.setCollapsedActivity(!expanded, activity.index);
+          },
+          style: {
+            marginTop: '5px'
           }
         }, /*#__PURE__*/_react["default"].createElement(_ExpansionPanelSummary["default"], {
           expandIcon: /*#__PURE__*/_react["default"].createElement(_ExpandMore["default"], null)
@@ -470,8 +476,11 @@ var Checklists = /*#__PURE__*/function (_Component) {
         }, _this6.renderChecklistsForActivity(activity, filteredEquipment))), activity.signatures && /*#__PURE__*/_react["default"].createElement(ActivityExpansionPanel, {
           style: {
             backgroundColor: 'white',
-            borderLeft: '0px',
-            borderRight: '0px'
+            border: '0px'
+          },
+          expanded: !_this6.state.signaturesCollapsed.get(activity),
+          onChange: function onChange(_, expanded) {
+            return _this6.expandSignature(activity);
           }
         }, /*#__PURE__*/_react["default"].createElement(_ExpansionPanelSummary["default"], {
           expandIcon: /*#__PURE__*/_react["default"].createElement(_ExpandMore["default"], null)
@@ -484,7 +493,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
             margin: 0,
             padding: '0 24px 0 24px',
             backgroundColor: 'white',
-            minHeight: '80px'
+            minHeight: '50px'
           }
         }, /*#__PURE__*/_react["default"].createElement("div", {
           style: {

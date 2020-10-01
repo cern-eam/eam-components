@@ -51,15 +51,11 @@ var _require = require("react-table"),
     defaultGroupByFn = _require.defaultGroupByFn;
 
 var modalStyle = {
-  // width: '600px',
-  // top: '50%',
-  // left: '50%',
-  // transform: 'translate(-50%, -50%)',
-  // position: 'absolute',
-  // backgroundColor: 'white',
-  // outline: '0',
   padding: '30px',
   textAlign: 'center'
+};
+var textStyle = {
+  paddingTop: '6px'
 };
 
 var ChecklistSignature = /*#__PURE__*/function (_Component) {
@@ -109,9 +105,10 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
         signatureType: _this.props.signature.type
       };
 
-      _WSChecklists["default"].esignChecklist(signature).then(function () {
+      _WSChecklists["default"].esignChecklist(signature).then(function (response) {
         _this.setState({
-          signer: _this.state.username
+          signer: response.body.data.signer,
+          time: response.body.data.timeStamp
         });
 
         _this.closeDialogue();
@@ -126,7 +123,6 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
       _this.closeDialogue();
     };
 
-    console.log("CHECKLIST");
     _this.state = {
       open: false,
       username: null,
@@ -158,8 +154,6 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var time;
-      if (this.state.time) time = this.state.time;else time = '';
       var label;
       if (this.state.qualification) label = this.state.qualification;else label = this.signatureTypeSwitch(this.props.signature.type);
 
@@ -194,7 +188,7 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
           justifyContent: 'space-between',
           flexWrap: 'wrap',
           borderTop: '1px dashed rgb(209, 211, 212)',
-          minHeight: '35px'
+          minHeight: '40px'
         }
       }, /*#__PURE__*/_react["default"].createElement("label", {
         style: {
@@ -206,6 +200,14 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
         spacing: 1,
         className: "activityDetails"
       }, /*#__PURE__*/_react["default"].createElement(_Grid["default"], {
+        style: {
+          display: 'flex'
+        },
+        item: true,
+        xs: 10,
+        md: 10,
+        lg: 10
+      }, /*#__PURE__*/_react["default"].createElement(_Grid["default"], {
         item: true,
         xs: 5,
         md: 5,
@@ -215,7 +217,7 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
         xs: 5,
         md: 5,
         lg: 5
-      }, time), this.props.signature.viewAsPerformer && /*#__PURE__*/_react["default"].createElement(_Grid["default"], {
+      }, this.state.time)), this.props.signature.viewAsPerformer && /*#__PURE__*/_react["default"].createElement(_Grid["default"], {
         item: true,
         xs: 2,
         md: 2,

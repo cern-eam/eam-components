@@ -8,28 +8,24 @@ import Grid from '@material-ui/core/Grid';
 const { defaultGroupByFn } = require("react-table");
 
 const modalStyle = {
-    // width: '600px',
-    // top: '50%',
-    // left: '50%',
-    // transform: 'translate(-50%, -50%)',
-    // position: 'absolute',
-    // backgroundColor: 'white',
-    // outline: '0',
     padding: '30px',
     textAlign: 'center',
 };
 
+const textStyle = {
+    paddingTop: '6px'
+}
+
 export default class ChecklistSignature extends Component{
     constructor(props) {
         super(props);
-        console.log("CHECKLIST");
         this.state = {
           open: false,
           username: null,
           password: null,
           signer: props.signature.signer,
           time: this.props.signature.time,
-          qualification: this.props.signature.responsibilityDescription
+          qualification: this.props.signature.responsibilityDescription,
         };
     }
     openDialogue = () =>{
@@ -49,14 +45,15 @@ export default class ChecklistSignature extends Component{
                        password: '',
                        open: false})
     }
+
     sign = () => {
        var signature = {workOrderCode: this.props.workOrderCode,
                         activityCodeValue: this.props.activityCode,
                         userCode: this.state.username.toUpperCase(),
                         password: this.state.password,
                         signatureType: this.props.signature.type};
-        WSChecklists.esignChecklist(signature).then(()=>{
-            this.setState({signer:this.state.username});
+        WSChecklists.esignChecklist(signature).then((response)=>{
+            this.setState({signer:response.body.data.signer, time: response.body.data.timeStamp});
             this.closeDialogue();
         }).catch((err)=>{
             this.closeDialogue();
@@ -83,13 +80,6 @@ export default class ChecklistSignature extends Component{
 
 
     render(){
-        
-        let time;
-        if(this.state.time)
-            time = this.state.time;
-        else
-            time = '';
-
         let label;
         if(this.state.qualification)
             label = this.state.qualification;
@@ -122,22 +112,20 @@ export default class ChecklistSignature extends Component{
                 </div>
             </Paper> 
 
-        return <div style = {{display: 'flex', 
+        return <div style={{display: 'flex', 
                               alignItems: 'stretch',
                               justifyContent: 'space-between',
                               flexWrap: 'wrap',
                               borderTop: '1px dashed rgb(209, 211, 212)',
-                              minHeight: '35px'}}>
-              <label style ={{fontSize: '0.825rem', color: 'rgb(20, 88, 134)'}}>{label}</label>
+                              minHeight: '40px'}}>
+              <label style={{fontSize: '0.825rem', color: 'rgb(20, 88, 134)'}}>{label}</label>
               <Grid container spacing={1} className="activityDetails">
-                <Grid item xs={5} md={5} lg={5}>{this.state.signer}</Grid>
-                <Grid item xs={5} md={5} lg={5}>{time}</Grid>
-                
+                <Grid style={{display: 'flex'}} item xs={10} md={10} lg={10}>  
+                    <Grid item xs={5} md={5} lg={5}>{this.state.signer}</Grid>
+                    <Grid item xs={5} md={5} lg={5}>{this.state.time}</Grid>
+                </Grid>
                 {this.props.signature.viewAsPerformer && 
-                    <Grid item xs={2} md={2} lg={2}>
-              
-             
-             {/* {this.signatureTypeSwitch(this.props.signature.type)}: {name} */}
+                    <Grid item xs={2} md={2} lg={2}>     
                         <Button color='primary' onClick={this.openDialogue} style={{padding: '0px', float: 'right'}}>Sign</Button>
                         <Dialog open={this.state.open}>{dialog}</Dialog> 
                     </Grid>}
