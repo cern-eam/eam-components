@@ -195,7 +195,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
       blocking: true,
       filteredActivity: null,
       filteredEquipment: null,
-      signaturesCollapsed: new Map()
+      signaturesCollapsed: {}
     };
 
     _this.addCollapseHeuristic();
@@ -401,7 +401,11 @@ var Checklists = /*#__PURE__*/function (_Component) {
   }, {
     key: "expandSignature",
     value: function expandSignature(activity) {
-      this.setState(this.state.signaturesCollapsed.set(activity, !this.state.signaturesCollapsed.get(activity)));
+      var signaturesCollapsed = Object.assign({}, this.state.signaturesCollapsed);
+      signaturesCollapsed[activity.activityCode] = !signaturesCollapsed[activity.activityCode];
+      this.setState({
+        signaturesCollapsed: signaturesCollapsed
+      });
     }
   }, {
     key: "renderSignatures",
@@ -478,7 +482,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
             backgroundColor: 'white',
             border: '0px'
           },
-          expanded: !_this6.state.signaturesCollapsed.get(activity),
+          expanded: !_this6.state.signaturesCollapsed[activity.activityCode],
           onChange: function onChange(_, expanded) {
             return _this6.expandSignature(activity);
           }

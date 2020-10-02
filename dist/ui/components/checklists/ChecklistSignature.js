@@ -110,12 +110,10 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
           signer: response.body.data.signer,
           time: response.body.data.timeStamp
         });
-
-        _this.closeDialogue();
       })["catch"](function (err) {
-        _this.closeDialogue();
-
         _this.props.showError(err.response.body.errors[0].message);
+      })["finally"](function () {
+        _this.closeDialogue();
       });
     };
 
@@ -127,7 +125,7 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
       open: false,
       username: null,
       password: null,
-      signer: props.signature.signer,
+      signer: _this.props.signature.signer,
       time: _this.props.signature.time,
       qualification: _this.props.signature.responsibilityDescription
     };

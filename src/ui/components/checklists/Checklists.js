@@ -81,7 +81,7 @@ class Checklists extends Component {
             blocking: true,
             filteredActivity: null,
             filteredEquipment: null,
-            signaturesCollapsed: new Map()
+            signaturesCollapsed: {}
         }
 
         this.addCollapseHeuristic();
@@ -100,7 +100,7 @@ class Checklists extends Component {
                     activity.collapse();
                     Object.values(activity.equipments).forEach(equipment => equipment.collapse());
                 });
-            };
+            }
     }
 
     expansionDetailsStyle = {
@@ -285,18 +285,19 @@ class Checklists extends Component {
     }
 
     expandSignature(activity){
-        this.setState(this.state.signaturesCollapsed.set(activity, !this.state.signaturesCollapsed.get(activity)));
+        let signaturesCollapsed = Object.assign({}, this.state.signaturesCollapsed);
+        signaturesCollapsed[activity.activityCode] = !signaturesCollapsed[activity.activityCode];
+        this.setState({signaturesCollapsed});
     }
 
     renderSignatures(activity){
-        if(!activity.signatures)
-          return;
-        return activity.signatures.map(signature => {
-            return <ChecklistSignature signature={signature}
+        if(!activity.signatures) return;
+        return activity.signatures.map(signature => 
+            <ChecklistSignature signature={signature}
                                 workOrderCode={activity.workOrderNumber}
                                 activityCode={activity.activityCode}
                                 showError={this.props.showError}/>
-        });
+        );
     }
 
     renderActivities(filteredActivity, filteredEquipment) {
@@ -337,7 +338,7 @@ class Checklists extends Component {
                     </ExpansionPanelDetails>
                     {activity.signatures &&
                         <ActivityExpansionPanel style={{backgroundColor: 'white', border: '0px'}}
-                                                expanded={!this.state.signaturesCollapsed.get(activity)}
+                                                expanded={!this.state.signaturesCollapsed[activity.activityCode]}
                                                 onChange={(_, expanded) => this.expandSignature(activity)}>
                             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
                                 <span style={{fontWeight: 500}}>E-SIGNATURES</span>

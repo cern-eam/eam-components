@@ -16,19 +16,19 @@ const textStyle = {
     paddingTop: '6px'
 }
 
-export default class ChecklistSignature extends Component{
+export default class ChecklistSignature extends Component {
     constructor(props) {
         super(props);
         this.state = {
           open: false,
           username: null,
           password: null,
-          signer: props.signature.signer,
+          signer: this.props.signature.signer,
           time: this.props.signature.time,
           qualification: this.props.signature.responsibilityDescription,
         };
     }
-    openDialogue = () =>{
+    openDialogue = () => {
         this.setState({open: true});
     };
     
@@ -47,17 +47,17 @@ export default class ChecklistSignature extends Component{
     }
 
     sign = () => {
-       var signature = {workOrderCode: this.props.workOrderCode,
-                        activityCodeValue: this.props.activityCode,
-                        userCode: this.state.username.toUpperCase(),
-                        password: this.state.password,
-                        signatureType: this.props.signature.type};
-        WSChecklists.esignChecklist(signature).then((response)=>{
+       const signature = {workOrderCode: this.props.workOrderCode,
+                          activityCodeValue: this.props.activityCode,
+                          userCode: this.state.username.toUpperCase(),
+                          password: this.state.password,
+                          signatureType: this.props.signature.type};
+        WSChecklists.esignChecklist(signature).then((response)=> {
             this.setState({signer:response.body.data.signer, time: response.body.data.timeStamp});
-            this.closeDialogue();
-        }).catch((err)=>{
-            this.closeDialogue();
+        }).catch((err)=> {
             this.props.showError(err.response.body.errors[0].message);
+        }).finally(()=> {
+            this.closeDialogue();
         });
     }
 
@@ -124,8 +124,8 @@ export default class ChecklistSignature extends Component{
                     <Grid item xs={5} md={5} lg={5}>{this.state.signer}</Grid>
                     <Grid item xs={5} md={5} lg={5}>{this.state.time}</Grid>
                 </Grid>
-                {this.props.signature.viewAsPerformer && 
-                    <Grid item xs={2} md={2} lg={2}>     
+                {this.props.signature.viewAsPerformer &&
+                    <Grid item xs={2} md={2} lg={2}>
                         <Button color='primary' onClick={this.openDialogue} style={{padding: '0px', float: 'right'}}>Sign</Button>
                         <Dialog open={this.state.open}>{dialog}</Dialog> 
                     </Grid>}
