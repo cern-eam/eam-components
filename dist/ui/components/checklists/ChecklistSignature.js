@@ -57,6 +57,11 @@ var modalStyle = {
 var textStyle = {
   paddingTop: '6px'
 };
+var signatureTypes = {
+  'PB01': 'Performer',
+  'PB02': 'Performer 2',
+  'RB01': 'Reviewer'
+};
 
 var ChecklistSignature = /*#__PURE__*/function (_Component) {
   _inherits(ChecklistSignature, _Component);
@@ -117,10 +122,6 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
       });
     };
 
-    _this.cancel = function () {
-      _this.closeDialogue();
-    };
-
     _this.state = {
       open: false,
       username: null,
@@ -135,25 +136,12 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
   _createClass(ChecklistSignature, [{
     key: "signatureTypeSwitch",
     value: function signatureTypeSwitch(type) {
-      switch (type) {
-        case 'PB01':
-          return 'Performer';
-
-        case 'PB02':
-          return 'Performer 2';
-
-        case 'RB01':
-          return 'Reviewer';
-
-        default:
-          return 'Unknown signature type';
-      }
+      return signatureTypes[type];
     }
   }, {
     key: "render",
     value: function render() {
-      var label;
-      if (this.state.qualification) label = this.state.qualification;else label = this.signatureTypeSwitch(this.props.signature.type);
+      var label = this.state.qualification ? this.state.qualification : this.signatureTypeSwitch(this.props.signature.type);
 
       var dialog = /*#__PURE__*/_react["default"].createElement(_Paper["default"], {
         elevation: 3,
@@ -174,7 +162,7 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
         label: "Pasword",
         type: "password"
       })), /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement(_Button["default"], {
-        onClick: this.cancel
+        onClick: this.closeDialogue
       }, "Cancel"), /*#__PURE__*/_react["default"].createElement(_Button["default"], {
         onClick: this.sign
       }, "Sign")));

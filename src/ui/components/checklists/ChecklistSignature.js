@@ -16,6 +16,11 @@ const textStyle = {
     paddingTop: '6px'
 }
 
+const signatureTypes = {
+    'PB01': 'Performer',
+    'PB02': 'Performer 2',
+    'RB01': 'Reviewer'
+}
 export default class ChecklistSignature extends Component {
     constructor(props) {
         super(props);
@@ -61,30 +66,15 @@ export default class ChecklistSignature extends Component {
         });
     }
 
-    cancel = () => {
-        this.closeDialogue();
-    }
-
     signatureTypeSwitch(type){
-        switch (type) {
-            case 'PB01':
-                return 'Performer';
-            case 'PB02':
-                return 'Performer 2';
-            case 'RB01':
-                return 'Reviewer';
-            default:
-                return 'Unknown signature type';
-        }
+        return signatureTypes[type];
     }
 
 
     render(){
-        let label;
-        if(this.state.qualification)
-            label = this.state.qualification;
-        else
-            label = this.signatureTypeSwitch(this.props.signature.type);
+        let label = this.state.qualification ? 
+                        this.state.qualification 
+                        : this.signatureTypeSwitch(this.props.signature.type);
 
         const dialog =
             <Paper elevation={3} style={modalStyle}>
@@ -103,7 +93,7 @@ export default class ChecklistSignature extends Component {
                         type='password'/>
                 </div>    
                 <div> 
-                    {<Button onClick={this.cancel}>
+                    {<Button onClick={this.closeDialogue}>
                         Cancel
                     </Button>}
                     {<Button onClick={this.sign}> 
