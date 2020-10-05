@@ -174,20 +174,28 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
           justifyContent: 'space-between',
           flexWrap: 'wrap',
           borderTop: '1px dashed rgb(209, 211, 212)',
-          minHeight: '40px'
+          minHeight: '40px',
+          paddingTop: '4px',
+          paddingBottom: '3px'
         }
-      }, /*#__PURE__*/_react["default"].createElement("label", {
-        style: {
-          fontSize: '0.825rem',
-          color: 'rgb(20, 88, 134)'
-        }
-      }, label), /*#__PURE__*/_react["default"].createElement(_Grid["default"], {
+      }, /*#__PURE__*/_react["default"].createElement(_Grid["default"], {
         container: true,
         spacing: 1,
         className: "activityDetails"
       }, /*#__PURE__*/_react["default"].createElement(_Grid["default"], {
+        item: true,
+        xs: 10,
+        md: 10,
+        lg: 10
+      }, /*#__PURE__*/_react["default"].createElement("label", {
         style: {
-          display: 'flex'
+          fontSize: '0.84rem',
+          color: 'rgb(20, 88, 134)'
+        }
+      }, label), /*#__PURE__*/_react["default"].createElement(_Grid["default"], {
+        style: {
+          display: 'flex',
+          paddingTop: '2px'
         },
         item: true,
         xs: 10,
@@ -195,15 +203,15 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
         lg: 10
       }, /*#__PURE__*/_react["default"].createElement(_Grid["default"], {
         item: true,
-        xs: 5,
-        md: 5,
-        lg: 5
+        xs: 6,
+        md: 6,
+        lg: 6
       }, this.state.signer), /*#__PURE__*/_react["default"].createElement(_Grid["default"], {
         item: true,
-        xs: 5,
-        md: 5,
-        lg: 5
-      }, this.state.time)), this.props.signature.viewAsPerformer && /*#__PURE__*/_react["default"].createElement(_Grid["default"], {
+        xs: 4,
+        md: 4,
+        lg: 4
+      }, this.state.time))), (this.props.signature.viewAsPerformer || this.props.signature.type == 'RB01') && /*#__PURE__*/_react["default"].createElement(_Grid["default"], {
         item: true,
         xs: 2,
         md: 2,
@@ -212,7 +220,7 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
         color: "primary",
         onClick: this.openDialogue,
         style: {
-          padding: '0px',
+          paddingTop: '11px',
           "float": 'right'
         }
       }, "Sign"), /*#__PURE__*/_react["default"].createElement(_Dialog["default"], {

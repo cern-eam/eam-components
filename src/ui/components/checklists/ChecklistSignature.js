@@ -107,20 +107,24 @@ export default class ChecklistSignature extends Component {
                               justifyContent: 'space-between',
                               flexWrap: 'wrap',
                               borderTop: '1px dashed rgb(209, 211, 212)',
-                              minHeight: '40px'}}>
-              <label style={{fontSize: '0.825rem', color: 'rgb(20, 88, 134)'}}>{label}</label>
+                              minHeight: '40px',
+                              paddingTop: '4px',
+                              paddingBottom: '3px'}}>
               <Grid container spacing={1} className="activityDetails">
-                <Grid style={{display: 'flex'}} item xs={10} md={10} lg={10}>  
-                    <Grid item xs={5} md={5} lg={5}>{this.state.signer}</Grid>
-                    <Grid item xs={5} md={5} lg={5}>{this.state.time}</Grid>
+                <Grid item xs={10} md={10} lg={10}>
+                    <label style={{fontSize: '0.84rem', color: 'rgb(20, 88, 134)'}}>{label}</label>
+                    <Grid style={{display: 'flex', paddingTop: '2px'}} item xs={10} md={10} lg={10}>  
+                        <Grid item xs={6} md={6} lg={6}>{this.state.signer}</Grid>
+                        <Grid item xs={4} md={4} lg={4}>{this.state.time}</Grid>
+                    </Grid>
                 </Grid>
-                {this.props.signature.viewAsPerformer &&
+                    {(this.props.signature.viewAsPerformer || this.props.signature.type == 'RB01') &&
                     <Grid item xs={2} md={2} lg={2}>
-                        <Button color='primary' onClick={this.openDialogue} style={{padding: '0px', float: 'right'}}>Sign</Button>
+                        <Button color='primary' onClick={this.openDialogue} style={{paddingTop: '11px', float: 'right'}}>Sign</Button>
                         <Dialog open={this.state.open}>{dialog}</Dialog> 
                     </Grid>}
-            </Grid>
-            
+
+        </Grid>    
         </div>
     }
 }
