@@ -105,7 +105,7 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
       var signature = {
         workOrderCode: _this.props.workOrderCode,
         activityCodeValue: _this.props.activityCode,
-        userCode: _this.state.username.toUpperCase(),
+        userCode: _this.state.username ? _this.state.username.toUpperCase() : null,
         password: _this.state.password,
         signatureType: _this.props.signature.type
       };
@@ -117,7 +117,7 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
         });
       })["catch"](function (err) {
         _this.props.showError(err.response.body.errors[0].message);
-      })["finally"](_this.closeDialogue());
+      })["finally"](_this.closeDialogue);
     };
 
     _this.state = {

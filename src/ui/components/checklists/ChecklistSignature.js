@@ -54,14 +54,14 @@ export default class ChecklistSignature extends Component {
     sign = () => {
        const signature = {workOrderCode: this.props.workOrderCode,
                           activityCodeValue: this.props.activityCode,
-                          userCode: this.state.username.toUpperCase(),
+                          userCode: this.state.username ? this.state.username.toUpperCase() : null,
                           password: this.state.password,
                           signatureType: this.props.signature.type};
         WSChecklists.esignChecklist(signature).then((response)=> {
             this.setState({signer:response.body.data.signer, time: response.body.data.timeStamp});
         }).catch((err)=> {
             this.props.showError(err.response.body.errors[0].message);
-        }).finally(this.closeDialogue());
+        }).finally(this.closeDialogue);
     }
 
     signatureTypeSwitch(type){
