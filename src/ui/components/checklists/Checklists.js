@@ -285,7 +285,7 @@ class Checklists extends Component {
     }
 
     expandSignature(activity){
-        let signaturesCollapsed = Object.assign({}, this.state.signaturesCollapsed);
+        const signaturesCollapsed = {...this.state.signaturesCollapsed};
         signaturesCollapsed[activity.activityCode] = !signaturesCollapsed[activity.activityCode];
         this.setState({signaturesCollapsed});
     }

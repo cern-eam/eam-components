@@ -61,9 +61,7 @@ export default class ChecklistSignature extends Component {
             this.setState({signer:response.body.data.signer, time: response.body.data.timeStamp});
         }).catch((err)=> {
             this.props.showError(err.response.body.errors[0].message);
-        }).finally(()=> {
-            this.closeDialogue();
-        });
+        }).finally(this.closeDialogue());
     }
 
     signatureTypeSwitch(type){
@@ -72,7 +70,7 @@ export default class ChecklistSignature extends Component {
 
 
     render(){
-        let label = this.state.qualification ? 
+        const label = this.state.qualification ? 
                         this.state.qualification 
                         : this.signatureTypeSwitch(this.props.signature.type);
 
@@ -118,7 +116,7 @@ export default class ChecklistSignature extends Component {
                         <Grid item xs={4} md={4} lg={4}>{this.state.time}</Grid>
                     </Grid>
                 </Grid>
-                    {(this.props.signature.viewAsPerformer || this.props.signature.type == 'RB01') &&
+                    {(this.props.signature.viewAsPerformer || this.props.signature.type === 'RB01') &&
                     <Grid item xs={2} md={2} lg={2}>
                         <Button color='primary' onClick={this.openDialogue} style={{paddingTop: '11px', float: 'right'}}>Sign</Button>
                         <Dialog open={this.state.open}>{dialog}</Dialog> 

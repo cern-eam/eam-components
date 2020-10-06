@@ -117,9 +117,7 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
         });
       })["catch"](function (err) {
         _this.props.showError(err.response.body.errors[0].message);
-      })["finally"](function () {
-        _this.closeDialogue();
-      });
+      })["finally"](_this.closeDialogue());
     };
 
     _this.state = {
@@ -211,7 +209,7 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
         xs: 4,
         md: 4,
         lg: 4
-      }, this.state.time))), (this.props.signature.viewAsPerformer || this.props.signature.type == 'RB01') && /*#__PURE__*/_react["default"].createElement(_Grid["default"], {
+      }, this.state.time))), (this.props.signature.viewAsPerformer || this.props.signature.type === 'RB01') && /*#__PURE__*/_react["default"].createElement(_Grid["default"], {
         item: true,
         xs: 2,
         md: 2,

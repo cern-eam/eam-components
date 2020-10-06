@@ -401,7 +401,8 @@ var Checklists = /*#__PURE__*/function (_Component) {
   }, {
     key: "expandSignature",
     value: function expandSignature(activity) {
-      var signaturesCollapsed = Object.assign({}, this.state.signaturesCollapsed);
+      var signaturesCollapsed = _objectSpread({}, this.state.signaturesCollapsed);
+
       signaturesCollapsed[activity.activityCode] = !signaturesCollapsed[activity.activityCode];
       this.setState({
         signaturesCollapsed: signaturesCollapsed
