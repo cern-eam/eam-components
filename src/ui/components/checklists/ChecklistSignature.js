@@ -81,14 +81,16 @@ export default class ChecklistSignature extends Component {
                     <TextField required 
                         onChange={this.onUsercodeTextFieldChange} 
                         id='standard-required' 
-                        label='Username'/>
+                        label='Username'
+                        autoComplete='off'/>
                 </div>
                 <div>
                     <TextField required 
                         onChange={this.onPasswordTextFieldChange}
                         id='standard-password-input'
                         label='Pasword' 
-                        type='password'/>
+                        type='password'
+                        autoComplete='off'/>
                 </div>    
                 <div> 
                     {<Button onClick={this.closeDialogue}>
@@ -109,7 +111,7 @@ export default class ChecklistSignature extends Component {
                               paddingTop: '4px',
                               paddingBottom: '3px'}}>
               <Grid container spacing={1} className="activityDetails">
-                <Grid item xs={10} md={10} lg={10}>
+                <Grid item xs={10} md={10} lg={10} style={{paddingTop: '6px'}}>
                     <label style={{fontSize: '0.84rem', color: 'rgb(20, 88, 134)'}}>{label}</label>
                     <Grid style={{display: 'flex', paddingTop: '2px'}} item xs={10} md={10} lg={10}>  
                         <Grid item xs={6} md={6} lg={6}>{this.state.signer}</Grid>

@@ -152,13 +152,15 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
         required: true,
         onChange: this.onUsercodeTextFieldChange,
         id: "standard-required",
-        label: "Username"
+        label: "Username",
+        autoComplete: "off"
       })), /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement(_TextField["default"], {
         required: true,
         onChange: this.onPasswordTextFieldChange,
         id: "standard-password-input",
         label: "Pasword",
-        type: "password"
+        type: "password",
+        autoComplete: "off"
       })), /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement(_Button["default"], {
         onClick: this.closeDialogue
       }, "Cancel"), /*#__PURE__*/_react["default"].createElement(_Button["default"], {
@@ -184,7 +186,10 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
         item: true,
         xs: 10,
         md: 10,
-        lg: 10
+        lg: 10,
+        style: {
+          paddingTop: '6px'
+        }
       }, /*#__PURE__*/_react["default"].createElement("label", {
         style: {
           fontSize: '0.84rem',
