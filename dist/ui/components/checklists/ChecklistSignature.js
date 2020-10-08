@@ -111,10 +111,7 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
       };
 
       _WSChecklists["default"].esignChecklist(signature).then(function (response) {
-        _this.setState({
-          signer: response.body.data.signer,
-          time: response.body.data.timeStamp
-        });
+        _this.props.setSignature(_this.props.activityCode, _this.props.signature.type, response.body.data.signer, response.body.data.timeStamp);
       })["catch"](function (err) {
         _this.props.showError(err.response.body.errors[0].message);
       })["finally"](_this.closeDialogue);
@@ -162,6 +159,7 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
         type: "password",
         autoComplete: "off"
       })), /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement(_Button["default"], {
+        type: "submit",
         onClick: this.closeDialogue
       }, "Cancel"), /*#__PURE__*/_react["default"].createElement(_Button["default"], {
         onClick: this.sign
@@ -229,6 +227,14 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
       }, "Sign"), /*#__PURE__*/_react["default"].createElement(_Dialog["default"], {
         open: this.state.open
       }, dialog))));
+    }
+  }], [{
+    key: "getDerivedStateFromProps",
+    value: function getDerivedStateFromProps(nextProps, state) {
+      if (nextProps.signature.signer !== state.signer || nextProps.signature.time !== state.time) {
+        var signature = nextProps.signature;
+        return signature;
+      }
     }
   }]);
 

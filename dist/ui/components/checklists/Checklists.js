@@ -162,6 +162,44 @@ var Checklists = /*#__PURE__*/function (_Component) {
       marginBottom: -24
     };
 
+    _this.resetSignatures = function (activityCode) {
+      _this.setState(function (state) {
+        var activities = _toConsumableArray(state.activities);
+
+        activities.forEach(function (activity) {
+          if (activityCode === activity.activityCode) {
+            activity.signatures.forEach(function (signature) {
+              signature.signer = null;
+              signature.time = null;
+            });
+          }
+        });
+        return {
+          activities: activities
+        };
+      });
+    };
+
+    _this.setSignature = function (activityCode, type, signer, time) {
+      _this.setState(function (state) {
+        var activities = _toConsumableArray(state.activities);
+
+        activities.forEach(function (activity) {
+          if (activityCode === activity.activityCode) {
+            activity.signatures.forEach(function (signature) {
+              if (signature.type === type) {
+                signature.signer = signer;
+                signature.time = time;
+              }
+            });
+          }
+        });
+        return {
+          activities: activities
+        };
+      });
+    };
+
     _this.onUpdateChecklistItem = function (checklistItem) {
       var activityCode = checklistItem.activityCode;
       var checkListCode = checklistItem.checkListCode;
@@ -326,7 +364,8 @@ var Checklists = /*#__PURE__*/function (_Component) {
           checklistItem: checklist,
           handleError: handleError,
           minFindingsDropdown: minFindingsDropdown,
-          getWoLink: getWoLink
+          getWoLink: getWoLink,
+          resetSignatures: _this3.resetSignatures
         });
       }))));
     }
@@ -419,7 +458,8 @@ var Checklists = /*#__PURE__*/function (_Component) {
           signature: signature,
           workOrderCode: activity.workOrderNumber,
           activityCode: activity.activityCode,
-          showError: _this5.props.showError
+          showError: _this5.props.showError,
+          setSignature: _this5.setSignature
         });
       });
     }

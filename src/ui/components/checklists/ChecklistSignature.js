@@ -33,6 +33,14 @@ export default class ChecklistSignature extends Component {
           qualification: this.props.signature.responsibilityDescription,
         };
     }
+
+    static getDerivedStateFromProps(nextProps, state){
+        if(nextProps.signature.signer !== state.signer || nextProps.signature.time !== state.time){
+            const signature = nextProps.signature;
+            return signature;
+        }
+    }
+
     openDialogue = () => {
         this.setState({open: true});
     };
@@ -57,9 +65,9 @@ export default class ChecklistSignature extends Component {
                           userCode: this.state.username ? this.state.username.toUpperCase() : null,
                           password: this.state.password,
                           signatureType: this.props.signature.type};
-        WSChecklists.esignChecklist(signature).then((response)=> {
-            this.setState({signer:response.body.data.signer, time: response.body.data.timeStamp});
-        }).catch((err)=> {
+        WSChecklists.esignChecklist(signature).then((response)=> { 
+            this.props.setSignature(this.props.activityCode, this.props.signature.type, response.body.data.signer, response.body.data.timeStamp);
+       }).catch((err)=> {
             this.props.showError(err.response.body.errors[0].message);
         }).finally(this.closeDialogue);
     }
@@ -93,7 +101,7 @@ export default class ChecklistSignature extends Component {
                         autoComplete='off'/>
                 </div>    
                 <div> 
-                    {<Button onClick={this.closeDialogue}>
+                    {<Button type= 'submit' onClick={this.closeDialogue}>
                         Cancel
                     </Button>}
                     {<Button onClick={this.sign}> 

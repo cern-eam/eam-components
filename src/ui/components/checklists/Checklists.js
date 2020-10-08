@@ -154,6 +154,41 @@ class Checklists extends Component {
         });
     }
 
+    resetSignatures = activityCode => {
+        this.setState(state => {
+            const activities = [...state.activities];
+            activities.forEach(activity => {
+                if(activityCode === activity.activityCode){
+                    activity.signatures.forEach(signature => {
+                        signature.signer = null;
+                        signature.time = null;
+                    })  
+                }
+            });
+            return {activities};
+        })
+
+    }
+    
+    setSignature = (activityCode, type, signer, time) => {
+        this.setState(state => {
+            const activities = [...state.activities];
+            activities.forEach(activity => {
+                if(activityCode === activity.activityCode){
+                    activity.signatures.forEach(signature => {
+                        if(signature.type === type){
+                            signature.signer = signer;
+                            signature.time = time;
+                        }
+                    })
+                }
+            });
+            return {activities}
+        }
+
+        )
+    }
+
     onUpdateChecklistItem = checklistItem => {
         const activityCode = checklistItem.activityCode;
         const checkListCode = checklistItem.checkListCode;
@@ -211,6 +246,7 @@ class Checklists extends Component {
                         handleError={handleError}
                         minFindingsDropdown={minFindingsDropdown}
                         getWoLink={getWoLink}
+                        resetSignatures={this.resetSignatures}
                     />)}
                 </div>
             </ExpansionPanelDetails>
@@ -296,7 +332,8 @@ class Checklists extends Component {
             <ChecklistSignature signature={signature}
                                 workOrderCode={activity.workOrderNumber}
                                 activityCode={activity.activityCode}
-                                showError={this.props.showError}/>
+                                showError={this.props.showError}
+                                setSignature = {this.setSignature}/>
         );
     }
 

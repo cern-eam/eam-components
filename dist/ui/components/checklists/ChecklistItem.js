@@ -181,7 +181,9 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       var DEBOUNCE_TIME_MS = 50;
 
       var request = function request() {
-        _this2.props.updateChecklistItem(checklistItem)["catch"](function (error) {
+        _this2.props.updateChecklistItem(checklistItem).then(function () {
+          _this2.props.resetSignatures(checklistItem.activityCode);
+        })["catch"](function (error) {
           handleError(error);
 
           _this2.props.onUpdateChecklistItem(checklistItem);
