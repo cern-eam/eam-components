@@ -121,8 +121,6 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
       open: false,
       username: null,
       password: null,
-      signer: _this.props.signature.signer,
-      time: _this.props.signature.time,
       qualification: _this.props.signature.responsibilityDescription
     };
     return _this;
@@ -207,12 +205,12 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
         xs: 6,
         md: 6,
         lg: 6
-      }, this.state.signer), /*#__PURE__*/_react["default"].createElement(_Grid["default"], {
+      }, this.props.signature.signer), /*#__PURE__*/_react["default"].createElement(_Grid["default"], {
         item: true,
         xs: 4,
         md: 4,
         lg: 4
-      }, this.state.time))), (this.props.signature.viewAsPerformer || this.props.signature.type === 'RB01') && /*#__PURE__*/_react["default"].createElement(_Grid["default"], {
+      }, this.props.signature.time))), (this.props.signature.viewAsPerformer || this.props.signature.type === 'RB01') && /*#__PURE__*/_react["default"].createElement(_Grid["default"], {
         item: true,
         xs: 2,
         md: 2,
@@ -227,14 +225,6 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
       }, "Sign"), /*#__PURE__*/_react["default"].createElement(_Dialog["default"], {
         open: this.state.open
       }, dialog))));
-    }
-  }], [{
-    key: "getDerivedStateFromProps",
-    value: function getDerivedStateFromProps(nextProps, state) {
-      if (nextProps.signature.signer !== state.signer || nextProps.signature.time !== state.time) {
-        var signature = nextProps.signature;
-        return signature;
-      }
     }
   }]);
 

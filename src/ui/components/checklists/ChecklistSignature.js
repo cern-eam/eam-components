@@ -28,19 +28,10 @@ export default class ChecklistSignature extends Component {
           open: false,
           username: null,
           password: null,
-          signer: this.props.signature.signer,
-          time: this.props.signature.time,
           qualification: this.props.signature.responsibilityDescription,
         };
     }
-
-    static getDerivedStateFromProps(nextProps, state){
-        if(nextProps.signature.signer !== state.signer || nextProps.signature.time !== state.time){
-            const signature = nextProps.signature;
-            return signature;
-        }
-    }
-
+    
     openDialogue = () => {
         this.setState({open: true});
     };
@@ -122,8 +113,8 @@ export default class ChecklistSignature extends Component {
                 <Grid item xs={10} md={10} lg={10} style={{paddingTop: '6px'}}>
                     <label style={{fontSize: '0.84rem', color: 'rgb(20, 88, 134)'}}>{label}</label>
                     <Grid style={{display: 'flex', paddingTop: '2px'}} item xs={10} md={10} lg={10}>  
-                        <Grid item xs={6} md={6} lg={6}>{this.state.signer}</Grid>
-                        <Grid item xs={4} md={4} lg={4}>{this.state.time}</Grid>
+                        <Grid item xs={6} md={6} lg={6}>{this.props.signature.signer}</Grid>
+                        <Grid item xs={4} md={4} lg={4}>{this.props.signature.time}</Grid>
                     </Grid>
                 </Grid>
                     {(this.props.signature.viewAsPerformer || this.props.signature.type === 'RB01') &&

@@ -157,14 +157,14 @@ class Checklists extends Component {
     resetSignatures = activityCode => {
         this.setState(state => {
             const activities = [...state.activities];
-            activities.forEach(activity => {
-                if(activityCode === activity.activityCode){
-                    activity.signatures.forEach(signature => {
-                        signature.signer = null;
-                        signature.time = null;
-                    })  
-                }
-            });
+            const activityIndex = activities.findIndex(activity => activityCode === activity.activityCode)
+            const activity = {...activities[activityIndex]};
+            activity.signatures.forEach((signature, index) => {
+                const signatureCopy = {...signature};
+                signatureCopy.signer = null;
+                signatureCopy.time = null;
+                activity.signatures[index] = signatureCopy;
+            })
             return {activities};
         })
 
@@ -173,20 +173,15 @@ class Checklists extends Component {
     setSignature = (activityCode, type, signer, time) => {
         this.setState(state => {
             const activities = [...state.activities];
-            activities.forEach(activity => {
-                if(activityCode === activity.activityCode){
-                    activity.signatures.forEach(signature => {
-                        if(signature.type === type){
-                            signature.signer = signer;
-                            signature.time = time;
-                        }
-                    })
-                }
-            });
+            const activityIndex = activities.findIndex = activities.findIndex(activity => activityCode === activity.activityCode);
+            const activity = {...activities[activityIndex]};
+            activities[activityIndex] = activity;
+            const signatureIndex = activity.signatures.findIndex(signature => signature.type === type);
+            activity.signatures[signatureIndex] = {...activity.signatures[signatureIndex]};
+            activity.signatures[signatureIndex].signer = signer;
+            activity.signatures[signatureIndex].time = time;
             return {activities}
-        }
-
-        )
+        })
     }
 
     onUpdateChecklistItem = checklistItem => {

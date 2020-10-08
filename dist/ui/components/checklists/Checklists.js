@@ -166,13 +166,18 @@ var Checklists = /*#__PURE__*/function (_Component) {
       _this.setState(function (state) {
         var activities = _toConsumableArray(state.activities);
 
-        activities.forEach(function (activity) {
-          if (activityCode === activity.activityCode) {
-            activity.signatures.forEach(function (signature) {
-              signature.signer = null;
-              signature.time = null;
-            });
-          }
+        var activityIndex = activities.findIndex(function (activity) {
+          return activityCode === activity.activityCode;
+        });
+
+        var activity = _objectSpread({}, activities[activityIndex]);
+
+        activity.signatures.forEach(function (signature, index) {
+          var signatureCopy = _objectSpread({}, signature);
+
+          signatureCopy.signer = null;
+          signatureCopy.time = null;
+          activity.signatures[index] = signatureCopy;
         });
         return {
           activities: activities
@@ -184,16 +189,19 @@ var Checklists = /*#__PURE__*/function (_Component) {
       _this.setState(function (state) {
         var activities = _toConsumableArray(state.activities);
 
-        activities.forEach(function (activity) {
-          if (activityCode === activity.activityCode) {
-            activity.signatures.forEach(function (signature) {
-              if (signature.type === type) {
-                signature.signer = signer;
-                signature.time = time;
-              }
-            });
-          }
+        var activityIndex = activities.findIndex = activities.findIndex(function (activity) {
+          return activityCode === activity.activityCode;
         });
+
+        var activity = _objectSpread({}, activities[activityIndex]);
+
+        activities[activityIndex] = activity;
+        var signatureIndex = activity.signatures.findIndex(function (signature) {
+          return signature.type === type;
+        });
+        activity.signatures[signatureIndex] = _objectSpread({}, activity.signatures[signatureIndex]);
+        activity.signatures[signatureIndex].signer = signer;
+        activity.signatures[signatureIndex].time = time;
         return {
           activities: activities
         };
