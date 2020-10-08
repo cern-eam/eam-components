@@ -163,8 +163,6 @@ var Checklists = /*#__PURE__*/function (_Component) {
     };
 
     _this.resetSignatures = function (activityCode) {
-      console.log('reset');
-
       _this.setState(function (state) {
         var activities = _toConsumableArray(state.activities);
 
@@ -174,12 +172,13 @@ var Checklists = /*#__PURE__*/function (_Component) {
 
         var activity = _objectSpread({}, activities[activityIndex]);
 
-        activity.signatures.forEach(function (signature, index) {
+        activities[activityIndex] = activity;
+        activity.signatures = activity.signatures.map(function (signature) {
           var signatureCopy = _objectSpread({}, signature);
 
           signatureCopy.signer = null;
           signatureCopy.time = null;
-          activity.signatures[index] = signatureCopy;
+          return signatureCopy;
         });
         return {
           activities: activities
