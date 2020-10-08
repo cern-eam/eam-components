@@ -163,6 +163,8 @@ var Checklists = /*#__PURE__*/function (_Component) {
     };
 
     _this.resetSignatures = function (activityCode) {
+      console.log('reset');
+
       _this.setState(function (state) {
         var activities = _toConsumableArray(state.activities);
 
@@ -189,7 +191,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
       _this.setState(function (state) {
         var activities = _toConsumableArray(state.activities);
 
-        var activityIndex = activities.findIndex = activities.findIndex(function (activity) {
+        var activityIndex = activities.findIndex(function (activity) {
           return activityCode === activity.activityCode;
         });
 
@@ -200,8 +202,9 @@ var Checklists = /*#__PURE__*/function (_Component) {
           return signature.type === type;
         });
         activity.signatures[signatureIndex] = _objectSpread({}, activity.signatures[signatureIndex]);
-        activity.signatures[signatureIndex].signer = signer;
-        activity.signatures[signatureIndex].time = time;
+        var signatureCopy = activity.signatures[signatureIndex];
+        signatureCopy.signer = signer;
+        signatureCopy.time = time;
         return {
           activities: activities
         };

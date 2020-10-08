@@ -155,6 +155,7 @@ class Checklists extends Component {
     }
 
     resetSignatures = activityCode => {
+        console.log('reset');
         this.setState(state => {
             const activities = [...state.activities];
             const activityIndex = activities.findIndex(activity => activityCode === activity.activityCode)
@@ -173,13 +174,14 @@ class Checklists extends Component {
     setSignature = (activityCode, type, signer, time) => {
         this.setState(state => {
             const activities = [...state.activities];
-            const activityIndex = activities.findIndex = activities.findIndex(activity => activityCode === activity.activityCode);
+            const activityIndex = activities.findIndex(activity => activityCode === activity.activityCode);
             const activity = {...activities[activityIndex]};
             activities[activityIndex] = activity;
             const signatureIndex = activity.signatures.findIndex(signature => signature.type === type);
             activity.signatures[signatureIndex] = {...activity.signatures[signatureIndex]};
-            activity.signatures[signatureIndex].signer = signer;
-            activity.signatures[signatureIndex].time = time;
+            const signatureCopy = activity.signatures[signatureIndex];
+            signatureCopy.signer = signer;
+            signatureCopy.time = time;
             return {activities}
         })
     }
