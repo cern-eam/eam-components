@@ -32,6 +32,10 @@ export default class ChecklistSignature extends Component {
         };
     }
 
+    onEnter = (ev) => {
+        if(ev.key === 'Enter') this.sign();
+    }
+
     openDialogue = () => {
         this.setState({open: true});
     };
@@ -82,9 +86,8 @@ export default class ChecklistSignature extends Component {
                         id='standard-required' 
                         label='Username'
                         autoComplete='off'
-                        onKeyPress= {ev =>{
-                            if(ev.key === 'Enter')
-                                this.sign();
+                        onKeyPress= {ev => {
+                            this.onEnter(ev);
                         }}/>
                 </div>
                 <div>
@@ -94,9 +97,8 @@ export default class ChecklistSignature extends Component {
                         label='Pasword' 
                         type='password'
                         autoComplete='off'
-                        onKeyPress= {ev =>{
-                            if(ev.key === 'Enter')
-                                this.sign();
+                        onKeyPress= {ev => {
+                            this.onEnter(ev);
                         }}/>
                 </div>    
                 <div> 
