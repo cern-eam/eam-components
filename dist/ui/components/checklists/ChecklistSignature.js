@@ -134,6 +134,8 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
   }, {
     key: "render",
     value: function render() {
+      var _this2 = this;
+
       var label = this.state.qualification ? this.state.qualification : this.signatureTypeSwitch(this.props.signature.type);
 
       var dialog = /*#__PURE__*/_react["default"].createElement(_Paper["default"], {
@@ -145,17 +147,24 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
         }
       }, "E-Signature"), /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement(_TextField["default"], {
         required: true,
+        autoFocus: true,
         onChange: this.onUsercodeTextFieldChange,
         id: "standard-required",
         label: "Username",
-        autoComplete: "off"
+        autoComplete: "off",
+        onKeyPress: function onKeyPress(ev) {
+          if (ev.key === 'Enter') _this2.sign();
+        }
       })), /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement(_TextField["default"], {
         required: true,
         onChange: this.onPasswordTextFieldChange,
         id: "standard-password-input",
         label: "Pasword",
         type: "password",
-        autoComplete: "off"
+        autoComplete: "off",
+        onKeyPress: function onKeyPress(ev) {
+          if (ev.key === 'Enter') _this2.sign();
+        }
       })), /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement(_Button["default"], {
         type: "submit",
         onClick: this.closeDialogue

@@ -31,7 +31,7 @@ export default class ChecklistSignature extends Component {
           qualification: this.props.signature.responsibilityDescription,
         };
     }
-    
+
     openDialogue = () => {
         this.setState({open: true});
     };
@@ -77,11 +77,15 @@ export default class ChecklistSignature extends Component {
             <Paper elevation={3} style={modalStyle}>
                 <div style={{fontSize:'25px'}}>E-Signature</div>
                 <div>
-                    <TextField required 
+                    <TextField required autoFocus 
                         onChange={this.onUsercodeTextFieldChange} 
                         id='standard-required' 
                         label='Username'
-                        autoComplete='off'/>
+                        autoComplete='off'
+                        onKeyPress= {ev =>{
+                            if(ev.key === 'Enter')
+                                this.sign();
+                        }}/>
                 </div>
                 <div>
                     <TextField required 
@@ -89,7 +93,11 @@ export default class ChecklistSignature extends Component {
                         id='standard-password-input'
                         label='Pasword' 
                         type='password'
-                        autoComplete='off'/>
+                        autoComplete='off'
+                        onKeyPress= {ev =>{
+                            if(ev.key === 'Enter')
+                                this.sign();
+                        }}/>
                 </div>    
                 <div> 
                     {<Button type= 'submit' onClick={this.closeDialogue}>
