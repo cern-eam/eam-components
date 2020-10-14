@@ -27,8 +27,7 @@ export default class ChecklistSignature extends Component {
         this.state = {
           open: false,
           username: null,
-          password: null,
-          qualification: this.props.signature.responsibilityDescription,
+          password: null
         };
     }
 
@@ -75,10 +74,11 @@ export default class ChecklistSignature extends Component {
     }
 
 
-    render(){
-        const label = this.state.qualification ? 
-                        this.state.qualification 
-                        : this.signatureTypeSwitch(this.props.signature.type);
+    render() {
+        const { signature } = this.props;
+        const label = signature.responsibilityDescription ? 
+                        signature.responsibilityDescription
+                        : signatureTypes[signature.type];
 
         const dialog =
             <Paper elevation={3} style={modalStyle}>
@@ -124,11 +124,11 @@ export default class ChecklistSignature extends Component {
                 <Grid item xs={10} md={10} lg={10} style={{paddingTop: '6px'}}>
                     <label style={{fontSize: '0.84rem', color: 'rgb(20, 88, 134)'}}>{label}</label>
                     <Grid style={{display: 'flex', paddingTop: '2px'}} item xs={10} md={10} lg={10}>  
-                        <Grid item xs={6} md={6} lg={6}>{this.props.signature.signer}</Grid>
-                        <Grid item xs={4} md={4} lg={4}>{this.props.signature.time}</Grid>
+                        <Grid item xs={6} md={6} lg={6}>{signature.signer}</Grid>
+                        <Grid item xs={4} md={4} lg={4}>{signature.time}</Grid>
                     </Grid>
                 </Grid>
-                    {(this.props.signature.viewAsPerformer || this.props.signature.type === 'RB01') &&
+                    {(signature.viewAsPerformer || signature.type === 'RB01') &&
                     <Grid item xs={2} md={2} lg={2}>
                         <Button color='primary' onClick={this.openDialogue} style={{paddingTop: '11px', float: 'right'}}>Sign</Button>
                         <Dialog open={this.state.open}>{dialog}</Dialog> 

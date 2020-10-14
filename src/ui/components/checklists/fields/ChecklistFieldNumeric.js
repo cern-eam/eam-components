@@ -41,7 +41,6 @@ const OK_BORDER = "solid 1px #ced4da";
 const ERROR_BORDER = "solid 1px #f44336";
 
 const ChecklistFieldNumeric = props => {
-    console.log(props);
     const {value, UOM, handleChange} = props;
     const stringValue = value === null ? '' : value;
 

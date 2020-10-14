@@ -128,8 +128,7 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
     _this.state = {
       open: false,
       username: null,
-      password: null,
-      qualification: _this.props.signature.responsibilityDescription
+      password: null
     };
     return _this;
   }
@@ -142,7 +141,8 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var label = this.state.qualification ? this.state.qualification : this.signatureTypeSwitch(this.props.signature.type);
+      var signature = this.props.signature;
+      var label = signature.responsibilityDescription ? signature.responsibilityDescription : signatureTypes[signature.type];
 
       var dialog = /*#__PURE__*/_react["default"].createElement(_Paper["default"], {
         elevation: 3,
@@ -216,12 +216,12 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
         xs: 6,
         md: 6,
         lg: 6
-      }, this.props.signature.signer), /*#__PURE__*/_react["default"].createElement(_Grid["default"], {
+      }, signature.signer), /*#__PURE__*/_react["default"].createElement(_Grid["default"], {
         item: true,
         xs: 4,
         md: 4,
         lg: 4
-      }, this.props.signature.time))), (this.props.signature.viewAsPerformer || this.props.signature.type === 'RB01') && /*#__PURE__*/_react["default"].createElement(_Grid["default"], {
+      }, signature.time))), (signature.viewAsPerformer || signature.type === 'RB01') && /*#__PURE__*/_react["default"].createElement(_Grid["default"], {
         item: true,
         xs: 2,
         md: 2,

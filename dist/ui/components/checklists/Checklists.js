@@ -163,26 +163,9 @@ var Checklists = /*#__PURE__*/function (_Component) {
     };
 
     _this.resetSignatures = function (activityCode) {
-      _this.setState(function (state) {
-        var activities = _toConsumableArray(state.activities);
-
-        var activityIndex = activities.findIndex(function (activity) {
-          return activityCode === activity.activityCode;
-        });
-
-        var activity = _objectSpread({}, activities[activityIndex]);
-
-        activities[activityIndex] = activity;
-        activity.signatures = activity.signatures.map(function (signature) {
-          var signatureCopy = _objectSpread({}, signature);
-
-          signatureCopy.signer = null;
-          signatureCopy.time = null;
-          return signatureCopy;
-        });
-        return {
-          activities: activities
-        };
+      var types = ["PB01", "PB02", "RB01"];
+      types.forEach(function (type) {
+        return _this.setSignature(activityCode, type, null, null);
       });
     };
 
@@ -200,6 +183,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
         var signatureIndex = activity.signatures.findIndex(function (signature) {
           return signature.type === type;
         });
+        activity.signatures = _toConsumableArray(activity.signatures);
         activity.signatures[signatureIndex] = _objectSpread({}, activity.signatures[signatureIndex]);
         var signatureCopy = activity.signatures[signatureIndex];
         signatureCopy.signer = signer;
@@ -235,6 +219,16 @@ var Checklists = /*#__PURE__*/function (_Component) {
         return {
           activities: activities
         };
+      });
+    };
+
+    _this.expandSignature = function (activity, expanded) {
+      var signaturesCollapsed = _objectSpread({}, _this.state.signaturesCollapsed);
+
+      signaturesCollapsed[activity.activityCode] = !expanded;
+
+      _this.setState({
+        signaturesCollapsed: signaturesCollapsed
       });
     };
 
@@ -448,16 +442,6 @@ var Checklists = /*#__PURE__*/function (_Component) {
       });
     }
   }, {
-    key: "expandSignature",
-    value: function expandSignature(activity) {
-      var signaturesCollapsed = _objectSpread({}, this.state.signaturesCollapsed);
-
-      signaturesCollapsed[activity.activityCode] = !signaturesCollapsed[activity.activityCode];
-      this.setState({
-        signaturesCollapsed: signaturesCollapsed
-      });
-    }
-  }, {
     key: "renderSignatures",
     value: function renderSignatures(activity) {
       var _this5 = this;
@@ -535,7 +519,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
           },
           expanded: !_this6.state.signaturesCollapsed[activity.activityCode],
           onChange: function onChange(_, expanded) {
-            return _this6.expandSignature(activity);
+            return _this6.expandSignature(activity, expanded);
           }
         }, /*#__PURE__*/_react["default"].createElement(_ExpansionPanelSummary["default"], {
           expandIcon: /*#__PURE__*/_react["default"].createElement(_ExpandMore["default"], null)
@@ -546,7 +530,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
         }, "E-SIGNATURES")), /*#__PURE__*/_react["default"].createElement(_ExpansionPanelDetails["default"], {
           style: {
             margin: 0,
-            padding: '0 24px 0 24px',
+            padding: '0 24px',
             backgroundColor: 'white',
             minHeight: '50px'
           }

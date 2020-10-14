@@ -100,7 +100,7 @@ class Checklists extends Component {
                     activity.collapse();
                     Object.values(activity.equipments).forEach(equipment => equipment.collapse());
                 });
-            }
+            };
     }
 
     expansionDetailsStyle = {
@@ -155,20 +155,8 @@ class Checklists extends Component {
     }
 
     resetSignatures = activityCode => {
-        this.setState(state => {
-            const activities = [...state.activities];
-            const activityIndex = activities.findIndex(activity => activityCode === activity.activityCode)
-            const activity = {...activities[activityIndex]};
-            activities[activityIndex] = activity;
-            activity.signatures = activity.signatures.map(signature => {
-                const signatureCopy = {...signature};
-                signatureCopy.signer = null; 
-                signatureCopy.time = null;
-                return signatureCopy;
-            })
-            return {activities};
-        })
-
+        const types = ["PB01", "PB02", "RB01"];
+        types.forEach(type => this.setSignature(activityCode, type, null, null));
     }
     
     setSignature = (activityCode, type, signer, time) => {
@@ -178,6 +166,7 @@ class Checklists extends Component {
             const activity = {...activities[activityIndex]};
             activities[activityIndex] = activity;
             const signatureIndex = activity.signatures.findIndex(signature => signature.type === type);
+            activity.signatures = [...activity.signatures];
             activity.signatures[signatureIndex] = {...activity.signatures[signatureIndex]};
             const signatureCopy = activity.signatures[signatureIndex];
             signatureCopy.signer = signer;
@@ -317,9 +306,9 @@ class Checklists extends Component {
         });
     }
 
-    expandSignature(activity){
+    expandSignature = (activity, expanded) => {
         const signaturesCollapsed = {...this.state.signaturesCollapsed};
-        signaturesCollapsed[activity.activityCode] = !signaturesCollapsed[activity.activityCode];
+        signaturesCollapsed[activity.activityCode] = !expanded;
         this.setState({signaturesCollapsed});
     }
 
@@ -373,11 +362,11 @@ class Checklists extends Component {
                     {activity.signatures &&
                         <ActivityExpansionPanel style={{backgroundColor: 'white', border: '0px'}}
                                                 expanded={!this.state.signaturesCollapsed[activity.activityCode]}
-                                                onChange={(_, expanded) => this.expandSignature(activity)}>
+                                                onChange={(_, expanded) => this.expandSignature(activity, expanded)}>
                             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
                                 <span style={{fontWeight: 500}}>E-SIGNATURES</span>
                             </ExpansionPanelSummary>
-                            <ExpansionPanelDetails style={{margin: 0, padding: '0 24px 0 24px', backgroundColor: 'white', minHeight: '50px'}}>
+                            <ExpansionPanelDetails style={{margin: 0, padding: '0 24px', backgroundColor: 'white', minHeight: '50px'}}>
                                 <div style={{width: "100%"}}>
                                     {this.renderSignatures(activity)}
                                 </div>
