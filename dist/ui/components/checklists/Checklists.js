@@ -180,14 +180,21 @@ var Checklists = /*#__PURE__*/function (_Component) {
         var activity = _objectSpread({}, activities[activityIndex]);
 
         activities[activityIndex] = activity;
-        var signatureIndex = activity.signatures.findIndex(function (signature) {
-          return signature.type === type;
-        });
-        activity.signatures = _toConsumableArray(activity.signatures);
-        activity.signatures[signatureIndex] = _objectSpread({}, activity.signatures[signatureIndex]);
-        var signatureCopy = activity.signatures[signatureIndex];
-        signatureCopy.signer = signer;
-        signatureCopy.time = time;
+
+        if (activity.signatures) {
+          var signatureIndex = activity.signatures.findIndex(function (signature) {
+            return signature.type === type;
+          });
+
+          if (signatureIndex >= 0) {
+            activity.signatures = _toConsumableArray(activity.signatures);
+            activity.signatures[signatureIndex] = _objectSpread({}, activity.signatures[signatureIndex]);
+            var signatureCopy = activity.signatures[signatureIndex];
+            signatureCopy.signer = signer;
+            signatureCopy.time = time;
+          }
+        }
+
         return {
           activities: activities
         };

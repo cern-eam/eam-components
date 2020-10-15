@@ -165,12 +165,16 @@ class Checklists extends Component {
             const activityIndex = activities.findIndex(activity => activityCode === activity.activityCode);
             const activity = {...activities[activityIndex]};
             activities[activityIndex] = activity;
-            const signatureIndex = activity.signatures.findIndex(signature => signature.type === type);
-            activity.signatures = [...activity.signatures];
-            activity.signatures[signatureIndex] = {...activity.signatures[signatureIndex]};
-            const signatureCopy = activity.signatures[signatureIndex];
-            signatureCopy.signer = signer;
-            signatureCopy.time = time;
+            if(activity.signatures){
+                const signatureIndex = activity.signatures.findIndex(signature => signature.type === type);
+                if(signatureIndex >= 0){
+                    activity.signatures = [...activity.signatures];
+                    activity.signatures[signatureIndex] = {...activity.signatures[signatureIndex]};
+                    const signatureCopy = activity.signatures[signatureIndex];
+                    signatureCopy.signer = signer;
+                    signatureCopy.time = time;
+                }
+            }
             return {activities}
         })
     }
