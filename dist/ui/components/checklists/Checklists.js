@@ -23,6 +23,8 @@ var _ChecklistEquipment = _interopRequireDefault(require("./ChecklistEquipment")
 
 var _ChecklistItem = _interopRequireDefault(require("./ChecklistItem"));
 
+var _ChecklistSignature = _interopRequireDefault(require("./ChecklistSignature"));
+
 var _reactBlockUi = _interopRequireDefault(require("react-block-ui"));
 
 var _EAMSelect = _interopRequireDefault(require("../inputs/EAMSelect"));
@@ -30,6 +32,8 @@ var _EAMSelect = _interopRequireDefault(require("../inputs/EAMSelect"));
 var _SimpleEmptyState = _interopRequireDefault(require("../../components/emptystates/SimpleEmptyState"));
 
 var _styles = require("@material-ui/core/styles");
+
+var _mdiMaterialUi = require("mdi-material-ui");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -158,6 +162,38 @@ var Checklists = /*#__PURE__*/function (_Component) {
       marginBottom: -24
     };
 
+    _this.resetSignatures = function (activityCode) {
+      var types = ["PB01", "PB02", "RB01"];
+      types.forEach(function (type) {
+        return _this.setSignature(activityCode, type, null, null);
+      });
+    };
+
+    _this.setSignature = function (activityCode, type, signer, time) {
+      _this.setState(function (state) {
+        var activities = _toConsumableArray(state.activities);
+
+        var activityIndex = activities.findIndex(function (activity) {
+          return activityCode === activity.activityCode;
+        });
+
+        var activity = _objectSpread({}, activities[activityIndex]);
+
+        activities[activityIndex] = activity;
+        var signatureIndex = activity.signatures.findIndex(function (signature) {
+          return signature.type === type;
+        });
+        activity.signatures = _toConsumableArray(activity.signatures);
+        activity.signatures[signatureIndex] = _objectSpread({}, activity.signatures[signatureIndex]);
+        var signatureCopy = activity.signatures[signatureIndex];
+        signatureCopy.signer = signer;
+        signatureCopy.time = time;
+        return {
+          activities: activities
+        };
+      });
+    };
+
     _this.onUpdateChecklistItem = function (checklistItem) {
       var activityCode = checklistItem.activityCode;
       var checkListCode = checklistItem.checkListCode;
@@ -186,11 +222,22 @@ var Checklists = /*#__PURE__*/function (_Component) {
       });
     };
 
+    _this.expandSignature = function (activity, expanded) {
+      var signaturesCollapsed = _objectSpread({}, _this.state.signaturesCollapsed);
+
+      signaturesCollapsed[activity.activityCode] = !expanded;
+
+      _this.setState({
+        signaturesCollapsed: signaturesCollapsed
+      });
+    };
+
     _this.state = {
       activities: [],
       blocking: true,
       filteredActivity: null,
-      filteredEquipment: null
+      filteredEquipment: null,
+      signaturesCollapsed: {}
     };
 
     _this.addCollapseHeuristic();
@@ -321,7 +368,8 @@ var Checklists = /*#__PURE__*/function (_Component) {
           checklistItem: checklist,
           handleError: handleError,
           minFindingsDropdown: minFindingsDropdown,
-          getWoLink: getWoLink
+          getWoLink: getWoLink,
+          resetSignatures: _this3.resetSignatures
         });
       }))));
     }
@@ -394,9 +442,25 @@ var Checklists = /*#__PURE__*/function (_Component) {
       });
     }
   }, {
+    key: "renderSignatures",
+    value: function renderSignatures(activity) {
+      var _this5 = this;
+
+      if (!activity.signatures) return;
+      return activity.signatures.map(function (signature) {
+        return /*#__PURE__*/_react["default"].createElement(_ChecklistSignature["default"], {
+          signature: signature,
+          workOrderCode: activity.workOrderNumber,
+          activityCode: activity.activityCode,
+          showError: _this5.props.showError,
+          setSignature: _this5.setSignature
+        });
+      });
+    }
+  }, {
     key: "renderActivities",
     value: function renderActivities(filteredActivity, filteredEquipment) {
-      var _this5 = this;
+      var _this6 = this;
 
       var activities = this.state.activities;
       return activities.filter(function (activity) {
@@ -410,7 +474,10 @@ var Checklists = /*#__PURE__*/function (_Component) {
             timeout: 0
           },
           onChange: function onChange(_, expanded) {
-            return _this5.setCollapsedActivity(!expanded, activity.index);
+            return _this6.setCollapsedActivity(!expanded, activity.index);
+          },
+          style: {
+            marginTop: '5px'
           }
         }, /*#__PURE__*/_react["default"].createElement(_ExpansionPanelSummary["default"], {
           expandIcon: /*#__PURE__*/_react["default"].createElement(_ExpandMore["default"], null)
@@ -430,7 +497,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
         }) && /*#__PURE__*/_react["default"].createElement(_Button["default"], {
           key: activity.activityCode + '$createfuwo',
           onClick: function onClick(evt) {
-            return _this5.createFollowUpWOs(evt, activity);
+            return _this6.createFollowUpWOs(evt, activity);
           },
           color: "primary",
           style: {
@@ -445,13 +512,39 @@ var Checklists = /*#__PURE__*/function (_Component) {
           style: {
             width: "100%"
           }
-        }, _this5.renderChecklistsForActivity(activity, filteredEquipment))));
+        }, _this6.renderChecklistsForActivity(activity, filteredEquipment))), activity.signatures && /*#__PURE__*/_react["default"].createElement(ActivityExpansionPanel, {
+          style: {
+            backgroundColor: 'white',
+            border: '0px'
+          },
+          expanded: !_this6.state.signaturesCollapsed[activity.activityCode],
+          onChange: function onChange(_, expanded) {
+            return _this6.expandSignature(activity, expanded);
+          }
+        }, /*#__PURE__*/_react["default"].createElement(_ExpansionPanelSummary["default"], {
+          expandIcon: /*#__PURE__*/_react["default"].createElement(_ExpandMore["default"], null)
+        }, /*#__PURE__*/_react["default"].createElement("span", {
+          style: {
+            fontWeight: 500
+          }
+        }, "E-SIGNATURES")), /*#__PURE__*/_react["default"].createElement(_ExpansionPanelDetails["default"], {
+          style: {
+            margin: 0,
+            padding: '0 24px',
+            backgroundColor: 'white',
+            minHeight: '50px'
+          }
+        }, /*#__PURE__*/_react["default"].createElement("div", {
+          style: {
+            width: "100%"
+          }
+        }, _this6.renderSignatures(activity)))));
       });
     }
   }, {
     key: "setNewFilter",
     value: function setNewFilter(filters) {
-      var _this6 = this;
+      var _this7 = this;
 
       var activity = filters.activity,
           equipment = filters.equipment;
@@ -511,7 +604,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
             return checklists.concat(activity.checklists);
           }, []);
 
-          _this6.collapseHeuristic(checklists, newState.activities);
+          _this7.collapseHeuristic(checklists, newState.activities);
         }
 
         return newState;
@@ -526,7 +619,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this7 = this;
+      var _this8 = this;
 
       var _this$state = this.state,
           activities = _this$state.activities,
@@ -582,7 +675,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
         }))),
         value: filteredActivity ? filteredActivity : undefined,
         onChange: function onChange(obj) {
-          return _this7.setNewFilter({
+          return _this8.setNewFilter({
             activity: obj
           });
         },
@@ -606,7 +699,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
         }))),
         value: filteredEquipment ? filteredEquipment : undefined,
         onChange: function onChange(obj) {
-          return _this7.setNewFilter({
+          return _this8.setNewFilter({
             equipment: obj
           });
         },

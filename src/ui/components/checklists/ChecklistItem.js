@@ -99,7 +99,9 @@ export default class ChecklistItem extends Component {
         const request = () => {
 
             this.props.updateChecklistItem(checklistItem)
-                .catch(error => {
+                .then(() =>{ 
+                    this.props.resetSignatures(checklistItem.activityCode);
+                }).catch(error => {
                     handleError(error);
                     this.props.onUpdateChecklistItem(checklistItem);
                     this.setState({debounce: null});

@@ -7,10 +7,12 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import WSChecklists from '../../../tools/WSChecklists';
 import ChecklistEquipment from "./ChecklistEquipment";
 import ChecklistItem from './ChecklistItem';
+import ChecklistSignature from './ChecklistSignature';
 import BlockUi from 'react-block-ui';
 import EAMSelect from '../inputs/EAMSelect'
 import SimpleEmptyState from '../../components/emptystates/SimpleEmptyState';
 import { withStyles } from '@material-ui/core/styles';
+import { Console } from 'mdi-material-ui';
 
 const ActivityExpansionPanel = withStyles({
     root: {
@@ -78,7 +80,8 @@ class Checklists extends Component {
             activities: [],
             blocking: true,
             filteredActivity: null,
-            filteredEquipment: null
+            filteredEquipment: null,
+            signaturesCollapsed: {}
         }
 
         this.addCollapseHeuristic();
@@ -151,6 +154,27 @@ class Checklists extends Component {
         });
     }
 
+    resetSignatures = activityCode => {
+        const types = ["PB01", "PB02", "RB01"];
+        types.forEach(type => this.setSignature(activityCode, type, null, null));
+    }
+    
+    setSignature = (activityCode, type, signer, time) => {
+        this.setState(state => {
+            const activities = [...state.activities];
+            const activityIndex = activities.findIndex(activity => activityCode === activity.activityCode);
+            const activity = {...activities[activityIndex]};
+            activities[activityIndex] = activity;
+            const signatureIndex = activity.signatures.findIndex(signature => signature.type === type);
+            activity.signatures = [...activity.signatures];
+            activity.signatures[signatureIndex] = {...activity.signatures[signatureIndex]};
+            const signatureCopy = activity.signatures[signatureIndex];
+            signatureCopy.signer = signer;
+            signatureCopy.time = time;
+            return {activities}
+        })
+    }
+
     onUpdateChecklistItem = checklistItem => {
         const activityCode = checklistItem.activityCode;
         const checkListCode = checklistItem.checkListCode;
@@ -208,6 +232,7 @@ class Checklists extends Component {
                         handleError={handleError}
                         minFindingsDropdown={minFindingsDropdown}
                         getWoLink={getWoLink}
+                        resetSignatures={this.resetSignatures}
                     />)}
                 </div>
             </ExpansionPanelDetails>
@@ -216,7 +241,6 @@ class Checklists extends Component {
 
     renderChecklistsForActivity(activity, filteredEquipment) {
         const { checklists: originalChecklists } = activity;
-
         const checklists = filteredEquipment ?
             originalChecklists.filter(checklist => checklist.equipmentCode === filteredEquipment)
             : originalChecklists;
@@ -248,7 +272,7 @@ class Checklists extends Component {
             
             result.push(this.renderChecklistsForEquipment(equipmentCode + start, checklists.slice(start, end), activity));
         }
-
+        
 
         return result;
     }
@@ -282,6 +306,23 @@ class Checklists extends Component {
         });
     }
 
+    expandSignature = (activity, expanded) => {
+        const signaturesCollapsed = {...this.state.signaturesCollapsed};
+        signaturesCollapsed[activity.activityCode] = !expanded;
+        this.setState({signaturesCollapsed});
+    }
+
+    renderSignatures(activity){
+        if(!activity.signatures) return;
+        return activity.signatures.map(signature => 
+            <ChecklistSignature signature={signature}
+                                workOrderCode={activity.workOrderNumber}
+                                activityCode={activity.activityCode}
+                                showError={this.props.showError}
+                                setSignature = {this.setSignature}/>
+        );
+    }
+
     renderActivities(filteredActivity, filteredEquipment) {
         const { activities } = this.state;
 
@@ -289,12 +330,13 @@ class Checklists extends Component {
                 activity.checklists && activity.checklists.length > 0
                     && !(filteredEquipment && activity.equipments[filteredEquipment] === undefined)
                     && !(filteredActivity && activity.activityCode !== filteredActivity)
-            )).map(activity => (
+            )).map(activity => (     
                 <ActivityExpansionPanel
                     key={activity.activityCode}
                     expanded={!activity.collapsed}
                     TransitionProps={{ unmountOnExit: true, timeout: 0 }}
-                    onChange={(_, expanded) => this.setCollapsedActivity(!expanded, activity.index)}>
+                    onChange={(_, expanded) => this.setCollapsedActivity(!expanded, activity.index)}
+                    style={{marginTop: '5px'}}>
                     <ExpansionPanelSummary expandIcon={
                         <ExpandMoreIcon/>}>
                         <div style={{padding: 2,
@@ -312,9 +354,25 @@ class Checklists extends Component {
                             </Button>}
                         </div>
                     </ExpansionPanelSummary>
+                    
                     <ExpansionPanelDetails style={{margin: 0, padding: 0}}>
-                        <div style={{width: "100%"}}>{this.renderChecklistsForActivity(activity, filteredEquipment)}</div>
+                        <div style={{width: "100%"}}>{this.renderChecklistsForActivity(activity, filteredEquipment)}
+                        </div>
                     </ExpansionPanelDetails>
+                    {activity.signatures &&
+                        <ActivityExpansionPanel style={{backgroundColor: 'white', border: '0px'}}
+                                                expanded={!this.state.signaturesCollapsed[activity.activityCode]}
+                                                onChange={(_, expanded) => this.expandSignature(activity, expanded)}>
+                            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
+                                <span style={{fontWeight: 500}}>E-SIGNATURES</span>
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails style={{margin: 0, padding: '0 24px', backgroundColor: 'white', minHeight: '50px'}}>
+                                <div style={{width: "100%"}}>
+                                    {this.renderSignatures(activity)}
+                                </div>
+                            </ExpansionPanelDetails>               
+                        </ActivityExpansionPanel>
+                    }
                 </ActivityExpansionPanel>
         ));
     }
@@ -422,7 +480,7 @@ class Checklists extends Component {
                                         values={[{code: null, desc: "\u200B"}, ...filteredActivities
                                         .filter(activity => filteredEquipment ? activity.equipments[filteredEquipment] !== undefined : true)
                                         .map(activity => 
-                                            ({code: activity.activityCode, desc: activity.activityCode + " — " + activity.activityNote}))]}
+                                        ({code: activity.activityCode, desc: activity.activityCode + " — " + activity.activityNote}))]}
                                             value={filteredActivity ? filteredActivity : undefined}
                                             onChange={obj => this.setNewFilter({activity: obj})}
                                             menuContainerStyle={{'zIndex': 999}}/>}

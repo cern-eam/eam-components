@@ -46,6 +46,12 @@ var WSChecklists = /*#__PURE__*/function () {
       var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       return _WS["default"]._post('/checklists/workorders', activity, config);
     }
+  }, {
+    key: "esignChecklist",
+    value: function esignChecklist(checklistSignature) {
+      var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      return _WS["default"]._put('/checklists/esign', checklistSignature);
+    }
   }]);
 
   return WSChecklists;
