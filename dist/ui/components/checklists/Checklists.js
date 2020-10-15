@@ -436,6 +436,8 @@ var Checklists = /*#__PURE__*/function (_Component) {
   }, {
     key: "setCollapsedActivity",
     value: function setCollapsedActivity(collapsed, index) {
+      var _this5 = this;
+
       this.setState(function (state, props) {
         var activities = _toConsumableArray(state.activities);
 
@@ -446,12 +448,20 @@ var Checklists = /*#__PURE__*/function (_Component) {
         return {
           activities: activities
         };
+      }, function () {
+        var activity = _this5.state.activities[index];
+        var equipmentKeys = Object.keys(activity.equipments);
+
+        if (equipmentKeys.length === 1) {
+          // also do the same to the equipment if there's only a single one
+          _this5.setCollapsedEquipment(collapsed, activity.index, equipmentKeys[0]);
+        }
       });
     }
   }, {
     key: "renderSignatures",
     value: function renderSignatures(activity) {
-      var _this5 = this;
+      var _this6 = this;
 
       if (!activity.signatures) return;
       return activity.signatures.map(function (signature) {
@@ -459,15 +469,15 @@ var Checklists = /*#__PURE__*/function (_Component) {
           signature: signature,
           workOrderCode: activity.workOrderNumber,
           activityCode: activity.activityCode,
-          showError: _this5.props.showError,
-          setSignature: _this5.setSignature
+          showError: _this6.props.showError,
+          setSignature: _this6.setSignature
         });
       });
     }
   }, {
     key: "renderActivities",
     value: function renderActivities(filteredActivity, filteredEquipment) {
-      var _this6 = this;
+      var _this7 = this;
 
       var activities = this.state.activities;
       return activities.filter(function (activity) {
@@ -481,7 +491,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
             timeout: 0
           },
           onChange: function onChange(_, expanded) {
-            return _this6.setCollapsedActivity(!expanded, activity.index);
+            return _this7.setCollapsedActivity(!expanded, activity.index);
           },
           style: {
             marginTop: '5px'
@@ -504,7 +514,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
         }) && /*#__PURE__*/_react["default"].createElement(_Button["default"], {
           key: activity.activityCode + '$createfuwo',
           onClick: function onClick(evt) {
-            return _this6.createFollowUpWOs(evt, activity);
+            return _this7.createFollowUpWOs(evt, activity);
           },
           color: "primary",
           style: {
@@ -519,14 +529,14 @@ var Checklists = /*#__PURE__*/function (_Component) {
           style: {
             width: "100%"
           }
-        }, _this6.renderChecklistsForActivity(activity, filteredEquipment))), activity.signatures && /*#__PURE__*/_react["default"].createElement(ActivityExpansionPanel, {
+        }, _this7.renderChecklistsForActivity(activity, filteredEquipment))), activity.signatures && /*#__PURE__*/_react["default"].createElement(ActivityExpansionPanel, {
           style: {
             backgroundColor: 'white',
             border: '0px'
           },
-          expanded: !_this6.state.signaturesCollapsed[activity.activityCode],
+          expanded: !_this7.state.signaturesCollapsed[activity.activityCode],
           onChange: function onChange(_, expanded) {
-            return _this6.expandSignature(activity, expanded);
+            return _this7.expandSignature(activity, expanded);
           }
         }, /*#__PURE__*/_react["default"].createElement(_ExpansionPanelSummary["default"], {
           expandIcon: /*#__PURE__*/_react["default"].createElement(_ExpandMore["default"], null)
@@ -545,13 +555,13 @@ var Checklists = /*#__PURE__*/function (_Component) {
           style: {
             width: "100%"
           }
-        }, _this6.renderSignatures(activity)))));
+        }, _this7.renderSignatures(activity)))));
       });
     }
   }, {
     key: "setNewFilter",
     value: function setNewFilter(filters) {
-      var _this7 = this;
+      var _this8 = this;
 
       var activity = filters.activity,
           equipment = filters.equipment;
@@ -611,7 +621,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
             return checklists.concat(activity.checklists);
           }, []);
 
-          _this7.collapseHeuristic(checklists, newState.activities);
+          _this8.collapseHeuristic(checklists, newState.activities);
         }
 
         return newState;
@@ -626,7 +636,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this8 = this;
+      var _this9 = this;
 
       var _this$state = this.state,
           activities = _this$state.activities,
@@ -682,7 +692,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
         }))),
         value: filteredActivity ? filteredActivity : undefined,
         onChange: function onChange(obj) {
-          return _this8.setNewFilter({
+          return _this9.setNewFilter({
             activity: obj
           });
         },
@@ -706,7 +716,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
         }))),
         value: filteredEquipment ? filteredEquipment : undefined,
         onChange: function onChange(obj) {
-          return _this8.setNewFilter({
+          return _this9.setNewFilter({
             equipment: obj
           });
         },

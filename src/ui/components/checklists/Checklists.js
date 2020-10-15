@@ -307,6 +307,13 @@ class Checklists extends Component {
             activity.collapsed = collapsed;
             activities[index] = activity;
             return {activities};
+        }, () => {
+            const activity = this.state.activities[index];
+            const equipmentKeys = Object.keys(activity.equipments);
+            if (equipmentKeys.length === 1) {
+                // also do the same to the equipment if there's only a single one
+                this.setCollapsedEquipment(collapsed, activity.index, equipmentKeys[0])
+            }
         });
     }
 
