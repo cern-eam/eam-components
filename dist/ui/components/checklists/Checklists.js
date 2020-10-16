@@ -261,10 +261,12 @@ var Checklists = /*#__PURE__*/function (_Component) {
         if (checklists.length < maxExpandedChecklistItems) return; // otherwise, collapse every activity and every equipment within each activity
 
         activities.forEach(function (activity) {
-          activity.collapse();
-          Object.values(activity.equipments).forEach(function (equipment) {
-            return equipment.collapse();
-          });
+          if (!activity.forceActivityExpansion) {
+            activity.collapse();
+            Object.values(activity.equipments).forEach(function (equipment) {
+              return equipment.collapse();
+            });
+          }
         });
       };
     }
