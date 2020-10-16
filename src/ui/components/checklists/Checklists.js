@@ -97,7 +97,7 @@ class Checklists extends Component {
                 
                 // otherwise, collapse every activity and every equipment within each activity
                 activities.forEach(activity => {
-                    if(!activity.forceActivityExpansion){
+                    if(!activity.forceActivityExpansion) {
                         activity.collapse();
                         Object.values(activity.equipments).forEach(equipment => equipment.collapse());
                     }
