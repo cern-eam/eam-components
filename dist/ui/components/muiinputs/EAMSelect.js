@@ -207,7 +207,7 @@ var EAMSelect = /*#__PURE__*/function (_EAMBaseInput) {
     _this.findValueInValues = function (value, values) {
       var processedValue = value.trim();
       return values.find(function (v) {
-        return v.code.toUpperCase() === processedValue.toUpperCase() || v.desc.toUpperCase() === processedValue.toUpperCase();
+        return v.code.toUpperCase() === processedValue.toUpperCase() || v.desc && v.desc.toUpperCase() === processedValue.toUpperCase();
       });
     };
 
@@ -222,7 +222,7 @@ var EAMSelect = /*#__PURE__*/function (_EAMBaseInput) {
 
       if (value && reason !== 'input-focused') {
         suggestions = suggestions.filter(function (suggestion) {
-          return suggestion.code.toUpperCase().startsWith(value.toUpperCase()) || suggestion.desc.toUpperCase().startsWith(value.toUpperCase());
+          return suggestion.code.toUpperCase().startsWith(value.toUpperCase()) || suggestion.desc && suggestion.desc.toUpperCase().startsWith(value.toUpperCase());
         });
       }
 
