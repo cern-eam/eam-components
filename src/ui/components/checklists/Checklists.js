@@ -199,9 +199,9 @@ class Checklists extends Component {
     }
 
     getSignaturesResetWarningFlag = activityCode => {
-        const activityIndex = this.state.activities.findIndex(activity => activity.activityCode === activityCode);
-        const signatures = this.state.activities[activityIndex].signatures;
-        return signatures && signatures.filter(signature => signature.signer !== null).length !== 0;
+        const activity = this.state.activities.find(activity => activity.activityCode === activityCode);
+        const signatures = activity.signatures;
+        return signatures && signatures.some(signature => signature.signer !== null);
     }
 
     renderChecklistsForEquipment(key, checklists, activity) {

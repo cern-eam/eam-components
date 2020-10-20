@@ -230,14 +230,14 @@ var Checklists = /*#__PURE__*/function (_Component) {
     };
 
     _this.getSignaturesResetWarningFlag = function (activityCode) {
-      var activityIndex = _this.state.activities.findIndex(function (activity) {
+      var activity = _this.state.activities.find(function (activity) {
         return activity.activityCode === activityCode;
       });
 
-      var signatures = _this.state.activities[activityIndex].signatures;
-      return signatures && signatures.filter(function (signature) {
+      var signatures = activity.signatures;
+      return signatures && signatures.some(function (signature) {
         return signature.signer !== null;
-      }).length !== 0;
+      });
     };
 
     _this.expandSignature = function (activity, expanded) {
