@@ -198,6 +198,12 @@ class Checklists extends Component {
         });
     }
 
+    getSignaturesResetWarningFlag = activityCode => {
+        const activityIndex = this.state.activities.findIndex(activity => activity.activityCode === activityCode);
+        const signatures = this.state.activities[activityIndex].signatures;
+        return signatures && signatures.filter(signature => signature.signer !== null).length !== 0;
+    }
+
     renderChecklistsForEquipment(key, checklists, activity) {
         const {
             updateChecklistItem,
@@ -234,9 +240,11 @@ class Checklists extends Component {
                         onUpdateChecklistItem={this.onUpdateChecklistItem}
                         checklistItem={checklist}
                         handleError={handleError}
+                        showSuccess={this.props.showSuccess}
                         minFindingsDropdown={minFindingsDropdown}
                         getWoLink={getWoLink}
                         resetSignatures={this.resetSignatures}
+                        signaturesWarningFlag={this.getSignaturesResetWarningFlag}
                     />)}
                 </div>
             </ExpansionPanelDetails>

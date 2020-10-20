@@ -182,7 +182,11 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
 
       var request = function request() {
         _this2.props.updateChecklistItem(checklistItem).then(function () {
-          _this2.props.resetSignatures(checklistItem.activityCode);
+          if (_this2.props.signaturesWarningFlag(checklistItem.activityCode)) {
+            _this2.props.resetSignatures(checklistItem.activityCode);
+
+            _this2.props.showSuccess("Signatures were reset due to checklist updation");
+          }
         })["catch"](function (error) {
           handleError(error);
 
