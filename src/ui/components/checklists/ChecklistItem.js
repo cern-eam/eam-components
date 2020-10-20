@@ -100,7 +100,7 @@ export default class ChecklistItem extends Component {
 
             this.props.updateChecklistItem(checklistItem)
                 .then(() =>{ 
-                    if(this.props.signaturesWarningFlag(checklistItem.activityCode)){
+                    if(this.props.signaturesWarningFlag(checklistItem.activityCode)) {
                         this.props.resetSignatures(checklistItem.activityCode);
                         this.props.showSuccess("Signatures were reset due to checklist updation");
                     }
