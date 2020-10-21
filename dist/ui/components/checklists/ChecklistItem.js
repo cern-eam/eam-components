@@ -135,8 +135,24 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       };
     };
 
-    _this.updateChecklistItemWithDialog = function () {
-      _this.state.itemUpdationRequest.call();
+    _this.onUpdate = function () {
+      var handleError = _this.props.handleError;
+
+      _this.props.updateChecklistItem(_this.props.checklistItem).then(function () {
+        _this.props.resetSignatures(_this.props.checklistItem.activityCode);
+      })["catch"](function (error) {
+        handleError(error);
+
+        _this.props.onUpdateChecklistItem(_this.state.debounce.oldChecklistItem);
+
+        _this.setState({
+          debounce: null
+        });
+      })["finally"](function () {
+        _this.setState({
+          blocked: false
+        });
+      });
 
       _this.closeDialog();
     };
@@ -201,62 +217,34 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       var _this2 = this;
 
       var handleError = this.props.handleError;
+      var DEBOUNCE_TIME_MS = 50;
 
-      if (this.props.signaturesWarningFlag(checklistItem.activityCode)) {
-        var request = function request() {
-          _this2.props.updateChecklistItem(checklistItem).then(function () {
-            _this2.props.resetSignatures(checklistItem.activityCode);
-
-            _this2.props.onUpdateChecklistItem(checklistItem);
-          })["catch"](function (error) {
-            handleError(error);
-          })["finally"](function () {
-            _this2.setState({
-              blocked: false
-            });
+      var request = function request() {
+        if (_this2.props.signaturesWarningFlag(_this2.props.checklistItem.activityCode)) {
+          _this2.setState({
+            openedDialog: true
           });
+        } else {
+          _this2.onUpdate();
+        }
+      };
+
+      this.setState(function (state) {
+        if (state.debounce !== null) {
+          clearTimeout(state.debounce.timeout);
+        }
+
+        _this2.props.onUpdateChecklistItem(checklistItem);
+
+        return {
+          blocked: true,
+          debounce: _objectSpread({}, state.debounce || {}, {
+            timeout: setTimeout(request, DEBOUNCE_TIME_MS),
+            // Copy the oldest checklist item (will be used to restore the UI)
+            oldChecklistItem: state.debounce ? state.debounce.oldChecklistItem : _this2.props.checklistItem
+          })
         };
-
-        this.setState(this.setState({
-          itemUpdationRequest: request,
-          openedDialog: true
-        }));
-      } else {
-        var DEBOUNCE_TIME_MS = 50;
-
-        var _request = function _request() {
-          _this2.props.updateChecklistItem(checklistItem).then()["catch"](function (error) {
-            handleError(error);
-
-            _this2.props.onUpdateChecklistItem(checklistItem);
-
-            _this2.setState({
-              debounce: null
-            });
-          })["finally"](function () {
-            _this2.setState({
-              blocked: false
-            });
-          });
-        };
-
-        this.setState(function (state) {
-          if (state.debounce !== null) {
-            clearTimeout(state.debounce.timeout);
-          }
-
-          _this2.props.onUpdateChecklistItem(checklistItem);
-
-          return {
-            blocked: true,
-            debounce: _objectSpread({}, state.debounce || {}, {
-              timeout: setTimeout(_request, DEBOUNCE_TIME_MS),
-              // Copy the oldest checklist item (will be used to restore the UI)
-              oldChecklistItem: state.debounce ? state.debounce.oldChecklistItem : _this2.props.checklistItem
-            })
-          };
-        });
-      }
+      });
     }
   }, {
     key: "descClickHandler",
@@ -460,7 +448,7 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       }, "Editing the checklists now will clear the signatures. Do you wish to continue?"), /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement(_Button["default"], {
         onClick: this.closeDialog
       }, "Cancel"), /*#__PURE__*/_react["default"].createElement(_Button["default"], {
-        onClick: this.updateChecklistItemWithDialog
+        onClick: this.onUpdate
       }, "Continue")));
 
       return /*#__PURE__*/_react["default"].createElement("div", {

@@ -106,53 +106,34 @@ export default class ChecklistItem extends Component {
 
     onChange(checklistItem) {
         const handleError = this.props.handleError;
-        if(this.props.signaturesWarningFlag(checklistItem.activityCode)) {
-            const request = () => {
+        const DEBOUNCE_TIME_MS = 50;
 
-                this.props.updateChecklistItem(checklistItem)
-                    .then(() =>{ 
-                        this.props.resetSignatures(checklistItem.activityCode);
-                        this.props.onUpdateChecklistItem(checklistItem);
-                    }).catch(error => {
-                        handleError(error);
-                    }).finally(() => {
-                        this.setState({blocked: false});
-                    });
-            };
-            this.setState(this.setState({itemUpdationRequest:request, openedDialog:true}));
-        } else {
-            const DEBOUNCE_TIME_MS = 50;
-            const request = () => {
+        const request = () => {
+           if(this.props.signaturesWarningFlag(this.props.checklistItem.activityCode)) {
+               this.setState({openedDialog:true});
+           } else {
+               this.onUpdate();
+           }
+        };
 
-                this.props.updateChecklistItem(checklistItem)
-                    .then()
-                    .catch(error => {
-                        handleError(error);
-                        this.props.onUpdateChecklistItem(checklistItem);
-                        this.setState({debounce: null});
-                    }).finally(() => {
-                        this.setState({blocked: false});
-                    });
-            };
+        this.setState(state => {
+            if(state.debounce !== null) {
+                clearTimeout(state.debounce.timeout);
+            }
 
-            this.setState(state => {
-                if(state.debounce !== null) {
-                    clearTimeout(state.debounce.timeout);
+            this.props.onUpdateChecklistItem(checklistItem);
+
+            return {
+                blocked: true,
+                debounce: {
+                    ...(state.debounce || {}),
+                    timeout: setTimeout(request, DEBOUNCE_TIME_MS),
+                    // Copy the oldest checklist item (will be used to restore the UI)
+                    oldChecklistItem: state.debounce ? state.debounce.oldChecklistItem : this.props.checklistItem
                 }
-
-                this.props.onUpdateChecklistItem(checklistItem);
-
-                return {
-                    blocked: true,
-                    debounce: {
-                        ...(state.debounce || {}),
-                        timeout: setTimeout(request, DEBOUNCE_TIME_MS),
-                        // Copy the oldest checklist item (will be used to restore the UI)
-                        oldChecklistItem: state.debounce ? state.debounce.oldChecklistItem : this.props.checklistItem
-                    }
-                }
-            });
-        }
+            }
+        });
+        
     }
 
     descClickHandler() {
@@ -319,8 +300,18 @@ export default class ChecklistItem extends Component {
         opacity: blocked ? 0.5 : 1
     })
 
-    updateChecklistItemWithDialog = () => {
-        this.state.itemUpdationRequest.call();
+    onUpdate = () => {
+        const handleError = this.props.handleError;
+        this.props.updateChecklistItem(this.props.checklistItem)
+        .then(() =>{ 
+            this.props.resetSignatures(this.props.checklistItem.activityCode);
+        }).catch(error => {
+            handleError(error);
+            this.props.onUpdateChecklistItem(this.state.debounce.oldChecklistItem);
+            this.setState({debounce: null});
+        }).finally(() => {
+            this.setState({blocked: false});
+        });
         this.closeDialog();
     }
 
@@ -333,7 +324,7 @@ export default class ChecklistItem extends Component {
                 </div>
                 <div>
                     {<Button onClick={this.closeDialog}>Cancel</Button>}
-                    {<Button onClick={this.updateChecklistItemWithDialog}>Continue</Button>}
+                    {<Button onClick={this.onUpdate}>Continue</Button>}
                 </div>
             </Paper>
         return (
