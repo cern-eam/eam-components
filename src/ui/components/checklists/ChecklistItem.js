@@ -1,7 +1,10 @@
 import React, {Component} from 'react';
 import ChecklistItemInput from './ChecklistItemInput';
 import ChecklistItemNotes from './ChecklistItemNotes';
+import Button from '@material-ui/core/Button';
 import Collapse from '@material-ui/core/Collapse';
+import Dialog from '@material-ui/core/Dialog';
+import Paper from '@material-ui/core/Paper';
 import ChecklistItemFollowUp from "./ChecklistItemFollowUp";
 
 export default class ChecklistItem extends Component {
@@ -10,7 +13,8 @@ export default class ChecklistItem extends Component {
         this.state = {
             detailsVisible: false,
             blocked: false,
-            debounce: null
+            debounce: null,
+            openedDialog: false
         }
 
         this.notes = React.createRef();
@@ -91,45 +95,64 @@ export default class ChecklistItem extends Component {
             flexDirection: "row"
     }
 
+    modalStyle = {
+        padding: '15px 25px',
+        textAlign: 'center',
+    };
+
+    closeDialog = () => {
+        this.setState({openedDialog: false});
+    }
 
     onChange(checklistItem) {
         const handleError = this.props.handleError;
-        const DEBOUNCE_TIME_MS = 50;
-        
-        const request = () => {
+        if(this.props.signaturesWarningFlag(checklistItem.activityCode)) {
+            const request = () => {
 
-            this.props.updateChecklistItem(checklistItem)
-                .then(() =>{ 
-                    if(this.props.signaturesWarningFlag(checklistItem.activityCode)) {
+                this.props.updateChecklistItem(checklistItem)
+                    .then(() =>{ 
                         this.props.resetSignatures(checklistItem.activityCode);
-                        this.props.showSuccess("Signatures were reset due to checklist updation");
-                    }
-                }).catch(error => {
-                    handleError(error);
-                    this.props.onUpdateChecklistItem(checklistItem);
-                    this.setState({debounce: null});
-                }).finally(() => {
-                    this.setState({blocked: false});
-                });
-        };
+                        this.props.onUpdateChecklistItem(checklistItem);
+                    }).catch(error => {
+                        handleError(error);
+                    }).finally(() => {
+                        this.setState({blocked: false});
+                    });
+            };
+            this.setState(this.setState({itemUpdationRequest:request, openedDialog:true}));
+        } else {
+            const DEBOUNCE_TIME_MS = 50;
+            const request = () => {
 
-        this.setState(state => {
-            if(state.debounce !== null) {
-                clearTimeout(state.debounce.timeout);
-            }
+                this.props.updateChecklistItem(checklistItem)
+                    .then()
+                    .catch(error => {
+                        handleError(error);
+                        this.props.onUpdateChecklistItem(checklistItem);
+                        this.setState({debounce: null});
+                    }).finally(() => {
+                        this.setState({blocked: false});
+                    });
+            };
 
-            this.props.onUpdateChecklistItem(checklistItem);
-
-            return {
-                blocked: true,
-                debounce: {
-                    ...(state.debounce || {}),
-                    timeout: setTimeout(request, DEBOUNCE_TIME_MS),
-                    // Copy the oldest checklist item (will be used to restore the UI)
-                    oldChecklistItem: state.debounce ? state.debounce.oldChecklistItem : this.props.checklistItem
+            this.setState(state => {
+                if(state.debounce !== null) {
+                    clearTimeout(state.debounce.timeout);
                 }
-            }
-        });
+
+                this.props.onUpdateChecklistItem(checklistItem);
+
+                return {
+                    blocked: true,
+                    debounce: {
+                        ...(state.debounce || {}),
+                        timeout: setTimeout(request, DEBOUNCE_TIME_MS),
+                        // Copy the oldest checklist item (will be used to restore the UI)
+                        oldChecklistItem: state.debounce ? state.debounce.oldChecklistItem : this.props.checklistItem
+                    }
+                }
+            });
+        }
     }
 
     descClickHandler() {
@@ -296,8 +319,23 @@ export default class ChecklistItem extends Component {
         opacity: blocked ? 0.5 : 1
     })
 
+    updateChecklistItemWithDialog = () => {
+        this.state.itemUpdationRequest.call();
+        this.closeDialog();
+    }
+
     render() {
         let {checklistItem} = this.props;
+        const dialog = 
+            <Paper elevation={3} style={this.modalStyle}>
+                <div style={{fontSize:'15px', paddingBottom: '3px'}}>
+                    Editing the checklists now will clear the signatures. Do you wish to continue?
+                </div>
+                <div>
+                    {<Button onClick={this.closeDialog}>Cancel</Button>}
+                    {<Button onClick={this.updateChecklistItemWithDialog}>Continue</Button>}
+                </div>
+            </Paper>
         return (
             <div style={this.containerStyle(this.state.blocked)}>
                 {checklistItem.color ? <div style={this.colorStyle(checklistItem.color)}></div> : null}
@@ -308,6 +346,7 @@ export default class ChecklistItem extends Component {
                             {checklistItem.requiredToClose === true && <label style={{color: "red"}}> *</label>}
                         </div>
                         {this.renderChecklistItemInput()}
+                        <Dialog open={this.state.openedDialog}>{dialog}</Dialog> 
                     </div>
 
                     <Collapse in={this.state.detailsVisible}>
