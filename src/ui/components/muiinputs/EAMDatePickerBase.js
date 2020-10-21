@@ -44,7 +44,8 @@ export default class EAMDatePicker extends EAMBaseInput {
     shouldComponentUpdate(nextProps, nextState) {
         return this.props.value !== nextProps.value
             || this.state.error !== nextState.error
-            || this.state.helperText !== nextState.helperText;
+            || this.state.helperText !== nextState.helperText
+            || JSON.stringify(this.props.elementInfo || {}) !== JSON.stringify(nextProps.elementInfo || {});
     }
 
     componentDidUpdate() {
