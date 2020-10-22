@@ -101,7 +101,8 @@ export default class ChecklistItem extends Component {
     };
 
     closeDialog = () => {
-        this.setState({openedDialog: false});
+        this.setState({openedDialog: false, blocked: false})
+        this.props.onUpdateChecklistItem(this.state.debounce.oldChecklistItem);
     }
 
     onChange(checklistItem) {
@@ -112,7 +113,7 @@ export default class ChecklistItem extends Component {
            if(this.props.signaturesWarningFlag(this.props.checklistItem.activityCode)) {
                this.setState({openedDialog:true});
            } else {
-               this.onUpdate();
+               this.onUpdate(this.props.checklistItem);
            }
         };
 
@@ -300,19 +301,18 @@ export default class ChecklistItem extends Component {
         opacity: blocked ? 0.5 : 1
     })
 
-    onUpdate = () => {
+    onUpdate = (checklistItem) => {
         const handleError = this.props.handleError;
-        this.props.updateChecklistItem(this.props.checklistItem)
+        this.props.updateChecklistItem(checklistItem)
         .then(() =>{ 
-            this.props.resetSignatures(this.props.checklistItem.activityCode);
+            this.props.resetSignatures(checklistItem.activityCode);
         }).catch(error => {
             handleError(error);
             this.props.onUpdateChecklistItem(this.state.debounce.oldChecklistItem);
             this.setState({debounce: null});
         }).finally(() => {
-            this.setState({blocked: false});
+            this.setState({openedDialog: false, blocked: false})
         });
-        this.closeDialog();
     }
 
     render() {
@@ -324,7 +324,7 @@ export default class ChecklistItem extends Component {
                 </div>
                 <div>
                     {<Button onClick={this.closeDialog}>Cancel</Button>}
-                    {<Button onClick={this.onUpdate}>Continue</Button>}
+                    {<Button onClick={() => this.onUpdate(checklistItem)}>Continue</Button>}
                 </div>
             </Paper>
         return (

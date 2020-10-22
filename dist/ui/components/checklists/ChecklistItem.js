@@ -105,8 +105,11 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
 
     _this.closeDialog = function () {
       _this.setState({
-        openedDialog: false
+        openedDialog: false,
+        blocked: false
       });
+
+      _this.props.onUpdateChecklistItem(_this.state.debounce.oldChecklistItem);
     };
 
     _this.colorStyle = function (color) {
@@ -135,11 +138,11 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       };
     };
 
-    _this.onUpdate = function () {
+    _this.onUpdate = function (checklistItem) {
       var handleError = _this.props.handleError;
 
-      _this.props.updateChecklistItem(_this.props.checklistItem).then(function () {
-        _this.props.resetSignatures(_this.props.checklistItem.activityCode);
+      _this.props.updateChecklistItem(checklistItem).then(function () {
+        _this.props.resetSignatures(checklistItem.activityCode);
       })["catch"](function (error) {
         handleError(error);
 
@@ -150,11 +153,10 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
         });
       })["finally"](function () {
         _this.setState({
+          openedDialog: false,
           blocked: false
         });
       });
-
-      _this.closeDialog();
     };
 
     _this.state = {
@@ -225,7 +227,7 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
             openedDialog: true
           });
         } else {
-          _this2.onUpdate();
+          _this2.onUpdate(_this2.props.checklistItem);
         }
       };
 
@@ -448,7 +450,9 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       }, "Editing the checklists now will clear the signatures. Do you wish to continue?"), /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement(_Button["default"], {
         onClick: this.closeDialog
       }, "Cancel"), /*#__PURE__*/_react["default"].createElement(_Button["default"], {
-        onClick: this.onUpdate
+        onClick: function onClick() {
+          return _this5.onUpdate(checklistItem);
+        }
       }, "Continue")));
 
       return /*#__PURE__*/_react["default"].createElement("div", {
