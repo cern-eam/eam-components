@@ -127,7 +127,7 @@ class EAMSelect extends EAMBaseInput {
         const processedValue = value.trim()
         return values.find(v => (
             v.code.toUpperCase() === processedValue.toUpperCase() ||
-            v.desc.toUpperCase() === processedValue.toUpperCase()))
+            v.desc && v.desc.toUpperCase() === processedValue.toUpperCase()))
     }
 
     handleSuggestionsFetchRequested = ({ value, reason }) => {
@@ -139,7 +139,7 @@ class EAMSelect extends EAMBaseInput {
         if (value && (reason !== 'input-focused')) {
             suggestions = suggestions.filter(suggestion => {
                 return (suggestion.code.toUpperCase().startsWith(value.toUpperCase()) ||
-                        suggestion.desc.toUpperCase().startsWith(value.toUpperCase()))
+                        suggestion.desc && suggestion.desc.toUpperCase().startsWith(value.toUpperCase()))
             })
         }
 
