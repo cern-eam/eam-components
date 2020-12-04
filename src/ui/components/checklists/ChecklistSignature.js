@@ -18,7 +18,7 @@ const textStyle = {
 
 const signatureTypes = {
     'PB01': 'Performer',
-    'PB02': 'Performer 2',
+    'PB02': 'Performer (Optional)',
     'RB01': 'Reviewer'
 }
 export default class ChecklistSignature extends Component {
