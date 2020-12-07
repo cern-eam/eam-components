@@ -128,7 +128,7 @@ export default class ChecklistSignature extends Component {
                         <Grid item xs={4} md={4} lg={4}>{signature.time}</Grid>
                     </Grid>
                 </Grid>
-                    {(signature.viewAsPerformer || signature.type === 'RB01') &&
+                    {(signature.viewAsPerformer) &&
                     <Grid item xs={2} md={2} lg={2}>
                         <Button color='primary' onClick={this.openDialogue} style={{paddingTop: '11px', float: 'right'}}>Sign</Button>
                         <Dialog open={this.state.open}>{dialog}</Dialog> 

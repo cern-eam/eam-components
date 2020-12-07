@@ -221,7 +221,7 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
         xs: 4,
         md: 4,
         lg: 4
-      }, signature.time))), (signature.viewAsPerformer || signature.type === 'RB01') && /*#__PURE__*/_react["default"].createElement(_Grid["default"], {
+      }, signature.time))), signature.viewAsPerformer && /*#__PURE__*/_react["default"].createElement(_Grid["default"], {
         item: true,
         xs: 2,
         md: 2,
