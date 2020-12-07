@@ -11,7 +11,13 @@ var _ChecklistItemInput = _interopRequireDefault(require("./ChecklistItemInput")
 
 var _ChecklistItemNotes = _interopRequireDefault(require("./ChecklistItemNotes"));
 
+var _Button = _interopRequireDefault(require("@material-ui/core/Button"));
+
 var _Collapse = _interopRequireDefault(require("@material-ui/core/Collapse"));
+
+var _Dialog = _interopRequireDefault(require("@material-ui/core/Dialog"));
+
+var _Paper = _interopRequireDefault(require("@material-ui/core/Paper"));
 
 var _ChecklistItemFollowUp = _interopRequireDefault(require("./ChecklistItemFollowUp"));
 
@@ -92,6 +98,19 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       display: "flex",
       flexDirection: "row"
     };
+    _this.modalStyle = {
+      padding: '15px 25px',
+      textAlign: 'center'
+    };
+
+    _this.closeDialog = function () {
+      _this.setState({
+        openedDialog: false,
+        blocked: false
+      });
+
+      _this.props.onUpdateChecklistItem(_this.state.debounce.oldChecklistItem);
+    };
 
     _this.colorStyle = function (color) {
       var _ref;
@@ -119,10 +138,32 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       };
     };
 
+    _this.onUpdate = function (checklistItem) {
+      var handleError = _this.props.handleError;
+
+      _this.props.updateChecklistItem(checklistItem).then(function () {
+        _this.props.resetSignatures(checklistItem.activityCode);
+      })["catch"](function (error) {
+        handleError(error);
+
+        _this.props.onUpdateChecklistItem(_this.state.debounce.oldChecklistItem);
+
+        _this.setState({
+          debounce: null
+        });
+      })["finally"](function () {
+        _this.setState({
+          openedDialog: false,
+          blocked: false
+        });
+      });
+    };
+
     _this.state = {
       detailsVisible: false,
       blocked: false,
-      debounce: null
+      debounce: null,
+      openedDialog: false
     };
     _this.notes = _react["default"].createRef();
     return _this;
@@ -181,21 +222,13 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       var DEBOUNCE_TIME_MS = 50;
 
       var request = function request() {
-        _this2.props.updateChecklistItem(checklistItem).then(function () {
-          _this2.props.resetSignatures(checklistItem.activityCode);
-        })["catch"](function (error) {
-          handleError(error);
-
-          _this2.props.onUpdateChecklistItem(checklistItem);
-
+        if (_this2.props.signaturesWarningFlag(_this2.props.checklistItem.activityCode)) {
           _this2.setState({
-            debounce: null
+            openedDialog: true
           });
-        })["finally"](function () {
-          _this2.setState({
-            blocked: false
-          });
-        });
+        } else {
+          _this2.onUpdate(_this2.props.checklistItem);
+        }
       };
 
       this.setState(function (state) {
@@ -405,6 +438,23 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       var _this5 = this;
 
       var checklistItem = this.props.checklistItem;
+
+      var dialog = /*#__PURE__*/_react["default"].createElement(_Paper["default"], {
+        elevation: 3,
+        style: this.modalStyle
+      }, /*#__PURE__*/_react["default"].createElement("div", {
+        style: {
+          fontSize: '15px',
+          paddingBottom: '3px'
+        }
+      }, "Editing the checklists now will clear the signatures. Do you wish to continue?"), /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement(_Button["default"], {
+        onClick: this.closeDialog
+      }, "Cancel"), /*#__PURE__*/_react["default"].createElement(_Button["default"], {
+        onClick: function onClick() {
+          return _this5.onUpdate(checklistItem);
+        }
+      }, "Continue")));
+
       return /*#__PURE__*/_react["default"].createElement("div", {
         style: this.containerStyle(this.state.blocked)
       }, checklistItem.color ? /*#__PURE__*/_react["default"].createElement("div", {
@@ -420,7 +470,9 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
         style: {
           color: "red"
         }
-      }, " *")), this.renderChecklistItemInput()), /*#__PURE__*/_react["default"].createElement(_Collapse["default"], {
+      }, " *")), this.renderChecklistItemInput(), /*#__PURE__*/_react["default"].createElement(_Dialog["default"], {
+        open: this.state.openedDialog
+      }, dialog)), /*#__PURE__*/_react["default"].createElement(_Collapse["default"], {
         "in": this.state.detailsVisible
       }, /*#__PURE__*/_react["default"].createElement("div", {
         style: this.checklistDetailsStyle

@@ -200,6 +200,12 @@ class Checklists extends Component {
         });
     }
 
+    getSignaturesResetWarningFlag = activityCode => {
+        const activity = this.state.activities.find(activity => activity.activityCode === activityCode);
+        const signatures = activity.signatures;
+        return signatures && signatures.some(signature => signature.signer !== null);
+    }
+
     renderChecklistsForEquipment(key, checklists, activity) {
         const {
             updateChecklistItem,
@@ -236,9 +242,11 @@ class Checklists extends Component {
                         onUpdateChecklistItem={this.onUpdateChecklistItem}
                         checklistItem={checklist}
                         handleError={handleError}
+                        showSuccess={this.props.showSuccess}
                         minFindingsDropdown={minFindingsDropdown}
                         getWoLink={getWoLink}
                         resetSignatures={this.resetSignatures}
+                        signaturesWarningFlag={this.getSignaturesResetWarningFlag}
                     />)}
                 </div>
             </ExpansionPanelDetails>

@@ -229,6 +229,17 @@ var Checklists = /*#__PURE__*/function (_Component) {
       });
     };
 
+    _this.getSignaturesResetWarningFlag = function (activityCode) {
+      var activity = _this.state.activities.find(function (activity) {
+        return activity.activityCode === activityCode;
+      });
+
+      var signatures = activity.signatures;
+      return signatures && signatures.some(function (signature) {
+        return signature.signer !== null;
+      });
+    };
+
     _this.expandSignature = function (activity, expanded) {
       var signaturesCollapsed = _objectSpread({}, _this.state.signaturesCollapsed);
 
@@ -376,9 +387,11 @@ var Checklists = /*#__PURE__*/function (_Component) {
           onUpdateChecklistItem: _this3.onUpdateChecklistItem,
           checklistItem: checklist,
           handleError: handleError,
+          showSuccess: _this3.props.showSuccess,
           minFindingsDropdown: minFindingsDropdown,
           getWoLink: getWoLink,
-          resetSignatures: _this3.resetSignatures
+          resetSignatures: _this3.resetSignatures,
+          signaturesWarningFlag: _this3.getSignaturesResetWarningFlag
         });
       }))));
     }
