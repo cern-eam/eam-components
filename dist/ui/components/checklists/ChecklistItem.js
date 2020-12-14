@@ -186,7 +186,7 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
         })["catch"](function (error) {
           handleError(error);
 
-          _this2.props.onUpdateChecklistItem(checklistItem);
+          _this2.props.onUpdateChecklistItem(_this2.state.debounce.oldChecklistItem);
 
           _this2.setState({
             debounce: null
@@ -207,10 +207,11 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
 
         return {
           blocked: true,
-          debounce: _objectSpread({}, state.debounce || {}, {
-            timeout: setTimeout(request, DEBOUNCE_TIME_MS),
-            // Copy the oldest checklist item (will be used to restore the UI)
-            oldChecklistItem: state.debounce ? state.debounce.oldChecklistItem : _this2.props.checklistItem
+          debounce: _objectSpread({
+            oldChecklistItem: _this2.props.checklistItem
+          }, state.debounce, {
+            timeout: setTimeout(request, DEBOUNCE_TIME_MS) // Copy the oldest checklist item (will be used to restore the UI)
+
           })
         };
       });

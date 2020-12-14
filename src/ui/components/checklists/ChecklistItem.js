@@ -95,15 +95,14 @@ export default class ChecklistItem extends Component {
     onChange(checklistItem) {
         const handleError = this.props.handleError;
         const DEBOUNCE_TIME_MS = 50;
-        
-        const request = () => {
 
+        const request = () => {
             this.props.updateChecklistItem(checklistItem)
-                .then(() =>{ 
+                .then(() =>{
                     this.props.resetSignatures(checklistItem.activityCode);
                 }).catch(error => {
                     handleError(error);
-                    this.props.onUpdateChecklistItem(checklistItem);
+                    this.props.onUpdateChecklistItem(this.state.debounce.oldChecklistItem);
                     this.setState({debounce: null});
                 }).finally(() => {
                     this.setState({blocked: false});
@@ -120,10 +119,10 @@ export default class ChecklistItem extends Component {
             return {
                 blocked: true,
                 debounce: {
-                    ...(state.debounce || {}),
+                    oldChecklistItem: this.props.checklistItem,
+                    ...state.debounce,
                     timeout: setTimeout(request, DEBOUNCE_TIME_MS),
                     // Copy the oldest checklist item (will be used to restore the UI)
-                    oldChecklistItem: state.debounce ? state.debounce.oldChecklistItem : this.props.checklistItem
                 }
             }
         });
@@ -309,12 +308,12 @@ export default class ChecklistItem extends Component {
 
                     <Collapse in={this.state.detailsVisible}>
                         <div style={this.checklistDetailsStyle} >
-                            <ChecklistItemNotes 
+                            <ChecklistItemNotes
                                 ref={this.notes}
                                 checklistItem={checklistItem}
                                 onChange={value => this.onChange(value)}
                             />
-                            {!checklistItem.hideFollowUp && <ChecklistItemFollowUp 
+                            {!checklistItem.hideFollowUp && <ChecklistItemFollowUp
                                     checklistItem={checklistItem}
                                     onChange={value => this.onChange(value)}
                                     getWoLink={this.props.getWoLink}
