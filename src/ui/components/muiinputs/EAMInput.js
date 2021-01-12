@@ -1,6 +1,7 @@
 import React from 'react';
 import EAMBaseInput from './EAMBaseInput';
 import EAMTextField from './EAMTextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 class EAMInput extends EAMBaseInput {
 
@@ -10,6 +11,20 @@ class EAMInput extends EAMBaseInput {
         //TODO prep input (e.g. uppercase)
         this.onChangeHandler(this.state.value)
     }
+
+    generateInputProps = (props) => {
+        let InputProps = {};
+        if (props.startAdornment) {
+            InputProps["startAdornment"] = <InputAdornment position="start">{props.startAdornment}</InputAdornment>;
+        }
+        
+        if (props.endAdornment) {
+            InputProps["endAdornment"] = <InputAdornment position="end">{props.endAdornment}</InputAdornment>;
+        }
+
+        return {InputProps};
+    }
+
 
     renderComponent () {
         const { elementInfo } = this.props;
@@ -24,7 +39,8 @@ class EAMInput extends EAMBaseInput {
                 value={this.state.value}
                 onChange={event => this.setValue(event.target.value)}
                 onBlur={this.onLoseFocus}
-                InputLabelProps={{ shrink: true }}/>
+                InputLabelProps={{ shrink: true }}
+                {...this.generateInputProps(this.props)}/>
         )
     }
 }
