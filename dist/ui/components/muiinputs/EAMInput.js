@@ -11,9 +11,13 @@ var _EAMBaseInput2 = _interopRequireDefault(require("./EAMBaseInput"));
 
 var _EAMTextField = _interopRequireDefault(require("./EAMTextField"));
 
+var _InputAdornment = _interopRequireDefault(require("@material-ui/core/InputAdornment"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -60,6 +64,26 @@ var EAMInput = /*#__PURE__*/function (_EAMBaseInput) {
       _this.onChangeHandler(_this.state.value);
     };
 
+    _this.generateInputProps = function (props) {
+      var InputProps = {};
+
+      if (props.startAdornment) {
+        InputProps["startAdornment"] = /*#__PURE__*/_react["default"].createElement(_InputAdornment["default"], {
+          position: "start"
+        }, props.startAdornment);
+      }
+
+      if (props.endAdornment) {
+        InputProps["endAdornment"] = /*#__PURE__*/_react["default"].createElement(_InputAdornment["default"], {
+          position: "end"
+        }, props.endAdornment);
+      }
+
+      return {
+        InputProps: InputProps
+      };
+    };
+
     return _this;
   }
 
@@ -69,7 +93,7 @@ var EAMInput = /*#__PURE__*/function (_EAMBaseInput) {
       var _this2 = this;
 
       var elementInfo = this.props.elementInfo;
-      return /*#__PURE__*/_react["default"].createElement(_EAMTextField["default"], {
+      return /*#__PURE__*/_react["default"].createElement(_EAMTextField["default"], _extends({
         disabled: this.state.disabled || elementInfo && elementInfo.readonly,
         error: this.state.error,
         helperText: this.state.helperText,
@@ -83,7 +107,7 @@ var EAMInput = /*#__PURE__*/function (_EAMBaseInput) {
         InputLabelProps: {
           shrink: true
         }
-      });
+      }, this.generateInputProps(this.props)));
     }
   }]);
 
