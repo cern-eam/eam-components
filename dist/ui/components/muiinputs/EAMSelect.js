@@ -197,7 +197,7 @@ var EAMSelect = /*#__PURE__*/function (_EAMBaseInput) {
     };
 
     _this.onSuggestionChange = function (code, desc) {
-      _this.props.updateProperty(_this.props.valueKey, (code || '').toUpperCase());
+      if (_this.props.disableUpperCasing) _this.props.updateProperty(_this.props.valueKey, code || '');else _this.props.updateProperty(_this.props.valueKey, (code || '').toUpperCase());
 
       if (_this.props && _this.props.valueDesc) {
         _this.props.updateProperty(_this.props.valueDesc, desc);
