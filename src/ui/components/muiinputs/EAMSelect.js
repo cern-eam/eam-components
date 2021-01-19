@@ -117,8 +117,7 @@ class EAMSelect extends EAMBaseInput {
     }
 
     onSuggestionChange = (code, desc) => {
-        if(this.props.disableUpperCasing) this.props.updateProperty(this.props.valueKey, (code || ''));
-        else this.props.updateProperty(this.props.valueKey, (code || '').toUpperCase());
+        this.props.updateProperty(this.props.valueKey, (code || ''));
         
         if (this.props && this.props.valueDesc) {
             this.props.updateProperty(this.props.valueDesc, desc);
@@ -152,7 +151,7 @@ class EAMSelect extends EAMBaseInput {
         this.setState({
             suggestions: [],
         }, () => {
-            const { value } = this.state;
+            const value = this.findValueInValues(this.state.value.code, this.props.values) || this.state.value;
             value && this.onSuggestionChange(value.code, value.desc);
         });
     };
