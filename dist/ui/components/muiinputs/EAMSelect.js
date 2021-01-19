@@ -197,7 +197,7 @@ var EAMSelect = /*#__PURE__*/function (_EAMBaseInput) {
     };
 
     _this.onSuggestionChange = function (code, desc) {
-      _this.props.updateProperty(_this.props.valueKey, (code || '').toUpperCase());
+      _this.props.updateProperty(_this.props.valueKey, code || '');
 
       if (_this.props && _this.props.valueDesc) {
         _this.props.updateProperty(_this.props.valueDesc, desc);
@@ -235,7 +235,9 @@ var EAMSelect = /*#__PURE__*/function (_EAMBaseInput) {
       _this.setState({
         suggestions: []
       }, function () {
-        var value = _this.state.value;
+        var dropdownValue = _this.state.value && _this.findValueInValues(_this.state.value.code, _this.props.values);
+
+        var value = dropdownValue || _this.state.value;
         value && _this.onSuggestionChange(value.code, value.desc);
       });
     };
