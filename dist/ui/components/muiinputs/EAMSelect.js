@@ -235,8 +235,9 @@ var EAMSelect = /*#__PURE__*/function (_EAMBaseInput) {
       _this.setState({
         suggestions: []
       }, function () {
-        var value = _this.findValueInValues(_this.state.value.code, _this.props.values) || _this.state.value;
+        var dropdownValue = _this.state.value && _this.findValueInValues(_this.state.value.code, _this.props.values);
 
+        var value = dropdownValue || _this.state.value;
         value && _this.onSuggestionChange(value.code, value.desc);
       });
     };

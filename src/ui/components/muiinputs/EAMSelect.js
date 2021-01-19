@@ -151,7 +151,10 @@ class EAMSelect extends EAMBaseInput {
         this.setState({
             suggestions: [],
         }, () => {
-            const value = this.findValueInValues(this.state.value.code, this.props.values) || this.state.value;
+            const dropdownValue = this.state.value 
+                && this.findValueInValues(this.state.value.code, this.props.values);
+                
+            const value = dropdownValue || this.state.value;
             value && this.onSuggestionChange(value.code, value.desc);
         });
     };
