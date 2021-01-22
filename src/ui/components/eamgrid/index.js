@@ -11,6 +11,13 @@ import {withStyles} from "@material-ui/core/styles/index";
 import KeyCode from "./enums/KeyCode";
 import HttpStatus from "./enums/HttpStatus";
 
+const STARTUP_ACTIONS = {
+    PASS: "Pas d'action",
+    REMEMBER_DATASPY: "Remember Dataspy",
+    REMEMBER_LAST_VALUE: "Remember Last Value",
+    RUN_DATASPY: "Run Dataspy",
+}
+
 const styles = {
     dataGridMainContainer: {
         display: "flex",
@@ -92,6 +99,7 @@ class EAMGrid extends Component {
         if (props.gridId || props.screenCode) {
             this._initGrid({
                 ...initialGridRequest,
+                rowCount: props.startupAction === STARTUP_ACTIONS.PASS ? 0 : initialGridRequest.rowCount,
                 gridID: props.gridId,
                 dataspyID: props.dataspyId || null,
                 gridName: props.screenCode,
@@ -187,6 +195,7 @@ class EAMGrid extends Component {
             totalRecords: 0,
             gridRequest: {
                 ...prevState.gridRequest,
+                rowCount: initialGridRequest.rowCount,
                 gridFilter: filters,
                 cursorPosition: 1
             },

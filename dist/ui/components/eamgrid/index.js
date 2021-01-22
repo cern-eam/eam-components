@@ -63,6 +63,12 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+var STARTUP_ACTIONS = {
+  PASS: "Pas d'action",
+  REMEMBER_DATASPY: "Remember Dataspy",
+  REMEMBER_LAST_VALUE: "Remember Last Value",
+  RUN_DATASPY: "Run Dataspy"
+};
 var styles = {
   dataGridMainContainer: {
     display: "flex",
@@ -117,6 +123,7 @@ var EAMGrid = /*#__PURE__*/function (_Component) {
     _this.init = function (props) {
       if (props.gridId || props.screenCode) {
         _this._initGrid(_objectSpread({}, initialGridRequest, {
+          rowCount: props.startupAction === STARTUP_ACTIONS.PASS ? 0 : initialGridRequest.rowCount,
           gridID: props.gridId,
           dataspyID: props.dataspyId || null,
           gridName: props.screenCode,
@@ -280,6 +287,7 @@ var EAMGrid = /*#__PURE__*/function (_Component) {
           rows: [],
           totalRecords: 0,
           gridRequest: _objectSpread({}, prevState.gridRequest, {
+            rowCount: initialGridRequest.rowCount,
             gridFilter: filters,
             cursorPosition: 1
           }),
