@@ -107,7 +107,7 @@ var EAMGrid = /*#__PURE__*/function (_Component) {
       exporterBlocked: false,
       filterVisible: _this.props.filterVisible
     };
-    _this.filterMap = {};
+    _this.filterMap = null;
     _this.fieldsWidthInfo = new Map();
     _this.toggleSortField = _sorting.toggleSortField.bind(_assertThisInitialized(_this));
     _this.setFilter = _filtering.setFilter.bind(_assertThisInitialized(_this));
@@ -123,13 +123,22 @@ var EAMGrid = /*#__PURE__*/function (_Component) {
           gridName: props.screenCode,
           userFunctionName: props.screenCode,
           gridSort: props.gridSort || []
-        }));
+        }, props.initialGridFilters ? {
+          gridFilter: props.initialGridFilters
+        } : {}));
       }
     };
 
     _this._initGrid = function (gridRequest) {
       // clean filter by removing filters without value
       var request = _this.props.gridRequestAdapter(gridRequest);
+
+      if (!_this.filterMap) {
+        _this.filterMap = _this.props.initialGridFilters ? _this.props.initialGridFilters.reduce(function (acc, filter) {
+          acc[filter.fieldName] = filter;
+          return acc;
+        }, {}) : {};
+      }
 
       _this.setState({
         isloading: true,
@@ -275,6 +284,11 @@ var EAMGrid = /*#__PURE__*/function (_Component) {
 
       // Run search, update state with latest state of filters
       var filters = this.getFilters();
+
+      if (this.props.setSearchFilters) {
+        this.props.setSearchFilters(filters);
+      }
+
       this.setState(function (prevState) {
         return {
           hasMore: true,

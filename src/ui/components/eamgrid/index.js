@@ -47,7 +47,7 @@ class EAMGrid extends Component {
         filterVisible: this.props.filterVisible
     };
 
-    filterMap = {};
+    filterMap = null;
 
     fieldsWidthInfo = new Map();
 
@@ -97,7 +97,8 @@ class EAMGrid extends Component {
                 dataspyID: props.dataspyId || null,
                 gridName: props.screenCode,
                 userFunctionName: props.screenCode,
-                gridSort: props.gridSort || []
+                gridSort: props.gridSort || [],
+                ...(props.initialGridFilters ? {gridFilter: props.initialGridFilters} : {}),
             })
         }
     }
@@ -109,6 +110,12 @@ class EAMGrid extends Component {
     _initGrid = (gridRequest) => {
         // clean filter by removing filters without value
         let request = this.props.gridRequestAdapter(gridRequest);
+        if (!this.filterMap) {
+            this.filterMap = this.props.initialGridFilters ?
+                this.props.initialGridFilters.reduce((acc, filter) => {acc[filter.fieldName] = filter; return acc}, {})
+                : {}
+                ;
+        }
 
         this.setState({
             isloading: true,
@@ -181,6 +188,10 @@ class EAMGrid extends Component {
     runSearch () {
         // Run search, update state with latest state of filters
         let filters = this.getFilters();
+
+        if (this.props.setSearchFilters) {
+            this.props.setSearchFilters(filters);
+        }
 
         this.setState(prevState => ({
             hasMore: true,
