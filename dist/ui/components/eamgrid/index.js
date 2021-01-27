@@ -117,7 +117,7 @@ var EAMGrid = /*#__PURE__*/function (_Component) {
     _this.init = function (props) {
       if (props.gridId || props.screenCode) {
         _this._initGrid(_objectSpread({}, initialGridRequest, {
-          rowCount: !props.searchOnMount ? 0 : initialGridRequest.rowCount,
+          rowCount: props.searchOnMount ? initialGridRequest.rowCount : 0,
           gridID: props.gridId,
           dataspyID: props.dataspyId || null,
           gridName: props.screenCode,
