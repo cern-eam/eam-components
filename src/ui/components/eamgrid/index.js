@@ -92,6 +92,7 @@ class EAMGrid extends Component {
         if (props.gridId || props.screenCode) {
             this._initGrid({
                 ...initialGridRequest,
+                rowCount: props.searchOnMount ? initialGridRequest.rowCount : 0,
                 gridID: props.gridId,
                 dataspyID: props.dataspyId || null,
                 gridName: props.screenCode,
@@ -187,6 +188,7 @@ class EAMGrid extends Component {
             totalRecords: 0,
             gridRequest: {
                 ...prevState.gridRequest,
+                rowCount: initialGridRequest.rowCount,
                 gridFilter: filters,
                 cursorPosition: 1
             },
