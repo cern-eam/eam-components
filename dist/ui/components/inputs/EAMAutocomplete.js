@@ -498,8 +498,10 @@ var EAMAutocomplete = /*#__PURE__*/function (_EAMBaseInput) {
         arrowRenderer: function arrowRenderer() {
           return /*#__PURE__*/_react["default"].createElement("span", null);
         },
-        filterOptions: this.props.creatable ? undefined : function (options) {
-          return options;
+        filterOptions: function filterOptions(options, label) {
+          return options.filter(function (option) {
+            return !_this4.props.creatable || option !== _this4.props.promptTextCreator(label);
+          });
         },
         clearable: true
       }, otherProps)), this.state.helperText && this.renderHelperText());
