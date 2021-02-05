@@ -1,7 +1,7 @@
 import InputAdornment from '@material-ui/core/InputAdornment';
 import MenuItem from '@material-ui/core/MenuItem';
 import Paper from '@material-ui/core/Paper';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import React from 'react';
 import Autosuggest from 'react-autosuggest';
@@ -73,8 +73,7 @@ function renderSuggestionsContainer(options) {
     );
 }
 
-
-const styles = theme => ({
+const useStyles = makeStyles(theme => ({
     container: {
         flexGrow: 1,
         position: 'relative'
@@ -95,9 +94,9 @@ const styles = theme => ({
         listStyleType: 'none',
         overflowY: "auto",
         overflowX: "hidden",
-        maxHeight: "400px"
+        maxHeight: props => (props.suggestionsPixelHeight || 400) + 'px'
     },
-});
+}));
 
 class EAMSelect extends EAMBaseInput {
 
@@ -221,4 +220,11 @@ class EAMSelect extends EAMBaseInput {
     }
 }
 
-export default withStyles(styles)(EAMSelect);
+const ClassComponentStyler = props => {
+    const classes = useStyles(props);
+    const Component = props.component;
+    
+    return <Component classes={classes} {...props}/>
+}
+
+export default props => <ClassComponentStyler component={EAMSelect} {...props}/>;
