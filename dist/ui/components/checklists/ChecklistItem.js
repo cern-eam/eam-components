@@ -15,6 +15,10 @@ var _Collapse = _interopRequireDefault(require("@material-ui/core/Collapse"));
 
 var _ChecklistItemFollowUp = _interopRequireDefault(require("./ChecklistItemFollowUp"));
 
+var _ChecklistItemNotApplicableOptions = _interopRequireDefault(require("./ChecklistItemNotApplicableOptions"));
+
+var _WSChecklists = _interopRequireDefault(require("../../../tools/WSChecklists"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
@@ -235,6 +239,17 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
           detailsVisible: detailsVisible
         };
       });
+      var _this$props = this.props,
+          checklistItem = _this$props.checklistItem,
+          taskCode = _this$props.taskCode;
+
+      if (checklistItem && checklistItem.notApplicableOptions === undefined) {
+        _WSChecklists["default"].getChecklistDefinition(taskCode, checklistItem).then(function (response) {
+          _this3.setState({
+            notApplicableOptions: response.body.data.notApplicableOptions
+          });
+        });
+      }
     }
   }, {
     key: "renderChecklistItemInput",
@@ -406,6 +421,7 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       var _this5 = this;
 
       var checklistItem = this.props.checklistItem;
+      var notApplicableOptions = this.state.notApplicableOptions;
       return /*#__PURE__*/_react["default"].createElement("div", {
         style: this.containerStyle(this.state.blocked)
       }, checklistItem.color ? /*#__PURE__*/_react["default"].createElement("div", {
@@ -437,6 +453,14 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
           return _this5.onChange(value);
         },
         getWoLink: this.props.getWoLink
+      })), Array.isArray(notApplicableOptions) && notApplicableOptions.length > 0 && /*#__PURE__*/_react["default"].createElement("div", {
+        style: this.checklistDetailsStyle
+      }, /*#__PURE__*/_react["default"].createElement(_ChecklistItemNotApplicableOptions["default"], {
+        checklistItem: checklistItem,
+        notApplicableOptions: notApplicableOptions,
+        onChange: function onChange(value) {
+          return _this5.onChange(value);
+        }
       })))));
     }
   }]);

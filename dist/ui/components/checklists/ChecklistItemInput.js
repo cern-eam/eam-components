@@ -135,6 +135,8 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
           return /*#__PURE__*/_react["default"].createElement(_ChecklistFieldNumeric["default"], {
             value: checklistItem.numericValue,
             UOM: checklistItem.UOM,
+            minimumValue: checklistItem.minimumValue,
+            maximumValue: checklistItem.maximumValue,
             handleChange: function handleChange(value) {
               return _this.handleChange(ChecklistItemInput.FIELD.NUMERIC, value);
             },

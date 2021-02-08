@@ -23,6 +23,10 @@ class WSChecklists {
     esignChecklist(checklistSignature, config = {}) {
         return WS._put('/checklists/esign', checklistSignature);
     }
+
+    getChecklistDefinition(taskCode, checklistItem, config = {}) {
+        return WS._get(`/checklists/definition/${taskCode}/${checklistItem.checklistDefinitionCode}`, config)
+    }
 }
 
 export default new WSChecklists();

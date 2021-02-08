@@ -375,6 +375,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
           updateChecklistItem: updateChecklistItem,
           onUpdateChecklistItem: _this3.onUpdateChecklistItem,
           checklistItem: checklist,
+          taskCode: activity.taskCode,
           handleError: handleError,
           minFindingsDropdown: minFindingsDropdown,
           getWoLink: getWoLink,

@@ -235,6 +235,7 @@ class Checklists extends Component {
                         updateChecklistItem={updateChecklistItem}
                         onUpdateChecklistItem={this.onUpdateChecklistItem}
                         checklistItem={checklist}
+                        taskCode={activity.taskCode}
                         handleError={handleError}
                         minFindingsDropdown={minFindingsDropdown}
                         getWoLink={getWoLink}

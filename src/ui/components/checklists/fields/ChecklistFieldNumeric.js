@@ -41,7 +41,7 @@ const OK_BORDER = "solid 1px #ced4da";
 const ERROR_BORDER = "solid 1px #f44336";
 
 const ChecklistFieldNumeric = props => {
-    const {value, UOM, handleChange} = props;
+    const { value, UOM, handleChange, minimumValue, maximumValue } = props;
     const stringValue = value === null ? '' : value;
 
     const [inputValue, setInputValue] = useState(stringValue);
@@ -54,22 +54,36 @@ const ChecklistFieldNumeric = props => {
         }
     }, [stringValue]);
 
-    return <div style={outerStyle}>
-        <input style={{...inputStyle, border: border}}
-            onChange={event => setInputValue(event.target.value)}
-            value={inputValue}
-            onBlur={event => {
-                if(("" + lastUpdatedValue) === inputValue)
-                    return;
+    let numericLimitError = false;
 
-                if(!isNaN(inputValue)) {
-                    setBorder(OK_BORDER);
-                    setUpdatedValue(inputValue);
-                    handleChange(inputValue);
-                } else setBorder(ERROR_BORDER);
-            }}/>
-        <div style={labelUOMStyle}>{UOM}</div>
-    </div>
+    if (!isNaN(inputValue)) {
+        const floatValue = parseFloat(inputValue);
+        if(typeof minimumValue === 'number' && floatValue < minimumValue) {
+            numericLimitError = `Minimum value is ${minimumValue}`;
+        } else if(typeof maximumValue === 'number' && floatValue > maximumValue) {
+            numericLimitError = `Maximum value is ${maximumValue}`;
+        }
+    }
+
+    return <>
+        <div style={outerStyle}>
+            <input style={{...inputStyle, border: border}}
+                onChange={event => setInputValue(event.target.value)}
+                value={inputValue}
+                onBlur={event => {
+                    if (("" + lastUpdatedValue) === inputValue)
+                        return;
+
+                    if (!isNaN(inputValue)) {
+                        setBorder(OK_BORDER);
+                        setUpdatedValue(inputValue);
+                        handleChange(inputValue);
+                    } else setBorder(ERROR_BORDER);
+                }}/>
+            <div style={labelUOMStyle}>{UOM}</div>
+        </div>
+        {numericLimitError && <p style={{color: 'red', marginLeft: '20px'}}>{numericLimitError}{UOM}</p>}
+    </>;
 };
 
 export default ChecklistFieldNumeric;

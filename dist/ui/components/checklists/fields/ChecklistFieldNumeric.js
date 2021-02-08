@@ -60,7 +60,9 @@ var ERROR_BORDER = "solid 1px #f44336";
 var ChecklistFieldNumeric = function ChecklistFieldNumeric(props) {
   var value = props.value,
       UOM = props.UOM,
-      handleChange = props.handleChange;
+      handleChange = props.handleChange,
+      minimumValue = props.minimumValue,
+      maximumValue = props.maximumValue;
   var stringValue = value === null ? '' : value;
 
   var _useState = (0, _react.useState)(stringValue),
@@ -83,7 +85,19 @@ var ChecklistFieldNumeric = function ChecklistFieldNumeric(props) {
       setInputValue(stringValue);
     }
   }, [stringValue]);
-  return /*#__PURE__*/_react["default"].createElement("div", {
+  var numericLimitError = false;
+
+  if (!isNaN(inputValue)) {
+    var floatValue = parseFloat(inputValue);
+
+    if (typeof minimumValue === 'number' && floatValue < minimumValue) {
+      numericLimitError = "Minimum value is ".concat(minimumValue);
+    } else if (typeof maximumValue === 'number' && floatValue > maximumValue) {
+      numericLimitError = "Maximum value is ".concat(maximumValue);
+    }
+  }
+
+  return /*#__PURE__*/_react["default"].createElement(_react["default"].Fragment, null, /*#__PURE__*/_react["default"].createElement("div", {
     style: outerStyle
   }, /*#__PURE__*/_react["default"].createElement("input", {
     style: _objectSpread({}, inputStyle, {
@@ -104,7 +118,12 @@ var ChecklistFieldNumeric = function ChecklistFieldNumeric(props) {
     }
   }), /*#__PURE__*/_react["default"].createElement("div", {
     style: labelUOMStyle
-  }, UOM));
+  }, UOM)), numericLimitError && /*#__PURE__*/_react["default"].createElement("p", {
+    style: {
+      color: 'red',
+      marginLeft: '20px'
+    }
+  }, numericLimitError, UOM));
 };
 
 var _default = ChecklistFieldNumeric;

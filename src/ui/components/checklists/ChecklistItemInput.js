@@ -37,7 +37,7 @@ export default class ChecklistItemInput extends Component {
     }
 
     renderField(field, key) {
-        var {checklistItem} = this.props;
+        var { checklistItem } = this.props;
 
         const type = field[0];
         const options = field[1] || {};
@@ -63,6 +63,8 @@ export default class ChecklistItemInput extends Component {
                 return <ChecklistFieldNumeric
                     value={checklistItem.numericValue}
                     UOM={checklistItem.UOM}
+                    minimumValue={checklistItem.minimumValue}
+                    maximumValue={checklistItem.maximumValue}
                     handleChange={value => this.handleChange(ChecklistItemInput.FIELD.NUMERIC, value)}
                     key={key}
                 />
