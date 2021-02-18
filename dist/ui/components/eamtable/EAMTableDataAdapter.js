@@ -22,7 +22,8 @@ function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 var EAMTableDataAdapter = function EAMTableDataAdapter(props) {
-  var fetchData = props.fetchData,
+  var gridRequest = props.gridRequest,
+      fetchData = props.fetchData,
       convertRowData = props.convertRowData,
       convertColumnMetadata = props.convertColumnMetadata;
 
@@ -84,7 +85,7 @@ var EAMTableDataAdapter = function EAMTableDataAdapter(props) {
         }
       }, null, null, null, Promise);
     })();
-  }, []);
+  }, [gridRequest]);
 
   var context = {
     loading: loading,
