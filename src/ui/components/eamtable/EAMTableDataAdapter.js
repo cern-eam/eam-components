@@ -1,7 +1,7 @@
 import React from "react";
 
 const EAMTableDataAdapter = props => {
-    const { fetchData, convertRowData, convertColumnMetadata } = props;
+    const { gridRequest, fetchData, convertRowData, convertColumnMetadata } = props;
     const [loading, setLoading] = React.useState(true);
     const [requestError, setRequestError] = React.useState(false);
     const [rows, setRows] = React.useState([]);
@@ -21,7 +21,7 @@ const EAMTableDataAdapter = props => {
             setColumnsMetadata(convertColumnMetadata(responseBody));
             setLoading(false);
         })();
-    }, []);
+    }, [gridRequest]);
 
     const context = {
         loading,

@@ -8,7 +8,7 @@ const EAMTableGridRequestAdapter = props => {
     const convertRowData = (responseBody) => {
         return flattenGridRow((responseBody.data || {}).row || [])
     }
-    
+
     const convertColumnMetadata = (responseBody) => {
         return getGridFieldsColumns((responseBody.data || {}).gridField, headers)
     }
@@ -16,6 +16,7 @@ const EAMTableGridRequestAdapter = props => {
     return (
         <EAMTableDataAdapter
             fetchData={async () => GridWS.getGridData(gridRequest)}
+            gridRequest={gridRequest}
             convertRowData={convertRowData}
             convertColumnMetadata={convertColumnMetadata} >
                 {(context) => props.children(context)}
