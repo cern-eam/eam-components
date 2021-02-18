@@ -15,6 +15,8 @@ var _styles = require("@material-ui/core/styles");
 
 var _EAMFormLabel = _interopRequireDefault(require("./EAMFormLabel"));
 
+var _InputAdornment = _interopRequireDefault(require("@material-ui/core/InputAdornment"));
+
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
@@ -84,7 +86,9 @@ var EAMInput = /*#__PURE__*/function (_EAMBaseInput) {
           formFields = _this$props.formFields,
           validate = _this$props.validate,
           rightAddon = _this$props.rightAddon,
-          other = _objectWithoutProperties(_this$props, ["elementInfo", "classes", "label", "labelStyle", "disabled", "valueKey", "updateProperty", "formFields", "validate", "rightAddon"]); //Input props
+          startAdornment = _this$props.startAdornment,
+          endAdornment = _this$props.endAdornment,
+          other = _objectWithoutProperties(_this$props, ["elementInfo", "classes", "label", "labelStyle", "disabled", "valueKey", "updateProperty", "formFields", "validate", "rightAddon", "startAdornment", "endAdornment"]); //Input props
 
 
       var inputProps = _objectSpread({
@@ -149,13 +153,21 @@ var EAMInput = /*#__PURE__*/function (_EAMBaseInput) {
           root: classes.formControlRoot
         },
         inputProps: inputProps,
-        InputProps: {
+        InputProps: _objectSpread({
           disableUnderline: true,
           classes: {
             root: classes.textFieldRoot,
             input: classes.textFieldInput
           }
-        },
+        }, startAdornment ? {
+          startAdornment: /*#__PURE__*/_react["default"].createElement(_InputAdornment["default"], {
+            position: "start"
+          }, startAdornment)
+        } : {}, {}, endAdornment ? {
+          endAdornment: /*#__PURE__*/_react["default"].createElement(_InputAdornment["default"], {
+            position: "end"
+          }, endAdornment)
+        } : {}),
         InputLabelProps: {
           shrink: true,
           className: classes.textFieldFormLabel

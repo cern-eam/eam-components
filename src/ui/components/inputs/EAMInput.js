@@ -3,13 +3,14 @@ import TextField from '@material-ui/core/TextField';
 import EAMBaseInput, {formStyles} from './EAMBaseInput';
 import {withStyles} from '@material-ui/core/styles';
 import EAMFormLabel from "./EAMFormLabel";
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 class EAMInput extends EAMBaseInput {
 
     render() {
         // valueKey, updateProperty, rightAddon and formFields are destructured to not be included in the 'other' object
         // if we don't do this they will be passed to the html input and browser will complain about unknown attributes
-        const {elementInfo, classes, label, labelStyle, disabled, valueKey, updateProperty, formFields, validate, rightAddon, ...other} = this.props;
+        const {elementInfo, classes, label, labelStyle, disabled, valueKey, updateProperty, formFields, validate, rightAddon, startAdornment, endAdornment, ...other} = this.props;
         //Input props
         let inputProps = {style: {width: '100%'}, ...this.props.inputProps};
         //Type
@@ -64,7 +65,14 @@ class EAMInput extends EAMBaseInput {
                         classes: {
                             root: classes.textFieldRoot,
                             input: classes.textFieldInput
-                        }
+                        },
+                        ...(startAdornment ?
+                            {startAdornment: <InputAdornment position="start">{startAdornment}</InputAdornment>}
+                            : {}),
+
+                        ...(endAdornment ?
+                            {endAdornment: <InputAdornment position="end">{endAdornment}</InputAdornment>}
+                            : {}),
                     }}
                     InputLabelProps={{
                         shrink: true,
