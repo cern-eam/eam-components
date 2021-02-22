@@ -54,9 +54,9 @@ var WSChecklists = /*#__PURE__*/function () {
     }
   }, {
     key: "getChecklistDefinition",
-    value: function getChecklistDefinition(taskCode, checklistItem) {
+    value: function getChecklistDefinition(taskCode, checklistDefinitionCode) {
       var config = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-      return _WS["default"]._get("/checklists/definition/".concat(taskCode, "/").concat(checklistItem.checklistDefinitionCode), config);
+      return _WS["default"]._get("/checklists/definition/".concat(taskCode, "/").concat(checklistDefinitionCode), config);
     }
   }]);
 

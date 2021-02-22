@@ -244,7 +244,7 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
           taskCode = _this$props.taskCode;
 
       if (checklistItem && checklistItem.notApplicableOptions === undefined) {
-        _WSChecklists["default"].getChecklistDefinition(taskCode, checklistItem).then(function (response) {
+        _WSChecklists["default"].getChecklistDefinition(taskCode, checklistItem.checklistDefinitionCode).then(function (response) {
           _this3.setState({
             notApplicableOptions: response.body.data.notApplicableOptions
           });
@@ -256,7 +256,9 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
     value: function renderChecklistItemInput() {
       var _this4 = this;
 
-      var checklistItem = this.props.checklistItem;
+      var _this$props2 = this.props,
+          checklistItem = _this$props2.checklistItem,
+          showError = _this$props2.showError;
       var fields = [];
       var options = {}; // use until use of numeric values in result field is deprecated
 
@@ -412,7 +414,8 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
           return _this4.onChange(value);
         },
         fields: fields,
-        options: options
+        options: options,
+        showError: showError
       });
     }
   }, {

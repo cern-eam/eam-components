@@ -205,7 +205,8 @@ class Checklists extends Component {
             updateChecklistItem,
             minFindingsDropdown,
             handleError,
-            getWoLink
+            getWoLink,
+            showError
         } = this.props;
 
         const firstChecklist = checklists[0];
@@ -237,6 +238,7 @@ class Checklists extends Component {
                         checklistItem={checklist}
                         taskCode={activity.taskCode}
                         handleError={handleError}
+                        showError={showError}
                         minFindingsDropdown={minFindingsDropdown}
                         getWoLink={getWoLink}
                         resetSignatures={this.resetSignatures}

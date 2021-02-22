@@ -104,7 +104,9 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
     value: function renderField(field, key) {
       var _this = this;
 
-      var checklistItem = this.props.checklistItem;
+      var _this$props = this.props,
+          checklistItem = _this$props.checklistItem,
+          showError = _this$props.showError;
       var type = field[0];
       var options = field[1] || {};
 
@@ -140,16 +142,17 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
             handleChange: function handleChange(value) {
               return _this.handleChange(ChecklistItemInput.FIELD.NUMERIC, value);
             },
-            key: key
+            key: key,
+            showError: showError
           });
       }
     }
   }, {
     key: "render",
     value: function render() {
-      var _this$props = this.props,
-          fields = _this$props.fields,
-          options = _this$props.options;
+      var _this$props2 = this.props,
+          fields = _this$props2.fields,
+          options = _this$props2.options;
       this.options = options;
       var fieldsRender = [];
       var key = 0;

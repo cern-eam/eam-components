@@ -62,8 +62,9 @@ var ChecklistFieldNumeric = function ChecklistFieldNumeric(props) {
       UOM = props.UOM,
       handleChange = props.handleChange,
       minimumValue = props.minimumValue,
-      maximumValue = props.maximumValue;
-  var stringValue = value === null ? '' : value;
+      maximumValue = props.maximumValue,
+      showError = props.showError;
+  var stringValue = value === null ? '' : '' + value;
 
   var _useState = (0, _react.useState)(stringValue),
       _useState2 = _slicedToArray(_useState, 2),
@@ -80,23 +81,36 @@ var ChecklistFieldNumeric = function ChecklistFieldNumeric(props) {
       border = _useState6[0],
       setBorder = _useState6[1];
 
+  var _useState7 = (0, _react.useState)(false),
+      _useState8 = _slicedToArray(_useState7, 2),
+      numericLimitError = _useState8[0],
+      setNumericLimitError = _useState8[1];
+
   (0, _react.useEffect)(function () {
     if (stringValue !== inputValue) {
       setInputValue(stringValue);
     }
   }, [stringValue]);
-  var numericLimitError = false;
+  var changed = lastUpdatedValue !== inputValue;
+  (0, _react.useEffect)(function () {
+    if (!isNaN(inputValue)) {
+      var floatValue = parseFloat(inputValue);
+      var numericLimitErrorDetected = true;
 
-  if (!isNaN(inputValue)) {
-    var floatValue = parseFloat(inputValue);
+      if (typeof minimumValue === 'number' && floatValue < minimumValue) {
+        setNumericLimitError("Minimum value is ".concat(minimumValue).concat(UOM));
+      } else if (typeof maximumValue === 'number' && floatValue > maximumValue) {
+        setNumericLimitError("Maximum value is ".concat(maximumValue).concat(UOM));
+      } else {
+        setNumericLimitError(false);
+        numericLimitErrorDetected = false;
+      }
 
-    if (typeof minimumValue === 'number' && floatValue < minimumValue) {
-      numericLimitError = "Minimum value is ".concat(minimumValue);
-    } else if (typeof maximumValue === 'number' && floatValue > maximumValue) {
-      numericLimitError = "Maximum value is ".concat(maximumValue);
+      if (changed && numericLimitErrorDetected) {
+        showError(numericLimitError);
+      }
     }
-  }
-
+  }, [inputValue, numericLimitError, changed, showError]);
   return /*#__PURE__*/_react["default"].createElement(_react["default"].Fragment, null, /*#__PURE__*/_react["default"].createElement("div", {
     style: outerStyle
   }, /*#__PURE__*/_react["default"].createElement("input", {
@@ -107,8 +121,10 @@ var ChecklistFieldNumeric = function ChecklistFieldNumeric(props) {
       return setInputValue(event.target.value);
     },
     value: inputValue,
-    onBlur: function onBlur(event) {
-      if ("" + lastUpdatedValue === inputValue) return;
+    onBlur: function onBlur() {
+      if (!changed) {
+        return;
+      }
 
       if (!isNaN(inputValue)) {
         setBorder(OK_BORDER);
@@ -123,7 +139,7 @@ var ChecklistFieldNumeric = function ChecklistFieldNumeric(props) {
       color: 'red',
       marginLeft: '20px'
     }
-  }, numericLimitError, UOM));
+  }, numericLimitError));
 };
 
 var _default = ChecklistFieldNumeric;

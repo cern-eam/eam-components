@@ -24,8 +24,8 @@ class WSChecklists {
         return WS._put('/checklists/esign', checklistSignature);
     }
 
-    getChecklistDefinition(taskCode, checklistItem, config = {}) {
-        return WS._get(`/checklists/definition/${taskCode}/${checklistItem.checklistDefinitionCode}`, config)
+    getChecklistDefinition(taskCode, checklistDefinitionCode, config = {}) {
+        return WS._get(`/checklists/definition/${taskCode}/${checklistDefinitionCode}`, config);
     }
 }
 

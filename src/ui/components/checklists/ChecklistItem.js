@@ -145,7 +145,7 @@ export default class ChecklistItem extends Component {
 
         const { checklistItem, taskCode } = this.props;
         if (checklistItem && checklistItem.notApplicableOptions === undefined) {
-            WSChecklists.getChecklistDefinition(taskCode, checklistItem).then(response => {
+            WSChecklists.getChecklistDefinition(taskCode, checklistItem.checklistDefinitionCode).then(response => {
                 this.setState({
                     notApplicableOptions: response.body.data.notApplicableOptions
                 });
@@ -154,7 +154,7 @@ export default class ChecklistItem extends Component {
     }
 
     renderChecklistItemInput() {
-        const { checklistItem } = this.props;
+        const { checklistItem, showError } = this.props;
 
         let fields = [];
         let options = {};
@@ -278,7 +278,7 @@ export default class ChecklistItem extends Component {
 
         if(fields === undefined) return <div/>
 
-        return <ChecklistItemInput checklistItem={checklistItem} onChange={value => this.onChange(value)} fields={fields} options={options} />
+        return <ChecklistItemInput checklistItem={checklistItem} onChange={value => this.onChange(value)} fields={fields} options={options} showError={showError} />
     }
 
     colorStyle = color => ({

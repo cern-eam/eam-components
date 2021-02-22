@@ -41,12 +41,13 @@ const OK_BORDER = "solid 1px #ced4da";
 const ERROR_BORDER = "solid 1px #f44336";
 
 const ChecklistFieldNumeric = props => {
-    const { value, UOM, handleChange, minimumValue, maximumValue } = props;
-    const stringValue = value === null ? '' : value;
+    const { value, UOM, handleChange, minimumValue, maximumValue, showError } = props;
+    const stringValue = value === null ? '' : '' + value;
 
     const [inputValue, setInputValue] = useState(stringValue);
     const [lastUpdatedValue, setUpdatedValue] = useState(stringValue);
     const [border, setBorder] = useState(OK_BORDER);
+    const [numericLimitError, setNumericLimitError] = useState(false);
 
     useEffect(() => {
         if(stringValue !== inputValue) {
@@ -54,25 +55,35 @@ const ChecklistFieldNumeric = props => {
         }
     }, [stringValue]);
 
-    let numericLimitError = false;
+    const changed = lastUpdatedValue !== inputValue;
+    useEffect(() => {
+        if (!isNaN(inputValue)) {
+            const floatValue = parseFloat(inputValue);
+            let numericLimitErrorDetected = true;
+            if(typeof minimumValue === 'number' && floatValue < minimumValue) {
+                setNumericLimitError(`Minimum value is ${minimumValue}${UOM}`);
+            } else if(typeof maximumValue === 'number' && floatValue > maximumValue) {
+                setNumericLimitError(`Maximum value is ${maximumValue}${UOM}`);
+            } else {
+                setNumericLimitError(false);
+                numericLimitErrorDetected = false;
+            }
 
-    if (!isNaN(inputValue)) {
-        const floatValue = parseFloat(inputValue);
-        if(typeof minimumValue === 'number' && floatValue < minimumValue) {
-            numericLimitError = `Minimum value is ${minimumValue}`;
-        } else if(typeof maximumValue === 'number' && floatValue > maximumValue) {
-            numericLimitError = `Maximum value is ${maximumValue}`;
+            if (changed && numericLimitErrorDetected) {
+                showError(numericLimitError);
+            }
         }
-    }
+    }, [inputValue, numericLimitError, changed, showError]);
 
     return <>
         <div style={outerStyle}>
             <input style={{...inputStyle, border: border}}
                 onChange={event => setInputValue(event.target.value)}
                 value={inputValue}
-                onBlur={event => {
-                    if (("" + lastUpdatedValue) === inputValue)
+                onBlur={() => {
+                    if (!changed) {
                         return;
+                    }
 
                     if (!isNaN(inputValue)) {
                         setBorder(OK_BORDER);
@@ -82,7 +93,7 @@ const ChecklistFieldNumeric = props => {
                 }}/>
             <div style={labelUOMStyle}>{UOM}</div>
         </div>
-        {numericLimitError && <p style={{color: 'red', marginLeft: '20px'}}>{numericLimitError}{UOM}</p>}
+        {numericLimitError && <p style={{color: 'red', marginLeft: '20px'}}>{numericLimitError}</p>}
     </>;
 };
 

@@ -335,7 +335,8 @@ var Checklists = /*#__PURE__*/function (_Component) {
           updateChecklistItem = _this$props.updateChecklistItem,
           minFindingsDropdown = _this$props.minFindingsDropdown,
           handleError = _this$props.handleError,
-          getWoLink = _this$props.getWoLink;
+          getWoLink = _this$props.getWoLink,
+          showError = _this$props.showError;
       var firstChecklist = checklists[0];
       var equipmentCode = firstChecklist.equipmentCode;
       var collapsed = activity.equipments[equipmentCode].collapsed;
@@ -377,6 +378,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
           checklistItem: checklist,
           taskCode: activity.taskCode,
           handleError: handleError,
+          showError: showError,
           minFindingsDropdown: minFindingsDropdown,
           getWoLink: getWoLink,
           resetSignatures: _this3.resetSignatures
