@@ -7,6 +7,8 @@ const EAMTableDataAdapter = props => {
     const [rows, setRows] = React.useState([]);
     const [columnsMetadata, setColumnsMetadata] = React.useState([]);
 
+    const gridRequestData = React.useMemo(() => gridRequest, [gridRequest])
+
     React.useEffect(() => {
         (async () => {
             setLoading(true);
@@ -21,7 +23,7 @@ const EAMTableDataAdapter = props => {
             setColumnsMetadata(convertColumnMetadata(responseBody));
             setLoading(false);
         })();
-    }, [gridRequest]);
+    }, [gridRequestData]);
 
     const context = {
         loading,
