@@ -138,7 +138,7 @@ function renderSuggestionsContainer(options) {
   }), children);
 }
 
-var styles = function styles(theme) {
+var useStyles = (0, _styles.makeStyles)(function (theme) {
   return {
     container: {
       flexGrow: 1,
@@ -160,10 +160,12 @@ var styles = function styles(theme) {
       listStyleType: 'none',
       overflowY: "auto",
       overflowX: "hidden",
-      maxHeight: "400px"
+      maxHeight: function maxHeight(props) {
+        return (props.suggestionsPixelHeight || 400) + 'px';
+      }
     }
   };
-};
+});
 
 var EAMSelect = /*#__PURE__*/function (_EAMBaseInput) {
   _inherits(EAMSelect, _EAMBaseInput);
@@ -327,6 +329,18 @@ var EAMSelect = /*#__PURE__*/function (_EAMBaseInput) {
   return EAMSelect;
 }(_EAMBaseInput2["default"]);
 
-var _default = (0, _styles.withStyles)(styles)(EAMSelect);
+var ClassComponentStyler = function ClassComponentStyler(props) {
+  var classes = useStyles(props);
+  var Component = props.component;
+  return /*#__PURE__*/_react["default"].createElement(Component, _extends({
+    classes: classes
+  }, props));
+};
+
+var _default = function _default(props) {
+  return /*#__PURE__*/_react["default"].createElement(ClassComponentStyler, _extends({
+    component: EAMSelect
+  }, props));
+};
 
 exports["default"] = _default;
