@@ -343,7 +343,8 @@ class EAMAutocomplete extends EAMBaseInput {
                                 searchPromptText={this.props.searchPromptText}
                                 promptTextCreator={this.props.promptTextCreator}
                                 arrowRenderer={() => (<span/>)}
-                                filterOptions={this.props.creatable ? undefined : (options) => options}
+                                filterOptions={(options, label) => options
+                                    .filter(option => !this.props.creatable || option !== this.props.promptTextCreator(label))}
                                 clearable={true}
                                 {...otherProps}
 
