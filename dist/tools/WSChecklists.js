@@ -52,6 +52,12 @@ var WSChecklists = /*#__PURE__*/function () {
       var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       return _WS["default"]._put('/checklists/esign', checklistSignature);
     }
+  }, {
+    key: "getChecklistDefinition",
+    value: function getChecklistDefinition(taskCode, checklistDefinitionCode) {
+      var config = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+      return _WS["default"]._get("/checklists/definition/".concat(taskCode, "/").concat(checklistDefinitionCode), config);
+    }
   }]);
 
   return WSChecklists;

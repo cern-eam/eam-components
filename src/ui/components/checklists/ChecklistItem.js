@@ -3,6 +3,8 @@ import ChecklistItemInput from './ChecklistItemInput';
 import ChecklistItemNotes from './ChecklistItemNotes';
 import Collapse from '@material-ui/core/Collapse';
 import ChecklistItemFollowUp from "./ChecklistItemFollowUp";
+import ChecklistItemNotApplicableOptions from './ChecklistItemNotApplicableOptions';
+import WSChecklists from '../../../tools/WSChecklists';
 
 export default class ChecklistItem extends Component {
     constructor(props) {
@@ -140,10 +142,19 @@ export default class ChecklistItem extends Component {
 
             return {detailsVisible}
         });
+
+        const { checklistItem, taskCode } = this.props;
+        if (checklistItem && checklistItem.notApplicableOptions === undefined) {
+            WSChecklists.getChecklistDefinition(taskCode, checklistItem.checklistDefinitionCode).then(response => {
+                this.setState({
+                    notApplicableOptions: response.body.data.notApplicableOptions
+                });
+            });
+        }
     }
 
     renderChecklistItemInput() {
-        let {checklistItem} = this.props;
+        const { checklistItem, showError } = this.props;
 
         let fields = [];
         let options = {};
@@ -267,7 +278,7 @@ export default class ChecklistItem extends Component {
 
         if(fields === undefined) return <div/>
 
-        return <ChecklistItemInput checklistItem={checklistItem} onChange={value => this.onChange(value)} fields={fields} options={options} />
+        return <ChecklistItemInput checklistItem={checklistItem} onChange={value => this.onChange(value)} fields={fields} options={options} showError={showError} />
     }
 
     colorStyle = color => ({
@@ -293,7 +304,8 @@ export default class ChecklistItem extends Component {
     })
 
     render() {
-        let {checklistItem} = this.props;
+        const { checklistItem } = this.props;
+        const { notApplicableOptions } = this.state;
         return (
             <div style={this.containerStyle(this.state.blocked)}>
                 {checklistItem.color ? <div style={this.colorStyle(checklistItem.color)}></div> : null}
@@ -319,6 +331,13 @@ export default class ChecklistItem extends Component {
                                     getWoLink={this.props.getWoLink}
                             />}
                         </div>
+                        {Array.isArray(notApplicableOptions) && notApplicableOptions.length > 0 && <div style={this.checklistDetailsStyle} >
+                            <ChecklistItemNotApplicableOptions
+                                checklistItem={checklistItem}
+                                notApplicableOptions={notApplicableOptions}
+                                onChange={value => this.onChange(value)}
+                            />
+                        </div>}
                     </Collapse>
                 </div>
             </div>
