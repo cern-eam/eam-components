@@ -128,10 +128,10 @@ var ChecklistFieldNumeric = function ChecklistFieldNumeric(props) {
 
       if (!isNaN(inputValue)) {
         setBorder(OK_BORDER);
-        setUpdatedValue(inputValue, function () {
+        setUpdatedValue(inputValue);
+        handleChange(inputValue, function () {
           return setUpdatedValue(lastUpdatedValue);
         });
-        handleChange(inputValue);
       } else setBorder(ERROR_BORDER);
     }
   }), /*#__PURE__*/_react["default"].createElement("div", {
