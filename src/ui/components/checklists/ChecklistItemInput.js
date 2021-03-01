@@ -4,11 +4,11 @@ import ChecklistFieldCheckbox from './fields/ChecklistFieldCheckbox';
 import ChecklistFieldFinding from './fields/ChecklistFieldFinding';
 
 export default class ChecklistItemInput extends Component {
-    handleChange(type, value) {
+    handleChange(type, value, onFail) {
         const {result, finding, numericValue} = this.props.checklistItem;
 
         let newResult,  newFinding, newNumericValue;
-        
+
         switch(type) {
             case ChecklistItemInput.FIELD.CHECKBOX:
                 newResult = (value === result) ? null : value;
@@ -32,7 +32,7 @@ export default class ChecklistItemInput extends Component {
             newProps = this.options.beforeOnChange(newProps, type, value);
         }
 
-        this.props.onChange(newProps);
+        this.props.onChange(newProps, onFail);
 
     }
 
@@ -65,7 +65,7 @@ export default class ChecklistItemInput extends Component {
                     UOM={checklistItem.UOM}
                     minimumValue={checklistItem.minimumValue}
                     maximumValue={checklistItem.maximumValue}
-                    handleChange={value => this.handleChange(ChecklistItemInput.FIELD.NUMERIC, value)}
+                    handleChange={(value, onFail) => this.handleChange(ChecklistItemInput.FIELD.NUMERIC, value, onFail)}
                     key={key}
                     showError={showError}
                 />

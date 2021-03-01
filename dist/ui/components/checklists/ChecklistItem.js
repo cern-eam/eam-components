@@ -178,7 +178,7 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
     }
   }, {
     key: "onChange",
-    value: function onChange(checklistItem) {
+    value: function onChange(checklistItem, onFail) {
       var _this2 = this;
 
       var handleError = this.props.handleError;
@@ -195,6 +195,8 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
           _this2.setState({
             debounce: null
           });
+
+          onFail && onFail();
         })["finally"](function () {
           _this2.setState({
             blocked: false
@@ -410,8 +412,8 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       if (fields === undefined) return /*#__PURE__*/_react["default"].createElement("div", null);
       return /*#__PURE__*/_react["default"].createElement(_ChecklistItemInput["default"], {
         checklistItem: checklistItem,
-        onChange: function onChange(value) {
-          return _this4.onChange(value);
+        onChange: function onChange(value, onFail) {
+          return _this4.onChange(value, onFail);
         },
         fields: fields,
         options: options,

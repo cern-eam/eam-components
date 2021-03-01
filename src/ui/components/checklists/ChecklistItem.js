@@ -94,7 +94,7 @@ export default class ChecklistItem extends Component {
     }
 
 
-    onChange(checklistItem) {
+    onChange(checklistItem, onFail) {
         const handleError = this.props.handleError;
         const DEBOUNCE_TIME_MS = 50;
 
@@ -106,6 +106,7 @@ export default class ChecklistItem extends Component {
                     handleError(error);
                     this.props.onUpdateChecklistItem(this.state.debounce.oldChecklistItem);
                     this.setState({debounce: null});
+                    onFail && onFail();
                 }).finally(() => {
                     this.setState({blocked: false});
                 });
@@ -278,7 +279,7 @@ export default class ChecklistItem extends Component {
 
         if(fields === undefined) return <div/>
 
-        return <ChecklistItemInput checklistItem={checklistItem} onChange={value => this.onChange(value)} fields={fields} options={options} showError={showError} />
+        return <ChecklistItemInput checklistItem={checklistItem} onChange={(value, onFail) => this.onChange(value, onFail)} fields={fields} options={options} showError={showError} />
     }
 
     colorStyle = color => ({

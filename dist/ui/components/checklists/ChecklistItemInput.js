@@ -66,7 +66,7 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
 
   _createClass(ChecklistItemInput, [{
     key: "handleChange",
-    value: function handleChange(type, value) {
+    value: function handleChange(type, value, onFail) {
       var _this$props$checklist = this.props.checklistItem,
           result = _this$props$checklist.result,
           finding = _this$props$checklist.finding,
@@ -97,7 +97,7 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
         newProps = this.options.beforeOnChange(newProps, type, value);
       }
 
-      this.props.onChange(newProps);
+      this.props.onChange(newProps, onFail);
     }
   }, {
     key: "renderField",
@@ -139,8 +139,8 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
             UOM: checklistItem.UOM,
             minimumValue: checklistItem.minimumValue,
             maximumValue: checklistItem.maximumValue,
-            handleChange: function handleChange(value) {
-              return _this.handleChange(ChecklistItemInput.FIELD.NUMERIC, value);
+            handleChange: function handleChange(value, onFail) {
+              return _this.handleChange(ChecklistItemInput.FIELD.NUMERIC, value, onFail);
             },
             key: key,
             showError: showError

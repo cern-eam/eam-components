@@ -87,7 +87,7 @@ const ChecklistFieldNumeric = props => {
 
                     if (!isNaN(inputValue)) {
                         setBorder(OK_BORDER);
-                        setUpdatedValue(inputValue);
+                        setUpdatedValue(inputValue, () => setUpdatedValue(lastUpdatedValue));
                         handleChange(inputValue);
                     } else setBorder(ERROR_BORDER);
                 }}/>
