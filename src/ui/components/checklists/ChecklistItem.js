@@ -93,6 +93,12 @@ export default class ChecklistItem extends Component {
             flexDirection: "row"
     }
 
+    checklistNotApplicableStyle = {
+        paddingTop: 5,
+        paddingBottom: 5,
+        flex: '1 1 auto',
+    }
+
 
     onChange(checklistItem, onFail) {
         const handleError = this.props.handleError;
@@ -332,7 +338,7 @@ export default class ChecklistItem extends Component {
                                     getWoLink={this.props.getWoLink}
                             />}
                         </div>
-                        {Array.isArray(notApplicableOptions) && notApplicableOptions.length > 0 && <div style={this.checklistDetailsStyle} >
+                        {Array.isArray(notApplicableOptions) && notApplicableOptions.length > 0 && <div style={this.checklistNotApplicableStyle} >
                             <ChecklistItemNotApplicableOptions
                                 checklistItem={checklistItem}
                                 notApplicableOptions={notApplicableOptions}
