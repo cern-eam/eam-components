@@ -96,6 +96,11 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       display: "flex",
       flexDirection: "row"
     };
+    _this.checklistNotApplicableStyle = {
+      paddingTop: 5,
+      paddingBottom: 5,
+      flex: '1 1 auto'
+    };
 
     _this.colorStyle = function (color) {
       var _ref;
@@ -459,7 +464,7 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
         },
         getWoLink: this.props.getWoLink
       })), Array.isArray(notApplicableOptions) && notApplicableOptions.length > 0 && /*#__PURE__*/_react["default"].createElement("div", {
-        style: this.checklistDetailsStyle
+        style: this.checklistNotApplicableStyle
       }, /*#__PURE__*/_react["default"].createElement(_ChecklistItemNotApplicableOptions["default"], {
         checklistItem: checklistItem,
         notApplicableOptions: notApplicableOptions,
