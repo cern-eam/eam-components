@@ -47,7 +47,7 @@ var EAMTableDataAdapter = function EAMTableDataAdapter(props) {
       columnsMetadata = _React$useState8[0],
       setColumnsMetadata = _React$useState8[1];
 
-  _react["default"].useEffect(function () {
+  _react["default"].useEffect(_react["default"].useCallback(function () {
     (function _callee() {
       var response, responseBody;
       return regeneratorRuntime.async(function _callee$(_context) {
@@ -85,7 +85,7 @@ var EAMTableDataAdapter = function EAMTableDataAdapter(props) {
         }
       }, null, null, null, Promise);
     })();
-  }, [gridRequest]);
+  }), [gridRequest?.params.obj_code]);
 
   var context = {
     loading: loading,
