@@ -138,7 +138,8 @@ class EAMSelect extends EAMBaseInput {
 
         if (value && (reason !== 'input-focused')) {
             suggestions = suggestions.filter(suggestion => {
-                return (suggestion.code.toUpperCase().startsWith(value.toUpperCase()) ||
+                const codeParts = suggestion.code.toUpperCase().split(' ').filter(p => p.length > 1);
+                return (codeParts.some(p => p.startsWith(value.toUpperCase())) ||
                         suggestion.desc && suggestion.desc.toUpperCase().startsWith(value.toUpperCase()))
             })
         }

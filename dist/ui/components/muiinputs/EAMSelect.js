@@ -224,7 +224,12 @@ var EAMSelect = /*#__PURE__*/function (_EAMBaseInput) {
 
       if (value && reason !== 'input-focused') {
         suggestions = suggestions.filter(function (suggestion) {
-          return suggestion.code.toUpperCase().startsWith(value.toUpperCase()) || suggestion.desc && suggestion.desc.toUpperCase().startsWith(value.toUpperCase());
+          var codeParts = suggestion.code.toUpperCase().split(' ').filter(function (p) {
+            return p.length > 1;
+          });
+          return codeParts.some(function (p) {
+            return p.startsWith(value.toUpperCase());
+          }) || suggestion.desc && suggestion.desc.toUpperCase().startsWith(value.toUpperCase());
         });
       }
 
