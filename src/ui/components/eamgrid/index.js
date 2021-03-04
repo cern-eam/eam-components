@@ -435,7 +435,8 @@ EAMGrid.defaultProps = {
         overflow: "hidden",
         whiteSpace: "nowrap"
     },
-    filterVisible: true
+    filterVisible: true,
+    searchOnMount: true,
 };
 
 export default withStyles(styles)(EAMGrid);

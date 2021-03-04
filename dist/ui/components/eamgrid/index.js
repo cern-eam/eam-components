@@ -518,7 +518,8 @@ EAMGrid.defaultProps = {
     overflow: "hidden",
     whiteSpace: "nowrap"
   },
-  filterVisible: true
+  filterVisible: true,
+  searchOnMount: true
 };
 
 var _default = (0, _index2.withStyles)(styles)(EAMGrid);
