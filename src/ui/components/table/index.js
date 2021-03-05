@@ -12,6 +12,7 @@ import {Link} from 'react-router-dom';
 import Checkbox from '@material-ui/core/Checkbox';
 import PropTypes from 'prop-types';
 import Constants from '../../../enums/Constants';
+import {parse} from 'date-fns';
 
 const whiteBackground = {
     backgroundColor: "#ffffff"
@@ -89,14 +90,6 @@ class EISTable extends Component {
         this.setState({ order, orderBy: property});
     };
 
-    getCompValue = (value) => {
-        if (!isNaN(value)) {
-            return +value;
-        }
-        //Default case
-        return value;
-    };
-
     renderContent = (propCode, content) => {
         //Normal content
         if (!this.props.linksMap.get(propCode)) {
@@ -144,11 +137,21 @@ class EISTable extends Component {
         this.props.handleFilterChange(e.target.value);
     }
 
-    getSortedData = ({ data, orderBy, order, propCode }) => 
-        orderBy < 0 ? data : order === Constants.SORT_DESC ?
-            [...data].sort((a, b) => (this.getCompValue(b[propCode]) < this.getCompValue(a[propCode]) ? -1 : 1))
-            :
-            [...data].sort((a, b) => (this.getCompValue(a[propCode]) < this.getCompValue(b[propCode]) ? -1 : 1));
+    getSortedData = ({ data, orderBy, order, propCode, keyMap }) => {
+        if (orderBy < 0) {
+            return data;
+        }
+
+        const keyFunction = typeof keyMap[propCode] === 'function' ? keyMap[propCode] : TRANSFORM_KEYS.DEFAULT;
+
+        // Schwartzian transform
+        const sorted = data
+            .map(datum => [datum, keyFunction(datum[propCode])])
+            .sort(([,a], [,b]) => a < b ? -1 : a > b ? 1 : 0)
+            .map(([datum]) => datum);
+
+        return order === Constants.SORT_DESC ? sorted.reverse() : sorted;
+    }
 
     render() {
         const {
@@ -163,11 +166,12 @@ class EISTable extends Component {
             onRowClick,
             propCodes,
             selectedRowIndexes,
-            stylesMap
+            stylesMap,
+            keyMap
         } = this.props;
         const isMobile = windowWidth < maxMobileSize;
         const rowsSelectable = selectedRowIndexes && onRowClick;
-        const tableData = this.getSortedData({ data, orderBy, order, propCode: propCodes[orderBy] })
+        const tableData = this.getSortedData({ data, orderBy, order, propCode: propCodes[orderBy], keyMap })
         
 
         if (isMobile) {
@@ -316,13 +320,24 @@ EISTable.propTypes = {
     propCodes: PropTypes.array.isRequired,
     selectedRowIndexes: PropTypes.array,
     onRowClick: PropTypes.func,
-    stylesMap: PropTypes.object
+    stylesMap: PropTypes.object,
+    keyMap: PropTypes.object
 };
 
 EISTable.defaultProps = {
     linksMap: new Map(),
-    maxMobileSize: 540
+    maxMobileSize: 540,
+    keyMap: {}
 };
 
 
 export default React.memo(EISTable);
+
+const GENERATE_DATE_PARSER = parseString => value => parse(value, parseString, new Date()).getTime();
+
+export const TRANSFORM_KEYS = {
+    DATE_DD_MMM_YYYY: GENERATE_DATE_PARSER('dd-MMM-yyyy'),
+    DATE_DD_MMM_YYYY_HH_MM: GENERATE_DATE_PARSER('dd-MMM-yyyy HH:mm'),
+    DEFAULT: value => isNaN(value) ? value : +value,
+    GENERATE_DATE_PARSER
+};
