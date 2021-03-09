@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports.TRANSFORM_KEYS = exports["default"] = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
@@ -33,6 +33,8 @@ var _propTypes = _interopRequireDefault(require("prop-types"));
 
 var _Constants = _interopRequireDefault(require("../../../enums/Constants"));
 
+var _dateFns = require("date-fns");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
@@ -47,17 +49,17 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -162,15 +164,6 @@ var EISTable = /*#__PURE__*/function (_Component) {
       });
     };
 
-    _this.getCompValue = function (value) {
-      if (!isNaN(value)) {
-        return +value;
-      } //Default case
-
-
-      return value;
-    };
-
     _this.renderContent = function (propCode, content) {
       //Normal content
       if (!_this.props.linksMap.get(propCode)) {
@@ -244,12 +237,32 @@ var EISTable = /*#__PURE__*/function (_Component) {
       var data = _ref.data,
           orderBy = _ref.orderBy,
           order = _ref.order,
-          propCode = _ref.propCode;
-      return orderBy < 0 ? data : order === _Constants["default"].SORT_DESC ? _toConsumableArray(data).sort(function (a, b) {
-        return _this.getCompValue(b[propCode]) < _this.getCompValue(a[propCode]) ? -1 : 1;
-      }) : _toConsumableArray(data).sort(function (a, b) {
-        return _this.getCompValue(a[propCode]) < _this.getCompValue(b[propCode]) ? -1 : 1;
+          propCode = _ref.propCode,
+          keyMap = _ref.keyMap;
+
+      if (orderBy < 0) {
+        return data;
+      }
+
+      var keyFunction = typeof keyMap[propCode] === 'function' ? keyMap[propCode] : TRANSFORM_KEYS.DEFAULT; // Schwartzian transform
+
+      var sorted = data.map(function (datum) {
+        return [datum, keyFunction(datum[propCode])];
+      }).sort(function (_ref2, _ref3) {
+        var _ref4 = _slicedToArray(_ref2, 2),
+            a = _ref4[1];
+
+        var _ref5 = _slicedToArray(_ref3, 2),
+            b = _ref5[1];
+
+        return a < b ? -1 : a > b ? 1 : 0;
+      }).map(function (_ref6) {
+        var _ref7 = _slicedToArray(_ref6, 1),
+            datum = _ref7[0];
+
+        return datum;
       });
+      return order === _Constants["default"].SORT_DESC ? sorted.reverse() : sorted;
     };
 
     return _this;
@@ -281,14 +294,16 @@ var EISTable = /*#__PURE__*/function (_Component) {
           onRowClick = _this$props.onRowClick,
           propCodes = _this$props.propCodes,
           selectedRowIndexes = _this$props.selectedRowIndexes,
-          stylesMap = _this$props.stylesMap;
+          stylesMap = _this$props.stylesMap,
+          keyMap = _this$props.keyMap;
       var isMobile = windowWidth < maxMobileSize;
       var rowsSelectable = selectedRowIndexes && onRowClick;
       var tableData = this.getSortedData({
         data: data,
         orderBy: orderBy,
         order: order,
-        propCode: propCodes[orderBy]
+        propCode: propCodes[orderBy],
+        keyMap: keyMap
       });
 
       if (isMobile) {
@@ -428,13 +443,31 @@ EISTable.propTypes = {
   propCodes: _propTypes["default"].array.isRequired,
   selectedRowIndexes: _propTypes["default"].array,
   onRowClick: _propTypes["default"].func,
-  stylesMap: _propTypes["default"].object
+  stylesMap: _propTypes["default"].object,
+  keyMap: _propTypes["default"].object
 };
 EISTable.defaultProps = {
   linksMap: new Map(),
-  maxMobileSize: 540
+  maxMobileSize: 540,
+  keyMap: {}
 };
 
 var _default = _react["default"].memo(EISTable);
 
 exports["default"] = _default;
+
+var GENERATE_DATE_PARSER = function GENERATE_DATE_PARSER(parseString) {
+  return function (value) {
+    return (0, _dateFns.parse)(value, parseString, new Date()).getTime();
+  };
+};
+
+var TRANSFORM_KEYS = {
+  DATE_DD_MMM_YYYY: GENERATE_DATE_PARSER('dd-MMM-yyyy'),
+  DATE_DD_MMM_YYYY_HH_MM: GENERATE_DATE_PARSER('dd-MMM-yyyy HH:mm'),
+  DEFAULT: function DEFAULT(value) {
+    return isNaN(value) ? value : +value;
+  },
+  GENERATE_DATE_PARSER: GENERATE_DATE_PARSER
+};
+exports.TRANSFORM_KEYS = TRANSFORM_KEYS;
