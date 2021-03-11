@@ -30,13 +30,15 @@ const greyBackground = {
  * linksMap: Information of the columns that will be displayed as links
  */
 class EISTable extends Component {
-
-    state = {
-        windowWidth: window.innerWidth,
-        orderBy: -1,
-        order: Constants.SORT_ASC,
-        data: []
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            windowWidth: window.innerWidth,
+            orderBy: props.defaultOrderBy === undefined ? -1 : props.propCodes.indexOf(props.defaultOrderBy),
+            order: props.defaultOrder === undefined ? Constants.SORT_ASC : props.defaultOrder,
+            data: []
+        }
+    }
 
     componentDidMount() {
         window.addEventListener('resize', this.onWindowSizeChange);
@@ -146,8 +148,8 @@ class EISTable extends Component {
 
         // Schwartzian transform
         const sorted = data
-            .map(datum => [datum, keyFunction(datum[propCode])])
-            .sort(([,a], [,b]) => a < b ? -1 : a > b ? 1 : 0)
+            .map((datum, index) => [datum, keyFunction(datum[propCode]), index])
+            .sort(([,a, aIndex], [,b, bIndex]) => a < b ? -1 : a > b ? 1 : aIndex - bIndex)
             .map(([datum]) => datum);
 
         return order === Constants.SORT_DESC ? sorted.reverse() : sorted;
@@ -321,7 +323,9 @@ EISTable.propTypes = {
     selectedRowIndexes: PropTypes.array,
     onRowClick: PropTypes.func,
     stylesMap: PropTypes.object,
-    keyMap: PropTypes.object
+    keyMap: PropTypes.object,
+    defaultOrderBy: PropTypes.string,
+    defaultOrder: PropTypes.string
 };
 
 EISTable.defaultProps = {
