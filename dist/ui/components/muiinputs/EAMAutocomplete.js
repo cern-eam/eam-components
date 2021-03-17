@@ -221,7 +221,7 @@ var EAMAutocomplete = /*#__PURE__*/function (_EAMBaseInput) {
       var newValue = _ref2.newValue;
 
       // Initially, the onChange only happened on lose focus (onBlur) event. However, both events
-      //(onChange and onBlur) are fired at the same time, causing the onBlur() event to not have 
+      //(onChange and onBlur) are fired at the same time, causing the onBlur() event to not have
       //the updated state. Therefore, and until a complete redesign is in place, either the parent shall
       //be updated at every key stroke, or thehandleSuggestionsClearRequested must contain a workaround
       var valueFound = _this.findValueInSuggestions(newValue, _this.state.suggestions);
@@ -244,7 +244,7 @@ var EAMAutocomplete = /*#__PURE__*/function (_EAMBaseInput) {
     _this.findValueInSuggestions = function (value, suggestions) {
       var processedValue = value.trim();
       return suggestions.find(function (v) {
-        return v.code.toUpperCase().trim() === processedValue.toUpperCase() || v.desc.toUpperCase().trim() === processedValue.toUpperCase();
+        return processedValue === _this.getSuggestionValue(v);
       });
     };
 
@@ -252,7 +252,7 @@ var EAMAutocomplete = /*#__PURE__*/function (_EAMBaseInput) {
       return _this.setState({
         suggestions: []
       }, function (_) {
-        // Not the cleaniest of ways to achieve the parent update on the value: the parent should save 
+        // Not the cleaniest of ways to achieve the parent update on the value: the parent should save
         //a ref and call getValue for that purpose. However, and to avoid manipulating state directly,
         //we update it as a callback which should have the state updated
         (function (_ref3) {
@@ -263,7 +263,7 @@ var EAMAutocomplete = /*#__PURE__*/function (_EAMBaseInput) {
     };
 
     _this.getSuggestionValue = function (suggestion) {
-      return suggestion.desc;
+      return suggestion.code;
     };
 
     _this.shouldRenderSuggestions = function (value) {

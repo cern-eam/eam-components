@@ -114,7 +114,7 @@ class EAMAutocomplete extends EAMBaseInput {
     };
 
     init = props => this.setValue({code: props.value || '', desc: props.valueDesc || ''}, false)
-    
+
     onSuggestionChange = (code, desc) => {
         this.props.updateProperty(this.props.valueKey, code);
         this.props.updateProperty(this.props.descKey, desc);
@@ -145,7 +145,7 @@ class EAMAutocomplete extends EAMBaseInput {
 
     handleChange = (event, { newValue }) => {
         // Initially, the onChange only happened on lose focus (onBlur) event. However, both events
-        //(onChange and onBlur) are fired at the same time, causing the onBlur() event to not have 
+        //(onChange and onBlur) are fired at the same time, causing the onBlur() event to not have
         //the updated state. Therefore, and until a complete redesign is in place, either the parent shall
         //be updated at every key stroke, or thehandleSuggestionsClearRequested must contain a workaround
         const valueFound = this.findValueInSuggestions(newValue, this.state.suggestions)
@@ -159,28 +159,26 @@ class EAMAutocomplete extends EAMBaseInput {
 
     findValueInSuggestions = (value, suggestions) => {
         const processedValue = value.trim()
-        return suggestions.find(v => (
-            v.code.toUpperCase().trim() === processedValue.toUpperCase() ||
-            v.desc.toUpperCase().trim() === processedValue.toUpperCase()))
+        return suggestions.find(v => processedValue === this.getSuggestionValue(v))
     }
 
     // Clear suggestions
     handleSuggestionsClearRequested = () =>
         this.setState({suggestions: []}, _ => {
-            // Not the cleaniest of ways to achieve the parent update on the value: the parent should save 
+            // Not the cleaniest of ways to achieve the parent update on the value: the parent should save
             //a ref and call getValue for that purpose. However, and to avoid manipulating state directly,
             //we update it as a callback which should have the state updated
             (({ value }) => value && this.onSuggestionChange(value.code, value.desc))(this.state)
         })
 
-    getSuggestionValue = suggestion => suggestion.desc;
+    getSuggestionValue = suggestion => suggestion.code;
 
     shouldRenderSuggestions = value => !!value
 
     onSuggestionSelected = (event, { suggestion }) => {
         if (suggestion) this.onSuggestionChange(suggestion.code, suggestion.desc)
     }
-    
+
     renderComponent () {
         const { classes, elementInfo } = this.props;
         const { value } = this.state;
