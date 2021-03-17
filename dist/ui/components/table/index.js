@@ -100,22 +100,12 @@ var EISTable = /*#__PURE__*/function (_Component) {
 
   var _super = _createSuper(EISTable);
 
-  function EISTable() {
+  function EISTable(props) {
     var _this;
 
     _classCallCheck(this, EISTable);
 
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = _super.call.apply(_super, [this].concat(args));
-    _this.state = {
-      windowWidth: window.innerWidth,
-      orderBy: -1,
-      order: _Constants["default"].SORT_ASC,
-      data: []
-    };
+    _this = _super.call(this, props);
 
     _this.onWindowSizeChange = function () {
       _this.setState(function () {
@@ -246,16 +236,18 @@ var EISTable = /*#__PURE__*/function (_Component) {
 
       var keyFunction = typeof keyMap[propCode] === 'function' ? keyMap[propCode] : TRANSFORM_KEYS.DEFAULT; // Schwartzian transform
 
-      var sorted = data.map(function (datum) {
-        return [datum, keyFunction(datum[propCode])];
+      var sorted = data.map(function (datum, index) {
+        return [datum, keyFunction(datum[propCode]), index];
       }).sort(function (_ref2, _ref3) {
-        var _ref4 = _slicedToArray(_ref2, 2),
-            a = _ref4[1];
+        var _ref4 = _slicedToArray(_ref2, 3),
+            a = _ref4[1],
+            aIndex = _ref4[2];
 
-        var _ref5 = _slicedToArray(_ref3, 2),
-            b = _ref5[1];
+        var _ref5 = _slicedToArray(_ref3, 3),
+            b = _ref5[1],
+            bIndex = _ref5[2];
 
-        return a < b ? -1 : a > b ? 1 : 0;
+        return a < b ? -1 : a > b ? 1 : aIndex - bIndex;
       }).map(function (_ref6) {
         var _ref7 = _slicedToArray(_ref6, 1),
             datum = _ref7[0];
@@ -265,6 +257,12 @@ var EISTable = /*#__PURE__*/function (_Component) {
       return order === _Constants["default"].SORT_DESC ? sorted.reverse() : sorted;
     };
 
+    _this.state = {
+      windowWidth: window.innerWidth,
+      orderBy: props.defaultOrderBy === undefined ? -1 : props.propCodes.indexOf(props.defaultOrderBy),
+      order: props.defaultOrder === undefined ? _Constants["default"].SORT_ASC : props.defaultOrder,
+      data: []
+    };
     return _this;
   }
 
@@ -444,7 +442,9 @@ EISTable.propTypes = {
   selectedRowIndexes: _propTypes["default"].array,
   onRowClick: _propTypes["default"].func,
   stylesMap: _propTypes["default"].object,
-  keyMap: _propTypes["default"].object
+  keyMap: _propTypes["default"].object,
+  defaultOrderBy: _propTypes["default"].string,
+  defaultOrder: _propTypes["default"].string
 };
 EISTable.defaultProps = {
   linksMap: new Map(),
