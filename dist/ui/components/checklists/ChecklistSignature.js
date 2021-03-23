@@ -168,7 +168,8 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
         type: "submit",
         onClick: this.closeDialogue
       }, "Cancel"), /*#__PURE__*/_react["default"].createElement(_Button["default"], {
-        onClick: this.sign
+        onClick: this.sign,
+        color: "primary"
       }, "Sign")));
 
       return /*#__PURE__*/_react["default"].createElement("div", {

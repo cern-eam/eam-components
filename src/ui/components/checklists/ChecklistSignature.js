@@ -105,7 +105,7 @@ export default class ChecklistSignature extends Component {
                     {<Button type= 'submit' onClick={this.closeDialogue}>
                         Cancel
                     </Button>}
-                    {<Button onClick={this.sign}> 
+                    {<Button onClick={this.sign} color='primary'> 
                         Sign
                     </Button>}
                 </div>
