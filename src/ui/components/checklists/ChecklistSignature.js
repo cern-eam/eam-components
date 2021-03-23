@@ -5,7 +5,6 @@ import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import WSChecklists from '../../../tools/WSChecklists';
 import Grid from '@material-ui/core/Grid';
-const { defaultGroupByFn } = require("react-table");
 
 const modalStyle = {
     padding: '30px',
