@@ -47,9 +47,6 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var _require = require("react-table"),
-    defaultGroupByFn = _require.defaultGroupByFn;
-
 var modalStyle = {
   padding: '30px',
   textAlign: 'center'
