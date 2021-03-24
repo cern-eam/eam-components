@@ -361,7 +361,6 @@ class Checklists extends Component {
         .sort((signature1, signature2) => SIGNATURE_ORDER[signature1.type] - SIGNATURE_ORDER[signature2.type])
         .filter(signature => this.shouldRenderSignature(activity.signatures, signature))
         .map(signature => 
-            this.shouldRenderSignature(activity.signatures, signature) &&
                 <ChecklistSignature signature={signature}
                                 workOrderCode={activity.workOrderNumber}
                                 activityCode={activity.activityCode}
