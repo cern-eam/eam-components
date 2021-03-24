@@ -21,9 +21,9 @@ const SIGNATURE_TYPES = {
 };
 
 const SIGNATURE_ORDER = {
-    'PB01': 1,
-    'PB02': 2,
-    'RB01': 3,
+    [SIGNATURE_TYPES.PERFORMER_1]: 1,
+    [SIGNATURE_TYPES.PERFORMER_2]: 2,
+    [SIGNATURE_TYPES.REVIEWER]: 3,
 };
 
 const ActivityExpansionPanel = withStyles({
@@ -181,10 +181,11 @@ class Checklists extends Component {
             activities[activityIndex] = activity;
             if(activity.signatures && activity.signatures[type]){
                 activity.signatures = {...activity.signatures};
-                activity.signatures[type] = {...activity.signatures[type]};
-                const signatureCopy = activity.signatures[type];
-                signatureCopy.signer = signer;
-                signatureCopy.time = time;
+                activity.signatures[type] = {
+                    ...activity.signatures[type],
+                    signer,
+                    time
+                };
             }
             return {activities}
         })
@@ -344,7 +345,7 @@ class Checklists extends Component {
             case SIGNATURE_TYPES.PERFORMER_1:
                 return signature.viewAsPerformer || signature.viewAsReviewer;
             case SIGNATURE_TYPES.PERFORMER_2:
-                if (!signatures[SIGNATURE_TYPES.PERFORMER_1] 
+                if (!signatures[SIGNATURE_TYPES.PERFORMER_1]
                     || signatures[SIGNATURE_TYPES.PERFORMER_1].responsibilityCode !== signature.responsibilityCode)
                     return signature.viewAsPerformer || signature.viewAsReviewer;
                 else return signatures[SIGNATURE_TYPES.PERFORMER_1].signer;
@@ -358,6 +359,7 @@ class Checklists extends Component {
         if(!activity.signatures) return;
         return Object.values(activity.signatures)
         .sort((signature1, signature2) => SIGNATURE_ORDER[signature1.type] - SIGNATURE_ORDER[signature2.type])
+        .filter(signature => this.shouldRenderSignature(activity.signatures, signature))
         .map(signature => 
             this.shouldRenderSignature(activity.signatures, signature) &&
                 <ChecklistSignature signature={signature}
@@ -366,7 +368,6 @@ class Checklists extends Component {
                                 showError={this.props.showError}
                                 setSignature = {this.setSignature}/>
         )
-        .filter(signature => signature);
     }
 
     renderActivities(filteredActivity, filteredEquipment) {
@@ -377,7 +378,7 @@ class Checklists extends Component {
                     && !(filteredEquipment && activity.equipments[filteredEquipment] === undefined)
                     && !(filteredActivity && activity.activityCode !== filteredActivity)
             )).map(activity => {
-                let renderedSignatures = this.renderSignatures(activity)
+                const renderedSignatures = this.renderSignatures(activity)
                 return <ActivityExpansionPanel
                     key={activity.activityCode}
                     expanded={!activity.collapsed}
@@ -406,7 +407,7 @@ class Checklists extends Component {
                         <div style={{width: "100%"}}>{this.renderChecklistsForActivity(activity, filteredEquipment)}
                         </div>
                     </ExpansionPanelDetails>
-                    {activity.signatures && renderedSignatures.some(signature => typeof signature === "object") &&
+                    {activity.signatures &&
                         <ActivityExpansionPanel style={{backgroundColor: 'white', border: '0px'}}
                                                 expanded={!this.state.signaturesCollapsed[activity.activityCode]}
                                                 onChange={(_, expanded) => this.expandSignature(activity, expanded)}>
