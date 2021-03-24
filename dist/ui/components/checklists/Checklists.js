@@ -494,7 +494,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
       }).filter(function (signature) {
         return _this6.shouldRenderSignature(activity.signatures, signature);
       }).map(function (signature) {
-        return _this6.shouldRenderSignature(activity.signatures, signature) && /*#__PURE__*/_react["default"].createElement(_ChecklistSignature["default"], {
+        return /*#__PURE__*/_react["default"].createElement(_ChecklistSignature["default"], {
           signature: signature,
           workOrderCode: activity.workOrderNumber,
           activityCode: activity.activityCode,
