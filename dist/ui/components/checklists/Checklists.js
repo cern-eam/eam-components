@@ -35,6 +35,8 @@ var _styles = require("@material-ui/core/styles");
 
 var _mdiMaterialUi = require("mdi-material-ui");
 
+var _SIGNATURE_ORDER;
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
@@ -86,11 +88,7 @@ var SIGNATURE_TYPES = {
   PERFORMER_2: 'PB02',
   REVIEWER: 'RB01'
 };
-var SIGNATURE_ORDER = {
-  'PB01': 1,
-  'PB02': 2,
-  'RB01': 3
-};
+var SIGNATURE_ORDER = (_SIGNATURE_ORDER = {}, _defineProperty(_SIGNATURE_ORDER, SIGNATURE_TYPES.PERFORMER_1, 1), _defineProperty(_SIGNATURE_ORDER, SIGNATURE_TYPES.PERFORMER_2, 2), _defineProperty(_SIGNATURE_ORDER, SIGNATURE_TYPES.REVIEWER, 3), _SIGNATURE_ORDER);
 var ActivityExpansionPanel = (0, _styles.withStyles)({
   root: {
     backgroundColor: '#fafafa',
@@ -193,10 +191,10 @@ var Checklists = /*#__PURE__*/function (_Component) {
 
         if (activity.signatures && activity.signatures[type]) {
           activity.signatures = _objectSpread({}, activity.signatures);
-          activity.signatures[type] = _objectSpread({}, activity.signatures[type]);
-          var signatureCopy = activity.signatures[type];
-          signatureCopy.signer = signer;
-          signatureCopy.time = time;
+          activity.signatures[type] = _objectSpread({}, activity.signatures[type], {
+            signer: signer,
+            time: time
+          });
         }
 
         return {
@@ -493,6 +491,8 @@ var Checklists = /*#__PURE__*/function (_Component) {
       if (!activity.signatures) return;
       return Object.values(activity.signatures).sort(function (signature1, signature2) {
         return SIGNATURE_ORDER[signature1.type] - SIGNATURE_ORDER[signature2.type];
+      }).filter(function (signature) {
+        return _this6.shouldRenderSignature(activity.signatures, signature);
       }).map(function (signature) {
         return _this6.shouldRenderSignature(activity.signatures, signature) && /*#__PURE__*/_react["default"].createElement(_ChecklistSignature["default"], {
           signature: signature,
@@ -501,8 +501,6 @@ var Checklists = /*#__PURE__*/function (_Component) {
           showError: _this6.props.showError,
           setSignature: _this6.setSignature
         });
-      }).filter(function (signature) {
-        return signature;
       });
     }
   }, {
@@ -562,9 +560,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
           style: {
             width: "100%"
           }
-        }, _this7.renderChecklistsForActivity(activity, filteredEquipment))), activity.signatures && renderedSignatures.some(function (signature) {
-          return _typeof(signature) === "object";
-        }) && /*#__PURE__*/_react["default"].createElement(ActivityExpansionPanel, {
+        }, _this7.renderChecklistsForActivity(activity, filteredEquipment))), activity.signatures && /*#__PURE__*/_react["default"].createElement(ActivityExpansionPanel, {
           style: {
             backgroundColor: 'white',
             border: '0px'
