@@ -99,7 +99,7 @@ var EAMDatePicker = /*#__PURE__*/function (_EAMBaseInput) {
   _createClass(EAMDatePicker, [{
     key: "shouldComponentUpdate",
     value: function shouldComponentUpdate(nextProps, nextState) {
-      return this.props.value !== nextProps.value || this.state.error !== nextState.error || this.state.helperText !== nextState.helperText || JSON.stringify(this.props.elementInfo || {}) !== JSON.stringify(nextProps.elementInfo || {});
+      return this.props.value !== nextProps.value || this.state.error !== nextState.error || this.state.helperText !== nextState.helperText || this.state.disabled !== nextState.disabled || JSON.stringify(this.props.elementInfo || {}) !== JSON.stringify(nextProps.elementInfo || {});
     }
   }, {
     key: "componentDidUpdate",
@@ -148,12 +148,13 @@ var EAMDatePicker = /*#__PURE__*/function (_EAMBaseInput) {
     key: "renderComponent",
     value: function renderComponent() {
       var showTime = this.props.showTime;
-      return showTime ? /*#__PURE__*/_react["default"].createElement(_pickers.DateTimePicker, _extends({}, this.getPickerProps(this.state, this.props), {
+      var pickerProps = this.getPickerProps(this.state, this.props);
+      return showTime ? /*#__PURE__*/_react["default"].createElement(_pickers.DateTimePicker, _extends({}, pickerProps, {
         ampm: false,
         InputProps: {
           endAdornment: /*#__PURE__*/_react["default"].createElement(DefaultEndAdornment, null)
         }
-      })) : /*#__PURE__*/_react["default"].createElement(_pickers.DatePicker, _extends({}, this.getPickerProps(this.state, this.props), {
+      })) : /*#__PURE__*/_react["default"].createElement(_pickers.DatePicker, _extends({}, pickerProps, {
         InputProps: {
           endAdornment: /*#__PURE__*/_react["default"].createElement(DefaultEndAdornment, null)
         }

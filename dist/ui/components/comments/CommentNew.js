@@ -137,6 +137,8 @@ var CommentNew = /*#__PURE__*/function (_Component) {
   }, {
     key: "render",
     value: function render() {
+      var disabled = this.props.disabled;
+      var placeholder = disabled ? 'Commenting is disabled' : 'Enter new comment here';
       return /*#__PURE__*/_react["default"].createElement(_ListItem["default"], {
         classes: {
           root: this.props.classes.root
@@ -166,11 +168,12 @@ var CommentNew = /*#__PURE__*/function (_Component) {
         className: "commentTextContainer",
         onKeyDown: this.onKeyDownHandler
       }, /*#__PURE__*/_react["default"].createElement(_reactAutosizeTextarea["default"], {
-        placeholder: "Enter new comment here",
+        placeholder: placeholder,
         className: "commentText",
         onInput: this.inputTextArea,
         value: this.props.newCommentText,
-        onFocus: this.inputTextArea
+        onFocus: this.inputTextArea,
+        disabled: disabled
       }))));
     }
   }]);

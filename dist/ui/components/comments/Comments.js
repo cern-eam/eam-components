@@ -188,7 +188,9 @@ var Comments = /*#__PURE__*/function (_Component) {
     value: function render() {
       var _this2 = this;
 
-      var allowHtml = this.props.allowHtml;
+      var _this$props = this.props,
+          allowHtml = _this$props.allowHtml,
+          disabled = _this$props.disabled;
       return /*#__PURE__*/_react["default"].createElement(_List["default"], {
         style: {
           width: "100%"
@@ -206,7 +208,8 @@ var Comments = /*#__PURE__*/function (_Component) {
         entityCode: this.props.entityCode,
         entityKeyCode: this.props.entityKeyCode,
         newCommentText: this.state.newCommentText,
-        updateNewCommentText: this.updateNewCommentText
+        updateNewCommentText: this.updateNewCommentText,
+        disabled: disabled
       }));
     }
   }]);

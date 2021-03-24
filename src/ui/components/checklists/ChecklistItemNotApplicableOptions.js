@@ -51,7 +51,7 @@ const rowStyle = {
 }
 
 const ChecklistItemNotApplicableOptions = props => {
-    const { notApplicableOptions, checklistItem, onChange, classes } = props;
+    const { notApplicableOptions, checklistItem, onChange, classes, disabled } = props;
 
     return <div style={firstLine}>
         <div style={firstLineDesc}>
@@ -63,6 +63,7 @@ const ChecklistItemNotApplicableOptions = props => {
                 <Select classes={{root: classes.selectRoot, select: classes.select, icon: classes.icon}}
                         disableUnderline={true}
                         value={checklistItem.notApplicableOption || ''}
+                        disabled={disabled}
                         onChange={event => onChange({
                             ...checklistItem,
                             notApplicableOption: event.target.value

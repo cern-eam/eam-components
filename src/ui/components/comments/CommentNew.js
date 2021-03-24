@@ -73,6 +73,8 @@ class CommentNew extends Component {
     }
 
     render() {
+        const { disabled } = this.props;
+        const placeholder = disabled ? 'Commenting is disabled' : 'Enter new comment here';
         return (
             <ListItem classes={{root: this.props.classes.root}}>
 
@@ -96,9 +98,11 @@ class CommentNew extends Component {
                         </div>}
 
                     <div className="commentTextContainer" onKeyDown={this.onKeyDownHandler}>
-                        <TextareaAutosize placeholder="Enter new comment here"
+                        <TextareaAutosize placeholder={placeholder}
                                           className="commentText" onInput={this.inputTextArea}
-                                          value={this.props.newCommentText} onFocus={this.inputTextArea}/>
+                                          value={this.props.newCommentText}
+                                          onFocus={this.inputTextArea}
+                                          disabled={disabled} />
                     </div>
 
                 </div>

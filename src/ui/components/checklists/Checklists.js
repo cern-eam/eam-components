@@ -267,9 +267,9 @@ class Checklists extends Component {
         const { checklistsHidden } = this.state;
 
         const { checklists: originalChecklists, signatures } = activity;
-        const isDisabled = signatures && 
+        const isDisabled = this.props.disabled || (signatures && 
             ((signatures[SIGNATURE_TYPES.PERFORMER_1] && !signatures[SIGNATURE_TYPES.PERFORMER_1].viewAsPerformer)
-            && (signatures[SIGNATURE_TYPES.PERFORMER_2] && !signatures[SIGNATURE_TYPES.PERFORMER_2].viewAsPerformer));
+            && (signatures[SIGNATURE_TYPES.PERFORMER_2] && !signatures[SIGNATURE_TYPES.PERFORMER_2].viewAsPerformer)));
 
         const checklists = originalChecklists
             .filter(checklist => !filteredEquipment || checklist.equipmentCode === filteredEquipment)
@@ -278,7 +278,7 @@ class Checklists extends Component {
         if (checklists.length === 0) {
             return <p style={{textAlign: 'center'}}>All checklists in this activity are hidden.</p>;
         }
-
+        
         const result = [];
 
         // this stores the index of the checklists that are related to a different equipment than the one before them
@@ -388,8 +388,9 @@ class Checklists extends Component {
                                 workOrderCode={activity.workOrderNumber}
                                 activityCode={activity.activityCode}
                                 showError={this.props.showError}
-                                setSignature = {this.setSignature}/>
-        )
+                                setSignature = {this.setSignature}
+                                disabled={this.props.disabled}/>
+        );
     }
 
     renderActivities(filteredActivity, filteredEquipment) {
@@ -423,7 +424,11 @@ class Checklists extends Component {
                                 }} 
                                 color="primary" 
                                 style={{marginLeft: 'auto'}}
-                                disabled={activity.checklists.every(checklist => typeof checklist.followUpWorkOrder === 'string' || checklist.followUp === false)}>
+                                disabled={this.props.disabled
+                                    || activity.checklists.every(
+                                        checklist => typeof checklist.followUpWorkOrder === 'string'
+                                        || checklist.followUp === false)
+                                }>
                                 Create Follow-up WO
                             </Button>}
                         </div>

@@ -227,6 +227,7 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
       }, /*#__PURE__*/_react["default"].createElement(_Button["default"], {
         color: "primary",
         onClick: this.openDialogue,
+        disabled: this.props.disabled,
         style: {
           paddingTop: '11px',
           "float": 'right'

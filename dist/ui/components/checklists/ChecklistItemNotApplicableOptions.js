@@ -71,7 +71,8 @@ var ChecklistItemNotApplicableOptions = function ChecklistItemNotApplicableOptio
   var notApplicableOptions = props.notApplicableOptions,
       checklistItem = props.checklistItem,
       _onChange = props.onChange,
-      classes = props.classes;
+      classes = props.classes,
+      disabled = props.disabled;
   return /*#__PURE__*/_react["default"].createElement("div", {
     style: firstLine
   }, /*#__PURE__*/_react["default"].createElement("div", {
@@ -95,6 +96,7 @@ var ChecklistItemNotApplicableOptions = function ChecklistItemNotApplicableOptio
     },
     disableUnderline: true,
     value: checklistItem.notApplicableOption || '',
+    disabled: disabled,
     onChange: function onChange(event) {
       return _onChange(_objectSpread({}, checklistItem, {
         notApplicableOption: event.target.value

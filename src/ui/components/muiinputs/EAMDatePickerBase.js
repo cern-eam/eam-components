@@ -45,6 +45,7 @@ export default class EAMDatePicker extends EAMBaseInput {
         return this.props.value !== nextProps.value
             || this.state.error !== nextState.error
             || this.state.helperText !== nextState.helperText
+            || this.state.disabled !== nextState.disabled
             || JSON.stringify(this.props.elementInfo || {}) !== JSON.stringify(nextProps.elementInfo || {});
     }
 
@@ -80,9 +81,11 @@ export default class EAMDatePicker extends EAMBaseInput {
     renderComponent () {
         const { showTime } = this.props;
 
+        const pickerProps = this.getPickerProps(this.state, this.props);
+        
         return (showTime ? 
             <DateTimePicker
-                {...this.getPickerProps(this.state, this.props)}
+                {...pickerProps}
                 ampm={false}
                 InputProps={{
                     endAdornment: <DefaultEndAdornment/>
@@ -90,7 +93,7 @@ export default class EAMDatePicker extends EAMBaseInput {
 
             />
             : <DatePicker
-                {...this.getPickerProps(this.state, this.props)}
+                {...pickerProps}
                 InputProps={{
                     endAdornment: <DefaultEndAdornment/>
                 }}

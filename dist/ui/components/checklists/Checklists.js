@@ -482,7 +482,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
       var checklistsHidden = this.state.checklistsHidden;
       var originalChecklists = activity.checklists,
           signatures = activity.signatures;
-      var isDisabled = signatures && signatures[SIGNATURE_TYPES.PERFORMER_1] && !signatures[SIGNATURE_TYPES.PERFORMER_1].viewAsPerformer && signatures[SIGNATURE_TYPES.PERFORMER_2] && !signatures[SIGNATURE_TYPES.PERFORMER_2].viewAsPerformer;
+      var isDisabled = this.props.disabled || signatures && signatures[SIGNATURE_TYPES.PERFORMER_1] && !signatures[SIGNATURE_TYPES.PERFORMER_1].viewAsPerformer && signatures[SIGNATURE_TYPES.PERFORMER_2] && !signatures[SIGNATURE_TYPES.PERFORMER_2].viewAsPerformer;
       var checklists = originalChecklists.filter(function (checklist) {
         return !filteredEquipment || checklist.equipmentCode === filteredEquipment;
       }).filter(function (_ref3) {
@@ -563,7 +563,8 @@ var Checklists = /*#__PURE__*/function (_Component) {
           workOrderCode: activity.workOrderNumber,
           activityCode: activity.activityCode,
           showError: _this5.props.showError,
-          setSignature: _this5.setSignature
+          setSignature: _this5.setSignature,
+          disabled: _this5.props.disabled
         });
       });
     }
@@ -617,7 +618,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
           style: {
             marginLeft: 'auto'
           },
-          disabled: activity.checklists.every(function (checklist) {
+          disabled: _this6.props.disabled || activity.checklists.every(function (checklist) {
             return typeof checklist.followUpWorkOrder === 'string' || checklist.followUp === false;
           })
         }, "Create Follow-up WO"))), /*#__PURE__*/_react["default"].createElement(_ExpansionPanelDetails["default"], {

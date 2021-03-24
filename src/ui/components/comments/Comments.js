@@ -108,7 +108,7 @@ class Comments extends Component {
     };
 
     render() {
-        const { allowHtml } = this.props;
+        const { allowHtml, disabled } = this.props;
 
         return (
             <List style={{width: "100%"}}>
@@ -119,12 +119,12 @@ class Comments extends Component {
                 }
 
                 <CommentNew userCode={this.props.userCode}
-                            createCommentHandler={this.createComment}
-                            entityCode={this.props.entityCode}
-                            entityKeyCode={this.props.entityKeyCode}
-                            newCommentText={this.state.newCommentText}
-                            updateNewCommentText={this.updateNewCommentText}/>
-
+                    createCommentHandler={this.createComment}
+                    entityCode={this.props.entityCode}
+                    entityKeyCode={this.props.entityKeyCode}
+                    newCommentText={this.state.newCommentText}
+                    updateNewCommentText={this.updateNewCommentText}
+                    disabled={disabled} />
             </List>
         );
     }

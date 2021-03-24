@@ -335,11 +335,13 @@ export default class ChecklistItem extends Component {
                                 ref={this.notes}
                                 checklistItem={checklistItem}
                                 onChange={value => this.onChange(value)}
+                                disabled={this.props.disabled}
                             />
                             {!checklistItem.hideFollowUp && <ChecklistItemFollowUp
                                     checklistItem={checklistItem}
                                     onChange={value => this.onChange(value)}
                                     getWoLink={this.props.getWoLink}
+                                    disabled={this.props.disabled}
                             />}
                         </div>
                         {Array.isArray(notApplicableOptions) && notApplicableOptions.length > 0 && <div style={this.checklistNotApplicableStyle} >
@@ -347,6 +349,7 @@ export default class ChecklistItem extends Component {
                                 checklistItem={checklistItem}
                                 notApplicableOptions={notApplicableOptions}
                                 onChange={value => this.onChange(value)}
+                                disabled={this.props.disabled}
                             />
                         </div>}
                     </Collapse>

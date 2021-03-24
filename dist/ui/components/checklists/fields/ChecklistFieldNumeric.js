@@ -58,6 +58,8 @@ var OK_BORDER = "solid 1px #ced4da";
 var ERROR_BORDER = "solid 1px #f44336";
 
 var ChecklistFieldNumeric = function ChecklistFieldNumeric(props) {
+  var _React$createElement;
+
   var value = props.value,
       UOM = props.UOM,
       handleChange = props.handleChange,
@@ -114,7 +116,7 @@ var ChecklistFieldNumeric = function ChecklistFieldNumeric(props) {
   }, [inputValue, numericLimitError, changed, showError]);
   return /*#__PURE__*/_react["default"].createElement(_react["default"].Fragment, null, /*#__PURE__*/_react["default"].createElement("div", {
     style: outerStyle
-  }, /*#__PURE__*/_react["default"].createElement("input", {
+  }, /*#__PURE__*/_react["default"].createElement("input", (_React$createElement = {
     style: _objectSpread({}, inputStyle, {
       border: border
     }),
@@ -122,21 +124,20 @@ var ChecklistFieldNumeric = function ChecklistFieldNumeric(props) {
     onChange: function onChange(event) {
       return setInputValue(event.target.value);
     },
-    value: inputValue,
-    onBlur: function onBlur() {
-      if (!changed) {
-        return;
-      }
-
-      if (!isNaN(inputValue)) {
-        setBorder(OK_BORDER);
-        setUpdatedValue(inputValue);
-        handleChange(inputValue, function () {
-          return setUpdatedValue(lastUpdatedValue);
-        });
-      } else setBorder(ERROR_BORDER);
+    value: inputValue
+  }, _defineProperty(_React$createElement, "disabled", disabled), _defineProperty(_React$createElement, "onBlur", function onBlur() {
+    if (!changed) {
+      return;
     }
-  }), /*#__PURE__*/_react["default"].createElement("div", {
+
+    if (!isNaN(inputValue)) {
+      setBorder(OK_BORDER);
+      setUpdatedValue(inputValue);
+      handleChange(inputValue, function () {
+        return setUpdatedValue(lastUpdatedValue);
+      });
+    } else setBorder(ERROR_BORDER);
+  }), _React$createElement)), /*#__PURE__*/_react["default"].createElement("div", {
     style: labelUOMStyle
   }, UOM)), numericLimitError && /*#__PURE__*/_react["default"].createElement("p", {
     style: {
