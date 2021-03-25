@@ -89,19 +89,9 @@ var EAMGrid = function EAMGrid(props) {
     loading: loading,
     tableInstance: tableInstance,
     getRowProps: getRowProps
-  })), /*#__PURE__*/_react["default"].createElement(_EAMGridFooter["default"], null, /*#__PURE__*/_react["default"].createElement(_EAMGridPagination["default"], {
-    labelRowsPerPage: "Per Page",
-    onChangePage: handleChangePage,
-    onChangeRowsPerPage: handleChangeRowsPerPage,
-    pageIndex: pageIndex,
-    rowsPerPage: rowsPerPage,
-    hasUnkownTotalRecords: hasUnkownTotalRecords,
-    totalRecords: totalRecords,
-    rowsPerPageOptionsComputed: rowsPerPageOptionsComputed
-  }), /*#__PURE__*/_react["default"].createElement(_core.Box, {
+  })), /*#__PURE__*/_react["default"].createElement(_EAMGridFooter["default"], null, /*#__PURE__*/_react["default"].createElement(_core.Box, {
     flex: "1",
-    display: "flex",
-    justifyContent: "flex-end"
+    display: "flex"
   }, /*#__PURE__*/_react["default"].createElement(_reactBlockUi["default"], {
     tag: "div",
     blocking: loadingExportToCSV,
@@ -112,7 +102,16 @@ var EAMGrid = function EAMGrid(props) {
     variant: "outlined",
     size: "small",
     onClick: handleExportToCSV
-  }, "Export to CSV")))));
+  }, "Export to CSV"))), /*#__PURE__*/_react["default"].createElement(_EAMGridPagination["default"], {
+    labelRowsPerPage: "Per Page",
+    onChangePage: handleChangePage,
+    onChangeRowsPerPage: handleChangeRowsPerPage,
+    pageIndex: pageIndex,
+    rowsPerPage: rowsPerPage,
+    hasUnkownTotalRecords: hasUnkownTotalRecords,
+    totalRecords: totalRecords,
+    rowsPerPageOptionsComputed: rowsPerPageOptionsComputed
+  })));
 };
 
 var _default = EAMGrid;
