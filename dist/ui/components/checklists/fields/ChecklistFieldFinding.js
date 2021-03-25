@@ -44,9 +44,11 @@ var ChecklistFieldFinding = function ChecklistFieldFinding(props) {
   var finding = props.finding,
       _handleChange = props.handleChange,
       possibleFindings = props.possibleFindings,
-      classes = props.classes;
+      classes = props.classes,
+      disabled = props.disabled;
   var dropdown = props.dropdown === undefined ? true : props.dropdown;
   if (dropdown) return /*#__PURE__*/_react["default"].createElement(_FormControl["default"], {
+    disabled: disabled,
     classes: {
       root: classes.root
     }
@@ -76,7 +78,8 @@ var ChecklistFieldFinding = function ChecklistFieldFinding(props) {
       handleChange: function handleChange(value) {
         return _handleChange(value === finding ? null : value);
       },
-      key: findingElement.code
+      key: findingElement.code,
+      disabled: disabled
     });
   });
 };

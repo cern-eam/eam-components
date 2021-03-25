@@ -27,11 +27,11 @@ const style = {
 }
 
 const ChecklistFieldFinding = props => {
-    const {finding, handleChange, possibleFindings, classes} = props;
+    const {finding, handleChange, possibleFindings, classes, disabled} = props;
     const dropdown = props.dropdown === undefined ? true : props.dropdown;
 
     if(dropdown)
-        return <FormControl classes={{root: classes.root}}>
+        return <FormControl disabled={disabled} classes={{root: classes.root}}>
                 <Select classes={{root: classes.selectRoot, select: classes.select, icon: classes.icon}}
                         disableUnderline={true}
                         value={finding || ''}
@@ -49,6 +49,7 @@ const ChecklistFieldFinding = props => {
                 checked={finding === findingElement.code}
                 handleChange={value => handleChange(value === finding ? null : value)}
                 key={findingElement.code}
+                disabled={disabled}
         />)
 };
 

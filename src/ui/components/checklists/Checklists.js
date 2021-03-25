@@ -252,6 +252,7 @@ class Checklists extends Component {
                         minFindingsDropdown={minFindingsDropdown}
                         getWoLink={getWoLink}
                         resetSignatures={this.resetSignatures}
+                        disabled={checklist.disabled}
                     />)}
                 </div>
             </ExpansionPanelDetails>
@@ -259,7 +260,10 @@ class Checklists extends Component {
     }
 
     renderChecklistsForActivity(activity, filteredEquipment) {
-        const { checklists: originalChecklists } = activity;
+        const { checklists: originalChecklists, signatures } = activity;
+        const isDisabled = signatures && 
+            ((signatures[SIGNATURE_TYPES.PERFORMER_1] && !signatures[SIGNATURE_TYPES.PERFORMER_1].viewAsPerformer)
+            && (signatures[SIGNATURE_TYPES.PERFORMER_2] && !signatures[SIGNATURE_TYPES.PERFORMER_2].viewAsPerformer));
         const checklists = filteredEquipment ?
             originalChecklists.filter(checklist => checklist.equipmentCode === filteredEquipment)
             : originalChecklists;
@@ -272,6 +276,7 @@ class Checklists extends Component {
 
         let equipmentCode;
         checklists.forEach((checklist, i) => {
+            checklist.disabled = isDisabled;
             if (equipmentCode === checklist.equipmentCode) return;
 
             equipmentCode = checklist.equipmentCode;
@@ -406,7 +411,7 @@ class Checklists extends Component {
                         <div style={{width: "100%"}}>{this.renderChecklistsForActivity(activity, filteredEquipment)}
                         </div>
                     </ExpansionPanelDetails>
-                    {activity.signatures &&
+                    {activity.signatures && activity.signatures.length &&
                         <ActivityExpansionPanel style={{backgroundColor: 'white', border: '0px'}}
                                                 expanded={!this.state.signaturesCollapsed[activity.activityCode]}
                                                 onChange={(_, expanded) => this.expandSignature(activity, expanded)}>

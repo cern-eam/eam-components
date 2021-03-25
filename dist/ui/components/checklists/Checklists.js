@@ -401,14 +401,17 @@ var Checklists = /*#__PURE__*/function (_Component) {
           showError: showError,
           minFindingsDropdown: minFindingsDropdown,
           getWoLink: getWoLink,
-          resetSignatures: _this3.resetSignatures
+          resetSignatures: _this3.resetSignatures,
+          disabled: checklist.disabled
         });
       }))));
     }
   }, {
     key: "renderChecklistsForActivity",
     value: function renderChecklistsForActivity(activity, filteredEquipment) {
-      var originalChecklists = activity.checklists;
+      var originalChecklists = activity.checklists,
+          signatures = activity.signatures;
+      var isDisabled = signatures && signatures[SIGNATURE_TYPES.PERFORMER_1] && !signatures[SIGNATURE_TYPES.PERFORMER_1].viewAsPerformer && signatures[SIGNATURE_TYPES.PERFORMER_2] && !signatures[SIGNATURE_TYPES.PERFORMER_2].viewAsPerformer;
       var checklists = filteredEquipment ? originalChecklists.filter(function (checklist) {
         return checklist.equipmentCode === filteredEquipment;
       }) : originalChecklists;
@@ -418,6 +421,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
       var equipmentBoundaries = [];
       var equipmentCode;
       checklists.forEach(function (checklist, i) {
+        checklist.disabled = isDisabled;
         if (equipmentCode === checklist.equipmentCode) return;
         equipmentCode = checklist.equipmentCode;
         equipmentBoundaries.push(i);
@@ -560,7 +564,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
           style: {
             width: "100%"
           }
-        }, _this7.renderChecklistsForActivity(activity, filteredEquipment))), activity.signatures && /*#__PURE__*/_react["default"].createElement(ActivityExpansionPanel, {
+        }, _this7.renderChecklistsForActivity(activity, filteredEquipment))), activity.signatures && activity.signatures.length && /*#__PURE__*/_react["default"].createElement(ActivityExpansionPanel, {
           style: {
             backgroundColor: 'white',
             border: '0px'

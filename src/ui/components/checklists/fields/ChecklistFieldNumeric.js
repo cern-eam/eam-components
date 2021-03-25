@@ -41,7 +41,7 @@ const OK_BORDER = "solid 1px #ced4da";
 const ERROR_BORDER = "solid 1px #f44336";
 
 const ChecklistFieldNumeric = props => {
-    const { value, UOM, handleChange, minimumValue, maximumValue, showError } = props;
+    const { value, UOM, handleChange, minimumValue, maximumValue, showError, disabled } = props;
     const stringValue = value === null ? '' : '' + value;
 
     const [inputValue, setInputValue] = useState(stringValue);
@@ -78,6 +78,7 @@ const ChecklistFieldNumeric = props => {
     return <>
         <div style={outerStyle}>
             <input style={{...inputStyle, border: border}}
+                disabled={disabled}
                 onChange={event => setInputValue(event.target.value)}
                 value={inputValue}
                 onBlur={() => {
