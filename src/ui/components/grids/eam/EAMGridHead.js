@@ -50,6 +50,7 @@ const EAMGridHead = ({
                 <Grid item xs={12} sm={12} md={showDataspyChips ? 7 : 5}>
                         {showDataspyChips ?
                             <Box display="flex" alignItems="center">
+                                {dataspies.length ? <Typography variant="body2" color="textSecondary">Dataspy:</Typography> : null}
                                 <Box className={classes.dataspyChip}>
                                     {dataspies.filter(Boolean).map((dataspy, i) => 
                                         <Chip
