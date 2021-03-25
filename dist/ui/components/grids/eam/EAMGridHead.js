@@ -107,7 +107,7 @@ var EAMGridHead = function EAMGridHead(_ref) {
     loading: loading,
     value: selectedDataspy || {},
     options: [selectedDataspy || {}].concat(_toConsumableArray(dataspies)).filter(Boolean),
-    disableClearable: !selectedDataspy,
+    disableClearable: true,
     getOptionSelected: function getOptionSelected(option, value) {
       return value.code === option.code;
     },
