@@ -106,7 +106,8 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
 
       var _this$props = this.props,
           checklistItem = _this$props.checklistItem,
-          showError = _this$props.showError;
+          showError = _this$props.showError,
+          disabled = _this$props.disabled;
       var type = field[0];
       var options = field[1] || {};
 
@@ -119,7 +120,8 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
             handleChange: function handleChange(code) {
               return _this.handleChange(ChecklistItemInput.FIELD.CHECKBOX, code);
             },
-            key: key
+            key: key,
+            disabled: disabled
           });
 
         case ChecklistItemInput.FIELD.FINDING:
@@ -130,7 +132,8 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
               return _this.handleChange(ChecklistItemInput.FIELD.FINDING, code);
             },
             possibleFindings: checklistItem.possibleFindings,
-            key: key
+            key: key,
+            disabled: disabled
           });
 
         case ChecklistItemInput.FIELD.NUMERIC:
@@ -143,7 +146,8 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
               return _this.handleChange(ChecklistItemInput.FIELD.NUMERIC, value, onFail);
             },
             key: key,
-            showError: showError
+            showError: showError,
+            disabled: disabled
           });
       }
     }
