@@ -246,8 +246,15 @@ var EAMGridContextProvider = function EAMGridContextProvider(props) {
     });
   }, [fetchDataCancelToken, setFetchDataCancelToken]);
   var handleOnSearch = (0, _react.useCallback)(function () {
+    setPageIndex(0);
+
+    var newGridRequest = _objectSpread({}, gridRequest, {
+      cursorPosition: 0
+    });
+
+    setGridRequest(newGridRequest);
     tableInstance.toggleAllRowsSelected(false);
-    fetchData(gridRequest);
+    fetchData(newGridRequest);
   }, [tableInstance, fetchData, gridRequest]);
   var handleExportToCSV = (0, _react.useCallback)(function () {
     setLoadingExportToCSV(true);
@@ -268,10 +275,11 @@ var EAMGridContextProvider = function EAMGridContextProvider(props) {
     if (JSON.stringify(newGridFilters) === JSON.stringify(gridRequest.gridFilter)) return;
     setGridRequest(_objectSpread({}, gridRequest, {
       gridFilter: newGridFilters,
-      includeMetadata: false
+      includeMetadata: false,
+      cursorPosition: 1
     }));
     onChangeFilters && onChangeFilters(newGridFilters);
-  }, [filters, gridRequest, onChangeFilters]);
+  }, [filters, gridRequest, onChangeFilters, tableInstance]);
   (0, _react.useEffect)(function () {
     var newGridSort = sortBy.map(function (sort) {
       return {
@@ -283,13 +291,15 @@ var EAMGridContextProvider = function EAMGridContextProvider(props) {
 
     var newGridRequest = _objectSpread({}, gridRequest, {
       gridSort: newGridSort,
-      includeMetadata: false
+      includeMetadata: false,
+      cursorPosition: 0
     });
 
+    setPageIndex(0);
     setGridRequest(newGridRequest);
     fetchData(newGridRequest);
     onChangeSortBy && onChangeSortBy(sortBy);
-  }, [sortBy, gridRequest, onChangeSortBy, fetchData]);
+  }, [sortBy, gridRequest, onChangeSortBy, fetchData, tableInstance]);
   var handleChangePage = (0, _react.useCallback)(function (page) {
     setPageIndex(page);
     var newCursorPosition = page * rowsPerPage + 1;
