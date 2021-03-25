@@ -59,17 +59,7 @@ const EAMGrid = (props) => {
                 />
             </BlockUi>
             <EAMGridFooter>
-                <EAMGridPagination
-                    labelRowsPerPage={"Per Page"}
-                    onChangePage={handleChangePage}
-                    onChangeRowsPerPage={handleChangeRowsPerPage}
-                    pageIndex={pageIndex}
-                    rowsPerPage={rowsPerPage}
-                    hasUnkownTotalRecords={hasUnkownTotalRecords}
-                    totalRecords={totalRecords}
-                    rowsPerPageOptionsComputed={rowsPerPageOptionsComputed}
-                />
-                <Box flex="1" display="flex" justifyContent="flex-end">
+                <Box flex="1" display="flex">
                     <BlockUi
                         tag="div"
                         blocking={loadingExportToCSV}
@@ -81,6 +71,16 @@ const EAMGrid = (props) => {
                             onClick={handleExportToCSV}>Export to CSV</Button>
                     </BlockUi>
                 </Box>
+                <EAMGridPagination
+                    labelRowsPerPage={"Per Page"}
+                    onChangePage={handleChangePage}
+                    onChangeRowsPerPage={handleChangeRowsPerPage}
+                    pageIndex={pageIndex}
+                    rowsPerPage={rowsPerPage}
+                    hasUnkownTotalRecords={hasUnkownTotalRecords}
+                    totalRecords={totalRecords}
+                    rowsPerPageOptionsComputed={rowsPerPageOptionsComputed}
+                />
             </EAMGridFooter>
         </div>
     )
