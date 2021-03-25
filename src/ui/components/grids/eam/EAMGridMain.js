@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import {
     TableContainer,
     TableHead,
@@ -11,6 +11,7 @@ import {
     Typography,
 } from "@material-ui/core";
 import { CellMeasurer, CellMeasurerCache, List, AutoSizer } from "react-virtualized";
+import { ScrollSync, ScrollSyncPane } from "react-scroll-sync";
 
 const DefaultBodyCellComponent = withStyles((theme) => ({
     root: {
@@ -79,8 +80,8 @@ const EAMGridMain = (props) => {
 
     useEffect(() => {
         _cache = new CellMeasurerCache({
-            fixedWidth: false,
-            rowHeigth: 41,
+            fixedWidth: true,
+            defaultHeight: 41,
             keyMapper: index => index
         });
     }, []);
@@ -94,7 +95,7 @@ const EAMGridMain = (props) => {
     }, [rows]);
 
    const RenderRow = React.useCallback(
-    ({index, key, parent, style}) => {
+    ({ index, key, parent, style, isScrolling }) => {
         const row = rows[index]
         prepareRow(row)
         const customRowProps = getRowProps(row);
@@ -116,14 +117,14 @@ const EAMGridMain = (props) => {
                 parent={parent}
             >
                 {({measure}) => (
-                <TableRow {...tableRowProps} component="div" className="tr">
+                <TableRow {...tableRowProps} className="tr" component="div">
                     {row.cells.map((cell) => {
                         const cellProps = [
                             { style: { maxWidth: cell.column.maxWidth, width: cell.column.width }},
                             getCellProps(cell),
                         ].filter(Boolean);
                         return (
-                            <BodyCellComponent {...cell.getCellProps(cellProps)} component="div" className="td">
+                            <BodyCellComponent {...cell.getCellProps(cellProps)} className="td" component="div">
                                 {cell.render("Cell")}
                             </BodyCellComponent>
                         )
@@ -137,43 +138,47 @@ const EAMGridMain = (props) => {
         [getCellProps, getRowProps, prepareRow, rows, selectedFlatRows, _cache]
     )
 
+    const noResults = !rows.length && !loading;
 
     return (
         <TableContainer style={{ height: '100%', overflowY: 'hidden', padding: '1px' }}>
-            <TableComponent stickyHeader {...getTableProps({ style: { height: '100%' } })} component="div">
-                <TableHead component="div" style={{ display: 'block' }}>
-                    {headerGroups.map((headerGroup) => (
-                        <TableRow {...headerGroup.getHeaderGroupProps({ style: { overflowY: 'scroll' } })} component="div">
-                            {headerGroup.headers.map((column) => {
-                                const headerProps = [
-                                    { style: { maxWidth: column.maxWidth, width: column.width }},
-                                    getColumnProps(column),
-                                ].filter(Boolean)
-                                return (
-                                    <HeadCellComponent key={column.id} {...column.getHeaderProps(headerProps)} component="div">
-                                        <div {...column.getSortByToggleProps()}>
-                                            {column.render("Header")}
-                                            {column.id !== 'selection' ? (
-                                                <DefaultTableSortLabel
-                                                    active={column.isSorted}
-                                                    direction={column.isSortedDesc ? 'desc' : 'asc'}
-                                                />
-                                                ) : null}
-                                        </div>
-                                        {column.id !== 'selection' &&
-                                            <div style={{
-                                                display: 'flex',
-                                                justifyContent: 'center',
-                                            }}>{column.canFilter ? column.render('Filter') : null}</div>
-                                        }
-                                    </HeadCellComponent>
-                                )
-                            }
-                            )}
-                        </TableRow>
-                    ))}
-                </TableHead>
-                    <TableBody {...getTableBodyProps()} component="div" style={{ height: '100%', display: 'table-row' }}>
+            <ScrollSync>
+                <TableComponent stickyHeader {...getTableProps({ style: { height: '100%' } })} component="div">
+                    <ScrollSyncPane group="horizontal">
+                        <TableHead style={{ display: noResults ? 'flex' : 'grid', overflow: 'hidden', overflowY: 'scroll' }} component="div">
+                            {headerGroups.map((headerGroup) => (
+                                <TableRow {...headerGroup.getHeaderGroupProps()} component="div">
+                                    {headerGroup.headers.map((column) => {
+                                        const headerProps = [
+                                            { style: { maxWidth: column.maxWidth, width: column.width }},
+                                            getColumnProps(column),
+                                        ].filter(Boolean)
+                                        return (
+                                            <HeadCellComponent key={column.id} {...column.getHeaderProps(headerProps)} component="div">
+                                                <div {...column.getSortByToggleProps()}>
+                                                    {column.render("Header")}
+                                                    {column.id !== 'selection' ? (
+                                                        <DefaultTableSortLabel
+                                                            active={column.isSorted}
+                                                            direction={column.isSortedDesc ? 'desc' : 'asc'}
+                                                        />
+                                                        ) : null}
+                                                </div>
+                                                {column.id !== 'selection' &&
+                                                    <div style={{
+                                                        display: 'flex',
+                                                        justifyContent: 'center',
+                                                    }}>{column.canFilter ? column.render('Filter') : null}</div>
+                                                }
+                                            </HeadCellComponent>
+                                        )
+                                    }
+                                    )}
+                                </TableRow>
+                            ))}
+                        </TableHead>
+                    </ScrollSyncPane>
+                    <TableBody {...getTableBodyProps()} style={{ height: '100%', display: 'table-row' }} component="div">
                     {!rows.length && !loading ? 
                         <div style={{ width: "100%", position: "absolute", display: "flex", flexDirection: "column", padding: "1rem" }}>
                             <Typography variant="body2" color="textSecondary">No records to show</Typography>
@@ -182,24 +187,27 @@ const EAMGridMain = (props) => {
                         <div style={{ display: 'block', height: '100%' }}>
                             <AutoSizer>
                                 {({ height, width }) => (
-                                    <List
-                                        ref={element => {
-                                            _list = element;
-                                        }}
-                                        deferredMeasurementCache={_cache}
-                                        overscanRowCount={0}
-                                        rowCount={rows.length}
-                                        rowHeight={_cache.rowHeight}
-                                        rowRenderer={RenderRow}
-                                        width={width}
-                                        height={height}
-                                    />
+                                    <ScrollSyncPane group="horizontal">
+                                        <List
+                                            ref={element => {
+                                                _list = element;
+                                            }}
+                                            deferredMeasurementCache={_cache}
+                                            overscanRowCount={10}
+                                            rowCount={rows.length}
+                                            rowHeight={_cache.rowHeight}
+                                            rowRenderer={RenderRow}
+                                            width={width}
+                                            height={height}
+                                        />
+                                    </ScrollSyncPane>
                                 )}
                             </AutoSizer>
                         </div>
                     }
                     </TableBody>
-            </TableComponent>
+                </TableComponent>
+            </ScrollSync>
         </TableContainer>
     )
 }

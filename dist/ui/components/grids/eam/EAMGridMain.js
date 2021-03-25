@@ -13,6 +13,8 @@ var _core = require("@material-ui/core");
 
 var _reactVirtualized = require("react-virtualized");
 
+var _reactScrollSync = require("react-scroll-sync");
+
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
@@ -100,8 +102,8 @@ var EAMGridMain = function EAMGridMain(props) {
       selectedFlatRows = tableInstance.selectedFlatRows;
   (0, _react.useEffect)(function () {
     _cache = new _reactVirtualized.CellMeasurerCache({
-      fixedWidth: false,
-      rowHeigth: 41,
+      fixedWidth: true,
+      defaultHeight: 41,
       keyMapper: function keyMapper(index) {
         return index;
       }
@@ -123,7 +125,8 @@ var EAMGridMain = function EAMGridMain(props) {
     var index = _ref.index,
         key = _ref.key,
         parent = _ref.parent,
-        style = _ref.style;
+        style = _ref.style,
+        isScrolling = _ref.isScrolling;
     var row = rows[index];
     prepareRow(row);
     var customRowProps = getRowProps(row);
@@ -139,8 +142,8 @@ var EAMGridMain = function EAMGridMain(props) {
     }, function (_ref2) {
       var measure = _ref2.measure;
       return /*#__PURE__*/_react["default"].createElement(_core.TableRow, _extends({}, tableRowProps, {
-        component: "div",
-        className: "tr"
+        className: "tr",
+        component: "div"
       }), row.cells.map(function (cell) {
         var cellProps = [{
           style: {
@@ -149,21 +152,22 @@ var EAMGridMain = function EAMGridMain(props) {
           }
         }, getCellProps(cell)].filter(Boolean);
         return /*#__PURE__*/_react["default"].createElement(BodyCellComponent, _extends({}, cell.getCellProps(cellProps), {
-          component: "div",
-          className: "td"
+          className: "td",
+          component: "div"
         }), cell.render("Cell"));
       }));
     });
   }, // eslint-disable-next-line react-hooks/exhaustive-deps
   [getCellProps, getRowProps, prepareRow, rows, selectedFlatRows, _cache]);
 
+  var noResults = !rows.length && !loading;
   return /*#__PURE__*/_react["default"].createElement(_core.TableContainer, {
     style: {
       height: '100%',
       overflowY: 'hidden',
       padding: '1px'
     }
-  }, /*#__PURE__*/_react["default"].createElement(TableComponent, _extends({
+  }, /*#__PURE__*/_react["default"].createElement(_reactScrollSync.ScrollSync, null, /*#__PURE__*/_react["default"].createElement(TableComponent, _extends({
     stickyHeader: true
   }, getTableProps({
     style: {
@@ -171,17 +175,17 @@ var EAMGridMain = function EAMGridMain(props) {
     }
   }), {
     component: "div"
-  }), /*#__PURE__*/_react["default"].createElement(_core.TableHead, {
-    component: "div",
+  }), /*#__PURE__*/_react["default"].createElement(_reactScrollSync.ScrollSyncPane, {
+    group: "horizontal"
+  }, /*#__PURE__*/_react["default"].createElement(_core.TableHead, {
     style: {
-      display: 'block'
-    }
+      display: noResults ? 'flex' : 'grid',
+      overflow: 'hidden',
+      overflowY: 'scroll'
+    },
+    component: "div"
   }, headerGroups.map(function (headerGroup) {
-    return /*#__PURE__*/_react["default"].createElement(_core.TableRow, _extends({}, headerGroup.getHeaderGroupProps({
-      style: {
-        overflowY: 'scroll'
-      }
-    }), {
+    return /*#__PURE__*/_react["default"].createElement(_core.TableRow, _extends({}, headerGroup.getHeaderGroupProps(), {
       component: "div"
     }), headerGroup.headers.map(function (column) {
       var headerProps = [{
@@ -204,12 +208,12 @@ var EAMGridMain = function EAMGridMain(props) {
         }
       }, column.canFilter ? column.render('Filter') : null));
     }));
-  })), /*#__PURE__*/_react["default"].createElement(_core.TableBody, _extends({}, getTableBodyProps(), {
-    component: "div",
+  }))), /*#__PURE__*/_react["default"].createElement(_core.TableBody, _extends({}, getTableBodyProps(), {
     style: {
       height: '100%',
       display: 'table-row'
-    }
+    },
+    component: "div"
   }), !rows.length && !loading ? /*#__PURE__*/_react["default"].createElement("div", {
     style: {
       width: "100%",
@@ -229,19 +233,21 @@ var EAMGridMain = function EAMGridMain(props) {
   }, /*#__PURE__*/_react["default"].createElement(_reactVirtualized.AutoSizer, null, function (_ref3) {
     var height = _ref3.height,
         width = _ref3.width;
-    return /*#__PURE__*/_react["default"].createElement(_reactVirtualized.List, {
+    return /*#__PURE__*/_react["default"].createElement(_reactScrollSync.ScrollSyncPane, {
+      group: "horizontal"
+    }, /*#__PURE__*/_react["default"].createElement(_reactVirtualized.List, {
       ref: function ref(element) {
         _list = element;
       },
       deferredMeasurementCache: _cache,
-      overscanRowCount: 0,
+      overscanRowCount: 10,
       rowCount: rows.length,
       rowHeight: _cache.rowHeight,
       rowRenderer: RenderRow,
       width: width,
       height: height
-    });
-  })))));
+    }));
+  }))))));
 };
 
 var _default = EAMGridMain;
