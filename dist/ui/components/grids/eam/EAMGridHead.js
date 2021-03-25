@@ -89,7 +89,10 @@ var EAMGridHead = function EAMGridHead(_ref) {
   }, showDataspyChips ? /*#__PURE__*/_react["default"].createElement(_core.Box, {
     display: "flex",
     alignItems: "center"
-  }, /*#__PURE__*/_react["default"].createElement(_core.Box, {
+  }, dataspies.length ? /*#__PURE__*/_react["default"].createElement(_core.Typography, {
+    variant: "body2",
+    color: "textSecondary"
+  }, "Dataspy:") : null, /*#__PURE__*/_react["default"].createElement(_core.Box, {
     className: classes.dataspyChip
   }, dataspies.filter(Boolean).map(function (dataspy, i) {
     return /*#__PURE__*/_react["default"].createElement(_core.Chip, {
