@@ -151,8 +151,14 @@ export const EAMGridContextProvider = (props) => {
 
     const handleOnSearch = useCallback(
         () => {
+            setPageIndex(0);
+            const newGridRequest = {
+                ...gridRequest,
+                cursorPosition: 0,
+            };
+            setGridRequest(newGridRequest);
             tableInstance.toggleAllRowsSelected(false);
-            fetchData(gridRequest);
+            fetchData(newGridRequest);
         },
         [tableInstance, fetchData, gridRequest]
     );
@@ -183,10 +189,11 @@ export const EAMGridContextProvider = (props) => {
                 ...gridRequest,
                 gridFilter: newGridFilters,
                 includeMetadata: false,
+                cursorPosition: 1,
             });
             onChangeFilters && onChangeFilters(newGridFilters);
         },
-        [filters, gridRequest, onChangeFilters]
+        [filters, gridRequest, onChangeFilters, tableInstance]
     );
 
     useEffect(
@@ -197,12 +204,14 @@ export const EAMGridContextProvider = (props) => {
                 ...gridRequest,
                 gridSort: newGridSort,
                 includeMetadata: false,
+                cursorPosition: 0,
             };
+            setPageIndex(0);
             setGridRequest(newGridRequest);
             fetchData(newGridRequest);
             onChangeSortBy && onChangeSortBy(sortBy);
         },
-        [sortBy, gridRequest, onChangeSortBy, fetchData]
+        [sortBy, gridRequest, onChangeSortBy, fetchData, tableInstance]
     );
 
     const handleChangePage = useCallback(
