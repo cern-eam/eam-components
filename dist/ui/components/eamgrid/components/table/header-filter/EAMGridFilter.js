@@ -174,7 +174,7 @@ var DataGridTableFilter = /*#__PURE__*/function (_Component) {
     key: "_onChange",
     value: function _onChange(option) {
       // Disable input text depending on filter operator chosen
-      var disableInput = option.operator === 'IS_EMPTY' || option.operator === 'NOT_EMPTY';
+      var disableInput = option.operator === 'IS EMPTY' || option.operator === 'NOT EMPTY';
       this.setState({
         inputDisabled: disableInput
       });

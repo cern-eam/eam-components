@@ -100,7 +100,7 @@ class DataGridTableFilter extends Component {
 
     _onChange(option) {
         // Disable input text depending on filter operator chosen
-        const disableInput = option.operator === 'IS_EMPTY' || option.operator === 'NOT_EMPTY';
+        const disableInput = option.operator === 'IS EMPTY' || option.operator === 'NOT EMPTY';
         this.setState({
             inputDisabled: disableInput
         });
