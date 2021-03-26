@@ -13,7 +13,8 @@ class EAMBarcodeInput extends Component {
 
     state = {
         open: false,
-        showBarcodeButton: false
+        showBarcodeButton: false,
+        error: null
     };
 
     handleClickOpen = () => {
@@ -22,28 +23,32 @@ class EAMBarcodeInput extends Component {
 
     handleClose = () => {
         this.setState({ open: false });
-        this.codeReader.reset();
+
+        if(this.codeReader) {
+            this.codeReader.reset();
+        }
     };
 
-    startScanner(onDetectedCallback, handleClose) {
+    handleCodeReaderError = ({ error }) => {
+        // if the error is anything else except "no scan happened" -type of error
+        if(error.message !== 'Video stream has ended before any code could be detected.') {
+            this.setState({ error: error.message })
+        }
+    }
+
+    startScanner() {
         this.codeReader = new BrowserMultiFormatReader();
         this.codeReader
             .listVideoInputDevices()
-            .then(videoInputDevices => this.startDecoding(videoInputDevices[0].deviceId))
-            .catch(err => console.error(err));
-    }
-
-    startDecoding = (deviceId) => {
-        this.codeReader
-            .decodeFromInputVideoDevice(undefined, 'video')
-            .then(result => {
-                this.onDetectedCallback(result.text);
-                this.codeReader.reset();
+            .then(() =>
+                this.codeReader.decodeFromInputVideoDevice(undefined, 'video')
+            )
+            .then(({ text }) => {
+                this.onDetectedCallback(text);
                 this.handleClose();
             })
-            .catch(err => console.error(err));
+            .catch(error => this.handleCodeReaderError({ error }));
     }
-
 
     onChangeHandler = (value) => {
         this.props.updateProperty(this.props.valueKey, value);
@@ -54,21 +59,14 @@ class EAMBarcodeInput extends Component {
 
     onDetectedCallback(result) {
         this.props.updateProperty(result)
-        this.setState({open: false})
+        this.setState({ open: false, error: null})
     }
-
 
     render() {
         let userMediaSupported = false
 
         if(navigator && navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
             userMediaSupported = true
-        }
-
-        let style = {
-            maxWidth		: "320px",
-            maxHeight		: "320px",
-            stretchOnPhone	: true
         }
 
         let iconButtonStyle = {
@@ -100,8 +98,12 @@ class EAMBarcodeInput extends Component {
                     <BarcodeScan/>
                 </IconButton>
 
+                {this.state.error &&
+                    <p>Error happened in scanning: <code>{this.state.error}</code></p>
+                }
+
                 <Dialog
-                    onEntered={() => this.startScanner(this.onDetectedCallback.bind(this), this.handleClose.bind(this))}
+                    onEntered={() => this.startScanner()}
                     open={this.state.open}
                     onClose={this.handleClose}
                     aria-labelledby="alert-dialog-title"
@@ -116,7 +118,6 @@ class EAMBarcodeInput extends Component {
                         </Button>
                     </DialogActions>
                 </Dialog>
-
             </div>
         )
     }
