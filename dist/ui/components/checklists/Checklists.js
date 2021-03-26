@@ -351,6 +351,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
     value: function renderChecklistsForEquipment(key, checklists, activity) {
       var _this3 = this;
 
+      var isDisabled = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
       var _this$props = this.props,
           updateChecklistItem = _this$props.updateChecklistItem,
           minFindingsDropdown = _this$props.minFindingsDropdown,
@@ -402,7 +403,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
           minFindingsDropdown: minFindingsDropdown,
           getWoLink: getWoLink,
           resetSignatures: _this3.resetSignatures,
-          disabled: checklist.disabled
+          disabled: isDisabled
         });
       }))));
     }
@@ -421,7 +422,6 @@ var Checklists = /*#__PURE__*/function (_Component) {
       var equipmentBoundaries = [];
       var equipmentCode;
       checklists.forEach(function (checklist, i) {
-        checklist.disabled = isDisabled;
         if (equipmentCode === checklist.equipmentCode) return;
         equipmentCode = checklist.equipmentCode;
         equipmentBoundaries.push(i);
@@ -435,7 +435,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
         var start = equipmentBoundaries[i - 1];
         var end = equipmentBoundaries[i];
         var _equipmentCode = checklists[start].equipmentCode;
-        result.push(this.renderChecklistsForEquipment(_equipmentCode + start, checklists.slice(start, end), activity));
+        result.push(this.renderChecklistsForEquipment(_equipmentCode + start, checklists.slice(start, end), activity, isDisabled));
       }
 
       return result;
