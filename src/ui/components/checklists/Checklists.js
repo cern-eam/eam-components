@@ -411,7 +411,7 @@ class Checklists extends Component {
                         <div style={{width: "100%"}}>{this.renderChecklistsForActivity(activity, filteredEquipment)}
                         </div>
                     </ExpansionPanelDetails>
-                    {activity.signatures && activity.signatures.length &&
+                    {activity.signatures && renderedSignatures.length &&
                         <ActivityExpansionPanel style={{backgroundColor: 'white', border: '0px'}}
                                                 expanded={!this.state.signaturesCollapsed[activity.activityCode]}
                                                 onChange={(_, expanded) => this.expandSignature(activity, expanded)}>
