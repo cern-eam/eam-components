@@ -564,7 +564,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
           style: {
             width: "100%"
           }
-        }, _this7.renderChecklistsForActivity(activity, filteredEquipment))), activity.signatures && activity.signatures.length && /*#__PURE__*/_react["default"].createElement(ActivityExpansionPanel, {
+        }, _this7.renderChecklistsForActivity(activity, filteredEquipment))), activity.signatures && renderedSignatures.length && /*#__PURE__*/_react["default"].createElement(ActivityExpansionPanel, {
           style: {
             backgroundColor: 'white',
             border: '0px'
