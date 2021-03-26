@@ -210,7 +210,7 @@ class Checklists extends Component {
         });
     }
 
-    renderChecklistsForEquipment(key, checklists, activity) {
+    renderChecklistsForEquipment(key, checklists, activity, isDisabled = false) {
         const {
             updateChecklistItem,
             minFindingsDropdown,
@@ -252,7 +252,7 @@ class Checklists extends Component {
                         minFindingsDropdown={minFindingsDropdown}
                         getWoLink={getWoLink}
                         resetSignatures={this.resetSignatures}
-                        disabled={checklist.disabled}
+                        disabled={isDisabled}
                     />)}
                 </div>
             </ExpansionPanelDetails>
@@ -276,7 +276,6 @@ class Checklists extends Component {
 
         let equipmentCode;
         checklists.forEach((checklist, i) => {
-            checklist.disabled = isDisabled;
             if (equipmentCode === checklist.equipmentCode) return;
 
             equipmentCode = checklist.equipmentCode;
@@ -294,7 +293,7 @@ class Checklists extends Component {
             const end = equipmentBoundaries[i];
             const equipmentCode = checklists[start].equipmentCode;
             
-            result.push(this.renderChecklistsForEquipment(equipmentCode + start, checklists.slice(start, end), activity));
+            result.push(this.renderChecklistsForEquipment(equipmentCode + start, checklists.slice(start, end), activity, isDisabled));
         }
         
 
