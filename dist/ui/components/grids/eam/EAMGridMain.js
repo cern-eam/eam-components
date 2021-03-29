@@ -239,6 +239,9 @@ var EAMGridMain = function EAMGridMain(props) {
       ref: function ref(element) {
         _list = element;
       },
+      style: {
+        overflow: 'scroll'
+      },
       deferredMeasurementCache: _cache,
       overscanRowCount: 10,
       rowCount: rows.length,
