@@ -13,7 +13,7 @@ const labelStyle = {
 };
 
 const ChecklistFieldCheckbox = props => {
-    const {code, desc, checked, handleChange, classes} = props;
+    const {code, desc, checked, handleChange, classes, disabled} = props;
 
     return <FormControlLabel
         classes={{root: classes.root,label: classes.label}}
@@ -22,7 +22,8 @@ const ChecklistFieldCheckbox = props => {
                 color="primary"
                 checked={checked}
                 onMouseDown={() => handleChange(code)}
-                onTouchStart={() => handleChange(code)}/>
+                onTouchStart={() => handleChange(code)}
+                disabled={disabled}/>
         }
         label={desc}
     />

@@ -63,7 +63,8 @@ var ChecklistFieldNumeric = function ChecklistFieldNumeric(props) {
       handleChange = props.handleChange,
       minimumValue = props.minimumValue,
       maximumValue = props.maximumValue,
-      showError = props.showError;
+      showError = props.showError,
+      disabled = props.disabled;
   var stringValue = value === null ? '' : '' + value;
 
   var _useState = (0, _react.useState)(stringValue),
@@ -117,6 +118,7 @@ var ChecklistFieldNumeric = function ChecklistFieldNumeric(props) {
     style: _objectSpread({}, inputStyle, {
       border: border
     }),
+    disabled: disabled,
     onChange: function onChange(event) {
       return setInputValue(event.target.value);
     },

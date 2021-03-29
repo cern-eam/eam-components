@@ -14,6 +14,18 @@ import SimpleEmptyState from '../../components/emptystates/SimpleEmptyState';
 import { withStyles } from '@material-ui/core/styles';
 import { Console } from 'mdi-material-ui';
 
+const SIGNATURE_TYPES = {
+    PERFORMER_1: 'PB01',
+    PERFORMER_2: 'PB02',
+    REVIEWER: 'RB01'
+};
+
+const SIGNATURE_ORDER = {
+    [SIGNATURE_TYPES.PERFORMER_1]: 1,
+    [SIGNATURE_TYPES.PERFORMER_2]: 2,
+    [SIGNATURE_TYPES.REVIEWER]: 3,
+};
+
 const ActivityExpansionPanel = withStyles({
     root: {
         backgroundColor: '#fafafa',
@@ -167,15 +179,13 @@ class Checklists extends Component {
             const activityIndex = activities.findIndex(activity => activityCode === activity.activityCode);
             const activity = {...activities[activityIndex]};
             activities[activityIndex] = activity;
-            if(activity.signatures){
-                const signatureIndex = activity.signatures.findIndex(signature => signature.type === type);
-                if(signatureIndex >= 0){
-                    activity.signatures = [...activity.signatures];
-                    activity.signatures[signatureIndex] = {...activity.signatures[signatureIndex]};
-                    const signatureCopy = activity.signatures[signatureIndex];
-                    signatureCopy.signer = signer;
-                    signatureCopy.time = time;
-                }
+            if(activity.signatures && activity.signatures[type]){
+                activity.signatures = {...activity.signatures};
+                activity.signatures[type] = {
+                    ...activity.signatures[type],
+                    signer,
+                    time
+                };
             }
             return {activities}
         })
@@ -200,7 +210,7 @@ class Checklists extends Component {
         });
     }
 
-    renderChecklistsForEquipment(key, checklists, activity) {
+    renderChecklistsForEquipment(key, checklists, activity, isDisabled = false) {
         const {
             updateChecklistItem,
             minFindingsDropdown,
@@ -242,6 +252,7 @@ class Checklists extends Component {
                         minFindingsDropdown={minFindingsDropdown}
                         getWoLink={getWoLink}
                         resetSignatures={this.resetSignatures}
+                        disabled={isDisabled}
                     />)}
                 </div>
             </ExpansionPanelDetails>
@@ -249,7 +260,10 @@ class Checklists extends Component {
     }
 
     renderChecklistsForActivity(activity, filteredEquipment) {
-        const { checklists: originalChecklists } = activity;
+        const { checklists: originalChecklists, signatures } = activity;
+        const isDisabled = signatures && 
+            ((signatures[SIGNATURE_TYPES.PERFORMER_1] && !signatures[SIGNATURE_TYPES.PERFORMER_1].viewAsPerformer)
+            && (signatures[SIGNATURE_TYPES.PERFORMER_2] && !signatures[SIGNATURE_TYPES.PERFORMER_2].viewAsPerformer));
         const checklists = filteredEquipment ?
             originalChecklists.filter(checklist => checklist.equipmentCode === filteredEquipment)
             : originalChecklists;
@@ -279,7 +293,7 @@ class Checklists extends Component {
             const end = equipmentBoundaries[i];
             const equipmentCode = checklists[start].equipmentCode;
             
-            result.push(this.renderChecklistsForEquipment(equipmentCode + start, checklists.slice(start, end), activity));
+            result.push(this.renderChecklistsForEquipment(equipmentCode + start, checklists.slice(start, end), activity, isDisabled));
         }
         
 
@@ -328,15 +342,35 @@ class Checklists extends Component {
         this.setState({signaturesCollapsed});
     }
 
+    shouldRenderSignature = (signatures, signature) => {
+        if (!signature) return false;
+        if (signature.signer) return true;
+        switch (signature.type) {
+            case SIGNATURE_TYPES.PERFORMER_1:
+                return signature.viewAsPerformer || signature.viewAsReviewer;
+            case SIGNATURE_TYPES.PERFORMER_2:
+                if (!signatures[SIGNATURE_TYPES.PERFORMER_1]
+                    || signatures[SIGNATURE_TYPES.PERFORMER_1].responsibilityCode !== signature.responsibilityCode)
+                    return signature.viewAsPerformer || signature.viewAsReviewer;
+                else return signatures[SIGNATURE_TYPES.PERFORMER_1].signer;
+            case SIGNATURE_TYPES.REVIEWER:
+                return signature.viewAsReviewer;
+        }
+        return true;
+    }
+
     renderSignatures(activity){
         if(!activity.signatures) return;
-        return activity.signatures.map(signature => 
-            <ChecklistSignature signature={signature}
+        return Object.values(activity.signatures)
+        .sort((signature1, signature2) => SIGNATURE_ORDER[signature1.type] - SIGNATURE_ORDER[signature2.type])
+        .filter(signature => this.shouldRenderSignature(activity.signatures, signature))
+        .map(signature => 
+                <ChecklistSignature signature={signature}
                                 workOrderCode={activity.workOrderNumber}
                                 activityCode={activity.activityCode}
                                 showError={this.props.showError}
                                 setSignature = {this.setSignature}/>
-        );
+        )
     }
 
     renderActivities(filteredActivity, filteredEquipment) {
@@ -346,8 +380,9 @@ class Checklists extends Component {
                 activity.checklists && activity.checklists.length > 0
                     && !(filteredEquipment && activity.equipments[filteredEquipment] === undefined)
                     && !(filteredActivity && activity.activityCode !== filteredActivity)
-            )).map(activity => (     
-                <ActivityExpansionPanel
+            )).map(activity => {
+                const renderedSignatures = this.renderSignatures(activity)
+                return <ActivityExpansionPanel
                     key={activity.activityCode}
                     expanded={!activity.collapsed}
                     TransitionProps={{ unmountOnExit: true, timeout: 0 }}
@@ -375,7 +410,7 @@ class Checklists extends Component {
                         <div style={{width: "100%"}}>{this.renderChecklistsForActivity(activity, filteredEquipment)}
                         </div>
                     </ExpansionPanelDetails>
-                    {activity.signatures &&
+                    {activity.signatures && renderedSignatures.length &&
                         <ActivityExpansionPanel style={{backgroundColor: 'white', border: '0px'}}
                                                 expanded={!this.state.signaturesCollapsed[activity.activityCode]}
                                                 onChange={(_, expanded) => this.expandSignature(activity, expanded)}>
@@ -384,13 +419,13 @@ class Checklists extends Component {
                             </ExpansionPanelSummary>
                             <ExpansionPanelDetails style={{margin: 0, padding: '0 24px', backgroundColor: 'white', minHeight: '50px'}}>
                                 <div style={{width: "100%"}}>
-                                    {this.renderSignatures(activity)}
+                                    {renderedSignatures}
                                 </div>
                             </ExpansionPanelDetails>               
                         </ActivityExpansionPanel>
                     }
                 </ActivityExpansionPanel>
-        ));
+            });
     }
 
     setNewFilter(filters) {

@@ -29,7 +29,8 @@ var ChecklistFieldCheckbox = function ChecklistFieldCheckbox(props) {
       desc = props.desc,
       checked = props.checked,
       handleChange = props.handleChange,
-      classes = props.classes;
+      classes = props.classes,
+      disabled = props.disabled;
   return /*#__PURE__*/_react["default"].createElement(_FormControlLabel["default"], {
     classes: {
       root: classes.root,
@@ -43,7 +44,8 @@ var ChecklistFieldCheckbox = function ChecklistFieldCheckbox(props) {
       },
       onTouchStart: function onTouchStart() {
         return handleChange(code);
-      }
+      },
+      disabled: disabled
     }),
     label: desc
   });

@@ -37,7 +37,7 @@ export default class ChecklistItemInput extends Component {
     }
 
     renderField(field, key) {
-        var { checklistItem, showError } = this.props;
+        var { checklistItem, showError, disabled } = this.props;
 
         const type = field[0];
         const options = field[1] || {};
@@ -50,6 +50,7 @@ export default class ChecklistItemInput extends Component {
                     checked={checklistItem.result === options.code}
                     handleChange={code => this.handleChange(ChecklistItemInput.FIELD.CHECKBOX, code)}
                     key={key}
+                    disabled={disabled}
                 />
             case ChecklistItemInput.FIELD.FINDING:
                 return <ChecklistFieldFinding
@@ -58,6 +59,7 @@ export default class ChecklistItemInput extends Component {
                     handleChange={code => this.handleChange(ChecklistItemInput.FIELD.FINDING, code)}
                     possibleFindings={checklistItem.possibleFindings}
                     key={key}
+                    disabled={disabled}
                 />
             case ChecklistItemInput.FIELD.NUMERIC:
                 return <ChecklistFieldNumeric
@@ -68,6 +70,7 @@ export default class ChecklistItemInput extends Component {
                     handleChange={(value, onFail) => this.handleChange(ChecklistItemInput.FIELD.NUMERIC, value, onFail)}
                     key={key}
                     showError={showError}
+                    disabled={disabled}
                 />
         }
     }

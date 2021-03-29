@@ -265,7 +265,8 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
 
       var _this$props2 = this.props,
           checklistItem = _this$props2.checklistItem,
-          showError = _this$props2.showError;
+          showError = _this$props2.showError,
+          disabled = _this$props2.disabled;
       var fields = [];
       var options = {}; // use until use of numeric values in result field is deprecated
 
@@ -422,7 +423,8 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
         },
         fields: fields,
         options: options,
-        showError: showError
+        showError: showError,
+        disabled: disabled
       });
     }
   }, {

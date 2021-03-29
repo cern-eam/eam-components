@@ -35,6 +35,8 @@ var _styles = require("@material-ui/core/styles");
 
 var _mdiMaterialUi = require("mdi-material-ui");
 
+var _SIGNATURE_ORDER;
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
@@ -81,6 +83,12 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+var SIGNATURE_TYPES = {
+  PERFORMER_1: 'PB01',
+  PERFORMER_2: 'PB02',
+  REVIEWER: 'RB01'
+};
+var SIGNATURE_ORDER = (_SIGNATURE_ORDER = {}, _defineProperty(_SIGNATURE_ORDER, SIGNATURE_TYPES.PERFORMER_1, 1), _defineProperty(_SIGNATURE_ORDER, SIGNATURE_TYPES.PERFORMER_2, 2), _defineProperty(_SIGNATURE_ORDER, SIGNATURE_TYPES.REVIEWER, 3), _SIGNATURE_ORDER);
 var ActivityExpansionPanel = (0, _styles.withStyles)({
   root: {
     backgroundColor: '#fafafa',
@@ -181,18 +189,12 @@ var Checklists = /*#__PURE__*/function (_Component) {
 
         activities[activityIndex] = activity;
 
-        if (activity.signatures) {
-          var signatureIndex = activity.signatures.findIndex(function (signature) {
-            return signature.type === type;
+        if (activity.signatures && activity.signatures[type]) {
+          activity.signatures = _objectSpread({}, activity.signatures);
+          activity.signatures[type] = _objectSpread({}, activity.signatures[type], {
+            signer: signer,
+            time: time
           });
-
-          if (signatureIndex >= 0) {
-            activity.signatures = _toConsumableArray(activity.signatures);
-            activity.signatures[signatureIndex] = _objectSpread({}, activity.signatures[signatureIndex]);
-            var signatureCopy = activity.signatures[signatureIndex];
-            signatureCopy.signer = signer;
-            signatureCopy.time = time;
-          }
         }
 
         return {
@@ -237,6 +239,24 @@ var Checklists = /*#__PURE__*/function (_Component) {
       _this.setState({
         signaturesCollapsed: signaturesCollapsed
       });
+    };
+
+    _this.shouldRenderSignature = function (signatures, signature) {
+      if (!signature) return false;
+      if (signature.signer) return true;
+
+      switch (signature.type) {
+        case SIGNATURE_TYPES.PERFORMER_1:
+          return signature.viewAsPerformer || signature.viewAsReviewer;
+
+        case SIGNATURE_TYPES.PERFORMER_2:
+          if (!signatures[SIGNATURE_TYPES.PERFORMER_1] || signatures[SIGNATURE_TYPES.PERFORMER_1].responsibilityCode !== signature.responsibilityCode) return signature.viewAsPerformer || signature.viewAsReviewer;else return signatures[SIGNATURE_TYPES.PERFORMER_1].signer;
+
+        case SIGNATURE_TYPES.REVIEWER:
+          return signature.viewAsReviewer;
+      }
+
+      return true;
     };
 
     _this.state = {
@@ -331,6 +351,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
     value: function renderChecklistsForEquipment(key, checklists, activity) {
       var _this3 = this;
 
+      var isDisabled = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
       var _this$props = this.props,
           updateChecklistItem = _this$props.updateChecklistItem,
           minFindingsDropdown = _this$props.minFindingsDropdown,
@@ -381,14 +402,17 @@ var Checklists = /*#__PURE__*/function (_Component) {
           showError: showError,
           minFindingsDropdown: minFindingsDropdown,
           getWoLink: getWoLink,
-          resetSignatures: _this3.resetSignatures
+          resetSignatures: _this3.resetSignatures,
+          disabled: isDisabled
         });
       }))));
     }
   }, {
     key: "renderChecklistsForActivity",
     value: function renderChecklistsForActivity(activity, filteredEquipment) {
-      var originalChecklists = activity.checklists;
+      var originalChecklists = activity.checklists,
+          signatures = activity.signatures;
+      var isDisabled = signatures && signatures[SIGNATURE_TYPES.PERFORMER_1] && !signatures[SIGNATURE_TYPES.PERFORMER_1].viewAsPerformer && signatures[SIGNATURE_TYPES.PERFORMER_2] && !signatures[SIGNATURE_TYPES.PERFORMER_2].viewAsPerformer;
       var checklists = filteredEquipment ? originalChecklists.filter(function (checklist) {
         return checklist.equipmentCode === filteredEquipment;
       }) : originalChecklists;
@@ -411,7 +435,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
         var start = equipmentBoundaries[i - 1];
         var end = equipmentBoundaries[i];
         var _equipmentCode = checklists[start].equipmentCode;
-        result.push(this.renderChecklistsForEquipment(_equipmentCode + start, checklists.slice(start, end), activity));
+        result.push(this.renderChecklistsForEquipment(_equipmentCode + start, checklists.slice(start, end), activity, isDisabled));
       }
 
       return result;
@@ -469,7 +493,11 @@ var Checklists = /*#__PURE__*/function (_Component) {
       var _this6 = this;
 
       if (!activity.signatures) return;
-      return activity.signatures.map(function (signature) {
+      return Object.values(activity.signatures).sort(function (signature1, signature2) {
+        return SIGNATURE_ORDER[signature1.type] - SIGNATURE_ORDER[signature2.type];
+      }).filter(function (signature) {
+        return _this6.shouldRenderSignature(activity.signatures, signature);
+      }).map(function (signature) {
         return /*#__PURE__*/_react["default"].createElement(_ChecklistSignature["default"], {
           signature: signature,
           workOrderCode: activity.workOrderNumber,
@@ -488,6 +516,8 @@ var Checklists = /*#__PURE__*/function (_Component) {
       return activities.filter(function (activity) {
         return activity.checklists && activity.checklists.length > 0 && !(filteredEquipment && activity.equipments[filteredEquipment] === undefined) && !(filteredActivity && activity.activityCode !== filteredActivity);
       }).map(function (activity) {
+        var renderedSignatures = _this7.renderSignatures(activity);
+
         return /*#__PURE__*/_react["default"].createElement(ActivityExpansionPanel, {
           key: activity.activityCode,
           expanded: !activity.collapsed,
@@ -534,7 +564,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
           style: {
             width: "100%"
           }
-        }, _this7.renderChecklistsForActivity(activity, filteredEquipment))), activity.signatures && /*#__PURE__*/_react["default"].createElement(ActivityExpansionPanel, {
+        }, _this7.renderChecklistsForActivity(activity, filteredEquipment))), activity.signatures && renderedSignatures.length && /*#__PURE__*/_react["default"].createElement(ActivityExpansionPanel, {
           style: {
             backgroundColor: 'white',
             border: '0px'
@@ -560,7 +590,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
           style: {
             width: "100%"
           }
-        }, _this7.renderSignatures(activity)))));
+        }, renderedSignatures))));
       });
     }
   }, {
