@@ -119,6 +119,7 @@ const getEAMFilterOperators = ({ column }) => {
                 {'value': OPERATORS.NOT_EMPTY, 'label': 'Is not empty', 'icon': <Rhombus/>}
             ];
         case "DATE":
+        case "DATETIME":
             return [
                 {'value': OPERATORS.GREATER_THAN, 'label': 'Greater than', 'icon': <GreaterThan/>},
                 {'value': OPERATORS.EQUAL, 'label': 'Equals', 'icon': <Equal/>},
@@ -352,7 +353,7 @@ const EAMFilterField = ({ column }) => {
                     clearable={1}
                     variant="inline"
                     ampm={false}
-                    value={localFilter.fieldValue || null}
+                    value={localFilter._dateValue || null}
                     onChange={handleDatePickersChange}
                     format="dd-MMM-yyyy HH:mm"
                     TextFieldComponent={FilterTextField}

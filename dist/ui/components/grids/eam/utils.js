@@ -164,6 +164,7 @@ var getEAMFilterOperators = function getEAMFilterOperators(_ref) {
       }];
 
     case "DATE":
+    case "DATETIME":
       return [{
         'value': OPERATORS.GREATER_THAN,
         'label': 'Greater than',
@@ -473,7 +474,7 @@ var EAMFilterField = function EAMFilterField(_ref6) {
         clearable: 1,
         variant: "inline",
         ampm: false,
-        value: localFilter.fieldValue || null,
+        value: localFilter._dateValue || null,
         onChange: handleDatePickersChange,
         format: "dd-MMM-yyyy HH:mm",
         TextFieldComponent: FilterTextField,
