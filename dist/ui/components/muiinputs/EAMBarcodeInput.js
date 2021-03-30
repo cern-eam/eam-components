@@ -67,7 +67,8 @@ var EAMBarcodeInput = /*#__PURE__*/function (_Component) {
     _this.codeReader = null;
     _this.state = {
       open: false,
-      showBarcodeButton: false
+      showBarcodeButton: false,
+      error: null
     };
 
     _this.handleClickOpen = function () {
@@ -81,19 +82,20 @@ var EAMBarcodeInput = /*#__PURE__*/function (_Component) {
         open: false
       });
 
-      _this.codeReader.reset();
+      if (_this.codeReader) {
+        _this.codeReader.reset();
+      }
     };
 
-    _this.startDecoding = function (deviceId) {
-      _this.codeReader.decodeFromInputVideoDevice(undefined, 'video').then(function (result) {
-        _this.onDetectedCallback(result.text);
+    _this.handleCodeReaderError = function (_ref) {
+      var error = _ref.error;
 
-        _this.codeReader.reset();
-
-        _this.handleClose();
-      })["catch"](function (err) {
-        return console.error(err);
-      });
+      // if the error is anything else except "no scan happened" -type of error
+      if (error.message !== 'Video stream has ended before any code could be detected.') {
+        _this.setState({
+          error: error.message
+        });
+      }
     };
 
     _this.onChangeHandler = function (value) {
@@ -109,14 +111,22 @@ var EAMBarcodeInput = /*#__PURE__*/function (_Component) {
 
   _createClass(EAMBarcodeInput, [{
     key: "startScanner",
-    value: function startScanner(onDetectedCallback, handleClose) {
+    value: function startScanner() {
       var _this2 = this;
 
       this.codeReader = new _library.BrowserMultiFormatReader();
-      this.codeReader.listVideoInputDevices().then(function (videoInputDevices) {
-        return _this2.startDecoding(videoInputDevices[0].deviceId);
-      })["catch"](function (err) {
-        return console.error(err);
+      this.codeReader.listVideoInputDevices().then(function () {
+        return _this2.codeReader.decodeFromInputVideoDevice(undefined, 'video');
+      }).then(function (_ref2) {
+        var text = _ref2.text;
+
+        _this2.onDetectedCallback(text);
+
+        _this2.handleClose();
+      })["catch"](function (error) {
+        return _this2.handleCodeReaderError({
+          error: error
+        });
       });
     }
   }, {
@@ -124,7 +134,8 @@ var EAMBarcodeInput = /*#__PURE__*/function (_Component) {
     value: function onDetectedCallback(result) {
       this.props.updateProperty(result);
       this.setState({
-        open: false
+        open: false,
+        error: null
       });
     }
   }, {
@@ -138,11 +149,6 @@ var EAMBarcodeInput = /*#__PURE__*/function (_Component) {
         userMediaSupported = true;
       }
 
-      var style = {
-        maxWidth: "320px",
-        maxHeight: "320px",
-        stretchOnPhone: true
-      };
       var iconButtonStyle = {
         position: "absolute",
         top: this.props.top || 30,
@@ -170,9 +176,9 @@ var EAMBarcodeInput = /*#__PURE__*/function (_Component) {
       }, this.props.children, /*#__PURE__*/_react["default"].createElement(_IconButton["default"], {
         style: iconButtonStyle,
         onClick: this.handleClickOpen.bind(this)
-      }, /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.BarcodeScan, null)), /*#__PURE__*/_react["default"].createElement(_Dialog["default"], {
+      }, /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.BarcodeScan, null)), this.state.error && /*#__PURE__*/_react["default"].createElement("p", null, "Error happened in scanning: ", /*#__PURE__*/_react["default"].createElement("code", null, this.state.error)), /*#__PURE__*/_react["default"].createElement(_Dialog["default"], {
         onEntered: function onEntered() {
-          return _this3.startScanner(_this3.onDetectedCallback.bind(_this3), _this3.handleClose.bind(_this3));
+          return _this3.startScanner();
         },
         open: this.state.open,
         onClose: this.handleClose,
