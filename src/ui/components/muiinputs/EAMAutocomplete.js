@@ -89,18 +89,21 @@ const styles = theme => ({
     suggestionsContainerOpen: {
         position: 'absolute',
         marginBottom: theme.spacing(3),
-        left: 0,
-        right: 0,
+        width: '100%',
         zIndex: 10
     },
     suggestion: {
         display: 'block',
     },
-    suggestionsList: {
+    suggestionsList: ({ maxHeight })=> ({
         margin: 0,
         padding: 0,
         listStyleType: 'none',
-    },
+        ...(maxHeight && {
+            maxHeight,
+            overflowY: 'scroll'
+        }),
+    }),
     textField: {
         width: '100%',
     },
