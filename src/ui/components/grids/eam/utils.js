@@ -71,7 +71,7 @@ const OPERATORS = {
 const CHECKBOX_FILTERS = {
     CHECKED: -1,
     UNCHECKED: 0,
-    INDETERMINATE: undefined                       
+    INDETERMINATE: undefined
 }
 
 const getCheckedValue = (valueType) => Number(valueType) === CHECKBOX_FILTERS.CHECKED;
@@ -135,7 +135,7 @@ const getEAMFilterOperators = ({ column }) => {
             return [
                 {'value': OPERATORS.EQUAL, 'label': 'Equals', 'icon': <Equal/>},
                 {'value': OPERATORS.LESS_THAN, 'label': 'Less than', 'icon': <LessThan/>},
-                {'value': OPERAOTRS.GREATER_THAN, 'label': 'Greater than', 'icon': <GreaterThan/>},
+                {'value': OPERATORS.GREATER_THAN, 'label': 'Greater than', 'icon': <GreaterThan/>},
                 {'value': OPERATORS.LESS_THAN_EQUALS, 'label': 'Less than or equals', 'icon': <LessThanOrEqual/>},
                 {'value': OPERATORS.GREATER_THAN_EQUALS, 'label': 'Greater than or equals', 'icon': <GreaterThanOrEqual/>},
                 {'value': OPERATORS.IS_EMPTY, 'label': 'Is empty', 'icon': <RhombusOutline/>},
@@ -286,7 +286,7 @@ const EAMFilterField = ({ column }) => {
     const handleDatePickersChange = React.useCallback(
         value => updateFilter({ ...localFilter, fieldValue: formatDate(value, "dd-MMM-yyyy"), _dateValue: value })
     , [localFilter, updateFilter]);
-    
+
     switch (dataType) {
         case "VARCHAR":
         case "MIXVARCHAR":
@@ -338,11 +338,10 @@ const EAMFilterField = ({ column }) => {
                                 setLocalFilter={updateFilter} />
                         ),
                         endAdornment: (
-                            <DateFilterAdornment 
+                            <DateFilterAdornment
                                 localFilter={localFilter}
                                 setLocalFilter={updateFilter} />
                         )
-                        
                     }}
                 />
             );
@@ -365,7 +364,7 @@ const EAMFilterField = ({ column }) => {
                                 setLocalFilter={updateFilter} />
                         ),
                         endAdornment: (
-                            <DateFilterAdornment 
+                            <DateFilterAdornment
                                 localFilter={localFilter}
                                 setLocalFilter={updateFilter} />
                         )

@@ -210,7 +210,7 @@ var getEAMFilterOperators = function getEAMFilterOperators(_ref) {
         'label': 'Less than',
         'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.LessThan, null)
       }, {
-        'value': OPERAOTRS.GREATER_THAN,
+        'value': OPERATORS.GREATER_THAN,
         'label': 'Greater than',
         'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.GreaterThan, null)
       }, {
