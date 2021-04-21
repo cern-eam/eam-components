@@ -240,7 +240,8 @@ var EAMGridMain = function EAMGridMain(props) {
         _list = element;
       },
       style: {
-        overflow: 'scroll'
+        overflowX: 'scroll',
+        overflowY: 'scroll'
       },
       deferredMeasurementCache: _cache,
       overscanRowCount: 10,

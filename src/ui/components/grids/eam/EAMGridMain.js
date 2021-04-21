@@ -192,7 +192,7 @@ const EAMGridMain = (props) => {
                                             ref={element => {
                                                 _list = element;
                                             }}
-                                            style={{ overflow: 'scroll' }}
+                                            style={{ overflowX: 'scroll', overflowY: 'scroll' }}
                                             deferredMeasurementCache={_cache}
                                             overscanRowCount={10}
                                             rowCount={rows.length}
