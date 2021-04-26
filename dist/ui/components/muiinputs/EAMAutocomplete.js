@@ -146,17 +146,22 @@ var styles = function styles(theme) {
     suggestionsContainerOpen: {
       position: 'absolute',
       marginBottom: theme.spacing(3),
-      left: 0,
-      right: 0,
+      width: '100%',
       zIndex: 10
     },
     suggestion: {
       display: 'block'
     },
-    suggestionsList: {
-      margin: 0,
-      padding: 0,
-      listStyleType: 'none'
+    suggestionsList: function suggestionsList(_ref) {
+      var maxHeight = _ref.maxHeight;
+      return _objectSpread({
+        margin: 0,
+        padding: 0,
+        listStyleType: 'none'
+      }, maxHeight && {
+        maxHeight: maxHeight,
+        overflowY: 'scroll'
+      });
     },
     textField: {
       width: '100%'
@@ -200,8 +205,8 @@ var EAMAutocomplete = /*#__PURE__*/function (_EAMBaseInput) {
       return renderDefaultInput(inputProps);
     };
 
-    _this.handleSuggestionsFetchRequested = function (_ref) {
-      var value = _ref.value;
+    _this.handleSuggestionsFetchRequested = function (_ref2) {
+      var value = _ref2.value;
       clearTimeout(_this.timeout);
       _this.timeout = setTimeout(function () {
         if (!!_this.cancelSource) _this.cancelSource.cancel();
@@ -217,8 +222,8 @@ var EAMAutocomplete = /*#__PURE__*/function (_EAMBaseInput) {
       }, 200);
     };
 
-    _this.handleChange = function (event, _ref2) {
-      var newValue = _ref2.newValue;
+    _this.handleChange = function (event, _ref3) {
+      var newValue = _ref3.newValue;
 
       // Initially, the onChange only happened on lose focus (onBlur) event. However, both events
       //(onChange and onBlur) are fired at the same time, causing the onBlur() event to not have
@@ -255,8 +260,8 @@ var EAMAutocomplete = /*#__PURE__*/function (_EAMBaseInput) {
         // Not the cleaniest of ways to achieve the parent update on the value: the parent should save
         //a ref and call getValue for that purpose. However, and to avoid manipulating state directly,
         //we update it as a callback which should have the state updated
-        (function (_ref3) {
-          var value = _ref3.value;
+        (function (_ref4) {
+          var value = _ref4.value;
           return value && _this.onSuggestionChange(value.code, value.desc);
         })(_this.state);
       });
@@ -270,8 +275,8 @@ var EAMAutocomplete = /*#__PURE__*/function (_EAMBaseInput) {
       return !!value;
     };
 
-    _this.onSuggestionSelected = function (event, _ref4) {
-      var suggestion = _ref4.suggestion;
+    _this.onSuggestionSelected = function (event, _ref5) {
+      var suggestion = _ref5.suggestion;
       if (suggestion) _this.onSuggestionChange(suggestion.code, suggestion.desc);
     };
 
@@ -301,8 +306,8 @@ var EAMAutocomplete = /*#__PURE__*/function (_EAMBaseInput) {
         onSuggestionsClearRequested: this.handleSuggestionsClearRequested,
         getSuggestionValue: this.getSuggestionValue,
         renderSuggestionsContainer: renderSuggestionsContainer,
-        renderSuggestion: function renderSuggestion(suggestion, _ref5) {
-          var isHighlighted = _ref5.isHighlighted;
+        renderSuggestion: function renderSuggestion(suggestion, _ref6) {
+          var isHighlighted = _ref6.isHighlighted;
           return renderSuggestionContainer(suggestion, isHighlighted);
         },
         renderInputComponent: this.renderInput.bind(this),
