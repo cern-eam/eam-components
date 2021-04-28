@@ -196,9 +196,17 @@ var EAMAutocomplete = /*#__PURE__*/function (_EAMBaseInput) {
     };
 
     _this.onSuggestionChange = function (code, desc) {
-      _this.props.updateProperty(_this.props.valueKey, code);
+      // this.props.updateProperty(this.props.valueKey, code);
+      // this.props.updateProperty(this.props.descKey, desc);
+      _this.setValue({
+        code: code,
+        desc: desc
+      });
 
-      _this.props.updateProperty(_this.props.descKey, desc);
+      _this.onChangeHandler(code, {
+        code: code,
+        desc: desc
+      });
     };
 
     _this.renderInput = function (inputProps) {
@@ -212,11 +220,22 @@ var EAMAutocomplete = /*#__PURE__*/function (_EAMBaseInput) {
         if (!!_this.cancelSource) _this.cancelSource.cancel();
         _this.cancelSource = _index["default"].CancelToken.source();
 
+        if (value === _this.state.suggestionsValue) {
+          return;
+        }
+
         _this.props.autocompleteHandler(value, {
           cancelToken: _this.cancelSource.token
         }).then(function (result) {
           _this.setState({
-            suggestions: result.body.data
+            suggestions: result.body.data,
+            suggestionsValue: value
+          }, function () {
+            var valueFound = _this.findValueInSuggestions(value, result.body.data);
+
+            if (valueFound && (_this.props.autoSelectSingleElement === undefined || _this.props.autoSelectSingleElement)) {
+              _this.onChangeHandler(valueFound.code, valueFound);
+            }
           });
         })["catch"](function (error) {});
       }, 200);
@@ -229,21 +248,17 @@ var EAMAutocomplete = /*#__PURE__*/function (_EAMBaseInput) {
       //(onChange and onBlur) are fired at the same time, causing the onBlur() event to not have
       //the updated state. Therefore, and until a complete redesign is in place, either the parent shall
       //be updated at every key stroke, or thehandleSuggestionsClearRequested must contain a workaround
-      var valueFound = _this.findValueInSuggestions(newValue, _this.state.suggestions);
-
-      if (valueFound) {
-        _this.onChangeHandler(valueFound.code, valueFound);
-
-        _this.setValue({
-          code: valueFound.code,
-          desc: valueFound.desc
-        });
-      } else {
-        _this.setValue({
-          code: newValue,
-          desc: ''
-        });
-      }
+      // const valueFound = this.findValueInSuggestions(newValue, this.state.suggestions)
+      // if (valueFound) {
+      //     this.onChangeHandler(valueFound.code, valueFound)
+      //     this.setValue({code: valueFound.code, desc: valueFound.desc});
+      // } else {
+      //     this.setValue({code: newValue, desc: ''});
+      // }
+      _this.setValue({
+        code: newValue,
+        desc: ''
+      });
     };
 
     _this.findValueInSuggestions = function (value, suggestions) {
@@ -253,19 +268,7 @@ var EAMAutocomplete = /*#__PURE__*/function (_EAMBaseInput) {
       });
     };
 
-    _this.handleSuggestionsClearRequested = function () {
-      return _this.setState({
-        suggestions: []
-      }, function (_) {
-        // Not the cleaniest of ways to achieve the parent update on the value: the parent should save
-        //a ref and call getValue for that purpose. However, and to avoid manipulating state directly,
-        //we update it as a callback which should have the state updated
-        (function (_ref4) {
-          var value = _ref4.value;
-          return value && _this.onSuggestionChange(value.code, value.desc);
-        })(_this.state);
-      });
-    };
+    _this.handleSuggestionsClearRequested = function () {};
 
     _this.getSuggestionValue = function (suggestion) {
       return suggestion.code;
@@ -275,8 +278,8 @@ var EAMAutocomplete = /*#__PURE__*/function (_EAMBaseInput) {
       return !!value;
     };
 
-    _this.onSuggestionSelected = function (event, _ref5) {
-      var suggestion = _ref5.suggestion;
+    _this.onSuggestionSelected = function (event, _ref4) {
+      var suggestion = _ref4.suggestion;
       if (suggestion) _this.onSuggestionChange(suggestion.code, suggestion.desc);
     };
 
@@ -286,10 +289,14 @@ var EAMAutocomplete = /*#__PURE__*/function (_EAMBaseInput) {
   _createClass(EAMAutocomplete, [{
     key: "renderComponent",
     value: function renderComponent() {
+      var _this2 = this;
+
       var _this$props = this.props,
           classes = _this$props.classes,
           elementInfo = _this$props.elementInfo;
-      var value = this.state.value; // Value should always be an object with code and desc
+      var _this$state = this.state,
+          value = _this$state.value,
+          suggestions = _this$state.suggestions; // Value should always be an object with code and desc
 
       if (!value) return null;
       return /*#__PURE__*/_react["default"].createElement(_reactAutosuggest["default"], {
@@ -306,8 +313,8 @@ var EAMAutocomplete = /*#__PURE__*/function (_EAMBaseInput) {
         onSuggestionsClearRequested: this.handleSuggestionsClearRequested,
         getSuggestionValue: this.getSuggestionValue,
         renderSuggestionsContainer: renderSuggestionsContainer,
-        renderSuggestion: function renderSuggestion(suggestion, _ref6) {
-          var isHighlighted = _ref6.isHighlighted;
+        renderSuggestion: function renderSuggestion(suggestion, _ref5) {
+          var isHighlighted = _ref5.isHighlighted;
           return renderSuggestionContainer(suggestion, isHighlighted);
         },
         renderInputComponent: this.renderInput.bind(this),
@@ -322,7 +329,14 @@ var EAMAutocomplete = /*#__PURE__*/function (_EAMBaseInput) {
           label: elementInfo && elementInfo.text,
           value: value.code,
           onChange: this.handleChange,
-          disabled: this.state.disabled || elementInfo && elementInfo.readonly
+          disabled: this.state.disabled || elementInfo && elementInfo.readonly,
+          onBlur: function onBlur() {
+            setTimeout(function () {
+              var valueFound = _this2.findValueInSuggestions(_this2.state.value ? _this2.state.value.code : '', suggestions);
+
+              if (!valueFound) _this2.onSuggestionChange('', '');
+            }, 100);
+          }
         }
       });
     }

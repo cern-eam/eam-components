@@ -119,8 +119,10 @@ class EAMAutocomplete extends EAMBaseInput {
     init = props => this.setValue({code: props.value || '', desc: props.valueDesc || ''}, false)
 
     onSuggestionChange = (code, desc) => {
-        this.props.updateProperty(this.props.valueKey, code);
-        this.props.updateProperty(this.props.descKey, desc);
+        // this.props.updateProperty(this.props.valueKey, code);
+        // this.props.updateProperty(this.props.descKey, desc);
+        this.setValue({code, desc});
+        this.onChangeHandler(code, {code, desc});
     }
 
     // Input rendering
@@ -135,12 +137,24 @@ class EAMAutocomplete extends EAMBaseInput {
 
             this.cancelSource = axios.CancelToken.source()
 
+            if (value === this.state.suggestionsValue) {
+                return;
+            }
             this.props.autocompleteHandler(value, {cancelToken: this.cancelSource.token})
                 .then(result => {
                     this.setState({
-                        suggestions: result.body.data
-                    });
-                }).catch(error => {
+                        suggestions: result.body.data,
+                        suggestionsValue: value
+                    },
+                        () => {
+                            const valueFound = this.findValueInSuggestions(value, result.body.data)
+                            if (valueFound && (this.props.autoSelectSingleElement === undefined || this.props.autoSelectSingleElement)) {
+                                this.onChangeHandler(valueFound.code, valueFound)
+                            }
+                        }
+                    );
+                })
+                .catch(error => {
 
                 });
         }, 200)
@@ -151,13 +165,14 @@ class EAMAutocomplete extends EAMBaseInput {
         //(onChange and onBlur) are fired at the same time, causing the onBlur() event to not have
         //the updated state. Therefore, and until a complete redesign is in place, either the parent shall
         //be updated at every key stroke, or thehandleSuggestionsClearRequested must contain a workaround
-        const valueFound = this.findValueInSuggestions(newValue, this.state.suggestions)
-        if (valueFound) {
-            this.onChangeHandler(valueFound.code, valueFound)
-            this.setValue({code: valueFound.code, desc: valueFound.desc});
-        } else {
-            this.setValue({code: newValue, desc: ''});
-        }
+        // const valueFound = this.findValueInSuggestions(newValue, this.state.suggestions)
+        // if (valueFound) {
+        //     this.onChangeHandler(valueFound.code, valueFound)
+        //     this.setValue({code: valueFound.code, desc: valueFound.desc});
+        // } else {
+        //     this.setValue({code: newValue, desc: ''});
+        // }
+        this.setValue({code: newValue, desc: ''});
     }
 
     findValueInSuggestions = (value, suggestions) => {
@@ -166,13 +181,9 @@ class EAMAutocomplete extends EAMBaseInput {
     }
 
     // Clear suggestions
-    handleSuggestionsClearRequested = () =>
-        this.setState({suggestions: []}, _ => {
-            // Not the cleaniest of ways to achieve the parent update on the value: the parent should save
-            //a ref and call getValue for that purpose. However, and to avoid manipulating state directly,
-            //we update it as a callback which should have the state updated
-            (({ value }) => value && this.onSuggestionChange(value.code, value.desc))(this.state)
-        })
+    handleSuggestionsClearRequested = () => {
+
+    }
 
     getSuggestionValue = suggestion => suggestion.code;
 
@@ -184,7 +195,7 @@ class EAMAutocomplete extends EAMBaseInput {
 
     renderComponent () {
         const { classes, elementInfo } = this.props;
-        const { value } = this.state;
+        const { value, suggestions } = this.state;
 
         // Value should always be an object with code and desc
         if (!value) return null
@@ -217,7 +228,13 @@ class EAMAutocomplete extends EAMBaseInput {
                     label: elementInfo && elementInfo.text,
                     value: value.code,
                     onChange: this.handleChange,
-                    disabled: this.state.disabled || (elementInfo && elementInfo.readonly)
+                    disabled: this.state.disabled || (elementInfo && elementInfo.readonly),
+                    onBlur: () => {
+                        setTimeout(() => {
+                            const valueFound = this.findValueInSuggestions(this.state.value ? this.state.value.code : '', suggestions);
+                            if (!valueFound) this.onSuggestionChange('', '');
+                        }, 100)
+                    }
                 }}
             />
         );
