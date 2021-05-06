@@ -75,6 +75,17 @@ var processFilters = function processFilters(filters) {
   });
 };
 
+var hasCustomFieldColumn = function hasCustomFieldColumn(columns) {
+  return columns.map(function (_ref2) {
+    var id = _ref2.id;
+    return id.toLowerCase();
+  }).some(function (id) {
+    return id.startsWith('c_') && ['_evnt', '_obj', '_part'].some(function (ending) {
+      return id.endsWith(ending);
+    });
+  });
+};
+
 var EAMGridContext = (0, _react.createContext)();
 exports.EAMGridContext = EAMGridContext;
 
@@ -275,7 +286,6 @@ var EAMGridContextProvider = function EAMGridContextProvider(props) {
     if (JSON.stringify(newGridFilters) === JSON.stringify(gridRequest.gridFilter)) return;
     setGridRequest(_objectSpread({}, gridRequest, {
       gridFilter: newGridFilters,
-      includeMetadata: false,
       cursorPosition: 1
     }));
     onChangeFilters && onChangeFilters(newGridFilters);
@@ -291,7 +301,6 @@ var EAMGridContextProvider = function EAMGridContextProvider(props) {
 
     var newGridRequest = _objectSpread({}, gridRequest, {
       gridSort: newGridSort,
-      includeMetadata: false,
       cursorPosition: 0
     });
 
@@ -306,8 +315,7 @@ var EAMGridContextProvider = function EAMGridContextProvider(props) {
     if (newCursorPosition === gridRequest.cursorPosition && gridRequest.rowCount === rowsPerPage) return;
 
     var newGridRequest = _objectSpread({}, gridRequest, {
-      cursorPosition: newCursorPosition,
-      includeMetadata: false
+      cursorPosition: newCursorPosition
     });
 
     tableInstance.toggleAllRowsSelected(false);
@@ -321,8 +329,7 @@ var EAMGridContextProvider = function EAMGridContextProvider(props) {
 
     var newGridRequest = _objectSpread({}, gridRequest, {
       cursorPosition: 0,
-      rowCount: perPage,
-      includeMetadata: false
+      rowCount: perPage
     });
 
     tableInstance.toggleAllRowsSelected(false);
@@ -354,6 +361,13 @@ var EAMGridContextProvider = function EAMGridContextProvider(props) {
   (0, _react.useEffect)(function () {
     onChangeSelectedRows && onChangeSelectedRows(selectedFlatRows);
   }, [selectedFlatRows, onChangeSelectedRows]);
+  (0, _react.useEffect)(function () {
+    if (columns.length > 0 && !hasCustomFieldColumn(columns)) {
+      setGridRequest(_objectSpread({}, gridRequest, {
+        includeMetadata: false
+      }));
+    }
+  }, [columns]);
   var context = {
     columns: columns,
     data: data,
