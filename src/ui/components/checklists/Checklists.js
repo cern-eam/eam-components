@@ -14,6 +14,8 @@ import SimpleEmptyState from '../../components/emptystates/SimpleEmptyState';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Dialog from '@material-ui/core/Dialog';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 const SIGNATURE_TYPES = {
     PERFORMER_1: 'PB01',
@@ -95,28 +97,29 @@ class Checklists extends Component {
             createFollowUpActivity: null,
             filteredActivity: null,
             filteredEquipment: null,
-            signaturesCollapsed: {}
+            signaturesCollapsed: {},
+            checklistsHidden: {}
         }
-
-        this.addCollapseHeuristic();
     }
 
-    addCollapseHeuristic() {
+    collapse = (checklists, activities) => {
         const { maxExpandedChecklistItems } = this.props;
+        const defaultCollapse = (checklists, activities) => {
+            // if there are less than this.props.maxExpandedChecklistItems checklists, do not collapse anything
+            if(checklists.length < maxExpandedChecklistItems) return;
+            
+            // otherwise, collapse every activity and every equipment within each activity
+            activities.forEach(activity => {
+                if(!activity.forceActivityExpansion) {
+                    activity.collapse();
+                    Object.values(activity.equipments).forEach(equipment => equipment.collapse());
+                }
+            });
+        };
 
-        this.collapseHeuristic = 
-            typeof this.props.collapseHeuristic === "function" ? this.props.collapseHeuristic : (checklists, activities) => {
-                // if there are less than 100 checklists, do not collapse anything
-                if(checklists.length < maxExpandedChecklistItems) return;
-                
-                // otherwise, collapse every activity and every equipment within each activity
-                activities.forEach(activity => {
-                    if(!activity.forceActivityExpansion) {
-                        activity.collapse();
-                        Object.values(activity.equipments).forEach(equipment => equipment.collapse());
-                    }
-                });
-            };
+        const functionToRun = typeof this.props.collapseHeuristic === "function" ? this.props.collapseHeuristic : defaultCollapse;
+        const filteredChecklists = checklists.filter(({checkListCode}) => !this.state.checklistsHidden[checkListCode]);
+        functionToRun(filteredChecklists, activities);
     }
 
     expansionDetailsStyle = {
@@ -131,7 +134,6 @@ class Checklists extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.addCollapseHeuristic();
         if (this.props.workorder !== nextProps.workorder) {
             this.readActivities(nextProps.workorder)
         }
@@ -145,7 +147,7 @@ class Checklists extends Component {
                 const activities = getExpandedActivities(response.body.data);
                 const checklists = activities.reduce((checklists, activity) => checklists.concat(activity.checklists), []);
 
-                this.collapseHeuristic(checklists, activities);
+                this.collapse(checklists, activities);
 
                 this.setState({
                     activities,
@@ -262,13 +264,20 @@ class Checklists extends Component {
     }
 
     renderChecklistsForActivity(activity, filteredEquipment) {
+        const { checklistsHidden } = this.state;
+
         const { checklists: originalChecklists, signatures } = activity;
         const isDisabled = signatures && 
             ((signatures[SIGNATURE_TYPES.PERFORMER_1] && !signatures[SIGNATURE_TYPES.PERFORMER_1].viewAsPerformer)
             && (signatures[SIGNATURE_TYPES.PERFORMER_2] && !signatures[SIGNATURE_TYPES.PERFORMER_2].viewAsPerformer));
-        const checklists = filteredEquipment ?
-            originalChecklists.filter(checklist => checklist.equipmentCode === filteredEquipment)
-            : originalChecklists;
+
+        const checklists = originalChecklists
+            .filter(checklist => !filteredEquipment || checklist.equipmentCode === filteredEquipment)
+            .filter(({checkListCode}) => !checklistsHidden[checkListCode]);
+
+        if (checklists.length === 0) {
+            return <p style={{textAlign: 'center'}}>All checklists in this activity are hidden.</p>;
+        }
 
         const result = [];
 
@@ -498,12 +507,23 @@ class Checklists extends Component {
 
             if(!effectiveActivityCode && !effectiveEquipmentCode) {
                 const checklists = newState.activities.reduce((checklists, activity) => checklists.concat(activity.checklists), []);
-
-                this.collapseHeuristic(checklists, newState.activities);
+                this.collapse(checklists, newState.activities);
             }
 
             return newState;
         });
+    }
+
+    toggleFilledFilter = () => {
+        this.setState(prevState => ({
+            checklistsHidden: Object.keys(prevState.checklistsHidden).length > 0 ? {} : Object.fromEntries(prevState.activities
+                .map(activity => activity.checklists)
+                .flat(1)
+                .map(({checkListCode, result, finding, numericValue}) => [checkListCode, result || finding || numericValue]))
+        }), () => Object.keys(this.state.checklistsHidden).length === 0 && this.setNewFilter({
+            activity: {code: this.state.filteredActivity},
+            equipment: {code: this.state.filteredEquipment}
+        }));
     }
 
     /**s
@@ -556,7 +576,20 @@ class Checklists extends Component {
                     : (
                         <div style={divStyle}>
                             <BlockUi blocking={blocking}>
-                                {this.props.topSlot}
+                                <div style={{display: 'flex', justifyContent: 'start'}}>
+                                    <div style={{flexBasis: '75px'}}>
+                                        {this.props.topSlot}
+                                    </div>
+                                    {!blocking && <FormControlLabel
+                                        control={<Checkbox
+                                            color="primary"
+                                            checked={Object.keys(this.state.checklistsHidden).length > 0}
+                                            />}
+                                        label={'Hide filled items'}
+                                        onMouseDown={this.toggleFilledFilter}
+                                        onTouchStart={this.toggleFilledFilter}
+                                    />}
+                                </div>
                                 <div style={{paddingLeft: 25, paddingRight: 25}}>
                                     {activities.length > 1 && <EAMSelect
                                         children={null}

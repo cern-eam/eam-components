@@ -37,6 +37,10 @@ var _Paper = _interopRequireDefault(require("@material-ui/core/Paper"));
 
 var _Dialog = _interopRequireDefault(require("@material-ui/core/Dialog"));
 
+var _Checkbox = _interopRequireDefault(require("@material-ui/core/Checkbox"));
+
+var _FormControlLabel = _interopRequireDefault(require("@material-ui/core/FormControlLabel"));
+
 var _SIGNATURE_ORDER;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
@@ -165,6 +169,32 @@ var Checklists = /*#__PURE__*/function (_Component) {
     _classCallCheck(this, Checklists);
 
     _this = _super.call(this, props);
+
+    _this.collapse = function (checklists, activities) {
+      var maxExpandedChecklistItems = _this.props.maxExpandedChecklistItems;
+
+      var defaultCollapse = function defaultCollapse(checklists, activities) {
+        // if there are less than this.props.maxExpandedChecklistItems checklists, do not collapse anything
+        if (checklists.length < maxExpandedChecklistItems) return; // otherwise, collapse every activity and every equipment within each activity
+
+        activities.forEach(function (activity) {
+          if (!activity.forceActivityExpansion) {
+            activity.collapse();
+            Object.values(activity.equipments).forEach(function (equipment) {
+              return equipment.collapse();
+            });
+          }
+        });
+      };
+
+      var functionToRun = typeof _this.props.collapseHeuristic === "function" ? _this.props.collapseHeuristic : defaultCollapse;
+      var filteredChecklists = checklists.filter(function (_ref) {
+        var checkListCode = _ref.checkListCode;
+        return !_this.state.checklistsHidden[checkListCode];
+      });
+      functionToRun(filteredChecklists, activities);
+    };
+
     _this.expansionDetailsStyle = {
       marginRight: -24,
       marginLeft: -24,
@@ -294,39 +324,44 @@ var Checklists = /*#__PURE__*/function (_Component) {
       return true;
     };
 
+    _this.toggleFilledFilter = function () {
+      _this.setState(function (prevState) {
+        return {
+          checklistsHidden: Object.keys(prevState.checklistsHidden).length > 0 ? {} : Object.fromEntries(prevState.activities.map(function (activity) {
+            return activity.checklists;
+          }).flat(1).map(function (_ref2) {
+            var checkListCode = _ref2.checkListCode,
+                result = _ref2.result,
+                finding = _ref2.finding,
+                numericValue = _ref2.numericValue;
+            return [checkListCode, result || finding || numericValue];
+          }))
+        };
+      }, function () {
+        return Object.keys(_this.state.checklistsHidden).length === 0 && _this.setNewFilter({
+          activity: {
+            code: _this.state.filteredActivity
+          },
+          equipment: {
+            code: _this.state.filteredEquipment
+          }
+        });
+      });
+    };
+
     _this.state = {
       activities: [],
       blocking: true,
       createFollowUpActivity: null,
       filteredActivity: null,
       filteredEquipment: null,
-      signaturesCollapsed: {}
+      signaturesCollapsed: {},
+      checklistsHidden: {}
     };
-
-    _this.addCollapseHeuristic();
-
     return _this;
   }
 
   _createClass(Checklists, [{
-    key: "addCollapseHeuristic",
-    value: function addCollapseHeuristic() {
-      var maxExpandedChecklistItems = this.props.maxExpandedChecklistItems;
-      this.collapseHeuristic = typeof this.props.collapseHeuristic === "function" ? this.props.collapseHeuristic : function (checklists, activities) {
-        // if there are less than 100 checklists, do not collapse anything
-        if (checklists.length < maxExpandedChecklistItems) return; // otherwise, collapse every activity and every equipment within each activity
-
-        activities.forEach(function (activity) {
-          if (!activity.forceActivityExpansion) {
-            activity.collapse();
-            Object.values(activity.equipments).forEach(function (equipment) {
-              return equipment.collapse();
-            });
-          }
-        });
-      };
-    }
-  }, {
     key: "componentWillMount",
     value: function componentWillMount() {
       this.readActivities(this.props.workorder);
@@ -334,8 +369,6 @@ var Checklists = /*#__PURE__*/function (_Component) {
   }, {
     key: "componentWillReceiveProps",
     value: function componentWillReceiveProps(nextProps) {
-      this.addCollapseHeuristic();
-
       if (this.props.workorder !== nextProps.workorder) {
         this.readActivities(nextProps.workorder);
       }
@@ -352,7 +385,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
           return checklists.concat(activity.checklists);
         }, []);
 
-        _this2.collapseHeuristic(checklists, activities);
+        _this2.collapse(checklists, activities);
 
         _this2.setState({
           activities: activities,
@@ -446,12 +479,25 @@ var Checklists = /*#__PURE__*/function (_Component) {
   }, {
     key: "renderChecklistsForActivity",
     value: function renderChecklistsForActivity(activity, filteredEquipment) {
+      var checklistsHidden = this.state.checklistsHidden;
       var originalChecklists = activity.checklists,
           signatures = activity.signatures;
       var isDisabled = signatures && signatures[SIGNATURE_TYPES.PERFORMER_1] && !signatures[SIGNATURE_TYPES.PERFORMER_1].viewAsPerformer && signatures[SIGNATURE_TYPES.PERFORMER_2] && !signatures[SIGNATURE_TYPES.PERFORMER_2].viewAsPerformer;
-      var checklists = filteredEquipment ? originalChecklists.filter(function (checklist) {
-        return checklist.equipmentCode === filteredEquipment;
-      }) : originalChecklists;
+      var checklists = originalChecklists.filter(function (checklist) {
+        return !filteredEquipment || checklist.equipmentCode === filteredEquipment;
+      }).filter(function (_ref3) {
+        var checkListCode = _ref3.checkListCode;
+        return !checklistsHidden[checkListCode];
+      });
+
+      if (checklists.length === 0) {
+        return /*#__PURE__*/_react["default"].createElement("p", {
+          style: {
+            textAlign: 'center'
+          }
+        }, "All checklists in this activity are hidden.");
+      }
+
       var result = []; // this stores the index of the checklists that are related to a different equipment than the one before them
       // this includes the first checklist item since it has no equipment before it
 
@@ -675,20 +721,20 @@ var Checklists = /*#__PURE__*/function (_Component) {
             return checklists.concat(activity.checklists);
           }, []);
 
-          _this7.collapseHeuristic(checklists, newState.activities);
+          _this7.collapse(checklists, newState.activities);
         }
 
         return newState;
       });
     }
+  }, {
+    key: "render",
+
     /**s
      * Render the main checklists panel (only when there is at least one activity with checklist)
      *
      * @returns {*}
      */
-
-  }, {
-    key: "render",
     value: function render() {
       var _this8 = this;
 
@@ -748,7 +794,24 @@ var Checklists = /*#__PURE__*/function (_Component) {
         style: divStyle
       }, /*#__PURE__*/_react["default"].createElement(_reactBlockUi["default"], {
         blocking: blocking
-      }, this.props.topSlot, /*#__PURE__*/_react["default"].createElement("div", {
+      }, /*#__PURE__*/_react["default"].createElement("div", {
+        style: {
+          display: 'flex',
+          justifyContent: 'start'
+        }
+      }, /*#__PURE__*/_react["default"].createElement("div", {
+        style: {
+          flexBasis: '75px'
+        }
+      }, this.props.topSlot), !blocking && /*#__PURE__*/_react["default"].createElement(_FormControlLabel["default"], {
+        control: /*#__PURE__*/_react["default"].createElement(_Checkbox["default"], {
+          color: "primary",
+          checked: Object.keys(this.state.checklistsHidden).length > 0
+        }),
+        label: 'Hide filled items',
+        onMouseDown: this.toggleFilledFilter,
+        onTouchStart: this.toggleFilledFilter
+      })), /*#__PURE__*/_react["default"].createElement("div", {
         style: {
           paddingLeft: 25,
           paddingRight: 25
