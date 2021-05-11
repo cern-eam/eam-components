@@ -32,6 +32,13 @@ const processFilters = (filters) => {
     }).filter(filter => filter.fieldValue !== undefined || filter.fieldValue !== '' || ['IS EMPTY', 'NOT EMPTY'].includes(filter.operator));
 }
 
+const hasCustomFieldColumn = (columns) => {
+    return columns
+        .map(({id}) => id.toLowerCase())
+        .some(id => id.startsWith('c_')
+            && ['_evnt', '_obj', '_part'].some(ending => id.endsWith(ending)));
+}
+
 
 export const EAMGridContext = createContext();
 
@@ -188,7 +195,6 @@ export const EAMGridContextProvider = (props) => {
             setGridRequest({
                 ...gridRequest,
                 gridFilter: newGridFilters,
-                includeMetadata: false,
                 cursorPosition: 1,
             });
             onChangeFilters && onChangeFilters(newGridFilters);
@@ -203,7 +209,6 @@ export const EAMGridContextProvider = (props) => {
             const newGridRequest = {
                 ...gridRequest,
                 gridSort: newGridSort,
-                includeMetadata: false,
                 cursorPosition: 0,
             };
             setPageIndex(0);
@@ -222,7 +227,6 @@ export const EAMGridContextProvider = (props) => {
             const newGridRequest = {
                 ...gridRequest,
                 cursorPosition: newCursorPosition,
-                includeMetadata: false,
             };
             tableInstance.toggleAllRowsSelected(false);
             setGridRequest(newGridRequest);
@@ -240,7 +244,6 @@ export const EAMGridContextProvider = (props) => {
                 ...gridRequest,
                 cursorPosition: 0,
                 rowCount: perPage,
-                includeMetadata: false,
             };
             tableInstance.toggleAllRowsSelected(false);
             setGridRequest(newGridRequest);
@@ -281,6 +284,15 @@ export const EAMGridContextProvider = (props) => {
     useEffect(() => {
         onChangeSelectedRows && onChangeSelectedRows(selectedFlatRows);
     }, [selectedFlatRows, onChangeSelectedRows]);
+
+    useEffect(() => {
+        if (columns.length > 0 && !hasCustomFieldColumn(columns)) {
+            setGridRequest({
+                ...gridRequest,
+                includeMetadata: false
+            });
+        }
+    }, [columns]);
 
     const context = {
         columns,
