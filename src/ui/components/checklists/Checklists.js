@@ -12,7 +12,8 @@ import BlockUi from 'react-block-ui';
 import EAMSelect from '../inputs/EAMSelect'
 import SimpleEmptyState from '../../components/emptystates/SimpleEmptyState';
 import { withStyles } from '@material-ui/core/styles';
-import { Console } from 'mdi-material-ui';
+import Paper from '@material-ui/core/Paper';
+import Dialog from '@material-ui/core/Dialog';
 
 const SIGNATURE_TYPES = {
     PERFORMER_1: 'PB01',
@@ -91,6 +92,7 @@ class Checklists extends Component {
         this.state = {
             activities: [],
             blocking: true,
+            createFollowUpActivity: null,
             filteredActivity: null,
             filteredEquipment: null,
             signaturesCollapsed: {}
@@ -300,8 +302,8 @@ class Checklists extends Component {
         return result;
     }
 
-    createFollowUpWOs (evt, checklistActivity) {
-        evt.stopPropagation();
+    createFollowUpWOs = checklistActivity => {
+        this.hideCreateFollowUpWODialog();
         const activity = {
             workOrderNumber: checklistActivity.workOrderNumber,
             activityCode: checklistActivity.activityCode
@@ -317,6 +319,14 @@ class Checklists extends Component {
                 this.props.showError('Could not create follow-up workorders.')
             })
             ;
+    }
+
+    showCreateFollowUpWODialog = activity => {
+        this.setState({createFollowUpActivity: activity});
+    }
+
+    hideCreateFollowUpWODialog = () => {
+        this.setState({createFollowUpActivity: null});
     }
 
     setCollapsedActivity(collapsed, index) {
@@ -398,9 +408,13 @@ class Checklists extends Component {
                             <span style={{fontWeight: 500}}>{activity.activityCode} — {activity.activityNote}</span>
                             {activity.checklists.some(checklist => !checklist.hideFollowUp) && <Button 
                                 key={activity.activityCode + '$createfuwo'}
-                                onClick={ evt => this.createFollowUpWOs(evt, activity) } 
+                                onClick={evt => {
+                                    evt.stopPropagation();
+                                    this.showCreateFollowUpWODialog(activity)
+                                }} 
                                 color="primary" 
-                                style={{marginLeft: 'auto'}}>
+                                style={{marginLeft: 'auto'}}
+                                disabled={activity.checklists.every(checklist => typeof checklist.followUpWorkOrder === 'string' || checklist.followUp === false)}>
                                 Create Follow-up WO
                             </Button>}
                         </div>
@@ -517,6 +531,25 @@ class Checklists extends Component {
         }
 
         const isEmptyState = filteredActivities.length === 0;
+
+        const activity = this.state.createFollowUpActivity;
+        const dialog = activity &&
+            <Paper elevation={3} style={{
+                padding: '30px',
+                textAlign: 'center',
+            }}>
+                <div style={{fontSize:'25px', marginBottom: '15px'}}>Create follow-up work orders?</div>
+                <p>Activity {activity.activityCode} — {activity.activityNote}</p>
+                <div> 
+                    {<Button type= 'submit' onClick={this.hideCreateFollowUpWODialog}>
+                        Cancel
+                    </Button>}
+                    {<Button onClick={() => this.createFollowUpWOs(this.state.createFollowUpActivity)} color='primary'> 
+                        Confirm
+                    </Button>}
+                </div>
+            </Paper>;
+
         return (
                 !blocking && isEmptyState 
                     ? <SimpleEmptyState message="No Checklists to show."/>
@@ -550,6 +583,7 @@ class Checklists extends Component {
                                 {this.renderActivities(filteredActivity, filteredEquipment)}
                                 {this.props.bottomSlot}
                             </BlockUi>
+                            <Dialog open={this.state.createFollowUpActivity !== null}>{dialog}</Dialog> 
                         </div>
                     )
                 
