@@ -46,6 +46,7 @@ var EAMTableGridRequestAdapter = function EAMTableGridRequestAdapter(props) {
         }
       }, null, null, null, Promise);
     },
+    gridRequest: gridRequest,
     convertRowData: convertRowData,
     convertColumnMetadata: convertColumnMetadata
   }, function (context) {
