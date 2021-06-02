@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { BrowserMultiFormatReader } from '@zxing/library';
+import { BrowserMultiFormatReader, DecodeHintType } from '@zxing/library';
 import IconButton from '@material-ui/core/IconButton';
 import {BarcodeScan} from 'mdi-material-ui';
 import Button from '@material-ui/core/Button';
@@ -12,7 +12,7 @@ class EAMBarcodeInput extends Component {
     codeReader = null;
 
     state = {
-        open: false,
+        open: true,
         showBarcodeButton: false
     };
 
@@ -26,7 +26,10 @@ class EAMBarcodeInput extends Component {
     };
 
     startScanner(onDetectedCallback, handleClose) {
-        this.codeReader = new BrowserMultiFormatReader();
+        const hints = new Map();
+        hints.set(DecodeHintType.TRY_HARDER, true);
+        this.codeReader = new BrowserMultiFormatReader(hints);
+        // this.codeReader.setHints(hints);
         this.codeReader
             .listVideoInputDevices()
             .then(videoInputDevices => this.startDecoding(videoInputDevices[0].deviceId))

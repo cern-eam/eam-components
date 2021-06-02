@@ -66,7 +66,7 @@ var EAMBarcodeInput = /*#__PURE__*/function (_Component) {
     _this = _super.call.apply(_super, [this].concat(args));
     _this.codeReader = null;
     _this.state = {
-      open: false,
+      open: true,
       showBarcodeButton: false
     };
 
@@ -112,7 +112,10 @@ var EAMBarcodeInput = /*#__PURE__*/function (_Component) {
     value: function startScanner(onDetectedCallback, handleClose) {
       var _this2 = this;
 
-      this.codeReader = new _library.BrowserMultiFormatReader();
+      var hints = new Map();
+      hints.set(_library.DecodeHintType.TRY_HARDER, true);
+      this.codeReader = new _library.BrowserMultiFormatReader(hints); // this.codeReader.setHints(hints);
+
       this.codeReader.listVideoInputDevices().then(function (videoInputDevices) {
         return _this2.startDecoding(videoInputDevices[0].deviceId);
       })["catch"](function (err) {
