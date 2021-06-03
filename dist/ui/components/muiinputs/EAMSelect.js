@@ -188,7 +188,7 @@ var EAMSelect = /*#__PURE__*/function (_EAMBaseInput) {
 
     _this.init = function (props) {
       var value = props.value || '';
-      var values = props.values || [];
+      var values = props.values;
 
       var valueFound = _this.findValueInValues(value, values);
 
@@ -206,7 +206,8 @@ var EAMSelect = /*#__PURE__*/function (_EAMBaseInput) {
       }
     };
 
-    _this.findValueInValues = function (value, values) {
+    _this.findValueInValues = function (value) {
+      var values = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
       var processedValue = value.trim();
       return values.find(function (v) {
         return v.code.toUpperCase() === processedValue.toUpperCase() || v.desc && v.desc.toUpperCase() === processedValue.toUpperCase();

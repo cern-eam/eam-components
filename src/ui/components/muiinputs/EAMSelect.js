@@ -106,7 +106,7 @@ class EAMSelect extends EAMBaseInput {
 
     init = props => {
         const value = props.value || ''
-        const values = props.values || []
+        const values = props.values
         const valueFound = this.findValueInValues(value, values)
         this.setValue({
             code: valueFound && valueFound.code || value,
@@ -123,7 +123,7 @@ class EAMSelect extends EAMBaseInput {
         }
     }
 
-    findValueInValues = (value, values) => {
+    findValueInValues = (value, values = []) => {
         const processedValue = value.trim()
         return values.find(v => (
             v.code.toUpperCase() === processedValue.toUpperCase() ||
