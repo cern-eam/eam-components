@@ -111,7 +111,12 @@ var EAMBaseInput = /*#__PURE__*/function (_Component) {
           transformers = props.transformers;
 
       if (children && elementInfo) {
-        children[elementInfo.xpath] = _assertThisInitialized(_this);
+        var key = typeof elementInfo.xpath === 'string' ? elementInfo.xpath : elementInfo.text + elementInfo.elementId;
+        children[key] = _assertThisInitialized(_this);
+
+        _this.setState({
+          key: key
+        });
       } // Set the validators
 
 

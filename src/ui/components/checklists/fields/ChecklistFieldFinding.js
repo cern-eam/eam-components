@@ -35,7 +35,8 @@ const ChecklistFieldFinding = props => {
                 <Select classes={{root: classes.selectRoot, select: classes.select, icon: classes.icon}}
                         disableUnderline={true}
                         value={finding || ''}
-                        onChange={event => handleChange(event.target.value)}>
+                        onChange={event => handleChange(event.target.value)}
+                        disabled={disabled}>
                     <MenuItem value={null}>&#8203;</MenuItem>
                     {possibleFindings.map(finding => (
                         <MenuItem key={finding.code} value={finding.code}>{finding.desc}</MenuItem>

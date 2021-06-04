@@ -48,7 +48,11 @@ export default class EAMBaseInput extends Component {
         // Register as children
         let { children, elementInfo, customValidators, valueKey, transformers } = props;
         if (children && elementInfo) {
-            children[elementInfo.xpath] = this;
+            const key = typeof elementInfo.xpath === 'string'
+                ? elementInfo.xpath
+                : elementInfo.text + elementInfo.elementId;
+            children[key] = this;
+            this.setState({key});
         }
         
         // Set the validators

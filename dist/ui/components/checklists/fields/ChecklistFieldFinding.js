@@ -62,7 +62,8 @@ var ChecklistFieldFinding = function ChecklistFieldFinding(props) {
     value: finding || '',
     onChange: function onChange(event) {
       return _handleChange(event.target.value);
-    }
+    },
+    disabled: disabled
   }, /*#__PURE__*/_react["default"].createElement(_MenuItem["default"], {
     value: null
   }, "\u200B"), possibleFindings.map(function (finding) {

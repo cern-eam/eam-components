@@ -81,6 +81,7 @@ const ChecklistFieldNumeric = props => {
                 disabled={disabled}
                 onChange={event => setInputValue(event.target.value)}
                 value={inputValue}
+                disabled={disabled}
                 onBlur={() => {
                     if (!changed) {
                         return;

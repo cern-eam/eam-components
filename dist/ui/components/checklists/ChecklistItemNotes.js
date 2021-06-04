@@ -125,7 +125,8 @@ var ChecklistItemNotes = /*#__PURE__*/function (_Component) {
         onChange: this.handleChange,
         value: this.state.value || '',
         onBlur: this.handleBlur,
-        ref: this.input
+        ref: this.input,
+        disabled: this.props.disabled
       }), /*#__PURE__*/_react["default"].createElement(_Comment["default"], {
         style: this.commentIconStyle
       }));

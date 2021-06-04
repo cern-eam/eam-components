@@ -73,6 +73,7 @@ export default class ChecklistItemNotes extends Component {
                     value={this.state.value || ''}
                     onBlur={this.handleBlur}
                     ref={this.input}
+                    disabled={this.props.disabled}
                 />
                 <CommentIcon style={this.commentIconStyle}/>
             </div>

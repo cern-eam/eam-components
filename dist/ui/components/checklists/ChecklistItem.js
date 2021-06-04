@@ -458,13 +458,15 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
         checklistItem: checklistItem,
         onChange: function onChange(value) {
           return _this5.onChange(value);
-        }
+        },
+        disabled: this.props.disabled
       }), !checklistItem.hideFollowUp && /*#__PURE__*/_react["default"].createElement(_ChecklistItemFollowUp["default"], {
         checklistItem: checklistItem,
         onChange: function onChange(value) {
           return _this5.onChange(value);
         },
-        getWoLink: this.props.getWoLink
+        getWoLink: this.props.getWoLink,
+        disabled: this.props.disabled
       })), Array.isArray(notApplicableOptions) && notApplicableOptions.length > 0 && /*#__PURE__*/_react["default"].createElement("div", {
         style: this.checklistNotApplicableStyle
       }, /*#__PURE__*/_react["default"].createElement(_ChecklistItemNotApplicableOptions["default"], {
@@ -472,7 +474,8 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
         notApplicableOptions: notApplicableOptions,
         onChange: function onChange(value) {
           return _this5.onChange(value);
-        }
+        },
+        disabled: this.props.disabled
       })))));
     }
   }]);

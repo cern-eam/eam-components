@@ -101,13 +101,13 @@ var ChecklistItemFollowUp = /*#__PURE__*/function (_Component) {
         }, /*#__PURE__*/_react["default"].createElement(_reactRouterDom.Link, {
           to: getWoLink(checklistItem.followUpWorkOrder),
           target: "_blank"
-        }, checklistItem.followUpWorkOrder)) : /*#__PURE__*/_react["default"].createElement(_Checkbox["default"], {
+        }, checklistItem.followUpWorkOrder)) : /*#__PURE__*/_react["default"].createElement(_Checkbox["default"], _defineProperty({
           color: "primary",
           checked: checklistItem.followUp === '+' || checklistItem.followUp === true,
           disabled: Boolean(checklistItem.followUpWorkOrder),
           onMouseDown: this.handleChange,
           onTouchStart: this.handleChange
-        }),
+        }, "disabled", this.props.disabled)),
         labelPlacement: "start",
         label: "Follow-up"
       })));

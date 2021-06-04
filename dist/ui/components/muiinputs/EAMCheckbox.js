@@ -87,7 +87,7 @@ var EAMCheckbox = /*#__PURE__*/function (_EAMBaseInput) {
           checked: this.state.value,
           value: this.props.value || '',
           onChange: this.handleChange,
-          disabled: elementInfo && elementInfo.readonly
+          disabled: this.state.disabled || elementInfo && elementInfo.readonly
         })
       }));
     }
