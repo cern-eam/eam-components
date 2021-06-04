@@ -123,9 +123,9 @@ class EAMSelect extends EAMBaseInput {
         }
     }
 
-    findValueInValues = (value, values = []) => {
+    findValueInValues = (value, values) => {
         const processedValue = value.trim()
-        return values.find(v => (
+        return (values || []).find(v => (
             v.code.toUpperCase() === processedValue.toUpperCase() ||
             v.desc && v.desc.toUpperCase() === processedValue.toUpperCase()))
     }
