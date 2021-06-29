@@ -56,7 +56,7 @@ var textStyle = {
 };
 var signatureTypes = {
   'PB01': 'Performer',
-  'PB02': 'Performer (Optional)',
+  'PB02': 'Performer 2 (Optional)',
   'RB01': 'Reviewer'
 };
 
