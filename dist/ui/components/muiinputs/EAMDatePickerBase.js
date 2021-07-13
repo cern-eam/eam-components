@@ -53,10 +53,10 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var DefaultEndAdornment = function DefaultEndAdornment() {
+var DefaultEndAdornment = function DefaultEndAdornment(props) {
   return /*#__PURE__*/_react["default"].createElement(_core.InputAdornment, {
     position: "end"
-  }, /*#__PURE__*/_react["default"].createElement(_core.IconButton, {
+  }, props.endAdornment ? props.endAdornment : '', /*#__PURE__*/_react["default"].createElement(_core.IconButton, {
     size: "small"
   }, /*#__PURE__*/_react["default"].createElement(_Event["default"], null)));
 };
@@ -147,16 +147,22 @@ var EAMDatePicker = /*#__PURE__*/function (_EAMBaseInput) {
   }, {
     key: "renderComponent",
     value: function renderComponent() {
-      var showTime = this.props.showTime;
+      var _this$props = this.props,
+          showTime = _this$props.showTime,
+          endAdornment = _this$props.endAdornment;
       var pickerProps = this.getPickerProps(this.state, this.props);
       return showTime ? /*#__PURE__*/_react["default"].createElement(_pickers.DateTimePicker, _extends({}, pickerProps, {
         ampm: false,
         InputProps: {
-          endAdornment: /*#__PURE__*/_react["default"].createElement(DefaultEndAdornment, null)
+          endAdornment: /*#__PURE__*/_react["default"].createElement(DefaultEndAdornment, {
+            endAdornment: endAdornment
+          })
         }
       })) : /*#__PURE__*/_react["default"].createElement(_pickers.DatePicker, _extends({}, pickerProps, {
         InputProps: {
-          endAdornment: /*#__PURE__*/_react["default"].createElement(DefaultEndAdornment, null)
+          endAdornment: /*#__PURE__*/_react["default"].createElement(DefaultEndAdornment, {
+            endAdornment: endAdornment
+          })
         }
       }));
     }
