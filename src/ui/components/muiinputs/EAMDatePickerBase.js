@@ -10,8 +10,9 @@ import EAMTextField from './EAMTextField';
 import EventIcon from '@material-ui/icons/Event';
 import { InputAdornment, IconButton } from "@material-ui/core";
 
-const DefaultEndAdornment = () => (
+const DefaultEndAdornment = props => (
     <InputAdornment position="end">
+      {props.endAdornment ? props.endAdornment : ''}
       <IconButton size="small">
         <EventIcon />
       </IconButton>
@@ -79,7 +80,7 @@ export default class EAMDatePicker extends EAMBaseInput {
     }
 
     renderComponent () {
-        const { showTime } = this.props;
+        const { showTime, endAdornment } = this.props;
 
         const pickerProps = this.getPickerProps(this.state, this.props);
         
@@ -88,14 +89,14 @@ export default class EAMDatePicker extends EAMBaseInput {
                 {...pickerProps}
                 ampm={false}
                 InputProps={{
-                    endAdornment: <DefaultEndAdornment/>
+                    endAdornment: <DefaultEndAdornment endAdornment={endAdornment} />
                 }}
 
             />
             : <DatePicker
                 {...pickerProps}
                 InputProps={{
-                    endAdornment: <DefaultEndAdornment/>
+                    endAdornment: <DefaultEndAdornment endAdornment={endAdornment} />
                 }}
             />
         )
