@@ -1,20 +1,26 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { BrowserMultiFormatReader } from '@zxing/library';
 import IconButton from '@material-ui/core/IconButton';
-import {BarcodeScan} from 'mdi-material-ui';
+import { BarcodeScan } from 'mdi-material-ui';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 
 class EAMBarcodeInput extends Component {
-
     codeReader = null;
 
     state = {
         open: false,
-        showBarcodeButton: false
+        showBarcodeButton: false,
     };
+
+    async componentDidMount() {
+        const deviceCount = await navigator.mediaDevices.enumerateDevices();
+        if (deviceCount.length > 0 && navigator && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            this.setState({ showBarcodeButton: true });
+        }
+    }
 
     handleClickOpen = () => {
         this.setState({ open: true });
@@ -25,25 +31,24 @@ class EAMBarcodeInput extends Component {
         this.codeReader.reset();
     };
 
-    startScanner(onDetectedCallback, handleClose) {
+    startScanner() {
         this.codeReader = new BrowserMultiFormatReader();
         this.codeReader
             .listVideoInputDevices()
-            .then(videoInputDevices => this.startDecoding(videoInputDevices[0].deviceId))
-            .catch(err => console.error(err));
+            .then((videoInputDevices) => this.startDecoding(videoInputDevices[0].deviceId))
+            .catch((err) => console.error(err));
     }
 
-    startDecoding = (deviceId) => {
+    startDecoding = () => {
         this.codeReader
             .decodeFromInputVideoDevice(undefined, 'video')
-            .then(result => {
+            .then((result) => {
                 this.onDetectedCallback(result.text);
                 this.codeReader.reset();
                 this.handleClose();
             })
-            .catch(err => console.error(err));
-    }
-
+            .catch((err) => console.error(err));
+    };
 
     onChangeHandler = (value) => {
         this.props.updateProperty(this.props.valueKey, value);
@@ -53,61 +58,47 @@ class EAMBarcodeInput extends Component {
     };
 
     onDetectedCallback(result) {
-        this.props.updateProperty(result)
-        this.setState({open: false})
+        this.props.updateProperty(result);
+        this.setState({ open: false });
     }
 
-
     render() {
-        let userMediaSupported = false
-
-        if(navigator && navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
-            userMediaSupported = true
-        }
-
-        let style = {
-            maxWidth		: "320px",
-            maxHeight		: "320px",
-            stretchOnPhone	: true
-        }
-
         let iconButtonStyle = {
-            position: "absolute",
+            position: 'absolute',
             top: this.props.top || 30,
             right: this.props.right || -2,
-            backgroundColor: "white",
+            backgroundColor: 'white',
             width: 32,
             height: 32,
             zIndex: 100,
-            padding: 0
-        }
+            padding: 0,
+        };
 
         // Display just the children when no support for user media
-        if (!userMediaSupported) {
-            return (
-                <div style={{position: "relative"}}>
-                    {this.props.children}
-                </div>
-            )
+        if (!this.state.showBarcodeButton) {
+            return <div style={{ position: 'relative' }}>{this.props.children}</div>;
         }
 
         // Active quagga when support for user media
         return (
-            <div style={{position: "relative"}}>
+            <div style={{ position: 'relative' }}>
                 {this.props.children}
 
                 <IconButton style={iconButtonStyle} onClick={this.handleClickOpen.bind(this)}>
-                    <BarcodeScan/>
+                    <BarcodeScan />
                 </IconButton>
 
                 <Dialog
-                    onEntered={() => this.startScanner(this.onDetectedCallback.bind(this), this.handleClose.bind(this))}
+                    TransitionProps={{
+                        onEntered: () =>
+                            this.startScanner(this.onDetectedCallback.bind(this), this.handleClose.bind(this)),
+                    }}
                     open={this.state.open}
                     onClose={this.handleClose}
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"
                 >
-                    <DialogContent style={{maxWidth: 320, maxHeight: 320}}>
+                    <DialogContent style={{ maxWidth: 320, maxHeight: 320 }}>
                         <video id="video" width="200" height="200"></video>
                     </DialogContent>
                     <DialogActions>
@@ -116,10 +107,9 @@ class EAMBarcodeInput extends Component {
                         </Button>
                     </DialogActions>
                 </Dialog>
-
             </div>
-        )
+        );
     }
 }
 
-export default EAMBarcodeInput
+export default EAMBarcodeInput;

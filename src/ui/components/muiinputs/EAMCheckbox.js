@@ -1,7 +1,7 @@
 import React from 'react';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import EAMBaseInput from "./EAMBaseInput";
+import EAMBaseInput from './EAMBaseInput';
 
 const checkBoxStyle = {
     width: '50%',
@@ -9,20 +9,19 @@ const checkBoxStyle = {
     float: 'left',
     boxSizing: 'border-box',
     display: 'block',
-}
+};
 
 class EAMCheckbox extends EAMBaseInput {
-
     init = (props) => {
         const checkedTextValue = props.value || '';
-        this.setValue(checkedTextValue.toLowerCase() === true.toString(), false)
-    }
+        this.setValue(checkedTextValue.toLowerCase() === true.toString(), false);
+    };
 
     handleChange = (event, checked) => {
-        this.onChangeHandler(checked.toString())
-    }
+        this.onChangeHandler(checked.toString());
+    };
 
-    renderComponent () {
+    renderComponent() {
         const { elementInfo } = this.props;
         return (
             <div style={checkBoxStyle}>
@@ -31,7 +30,7 @@ class EAMCheckbox extends EAMBaseInput {
                     control={
                         <Checkbox
                             color="primary"
-                            checked={this.state.value}
+                            checked={!!this.state.value}
                             value={this.props.value || ''}
                             onChange={this.handleChange}
                             disabled={this.state.disabled || (elementInfo && elementInfo.readonly)}
