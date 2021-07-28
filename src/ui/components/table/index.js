@@ -237,75 +237,73 @@ class EISTable extends Component {
                     })}
                 </Table>
             );
-        } else {
-            return (
-                <React.Fragment>
-                    <Table className="responsiveTable" style={{ overflow: 'visible' }}>
-                        <TableHead>
-                            <TableRow key={'key'}>
-                                {headers.map((header, index) => (
-                                    <TableCell key={header} sortDirection={orderBy === index ? order : false}>
-                                        <Tooltip title="Sort" placement={'bottom-end'} enterDelay={300}>
-                                            <TableSortLabel
-                                                active={orderBy === index}
-                                                direction={order}
-                                                onClick={this.createSortHandler(index)}
-                                            >
-                                                {header}
-                                            </TableSortLabel>
-                                        </Tooltip>
-                                    </TableCell>
-                                ))}
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {tableData.map((content, index) => {
-                                let style = {};
-
-                                if (selectedRowIndexes && selectedRowIndexes.includes(index)) {
-                                    style = {
-                                        ...style,
-                                        backgroundColor: '#2196f3',
-                                    };
-                                }
-
-                                if (rowsSelectable) {
-                                    style = {
-                                        ...style,
-                                        cursor: 'pointer',
-                                    };
-                                }
-
-                                if (stylesMap) {
-                                    Object.keys(stylesMap).forEach((key) => {
-                                        if (content[key]) {
-                                            style = {
-                                                ...style,
-                                                ...stylesMap[key],
-                                            };
-                                        }
-                                    });
-                                }
-
-                                return (
-                                    <TableRow
-                                        key={index}
-                                        style={style}
-                                        onClick={rowsSelectable ? () => onRowClick(content, index) : () => {}}
-                                    >
-                                        {propCodes.map((propCode) => (
-                                            <TableCell key={propCode}>
-                                                {this.renderContent(propCode, content)}
-                                            </TableCell>
-                                        ))}
-                                    </TableRow>
-                                );
-                            })}
-                        </TableBody>
-                    </Table>
-                </React.Fragment>
-            );
         }
+
+        return (
+            <React.Fragment>
+                <Table className="responsiveTable" style={{ overflow: 'visible' }}>
+                    <TableHead>
+                        <TableRow key={'key'}>
+                            {headers.map((header, index) => (
+                                <TableCell key={header} sortDirection={orderBy === index ? order : false}>
+                                    <Tooltip title="Sort" placement={'bottom-end'} enterDelay={300}>
+                                        <TableSortLabel
+                                            active={orderBy === index}
+                                            direction={order}
+                                            onClick={this.createSortHandler(index)}
+                                        >
+                                            {header}
+                                        </TableSortLabel>
+                                    </Tooltip>
+                                </TableCell>
+                            ))}
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {tableData.map((content, index) => {
+                            let style = {};
+
+                            if (selectedRowIndexes && selectedRowIndexes.includes(index)) {
+                                style = {
+                                    ...style,
+                                    backgroundColor: '#2196f3',
+                                };
+                            }
+
+                            if (rowsSelectable) {
+                                style = {
+                                    ...style,
+                                    cursor: 'pointer',
+                                };
+                            }
+
+                            if (stylesMap) {
+                                Object.keys(stylesMap).forEach((key) => {
+                                    if (content[key]) {
+                                        style = {
+                                            ...style,
+                                            ...stylesMap[key],
+                                        };
+                                    }
+                                });
+                            }
+
+                            return (
+                                <TableRow
+                                    key={index}
+                                    style={style}
+                                    onClick={rowsSelectable ? () => onRowClick(content, index) : () => {}}
+                                >
+                                    {propCodes.map((propCode) => (
+                                        <TableCell key={propCode}>{this.renderContent(propCode, content)}</TableCell>
+                                    ))}
+                                </TableRow>
+                            );
+                        })}
+                    </TableBody>
+                </Table>
+            </React.Fragment>
+        );
     }
 }
 
