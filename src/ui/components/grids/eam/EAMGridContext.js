@@ -288,7 +288,7 @@ export const EAMGridContextProvider = (props) => {
 
     useEffect(() => {
         if (onChangeSelectedRows) {
-            selectedFlatRows.forEach((row) => prepareRow(row));
+            selectedFlatRows.forEach(prepareRow);
             onChangeSelectedRows(selectedFlatRows);
         }
     }, [selectedFlatRows, onChangeSelectedRows]);
