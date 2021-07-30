@@ -9,11 +9,11 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _ExpandMore = _interopRequireDefault(require("@material-ui/icons/ExpandMore"));
 
-var _ExpansionPanel = _interopRequireDefault(require("@material-ui/core/ExpansionPanel"));
+var _Accordion = _interopRequireDefault(require("@material-ui/core/Accordion"));
 
-var _ExpansionPanelDetails = _interopRequireDefault(require("@material-ui/core/ExpansionPanelDetails"));
+var _AccordionDetails = _interopRequireDefault(require("@material-ui/core/AccordionDetails"));
 
-var _ExpansionPanelSummary = _interopRequireDefault(require("@material-ui/core/ExpansionPanelSummary"));
+var _AccordionSummary = _interopRequireDefault(require("@material-ui/core/AccordionSummary"));
 
 var _Icon = _interopRequireDefault(require("@material-ui/core/Icon"));
 
@@ -80,8 +80,8 @@ var EISPanel = /*#__PURE__*/function (_Component) {
       panelExpanded: true
     };
     _this.headingStyle = {
-      display: "flex",
-      alignItems: "center",
+      display: 'flex',
+      alignItems: 'center',
       fontWeight: 500
     };
     _this.headingIconStyle = {
@@ -89,13 +89,13 @@ var EISPanel = /*#__PURE__*/function (_Component) {
       marginRight: 7
     };
     _this.summaryStyle = {
-      backgroundColor: "#fafafa",
-      borderBottom: "1px solid #EEEEEE",
+      backgroundColor: '#fafafa',
+      borderBottom: '1px solid #EEEEEE',
       minHeight: '45px',
       height: '45px'
     };
     _this.linkIconStyle = {
-      color: "#00aaff"
+      color: '#00aaff'
     };
 
     _this._onPanelChange = function (object, expanded) {
@@ -126,30 +126,30 @@ var EISPanel = /*#__PURE__*/function (_Component) {
     key: "render",
     value: function render() {
       var linkIcon = this.props.icon;
-      return /*#__PURE__*/_react["default"].createElement(_ExpansionPanel["default"], _extends({
+      return /*#__PURE__*/_react["default"].createElement(_Accordion["default"], _extends({
         defaultExpanded: true,
         expanded: this.props.alwaysExpanded ? true : this.state.panelExpanded,
         TransitionProps: {
           timeout: 300
         },
         onChange: this._onPanelChange
-      }, this.props.ExpansionPanelProps), /*#__PURE__*/_react["default"].createElement(_ExpansionPanelSummary["default"], {
+      }, this.props.ExpansionPanelProps), /*#__PURE__*/_react["default"].createElement(_AccordionSummary["default"], {
         expandIcon: this.props.alwaysExpanded ? undefined : /*#__PURE__*/_react["default"].createElement(_ExpandMore["default"], null),
         style: this.summaryStyle
       }, /*#__PURE__*/_react["default"].createElement("div", {
         style: this.headingStyle
       }, this.props.headingIcon && /*#__PURE__*/_react["default"].createElement(_Icon["default"], {
         style: this.headingIconStyle,
-        className: "fa " + this.props.headingIcon
+        className: 'fa ' + this.props.headingIcon
       }), /*#__PURE__*/_react["default"].createElement("div", null, this.props.heading), this.props.link && /*#__PURE__*/_react["default"].createElement(_IconButton["default"], {
         onClick: this.linkClickHandler.bind(this),
         style: {
-          height: "auto",
+          height: 'auto',
           width: 35
         }
       }, /*#__PURE__*/_react["default"].createElement("linkIcon", {
         style: this.linkIconStyle
-      })), this.props.headingBar)), /*#__PURE__*/_react["default"].createElement(_ExpansionPanelDetails["default"], {
+      })), this.props.headingBar)), /*#__PURE__*/_react["default"].createElement(_AccordionDetails["default"], {
         style: _objectSpread({}, this.props.detailsStyle)
       }, this.props.children));
     }
@@ -158,7 +158,7 @@ var EISPanel = /*#__PURE__*/function (_Component) {
     value: function getDerivedStateFromProps(nextProps, prevState) {
       // if panelExpanded is passed as prop and is different from the current
       // state.panelExpanded then we update the state
-      if (typeof nextProps.panelExpanded !== "undefined" && nextProps.panelExpanded !== prevState.panelExpanded) {
+      if (typeof nextProps.panelExpanded !== 'undefined' && nextProps.panelExpanded !== prevState.panelExpanded) {
         return {
           panelExpanded: nextProps.panelExpanded
         };

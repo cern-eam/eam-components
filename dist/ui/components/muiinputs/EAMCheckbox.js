@@ -84,7 +84,7 @@ var EAMCheckbox = /*#__PURE__*/function (_EAMBaseInput) {
         label: elementInfo && elementInfo.text,
         control: /*#__PURE__*/_react["default"].createElement(_Checkbox["default"], {
           color: "primary",
-          checked: this.state.value,
+          checked: !!this.state.value,
           value: this.props.value || '',
           onChange: this.handleChange,
           disabled: this.state.disabled || elementInfo && elementInfo.readonly

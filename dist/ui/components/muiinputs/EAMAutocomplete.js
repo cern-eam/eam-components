@@ -60,8 +60,8 @@ function _objectWithoutProperties(source, excluded) { if (source == null) return
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
 function getTextWidth(text) {
-  var canvas = document.createElement("canvas");
-  var context = canvas.getContext("2d");
+  var canvas = document.createElement('canvas');
+  var context = canvas.getContext('2d');
   context.font = '16px Roboto';
   var metrics = context.measureText(text);
   return metrics.width;
@@ -79,24 +79,25 @@ function renderDefaultInput(inputProps) {
       required = inputProps.required,
       other = _objectWithoutProperties(inputProps, ["classes", "autoFocus", "value", "label", "disabled", "endAdornment", "error", "helperText", "required"]);
 
+  console.log(inputProps);
   var inputAdornmentStyle = {
     top: 2,
     height: 20,
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
     left: 5 + getTextWidth(value),
-    position: "absolute",
-    pointerEvents: "none",
+    position: 'absolute',
+    pointerEvents: 'none',
     fontSize: 16,
-    color: "#9E9E9E"
+    color: '#9E9E9E'
   };
   return /*#__PURE__*/_react["default"].createElement(_EAMTextField["default"], {
     required: required,
     error: error,
     helperText: helperText,
     style: {
-      overflow: "hidden"
+      overflow: 'hidden'
     },
     disabled: disabled,
     label: label,

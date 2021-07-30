@@ -79,17 +79,17 @@ var EAMBaseInput = /*#__PURE__*/function (_Component) {
 
     _this = _super.call.apply(_super, [this].concat(args));
     _this.linkButtonStyle = {
-      position: "absolute",
+      position: 'absolute',
       top: 20,
       right: -2,
-      backgroundColor: "white",
+      backgroundColor: 'white',
       width: 32,
       height: 32,
       zIndex: 100,
       padding: 0
     };
     _this.mainDivStyle = {
-      position: "relative"
+      position: 'relative'
     };
     _this.state = {
       error: false,
@@ -134,7 +134,7 @@ var EAMBaseInput = /*#__PURE__*/function (_Component) {
         if (elementInfo.fieldType === 'number') {
           myValidators.push(_this.isNumber(label));
         }
-      } // Set the transformers        
+      } // Set the transformers
 
 
       if (_this.isUpperCase()) {
@@ -288,12 +288,15 @@ var EAMBaseInput = /*#__PURE__*/function (_Component) {
       var eamLink = null;
 
       if (this.props.link && this.props.link(this.state.value)) {
-        if (this.props.link().startsWith("http")) {
+        console.log('Input has a link prop');
+
+        if (this.props.link().startsWith('http')) {
           eamLink = _react["default"].forwardRef(function (props, ref) {
             return /*#__PURE__*/_react["default"].createElement("a", _extends({
               href: _this2.props.link(_this2.state.value)
             }, props, {
-              target: "_blank"
+              target: "_blank",
+              rel: "noopener noreferrer"
             }));
           });
         } else {
