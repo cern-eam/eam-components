@@ -123,6 +123,7 @@ export const EAMGridContextProvider = (props) => {
     const {
         state: { sortBy, filters },
         selectedFlatRows,
+        prepareRow,
     } = tableInstance;
 
     const toggleFilters = useCallback(() => setDisableFilters(!disableFilters), [disableFilters, setDisableFilters]);
