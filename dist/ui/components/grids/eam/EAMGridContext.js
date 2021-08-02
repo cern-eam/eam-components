@@ -209,7 +209,8 @@ var EAMGridContextProvider = function EAMGridContextProvider(props) {
   var _tableInstance$state = tableInstance.state,
       sortBy = _tableInstance$state.sortBy,
       filters = _tableInstance$state.filters,
-      selectedFlatRows = tableInstance.selectedFlatRows;
+      selectedFlatRows = tableInstance.selectedFlatRows,
+      prepareRow = tableInstance.prepareRow;
   var toggleFilters = (0, _react.useCallback)(function () {
     return setDisableFilters(!disableFilters);
   }, [disableFilters, setDisableFilters]);
@@ -360,9 +361,7 @@ var EAMGridContextProvider = function EAMGridContextProvider(props) {
   }, [resetFilters, tableInstance]);
   (0, _react.useEffect)(function () {
     if (onChangeSelectedRows) {
-      selectedFlatRows.forEach(function (row) {
-        return prepareRow(row);
-      });
+      selectedFlatRows.forEach(prepareRow);
       onChangeSelectedRows(selectedFlatRows);
     }
   }, [selectedFlatRows, onChangeSelectedRows]);
