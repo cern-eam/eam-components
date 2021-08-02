@@ -360,9 +360,7 @@ var EAMGridContextProvider = function EAMGridContextProvider(props) {
   }, [resetFilters, tableInstance]);
   (0, _react.useEffect)(function () {
     if (onChangeSelectedRows) {
-      selectedFlatRows.forEach(function (row) {
-        return prepareRow(row);
-      });
+      selectedFlatRows.forEach(prepareRow);
       onChangeSelectedRows(selectedFlatRows);
     }
   }, [selectedFlatRows, onChangeSelectedRows]);
