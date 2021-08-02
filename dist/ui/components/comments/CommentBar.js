@@ -82,7 +82,7 @@ var CommentBar = /*#__PURE__*/function (_Component) {
       var comment = _this.props.comment; //Set the closing
 
       if (_this.state.isClosing) {
-        comment.typeCode = "+";
+        comment.typeCode = '+';
       } //Update the closing
 
 
@@ -109,7 +109,7 @@ var CommentBar = /*#__PURE__*/function (_Component) {
         return /*#__PURE__*/_react["default"].createElement("div", {
           className: "commentBarContainer"
         }, /*#__PURE__*/_react["default"].createElement(_Button["default"], {
-          variant: "flat",
+          disableElevation: true,
           onClick: this.barCommentSaveHandler,
           color: "primary"
         }, /*#__PURE__*/_react["default"].createElement(_Save["default"], {

@@ -16,7 +16,7 @@ var _MenuItem = _interopRequireDefault(require("@material-ui/core/MenuItem"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var filterSelectStyle = {
-  fontSize: "0.8125rem"
+  fontSize: '0.8125rem'
 };
 
 var EISTableFilter = function EISTableFilter(props) {
@@ -30,12 +30,12 @@ var EISTableFilter = function EISTableFilter(props) {
 
   return filters && Object.keys(filters).length && /*#__PURE__*/_react["default"].createElement("div", {
     style: {
-      display: "flex",
-      justifyContent: "space-between"
+      display: 'flex',
+      justifyContent: 'space-between'
     }
   }, /*#__PURE__*/_react["default"].createElement(_FilterList["default"], {
     style: {
-      marginLeft: "auto"
+      marginLeft: 'auto'
     }
   }), /*#__PURE__*/_react["default"].createElement(_Select["default"], {
     style: filterSelectStyle,

@@ -84,7 +84,7 @@ var EAMBarcodeInput = /*#__PURE__*/function (_Component) {
       _this.codeReader.reset();
     };
 
-    _this.startDecoding = function (deviceId) {
+    _this.startDecoding = function () {
       _this.codeReader.decodeFromInputVideoDevice(undefined, 'video').then(function (result) {
         _this.onDetectedCallback(result.text);
 
@@ -108,8 +108,35 @@ var EAMBarcodeInput = /*#__PURE__*/function (_Component) {
   }
 
   _createClass(EAMBarcodeInput, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var deviceCount;
+      return regeneratorRuntime.async(function componentDidMount$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return regeneratorRuntime.awrap(navigator.mediaDevices.enumerateDevices());
+
+            case 2:
+              deviceCount = _context.sent;
+
+              if (deviceCount.length > 0 && navigator && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                this.setState({
+                  showBarcodeButton: true
+                });
+              }
+
+            case 4:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, null, this, null, Promise);
+    }
+  }, {
     key: "startScanner",
-    value: function startScanner(onDetectedCallback, handleClose) {
+    value: function startScanner() {
       var _this2 = this;
 
       this.codeReader = new _library.BrowserMultiFormatReader();
@@ -132,32 +159,21 @@ var EAMBarcodeInput = /*#__PURE__*/function (_Component) {
     value: function render() {
       var _this3 = this;
 
-      var userMediaSupported = false;
-
-      if (navigator && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        userMediaSupported = true;
-      }
-
-      var style = {
-        maxWidth: "320px",
-        maxHeight: "320px",
-        stretchOnPhone: true
-      };
       var iconButtonStyle = {
-        position: "absolute",
+        position: 'absolute',
         top: this.props.top || 30,
         right: this.props.right || -2,
-        backgroundColor: "white",
+        backgroundColor: 'white',
         width: 32,
         height: 32,
         zIndex: 100,
         padding: 0
       }; // Display just the children when no support for user media
 
-      if (!userMediaSupported) {
+      if (!this.state.showBarcodeButton) {
         return /*#__PURE__*/_react["default"].createElement("div", {
           style: {
-            position: "relative"
+            position: 'relative'
           }
         }, this.props.children);
       } // Active quagga when support for user media
@@ -165,14 +181,16 @@ var EAMBarcodeInput = /*#__PURE__*/function (_Component) {
 
       return /*#__PURE__*/_react["default"].createElement("div", {
         style: {
-          position: "relative"
+          position: 'relative'
         }
       }, this.props.children, /*#__PURE__*/_react["default"].createElement(_IconButton["default"], {
         style: iconButtonStyle,
         onClick: this.handleClickOpen.bind(this)
       }, /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.BarcodeScan, null)), /*#__PURE__*/_react["default"].createElement(_Dialog["default"], {
-        onEntered: function onEntered() {
-          return _this3.startScanner(_this3.onDetectedCallback.bind(_this3), _this3.handleClose.bind(_this3));
+        TransitionProps: {
+          onEntered: function onEntered() {
+            return _this3.startScanner(_this3.onDetectedCallback.bind(_this3), _this3.handleClose.bind(_this3));
+          }
         },
         open: this.state.open,
         onClose: this.handleClose,

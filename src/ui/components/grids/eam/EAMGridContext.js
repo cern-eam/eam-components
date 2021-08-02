@@ -1,44 +1,52 @@
-import Axios from "axios";
-import React, { useState, createContext, useCallback, useMemo, useEffect } from "react";
-import GridWS from "../../eamgrid/lib/GridWS";
-import { EAMCellField, EAMFilterField, getRowAsAnObject } from "./utils";
-import useEAMGridTableInstance from "./useEAMGridTableInstance";
+import Axios from 'axios';
+import React, { useState, createContext, useCallback, useMemo, useEffect } from 'react';
+import GridWS from '../../eamgrid/lib/GridWS';
+import { EAMCellField, EAMFilterField, getRowAsAnObject } from './utils';
+import useEAMGridTableInstance from './useEAMGridTableInstance';
 
-const createColumns = ({ gridField, cellRenderer}) =>
-  (gridField || [])
-    .sort((a, b) => a.order - b.order)
-    .map((field) => ({
-        id: field.name,
-        Header: field.label,
-        accessor: field.name,
-        width: Number(field.width),
-        minWidth: 0,
-        maxWidth: 99999,
-        dataType: field.dataType,
-        Filter: EAMFilterField,
-        Cell: cellRenderer ? cellRenderer : EAMCellField,
-    }));
+const createColumns = ({ gridField, cellRenderer }) =>
+    (gridField || [])
+        .sort((a, b) => a.order - b.order)
+        .map((field) => ({
+            id: field.name,
+            Header: field.label,
+            accessor: field.name,
+            width: Number(field.width),
+            minWidth: 0,
+            maxWidth: 99999,
+            dataType: field.dataType,
+            Filter: EAMFilterField,
+            Cell: cellRenderer ? cellRenderer : EAMCellField,
+        }));
 
 const processFilters = (filters) => {
-    return filters.map(f => {
-        const filter = f.value;
-        const allowedFilter = Object.keys(filter)
-        .filter(key => ['fieldName', 'fieldValue', 'joiner', 'operator'].includes(key))
-        .reduce((newFilterObj, key) => ({
-            ...newFilterObj,
-            [key]: filter[key]
-        }), {});
-        return allowedFilter
-    }).filter(filter => filter.fieldValue !== undefined || filter.fieldValue !== '' || ['IS EMPTY', 'NOT EMPTY'].includes(filter.operator));
-}
+    return filters
+        .map((f) => {
+            const filter = f.value;
+            const allowedFilter = Object.keys(filter)
+                .filter((key) => ['fieldName', 'fieldValue', 'joiner', 'operator'].includes(key))
+                .reduce(
+                    (newFilterObj, key) => ({
+                        ...newFilterObj,
+                        [key]: filter[key],
+                    }),
+                    {}
+                );
+            return allowedFilter;
+        })
+        .filter(
+            (filter) =>
+                filter.fieldValue !== undefined ||
+                filter.fieldValue !== '' ||
+                ['IS EMPTY', 'NOT EMPTY'].includes(filter.operator)
+        );
+};
 
 const hasCustomFieldColumn = (columns) => {
     return columns
-        .map(({id}) => id.toLowerCase())
-        .some(id => id.startsWith('c_')
-            && ['_evnt', '_obj', '_part'].some(ending => id.endsWith(ending)));
-}
-
+        .map(({ id }) => id.toLowerCase())
+        .some((id) => id.startsWith('c_') && ['_evnt', '_obj', '_part'].some((ending) => id.endsWith(ending)));
+};
 
 export const EAMGridContext = createContext();
 
@@ -59,7 +67,7 @@ export const EAMGridContextProvider = (props) => {
         onChangeDataspy,
         searchOnMount,
         cellRenderer,
-        handleError
+        handleError,
     } = props;
     const [pageIndex, setPageIndex] = useState(0);
     const [selectedDataspy, setSelectedDataspy] = useState(undefined);
@@ -87,16 +95,20 @@ export const EAMGridContextProvider = (props) => {
     const hasUnkownTotalRecords = useMemo(() => (gridResult?.records ?? '').includes('+'), [gridResult]);
     const totalRecords = +(gridResult?.records ?? '').replace('+', '');
 
-    const resetFilters = useMemo(() => (initialFilters || []).map(filter => ({
-        id: filter.fieldName,
-        value: filter
-    })), [initialFilters]);
+    const resetFilters = useMemo(
+        () =>
+            (initialFilters || []).map((filter) => ({
+                id: filter.fieldName,
+                value: filter,
+            })),
+        [initialFilters]
+    );
 
     const tableInstance = useEAMGridTableInstance({
         columns,
         data,
         initialState: {
-            filters: resetFilters
+            filters: resetFilters,
         },
         manualFilters: true,
         manualSortBy: true,
@@ -105,7 +117,7 @@ export const EAMGridContextProvider = (props) => {
         autoResetSortBy: false,
         autoResetFilters: false,
         autoResetSelectedRows: false,
-        ...tableInstanceProps
+        ...tableInstanceProps,
     });
 
     const {
@@ -120,13 +132,13 @@ export const EAMGridContextProvider = (props) => {
             ...gridRequest,
             gridFilter: processFilters(resetFilters),
             gridSort: sortBy || [],
-            rowCount: searchOnMount ? rowsPerPage : 0
+            rowCount: searchOnMount ? rowsPerPage : 0,
         });
         return () => {
             if (fetchDataCancelToken) {
                 fetchDataCancelToken.cancel();
             }
-        }
+        };
     }, []);
 
     const fetchData = useCallback(
@@ -139,90 +151,86 @@ export const EAMGridContextProvider = (props) => {
             setFetchDataCancelToken(newFetchDataCancelToken);
             GridWS.getGridData(gr, {
                 cancelToken: newFetchDataCancelToken.token,
-            }).then(response => {
-                const newGridResult = response.body.data;
-                if (gr.includeMetadata) {
-                    const dataspy = newGridResult.gridDataspy.find(ds => ds.code === newGridResult.dataSpyId);
-                    setDataspies(newGridResult.gridDataspy);
-                    setSelectedDataspy(dataspy);
-                    setGridField(newGridResult.gridField);
-                }
-                setGridResult(newGridResult);
-                setLoading(false);
-            }).catch((error) => {
-                handleError && handleError(error);
-            });
+            })
+                .then((response) => {
+                    const newGridResult = response.body.data;
+                    if (gr.includeMetadata) {
+                        const dataspy = newGridResult.gridDataspy.find((ds) => ds.code === newGridResult.dataSpyId);
+                        setDataspies(newGridResult.gridDataspy);
+                        setSelectedDataspy(dataspy);
+                        setGridField(newGridResult.gridField);
+                    }
+                    setGridResult(newGridResult);
+                    setLoading(false);
+                })
+                .catch((error) => {
+                    handleError && handleError(error);
+                });
         },
-        [fetchDataCancelToken, setFetchDataCancelToken],
+        [fetchDataCancelToken, setFetchDataCancelToken]
     );
 
-    const handleOnSearch = useCallback(
-        () => {
-            setPageIndex(0);
-            const newGridRequest = {
-                ...gridRequest,
-                cursorPosition: 0,
-            };
-            setGridRequest(newGridRequest);
-            tableInstance.toggleAllRowsSelected(false);
-            fetchData(newGridRequest);
-        },
-        [tableInstance, fetchData, gridRequest]
-    );
+    const handleOnSearch = useCallback(() => {
+        setPageIndex(0);
+        const newGridRequest = {
+            ...gridRequest,
+            cursorPosition: 0,
+        };
+        setGridRequest(newGridRequest);
+        tableInstance.toggleAllRowsSelected(false);
+        fetchData(newGridRequest);
+    }, [tableInstance, fetchData, gridRequest]);
 
-    const handleExportToCSV = useCallback(
-        () => {
-            setLoadingExportToCSV(true);
-            return GridWS.exportDataToCSV(gridRequest).then(result => {
-                const hiddenElement = document.createElement("a");
+    const handleExportToCSV = useCallback(() => {
+        setLoadingExportToCSV(true);
+        return GridWS.exportDataToCSV(gridRequest)
+            .then((result) => {
+                const hiddenElement = document.createElement('a');
                 // utf8BOM used to enable detection of utf-8 encoding by excel when opening the CSV file
-                const utf8BOM = "\uFEFF";
-                hiddenElement.href = "data:text/csv;charset=UTF-8," + encodeURI(`${utf8BOM}${result.body}`);
-                hiddenElement.target = "_blank";
+                const utf8BOM = '\uFEFF';
+                hiddenElement.href = 'data:text/csv;charset=UTF-8,' + encodeURI(`${utf8BOM}${result.body}`);
+                hiddenElement.target = '_blank';
                 hiddenElement.download = `exported_data.csv`;
                 hiddenElement.click();
-            }).finally(() => {
+            })
+            .finally(() => {
                 setLoadingExportToCSV(false);
             });
-        },
-        []
-    );
+    }, []);
 
-    useEffect(
-        () => {
-            const newGridFilters = processFilters(filters);
-            if (JSON.stringify(newGridFilters) === JSON.stringify(gridRequest.gridFilter)) return;
-            setGridRequest({
-                ...gridRequest,
-                gridFilter: newGridFilters,
-                cursorPosition: 1,
-            });
-            onChangeFilters && onChangeFilters(newGridFilters);
-        },
-        [filters, gridRequest, onChangeFilters, tableInstance]
-    );
+    useEffect(() => {
+        const newGridFilters = processFilters(filters);
+        if (JSON.stringify(newGridFilters) === JSON.stringify(gridRequest.gridFilter)) return;
+        setGridRequest({
+            ...gridRequest,
+            gridFilter: newGridFilters,
+            cursorPosition: 1,
+        });
+        onChangeFilters && onChangeFilters(newGridFilters);
+    }, [filters, gridRequest, onChangeFilters, tableInstance]);
 
-    useEffect(
-        () => {
-            const newGridSort = sortBy.map(sort => ({ sortBy: sort.id, sortType: sort.desc === true ? "DESC" : "ASC" }));
-            if (JSON.stringify(newGridSort) === JSON.stringify(gridRequest.gridSort) || (!newGridSort.length && !gridRequest.gridSort)) return;
-            const newGridRequest = {
-                ...gridRequest,
-                gridSort: newGridSort,
-                cursorPosition: 0,
-            };
-            setPageIndex(0);
-            setGridRequest(newGridRequest);
-            fetchData(newGridRequest);
-            onChangeSortBy && onChangeSortBy(sortBy);
-        },
-        [sortBy, gridRequest, onChangeSortBy, fetchData, tableInstance]
-    );
+    useEffect(() => {
+        const newGridSort = sortBy.map((sort) => ({ sortBy: sort.id, sortType: sort.desc === true ? 'DESC' : 'ASC' }));
+        if (
+            JSON.stringify(newGridSort) === JSON.stringify(gridRequest.gridSort) ||
+            (!newGridSort.length && !gridRequest.gridSort)
+        )
+            return;
+        const newGridRequest = {
+            ...gridRequest,
+            gridSort: newGridSort,
+            cursorPosition: 0,
+        };
+        setPageIndex(0);
+        setGridRequest(newGridRequest);
+        fetchData(newGridRequest);
+        onChangeSortBy && onChangeSortBy(sortBy);
+    }, [sortBy, gridRequest, onChangeSortBy, fetchData, tableInstance]);
 
     const handleChangePage = useCallback(
         (page) => {
             setPageIndex(page);
-            const newCursorPosition = (page * rowsPerPage) + 1;
+            const newCursorPosition = page * rowsPerPage + 1;
             if (newCursorPosition === gridRequest.cursorPosition && gridRequest.rowCount === rowsPerPage) return;
             const newGridRequest = {
                 ...gridRequest,
@@ -274,22 +282,22 @@ export const EAMGridContextProvider = (props) => {
         [fetchData, gridRequest, resetFilters, tableInstance, onChangeDataspy]
     );
 
-    const handleResetFilters = useCallback(
-        () => {
-            tableInstance.setAllFilters([]);
-        },
-        [resetFilters, tableInstance],
-    )
+    const handleResetFilters = useCallback(() => {
+        tableInstance.setAllFilters([]);
+    }, [resetFilters, tableInstance]);
 
     useEffect(() => {
-        onChangeSelectedRows && onChangeSelectedRows(selectedFlatRows);
+        if (onChangeSelectedRows) {
+            selectedFlatRows.forEach(prepareRow);
+            onChangeSelectedRows(selectedFlatRows);
+        }
     }, [selectedFlatRows, onChangeSelectedRows]);
 
     useEffect(() => {
         if (columns.length > 0 && !hasCustomFieldColumn(columns)) {
             setGridRequest({
                 ...gridRequest,
-                includeMetadata: false
+                includeMetadata: false,
             });
         }
     }, [columns]);
@@ -323,9 +331,5 @@ export const EAMGridContextProvider = (props) => {
         loadingExportToCSV,
     };
 
-    return (
-        <EAMGridContext.Provider value={context}>
-            {props.children}
-        </EAMGridContext.Provider>
-    );
+    return <EAMGridContext.Provider value={context}>{props.children}</EAMGridContext.Provider>;
 };

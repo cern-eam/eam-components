@@ -3,49 +3,53 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import EAMTextField from './EAMTextField';
-import axios from "axios/index";
+import axios from 'axios/index';
 import React from 'react';
 import Autosuggest from 'react-autosuggest';
 import EAMBaseInput from './EAMBaseInput';
 
-
-function getTextWidth (text) {
-    var canvas = document.createElement("canvas");
-    var context = canvas.getContext("2d");
+function getTextWidth(text) {
+    var canvas = document.createElement('canvas');
+    var context = canvas.getContext('2d');
     context.font = '16px Roboto';
     var metrics = context.measureText(text);
     return metrics.width;
 }
 
-function renderDefaultInput (inputProps) {
-    const { classes, autoFocus, value, label, disabled, endAdornment, error, helperText, required, ...other } = inputProps;
+function renderDefaultInput(inputProps) {
+    const { classes, autoFocus, value, label, disabled, endAdornment, error, helperText, required, ...other } =
+        inputProps;
+
+    console.log(inputProps);
 
     var inputAdornmentStyle = {
         top: 2,
         height: 20,
-        whiteSpace: "nowrap",
-        overflow: "hidden",
-        textOverflow: "ellipsis",
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
         left: 5 + getTextWidth(value),
-        position: "absolute",
-        pointerEvents: "none",
+        position: 'absolute',
+        pointerEvents: 'none',
         fontSize: 16,
-        color: "#9E9E9E"
-    }
+        color: '#9E9E9E',
+    };
 
     return (
         <EAMTextField
-            required = {required}
+            required={required}
             error={error}
             helperText={helperText}
-            style={{overflow: "hidden"}}
-            disabled = {disabled}
+            style={{ overflow: 'hidden' }}
+            disabled={disabled}
             label={label}
             autoFocus={autoFocus}
             className={classes.textField}
             value={value}
             InputProps={{
-                endAdornment: (endAdornment && <InputAdornment style={inputAdornmentStyle}> — {endAdornment}</InputAdornment>),
+                endAdornment: endAdornment && (
+                    <InputAdornment style={inputAdornmentStyle}> — {endAdornment}</InputAdornment>
+                ),
                 classes: {
                     input: classes.input,
                 },
@@ -62,7 +66,11 @@ function renderSuggestionContainer(suggestion, isHighlighted) {
     return (
         <MenuItem selected={isHighlighted} component="div">
             <div>
-                {<div>{suggestion.code} - {suggestion.desc}</div>}
+                {
+                    <div>
+                        {suggestion.code} - {suggestion.desc}
+                    </div>
+                }
             </div>
         </MenuItem>
     );
@@ -80,8 +88,7 @@ function renderSuggestionsContainer(options) {
     );
 }
 
-
-const styles = theme => ({
+const styles = (theme) => ({
     container: {
         flexGrow: 1,
         position: 'relative',
@@ -90,18 +97,18 @@ const styles = theme => ({
         position: 'absolute',
         marginBottom: theme.spacing(3),
         width: '100%',
-        zIndex: 10
+        zIndex: 10,
     },
     suggestion: {
         display: 'block',
     },
-    suggestionsList: ({ maxHeight })=> ({
+    suggestionsList: ({ maxHeight }) => ({
         margin: 0,
         padding: 0,
         listStyleType: 'none',
         ...(maxHeight && {
             maxHeight,
-            overflowY: 'scroll'
+            overflowY: 'scroll',
         }),
     }),
     textField: {
@@ -109,55 +116,55 @@ const styles = theme => ({
     },
 });
 
-
 class EAMAutocomplete extends EAMBaseInput {
-
     state = {
-        suggestions: []
+        suggestions: [],
     };
 
-    init = props => this.setValue({code: props.value || '', desc: props.valueDesc || ''}, false)
+    init = (props) => this.setValue({ code: props.value || '', desc: props.valueDesc || '' }, false);
 
     onSuggestionChange = (code, desc) => {
         // this.props.updateProperty(this.props.valueKey, code);
         // this.props.updateProperty(this.props.descKey, desc);
-        this.setValue({code, desc});
-        this.onChangeHandler(code, {code, desc});
-    }
+        this.setValue({ code, desc });
+        this.onChangeHandler(code, { code, desc });
+    };
 
     // Input rendering
-    renderInput = inputProps => renderDefaultInput(inputProps)
+    renderInput = (inputProps) => renderDefaultInput(inputProps);
 
     // Fetch suggestions
     handleSuggestionsFetchRequested = ({ value }) => {
-        clearTimeout(this.timeout)
+        clearTimeout(this.timeout);
         this.timeout = setTimeout(() => {
-
             if (!!this.cancelSource) this.cancelSource.cancel();
 
-            this.cancelSource = axios.CancelToken.source()
+            this.cancelSource = axios.CancelToken.source();
 
             if (value === this.state.suggestionsValue) {
                 return;
             }
-            this.props.autocompleteHandler(value, {cancelToken: this.cancelSource.token})
-                .then(result => {
-                    this.setState({
-                        suggestions: result.body.data,
-                        suggestionsValue: value
-                    },
+            this.props
+                .autocompleteHandler(value, { cancelToken: this.cancelSource.token })
+                .then((result) => {
+                    this.setState(
+                        {
+                            suggestions: result.body.data,
+                            suggestionsValue: value,
+                        },
                         () => {
-                            const valueFound = this.findValueInSuggestions(value, result.body.data)
-                            if (valueFound && (this.props.autoSelectSingleElement === undefined || this.props.autoSelectSingleElement)) {
-                                this.onChangeHandler(valueFound.code, valueFound)
+                            const valueFound = this.findValueInSuggestions(value, result.body.data);
+                            if (
+                                valueFound &&
+                                (this.props.autoSelectSingleElement === undefined || this.props.autoSelectSingleElement)
+                            ) {
+                                this.onChangeHandler(valueFound.code, valueFound);
                             }
                         }
                     );
                 })
-                .catch(error => {
-
-                });
-        }, 200)
+                .catch((error) => {});
+        }, 200);
     };
 
     handleChange = (event, { newValue }) => {
@@ -172,33 +179,31 @@ class EAMAutocomplete extends EAMBaseInput {
         // } else {
         //     this.setValue({code: newValue, desc: ''});
         // }
-        this.setValue({code: newValue, desc: ''});
-    }
+        this.setValue({ code: newValue, desc: '' });
+    };
 
     findValueInSuggestions = (value, suggestions) => {
-        const processedValue = value.trim()
-        return suggestions.find(v => processedValue === this.getSuggestionValue(v))
-    }
+        const processedValue = value.trim();
+        return suggestions.find((v) => processedValue === this.getSuggestionValue(v));
+    };
 
     // Clear suggestions
-    handleSuggestionsClearRequested = () => {
+    handleSuggestionsClearRequested = () => {};
 
-    }
+    getSuggestionValue = (suggestion) => suggestion.code;
 
-    getSuggestionValue = suggestion => suggestion.code;
-
-    shouldRenderSuggestions = value => !!value
+    shouldRenderSuggestions = (value) => !!value;
 
     onSuggestionSelected = (event, { suggestion }) => {
-        if (suggestion) this.onSuggestionChange(suggestion.code, suggestion.desc)
-    }
+        if (suggestion) this.onSuggestionChange(suggestion.code, suggestion.desc);
+    };
 
-    renderComponent () {
+    renderComponent() {
         const { classes, elementInfo } = this.props;
         const { value, suggestions } = this.state;
 
         // Value should always be an object with code and desc
-        if (!value) return null
+        if (!value) return null;
 
         return (
             <Autosuggest
@@ -215,7 +220,9 @@ class EAMAutocomplete extends EAMBaseInput {
                 onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
                 getSuggestionValue={this.getSuggestionValue}
                 renderSuggestionsContainer={renderSuggestionsContainer}
-                renderSuggestion={(suggestion, { isHighlighted }) => renderSuggestionContainer(suggestion, isHighlighted)}
+                renderSuggestion={(suggestion, { isHighlighted }) =>
+                    renderSuggestionContainer(suggestion, isHighlighted)
+                }
                 renderInputComponent={this.renderInput.bind(this)}
                 shouldRenderSuggestions={this.shouldRenderSuggestions.bind(this)}
                 inputProps={{
@@ -231,14 +238,17 @@ class EAMAutocomplete extends EAMBaseInput {
                     disabled: this.state.disabled || (elementInfo && elementInfo.readonly),
                     onBlur: () => {
                         setTimeout(() => {
-                            const valueFound = this.findValueInSuggestions(this.state.value ? this.state.value.code : '', suggestions);
+                            const valueFound = this.findValueInSuggestions(
+                                this.state.value ? this.state.value.code : '',
+                                suggestions
+                            );
                             if (!valueFound) this.onSuggestionChange('', '');
-                        }, 100)
-                    }
+                        }, 100);
+                    },
                 }}
             />
         );
     }
 }
 
-export default withStyles(styles)(EAMAutocomplete)
+export default withStyles(styles)(EAMAutocomplete);

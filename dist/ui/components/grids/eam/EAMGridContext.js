@@ -270,11 +270,11 @@ var EAMGridContextProvider = function EAMGridContextProvider(props) {
   var handleExportToCSV = (0, _react.useCallback)(function () {
     setLoadingExportToCSV(true);
     return _GridWS["default"].exportDataToCSV(gridRequest).then(function (result) {
-      var hiddenElement = document.createElement("a"); // utf8BOM used to enable detection of utf-8 encoding by excel when opening the CSV file
+      var hiddenElement = document.createElement('a'); // utf8BOM used to enable detection of utf-8 encoding by excel when opening the CSV file
 
       var utf8BOM = "\uFEFF";
-      hiddenElement.href = "data:text/csv;charset=UTF-8," + encodeURI("".concat(utf8BOM).concat(result.body));
-      hiddenElement.target = "_blank";
+      hiddenElement.href = 'data:text/csv;charset=UTF-8,' + encodeURI("".concat(utf8BOM).concat(result.body));
+      hiddenElement.target = '_blank';
       hiddenElement.download = "exported_data.csv";
       hiddenElement.click();
     })["finally"](function () {
@@ -294,7 +294,7 @@ var EAMGridContextProvider = function EAMGridContextProvider(props) {
     var newGridSort = sortBy.map(function (sort) {
       return {
         sortBy: sort.id,
-        sortType: sort.desc === true ? "DESC" : "ASC"
+        sortType: sort.desc === true ? 'DESC' : 'ASC'
       };
     });
     if (JSON.stringify(newGridSort) === JSON.stringify(gridRequest.gridSort) || !newGridSort.length && !gridRequest.gridSort) return;
@@ -359,7 +359,12 @@ var EAMGridContextProvider = function EAMGridContextProvider(props) {
     tableInstance.setAllFilters([]);
   }, [resetFilters, tableInstance]);
   (0, _react.useEffect)(function () {
-    onChangeSelectedRows && onChangeSelectedRows(selectedFlatRows);
+    if (onChangeSelectedRows) {
+      selectedFlatRows.forEach(function (row) {
+        return prepareRow(row);
+      });
+      onChangeSelectedRows(selectedFlatRows);
+    }
   }, [selectedFlatRows, onChangeSelectedRows]);
   (0, _react.useEffect)(function () {
     if (columns.length > 0 && !hasCustomFieldColumn(columns)) {
