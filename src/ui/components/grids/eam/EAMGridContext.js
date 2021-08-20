@@ -197,7 +197,7 @@ export const EAMGridContextProvider = (props) => {
             .finally(() => {
                 setLoadingExportToCSV(false);
             });
-    }, []);
+    }, [gridRequest]);
 
     useEffect(() => {
         const newGridFilters = processFilters(filters);
