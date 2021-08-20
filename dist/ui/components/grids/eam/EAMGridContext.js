@@ -281,7 +281,7 @@ var EAMGridContextProvider = function EAMGridContextProvider(props) {
     })["finally"](function () {
       setLoadingExportToCSV(false);
     });
-  }, []);
+  }, [gridRequest]);
   (0, _react.useEffect)(function () {
     var newGridFilters = processFilters(filters);
     if (JSON.stringify(newGridFilters) === JSON.stringify(gridRequest.gridFilter)) return;
