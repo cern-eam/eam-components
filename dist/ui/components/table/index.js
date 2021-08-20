@@ -49,6 +49,18 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -93,13 +105,165 @@ var EISTable = /*#__PURE__*/function (_Component) {
 
     _classCallCheck(this, EISTable);
 
+    _this = _super.call(this, props);
+
+    _this.onWindowSizeChange = function () {
+      _this.setState(function () {
+        return {
+          windowWidth: window.innerWidth
+        };
+      });
+    };
+
+    _this.resetSort = function () {
+      _this.setState(function () {
+        return {
+          orderBy: -1,
+          order: _Constants["default"].SORT_ASC
+        };
+      });
+    };
+
+    _this.createSortHandler = function (property) {
+      return function (event) {
+        _this.handleRequestSort(event, property);
+      };
+    };
+
+    _this.createSortHandlerMobile = function (event) {
+      _this.handleRequestSort(event, event.target.value);
+    };
+
+    _this.handleRequestSort = function (event, property) {
+      //By default asc
+      var order = _Constants["default"].SORT_ASC;
+
+      if (property >= 0 && property < _this.props.propCodes.length) {
+        if (_this.state.orderBy === property && _this.state.order === _Constants["default"].SORT_ASC) {
+          order = _Constants["default"].SORT_DESC;
+        }
+      } else {
+        /*It's desc*/
+        order = _Constants["default"].SORT_DESC;
+      } //Assign final data
+
+
+      _this.setState({
+        order: order,
+        orderBy: property
+      });
+    };
+
+    _this.renderContent = function (propCode, content) {
+      //Normal content
+      if (!_this.props.linksMap.get(propCode)) {
+        if (content[propCode] === 'true' || content[propCode] === 'false') {
+          //Checkbox
+          return /*#__PURE__*/_react["default"].createElement(_Checkbox["default"], {
+            checked: content[propCode] === 'true',
+            value: content[propCode],
+            disabled: true
+          });
+        }
+
+        return content[propCode];
+      } //Link
+
+
+      var link = _this.props.linksMap.get(propCode);
+
+      if (link.linkType === 'fixed') {
+        return /*#__PURE__*/_react["default"].createElement(_reactRouterDom.Link, {
+          to: {
+            pathname: "".concat(link.linkPrefix).concat(link.linkValue).concat(content[propCode])
+          }
+        }, content[propCode]);
+      } else if (link.linkType === 'absolute') {
+        return /*#__PURE__*/_react["default"].createElement("a", {
+          href: "".concat(link.linkValue).concat(content[propCode]),
+          target: "_blank"
+        }, content[propCode]);
+      } else {
+        /*Dynamic link*/
+        return /*#__PURE__*/_react["default"].createElement(_reactRouterDom.Link, {
+          to: {
+            pathname: "".concat(link.linkPrefix).concat(content[link.linkValue])
+          }
+        }, content[propCode]);
+      }
+    };
+
+    _this.renderSortByValuesMobile = function () {
+      // Create list of values
+      var listValues = _this.props.headers.map(function (elem) {
+        return "".concat(elem, " (Asc)");
+      });
+
+      listValues = listValues.concat(_this.props.headers.map(function (elem) {
+        return "".concat(elem, " (Desc)");
+      }));
+      return /*#__PURE__*/_react["default"].createElement(_Select["default"], {
+        "native": true,
+        value: _this.state.orderBy,
+        onChange: _this.createSortHandlerMobile,
+        className: "eamTableDropdown"
+      }, /*#__PURE__*/_react["default"].createElement("option", {
+        value: -1
+      }, "Select sort column..."), listValues.map(function (elem, index) {
+        return /*#__PURE__*/_react["default"].createElement("option", {
+          key: index,
+          value: index
+        }, elem);
+      }));
+    };
+
+    _this.propagateFilterChange = function (e) {
+      _this.resetSort();
+
+      _this.props.handleFilterChange(e.target.value);
+    };
+
+    _this.getSortedData = function (_ref) {
+      var data = _ref.data,
+          orderBy = _ref.orderBy,
+          order = _ref.order,
+          propCode = _ref.propCode,
+          keyMap = _ref.keyMap;
+
+      if (orderBy < 0) {
+        return data;
+      }
+
+      var keyFunction = typeof keyMap[propCode] === 'function' ? keyMap[propCode] : TRANSFORM_KEYS.DEFAULT; // Schwartzian transform
+
+      var sorted = data.map(function (datum, index) {
+        return [datum, keyFunction(datum[propCode]), index];
+      }).sort(function (_ref2, _ref3) {
+        var _ref4 = _slicedToArray(_ref2, 3),
+            a = _ref4[1],
+            aIndex = _ref4[2];
+
+        var _ref5 = _slicedToArray(_ref3, 3),
+            b = _ref5[1],
+            bIndex = _ref5[2];
+
+        return a < b ? -1 : a > b ? 1 : aIndex - bIndex;
+      }).map(function (_ref6) {
+        var _ref7 = _slicedToArray(_ref6, 1),
+            datum = _ref7[0];
+
+        return datum;
+      });
+      return order === _Constants["default"].SORT_DESC ? sorted.reverse() : sorted;
+    };
+
     _this.state = {
       windowWidth: window.innerWidth,
       orderBy: props.defaultOrderBy === undefined ? -1 : props.propCodes.indexOf(props.defaultOrderBy),
       order: props.defaultOrder === undefined ? _Constants["default"].SORT_ASC : props.defaultOrder,
       data: []
     };
-    return _possibleConstructorReturn(_this);
+    return _this;
   }
 
   _createClass(EISTable, [{
