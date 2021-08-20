@@ -195,8 +195,6 @@ var NCRCreation = /*#__PURE__*/function (_Component) {
           })[0];
 
           _this.setStateProperty('title', 'LHC-QN-' + equipmentWorkOrder.parentEqpCode + '-' + equipmentWorkOrder.stepDesc + '_');
-
-          console.log('title', 'LHC-QN-' + equipmentWorkOrder.parentEqpCode + '-' + equipmentWorkOrder.stepDesc + '_');
         }
 
         _this.setStateProperty('equipmentWorkOrders', response.body.data);

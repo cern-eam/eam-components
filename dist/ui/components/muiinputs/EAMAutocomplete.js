@@ -79,7 +79,6 @@ function renderDefaultInput(inputProps) {
       required = inputProps.required,
       other = _objectWithoutProperties(inputProps, ["classes", "autoFocus", "value", "label", "disabled", "endAdornment", "error", "helperText", "required"]);
 
-  console.log(inputProps);
   var inputAdornmentStyle = {
     top: 2,
     height: 20,

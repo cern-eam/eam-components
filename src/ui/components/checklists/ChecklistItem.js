@@ -35,7 +35,6 @@ export default class ChecklistItem extends Component {
         let checklistItemState = this.props.checklistItem;
         if (checklistItemProps && checklistItemState) {
             if (checklistItemProps.workOrderCode !== checklistItemState.workOrderCode) {
-                console.log('new wo!')
                 this.init(checklistItemProps);
             }
             if (checklistItemProps.followUpWorkOrder !== checklistItemState.followUpWorkOrder) {

@@ -20,8 +20,6 @@ function renderDefaultInput(inputProps) {
     const { classes, autoFocus, value, label, disabled, endAdornment, error, helperText, required, ...other } =
         inputProps;
 
-    console.log(inputProps);
-
     var inputAdornmentStyle = {
         top: 2,
         height: 20,
