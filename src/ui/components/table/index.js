@@ -31,6 +31,7 @@ const greyBackground = {
  */
 class EISTable extends Component {
     constructor(props) {
+        super(props);
         this.state = {
             windowWidth: window.innerWidth,
             orderBy: props.defaultOrderBy === undefined ? -1 : props.propCodes.indexOf(props.defaultOrderBy),

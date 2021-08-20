@@ -136,7 +136,6 @@ class NCRCreation extends Component {
             if (objectType === 'J' && Object.keys(response.body.data) && Object.keys(response.body.data).length > 0 ) {
                 let equipmentWorkOrder = Object.keys(response.body.data).map(key => response.body.data[key])[0]
                 this.setStateProperty('title', 'LHC-QN-' + equipmentWorkOrder.parentEqpCode + '-' + equipmentWorkOrder.stepDesc + '_')
-                console.log('title', 'LHC-QN-' + equipmentWorkOrder.parentEqpCode + '-' + equipmentWorkOrder.stepDesc + '_');
             }
             this.setStateProperty('equipmentWorkOrders', response.body.data)
         })

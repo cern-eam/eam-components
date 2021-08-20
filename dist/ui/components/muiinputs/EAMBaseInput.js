@@ -288,8 +288,6 @@ var EAMBaseInput = /*#__PURE__*/function (_Component) {
       var eamLink = null;
 
       if (this.props.link && this.props.link(this.state.value)) {
-        console.log('Input has a link prop');
-
         if (this.props.link().startsWith('http')) {
           eamLink = _react["default"].forwardRef(function (props, ref) {
             return /*#__PURE__*/_react["default"].createElement("a", _extends({

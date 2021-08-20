@@ -159,7 +159,6 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
 
       if (checklistItemProps && checklistItemState) {
         if (checklistItemProps.workOrderCode !== checklistItemState.workOrderCode) {
-          console.log('new wo!');
           this.init(checklistItemProps);
         }
 
