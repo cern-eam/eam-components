@@ -9,6 +9,8 @@ import {
     IconButton,
     InputAdornment,
     withStyles,
+    Select,
+    InputBase,
 } from "@material-ui/core";
 import {
     ContainStart,
@@ -31,6 +33,29 @@ import {
 import { useAsyncDebounce, useMountedLayoutEffect } from "react-table";
 import { format as formatDate } from "date-fns";
 
+
+const BootstrapInput = withStyles((theme) => ({
+    root: {
+        width: '100%',
+        backgroundColor: "white",
+        borderRadius: '4px',
+        border: '1px solid #e4e3e3',
+        '& .MuiInput-underline:before': {
+            border: 'none',
+            transition: 'none',
+        },
+        '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
+            borderBottom: '2px solid #c5c5c5',
+        },
+        '& .MuiSelect-select:focus': {
+            backgroundColor: "white",
+            borderRadius: '4px',
+        }
+    },
+    input: {
+        paddingLeft: '4px'
+    }
+  }))(InputBase);
 
 const FilterTextField = withStyles({
     root: {
@@ -371,6 +396,22 @@ const EAMFilterField = ({ column }) => {
                     }}
                 />
             );
+        case "__SELECT":
+            return (
+                <Select
+                native
+                    value={localFilter.fieldValue || ''}
+                    onChange={handleFilterTextFieldChange}
+                    input={<BootstrapInput />}
+                >
+                    <option value="" />
+                    {column?.selectOptions?.map(e => (
+                        <option value={column.getOptionValue(e)} key={column.getOptionValue(e)}>
+                            {column.getOptionLabel(e)}
+                        </option>
+                    ))}
+                </Select>
+            )
         default:
             return null;
     }

@@ -51,6 +51,30 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+var BootstrapInput = (0, _core.withStyles)(function (theme) {
+  return {
+    root: {
+      width: '100%',
+      backgroundColor: "white",
+      borderRadius: '4px',
+      border: '1px solid #e4e3e3',
+      '& .MuiInput-underline:before': {
+        border: 'none',
+        transition: 'none'
+      },
+      '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
+        borderBottom: '2px solid #c5c5c5'
+      },
+      '& .MuiSelect-select:focus': {
+        backgroundColor: "white",
+        borderRadius: '4px'
+      }
+    },
+    input: {
+      paddingLeft: '4px'
+    }
+  };
+})(_core.InputBase);
 var FilterTextField = (0, _core.withStyles)({
   root: {
     backgroundColor: "white",
@@ -490,6 +514,21 @@ var EAMFilterField = function EAMFilterField(_ref6) {
           })
         }
       });
+
+    case "__SELECT":
+      return /*#__PURE__*/_react["default"].createElement(_core.Select, {
+        "native": true,
+        value: localFilter.fieldValue || '',
+        onChange: handleFilterTextFieldChange,
+        input: /*#__PURE__*/_react["default"].createElement(BootstrapInput, null)
+      }, /*#__PURE__*/_react["default"].createElement("option", {
+        value: ""
+      }), column?.selectOptions?.map(function (e) {
+        return /*#__PURE__*/_react["default"].createElement("option", {
+          value: column.getOptionValue(e),
+          key: column.getOptionValue(e)
+        }, column.getOptionLabel(e));
+      }));
 
     default:
       return null;
