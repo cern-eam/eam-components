@@ -109,7 +109,8 @@ var EAMGridContextProvider = function EAMGridContextProvider(props) {
       cellRenderer = props.cellRenderer,
       handleError = props.handleError,
       createColumns = props.createColumns,
-      dataCallback = props.dataCallback;
+      dataCallback = props.dataCallback,
+      processData = props.processData;
 
   var _useState = (0, _react.useState)(0),
       _useState2 = _slicedToArray(_useState, 2),
@@ -176,6 +177,12 @@ var EAMGridContextProvider = function EAMGridContextProvider(props) {
       setLoadingExportToCSV = _useState22[1];
 
   var columnCreator = createColumns ?? defaultCreateColumns;
+
+  var dataCreator = processData ?? function (_ref3) {
+    var d = _ref3.data;
+    return d;
+  };
+
   var columns = (0, _react.useMemo)(function () {
     return columnCreator({
       gridField: gridField,
@@ -183,12 +190,15 @@ var EAMGridContextProvider = function EAMGridContextProvider(props) {
     });
   }, [gridField, cellRenderer, columnCreator]);
   var data = (0, _react.useMemo)(function () {
-    return (gridResult?.row || []).map(_utils.getRowAsAnObject);
+    return dataCreator({
+      data: (gridResult?.row || []).map(_utils.getRowAsAnObject)
+    });
   }, [gridResult.row]);
   var hasUnkownTotalRecords = (0, _react.useMemo)(function () {
     return (gridResult?.records ?? '').includes('+');
   }, [gridResult]);
-  var totalRecords = +(gridResult?.records ?? '').replace('+', '');
+  var recordsNumber = +(gridResult?.records ?? '').replace('+', '');
+  var totalRecords = recordsNumber <= rowsPerPage ? data.length : recordsNumber;
   var resetFilters = (0, _react.useMemo)(function () {
     return (initialFilters || []).map(function (filter) {
       return {
