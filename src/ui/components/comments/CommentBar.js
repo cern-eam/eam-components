@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import SaveIcon from '@material-ui/icons/Save';
-import { FlagCheckered } from 'mdi-material-ui';
+import { FlagCheckered, Lock } from 'mdi-material-ui';
 
 const notClosingButtonStyle = {
     backgroundColor: '#e0e0e0',
@@ -15,9 +15,16 @@ const saveIconStyle = {
     marginRight: 5,
 };
 
+const optionIconStyle = {
+    width: 18,
+    height: 18,
+    margin: '0 5px',
+};
+
 class CommentBar extends Component {
     state = {
         isClosing: false,
+        isPrivate: false,
         closingButtonStyle: notClosingButtonStyle,
     };
 
@@ -29,10 +36,13 @@ class CommentBar extends Component {
         //Set the closing
         if (this.state.isClosing) {
             comment.typeCode = '+';
+        } else if (this.state.isPrivate) {
+            comment.typeCode = 'P';
         }
         //Update the closing
         this.setState(() => ({
             isClosing: false,
+            isPrivate: false,
             closingButtonStyle: notClosingButtonStyle,
         }));
         //Save the comment with the method received
@@ -46,6 +56,21 @@ class CommentBar extends Component {
                     <Button disableElevation onClick={this.barCommentSaveHandler} color="primary">
                         <SaveIcon style={saveIconStyle} /> Save
                     </Button>
+                    {this.props.displayPrivateCheck && (
+                        <FormControlLabel
+                            style={{ height: 22, marginRight: -5 }}
+                            control={
+                                <Checkbox
+                                    color="primary"
+                                    icon={<Lock style={optionIconStyle} />}
+                                    checkedIcon={<Lock style={optionIconStyle} />}
+                                    checked={this.state.isPrivate}
+                                    onChange={(event, checked) => this.setState({ isPrivate: checked })}
+                                    title="Private comment"
+                                />
+                            }
+                        />
+                    )}
 
                     {this.props.displayClosingCheck && (
                         <FormControlLabel
@@ -53,10 +78,11 @@ class CommentBar extends Component {
                             control={
                                 <Checkbox
                                     color="primary"
-                                    icon={<FlagCheckered />}
-                                    checkedIcon={<FlagCheckered />}
+                                    icon={<FlagCheckered style={optionIconStyle} />}
+                                    checkedIcon={<FlagCheckered style={optionIconStyle} />}
                                     checked={this.state.isClosing}
                                     onChange={(event, checked) => this.setState({ isClosing: checked })}
+                                    title="Closing"
                                 />
                             }
                         />

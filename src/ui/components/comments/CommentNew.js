@@ -94,6 +94,7 @@ class CommentNew extends Component {
                                         displayBar={this.state.displayBar}
                                         comment={this.state.comment}
                                         displayClosingCheck={this.props.entityCode === 'EVNT'}
+                                        displayPrivateCheck={this.props.displayPrivateCheck}
                                         showUpdatingHandler={this.showUpdating}/>
                         </div>}
 

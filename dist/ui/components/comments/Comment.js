@@ -198,7 +198,9 @@ var Comment = /*#__PURE__*/function (_Component) {
         defaultValue: comment.text,
         className: "commentText",
         onInput: this.inputTextArea
-      }))));
+      })), this.props.commentFooter && /*#__PURE__*/React.createElement("div", {
+        className: "commentFooter"
+      }, this.props.commentFooter)));
     }
   }]);
 

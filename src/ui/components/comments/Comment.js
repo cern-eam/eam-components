@@ -139,9 +139,17 @@ class Comment extends Component {
                                     className="commentText"
                                     onInput={this.inputTextArea}
                             />
-                            
                         }
                     </div>
+
+                    {
+                        this.props.commentFooter && (
+                            <div className="commentFooter">
+                                {this.props.commentFooter}
+                            </div>
+                        )
+                    }
+                    
 
                 </div>
 

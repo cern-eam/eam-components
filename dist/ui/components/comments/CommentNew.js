@@ -143,6 +143,7 @@ var CommentNew = /*#__PURE__*/function (_Component) {
         displayBar: this.state.displayBar,
         comment: this.state.comment,
         displayClosingCheck: this.props.entityCode === 'EVNT',
+        displayPrivateCheck: this.props.displayPrivateCheck,
         showUpdatingHandler: this.showUpdating
       })), /*#__PURE__*/React.createElement("div", {
         className: "commentTextContainer",
