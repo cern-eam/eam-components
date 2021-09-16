@@ -13,6 +13,7 @@ import { Box, Button } from "@material-ui/core";
 const EAMGrid = (props) => {
     const {
         getRowProps,
+        getCellProps,
         rowsPerPageOptionsComputed,
     } = props;
     const {
@@ -56,6 +57,7 @@ const EAMGrid = (props) => {
                     loading={loading}
                     tableInstance={tableInstance}
                     getRowProps={getRowProps}
+                    getCellProps={getCellProps}
                 />
             </BlockUi>
             <EAMGridFooter>
