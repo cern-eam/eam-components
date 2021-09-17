@@ -141,10 +141,10 @@ var EAMGridMain = function EAMGridMain(props) {
       parent: parent
     }, function (_ref2) {
       var measure = _ref2.measure;
-      return /*#__PURE__*/_react["default"].createElement(_core.TableRow, _extends({}, tableRowProps, {
+      return /*#__PURE__*/_react["default"].createElement(_core.TableRow, _extends({
         className: "tr",
         component: "div"
-      }), row.cells.map(function (cell) {
+      }, tableRowProps), row.cells.map(function (cell) {
         var cellProps = [{
           style: {
             maxWidth: cell.column.maxWidth,

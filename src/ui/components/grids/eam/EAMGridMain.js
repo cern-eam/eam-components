@@ -117,7 +117,7 @@ const EAMGridMain = (props) => {
                 parent={parent}
             >
                 {({measure}) => (
-                <TableRow {...tableRowProps} className="tr" component="div">
+                <TableRow className="tr" component="div" {...tableRowProps} >
                     {row.cells.map((cell) => {
                         const cellProps = [
                             { style: { maxWidth: cell.column.maxWidth, width: cell.column.width }},
