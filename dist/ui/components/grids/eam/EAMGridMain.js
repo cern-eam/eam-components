@@ -241,7 +241,8 @@ var EAMGridMain = function EAMGridMain(props) {
       },
       style: {
         overflowX: 'scroll',
-        overflowY: 'scroll'
+        overflowY: 'scroll',
+        willChange: 'scroll-position'
       },
       deferredMeasurementCache: _cache,
       overscanRowCount: 10,
