@@ -274,7 +274,7 @@ var EAMGridContextProvider = function EAMGridContextProvider(props) {
       var hiddenElement = document.createElement('a'); // utf8BOM used to enable detection of utf-8 encoding by excel when opening the CSV file
 
       var utf8BOM = "\uFEFF";
-      hiddenElement.href = 'data:text/csv;charset=UTF-8,' + encodeURI("".concat(utf8BOM).concat(result.body));
+      hiddenElement.href = 'data:text/csv;charset=UTF-8,' + encodeURI("".concat(utf8BOM).concat(result.body)).replaceAll('#', '%23');
       hiddenElement.target = '_blank';
       hiddenElement.download = "exported_data.csv";
       hiddenElement.click();
