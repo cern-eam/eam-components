@@ -91,6 +91,7 @@ exports.EAMGridContext = EAMGridContext;
 
 var EAMGridContextProvider = function EAMGridContextProvider(props) {
   var gridName = props.gridName,
+      userFunctionName = props.userFunctionName,
       gridID = props.gridID,
       _props$useNative = props.useNative,
       useNative = _props$useNative === void 0 ? true : _props$useNative,
@@ -150,6 +151,7 @@ var EAMGridContextProvider = function EAMGridContextProvider(props) {
 
   var _useState17 = (0, _react.useState)({
     gridName: gridName,
+    userFunctionName: userFunctionName ?? gridName,
     gridID: gridID,
     useNative: useNative,
     dataspyID: initialDataspyID || null,

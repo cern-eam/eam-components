@@ -53,6 +53,7 @@ export const EAMGridContext = createContext();
 export const EAMGridContextProvider = (props) => {
     const {
         gridName,
+        userFunctionName,
         gridID,
         useNative = true,
         initialRowsPerPage,
@@ -79,6 +80,7 @@ export const EAMGridContextProvider = (props) => {
     const [gridField, setGridField] = useState();
     const [gridRequest, setGridRequest] = useState({
         gridName,
+        userFunctionName: userFunctionName ?? gridName,
         gridID,
         useNative,
         dataspyID: initialDataspyID || null,
