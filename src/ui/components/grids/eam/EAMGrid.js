@@ -13,7 +13,9 @@ import { Box, Button } from "@material-ui/core";
 const EAMGrid = (props) => {
     const {
         getRowProps,
+        getCellProps,
         rowsPerPageOptionsComputed,
+        customFooterOptions,
     } = props;
     const {
         dataspies,
@@ -56,20 +58,28 @@ const EAMGrid = (props) => {
                     loading={loading}
                     tableInstance={tableInstance}
                     getRowProps={getRowProps}
+                    getCellProps={getCellProps}
                 />
             </BlockUi>
             <EAMGridFooter>
                 <Box flex="1" display="flex">
-                    <BlockUi
-                        tag="div"
-                        blocking={loadingExportToCSV}
-                        style={{ minHeight: "auto" }}
-                    >
-                        <Button
-                            variant="outlined"
-                            size="small"
-                            onClick={handleExportToCSV}>Export to CSV</Button>
-                    </BlockUi>
+                    {customFooterOptions ? (
+                        customFooterOptions()
+                    ) : (
+                        <BlockUi
+                            tag="div"
+                            blocking={loadingExportToCSV}
+                            style={{ minHeight: "auto" }}
+                        >
+                            <Button
+                                variant="outlined"
+                                size="small"
+                                onClick={handleExportToCSV}
+                            >
+                                Export to CSV
+                            </Button>
+                        </BlockUi>
+                    )}
                 </Box>
                 <EAMGridPagination
                     labelRowsPerPage={"Per Page"}

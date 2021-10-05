@@ -4,7 +4,7 @@ import GridWS from '../../eamgrid/lib/GridWS';
 import { EAMCellField, EAMFilterField, getRowAsAnObject } from './utils';
 import useEAMGridTableInstance from './useEAMGridTableInstance';
 
-const createColumns = ({ gridField, cellRenderer }) =>
+const defaultCreateColumns = ({ gridField, cellRenderer }) =>
     (gridField || [])
         .sort((a, b) => a.order - b.order)
         .map((field) => ({
@@ -69,6 +69,9 @@ export const EAMGridContextProvider = (props) => {
         searchOnMount,
         cellRenderer,
         handleError,
+        createColumns,
+        dataCallback,
+        processData,
     } = props;
     const [pageIndex, setPageIndex] = useState(0);
     const [selectedDataspy, setSelectedDataspy] = useState(undefined);
@@ -90,12 +93,15 @@ export const EAMGridContextProvider = (props) => {
     });
     const [fetchDataCancelToken, setFetchDataCancelToken] = useState();
     const [loadingExportToCSV, setLoadingExportToCSV] = useState(false);
+    const columnCreator = createColumns ?? defaultCreateColumns;
+    const dataCreator = processData ?? (({ data: d }) => d);
 
-    const columns = useMemo(() => createColumns({ gridField, cellRenderer }), [gridField, cellRenderer]);
-    const data = useMemo(() => (gridResult?.row || []).map(getRowAsAnObject), [gridResult.row]);
+    const columns = useMemo(() => columnCreator({ gridField, cellRenderer }), [gridField, cellRenderer, columnCreator]);
+    const data = useMemo(() => dataCreator({ data: (gridResult?.row || []).map(getRowAsAnObject) }), [gridResult.row]);
 
     const hasUnkownTotalRecords = useMemo(() => (gridResult?.records ?? '').includes('+'), [gridResult]);
-    const totalRecords = +(gridResult?.records ?? '').replace('+', '');
+    const recordsNumber = +(gridResult?.records ?? '').replace('+', '');
+    const totalRecords = recordsNumber <= rowsPerPage ? data.length : recordsNumber;
 
     const resetFilters = useMemo(
         () =>
@@ -129,6 +135,10 @@ export const EAMGridContextProvider = (props) => {
     } = tableInstance;
 
     const toggleFilters = useCallback(() => setDisableFilters(!disableFilters), [disableFilters, setDisableFilters]);
+
+    useEffect(() => {
+        dataCallback && dataCallback({ data });
+    }, [data]);
 
     useEffect(() => {
         fetchData({

@@ -41,7 +41,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var createColumns = function createColumns(_ref) {
+var defaultCreateColumns = function defaultCreateColumns(_ref) {
   var gridField = _ref.gridField,
       cellRenderer = _ref.cellRenderer;
   return (gridField || []).sort(function (a, b) {
@@ -107,7 +107,10 @@ var EAMGridContextProvider = function EAMGridContextProvider(props) {
       onChangeDataspy = props.onChangeDataspy,
       searchOnMount = props.searchOnMount,
       cellRenderer = props.cellRenderer,
-      handleError = props.handleError;
+      handleError = props.handleError,
+      createColumns = props.createColumns,
+      dataCallback = props.dataCallback,
+      processData = props.processData;
 
   var _useState = (0, _react.useState)(0),
       _useState2 = _slicedToArray(_useState, 2),
@@ -173,19 +176,29 @@ var EAMGridContextProvider = function EAMGridContextProvider(props) {
       loadingExportToCSV = _useState22[0],
       setLoadingExportToCSV = _useState22[1];
 
+  var columnCreator = createColumns ?? defaultCreateColumns;
+
+  var dataCreator = processData ?? function (_ref3) {
+    var d = _ref3.data;
+    return d;
+  };
+
   var columns = (0, _react.useMemo)(function () {
-    return createColumns({
+    return columnCreator({
       gridField: gridField,
       cellRenderer: cellRenderer
     });
-  }, [gridField, cellRenderer]);
+  }, [gridField, cellRenderer, columnCreator]);
   var data = (0, _react.useMemo)(function () {
-    return (gridResult?.row || []).map(_utils.getRowAsAnObject);
+    return dataCreator({
+      data: (gridResult?.row || []).map(_utils.getRowAsAnObject)
+    });
   }, [gridResult.row]);
   var hasUnkownTotalRecords = (0, _react.useMemo)(function () {
     return (gridResult?.records ?? '').includes('+');
   }, [gridResult]);
-  var totalRecords = +(gridResult?.records ?? '').replace('+', '');
+  var recordsNumber = +(gridResult?.records ?? '').replace('+', '');
+  var totalRecords = recordsNumber <= rowsPerPage ? data.length : recordsNumber;
   var resetFilters = (0, _react.useMemo)(function () {
     return (initialFilters || []).map(function (filter) {
       return {
@@ -216,6 +229,11 @@ var EAMGridContextProvider = function EAMGridContextProvider(props) {
   var toggleFilters = (0, _react.useCallback)(function () {
     return setDisableFilters(!disableFilters);
   }, [disableFilters, setDisableFilters]);
+  (0, _react.useEffect)(function () {
+    dataCallback && dataCallback({
+      data: data
+    });
+  }, [data]);
   (0, _react.useEffect)(function () {
     fetchData(_objectSpread({}, gridRequest, {
       gridFilter: processFilters(resetFilters),
