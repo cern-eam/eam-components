@@ -36,7 +36,8 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 var EAMGrid = function EAMGrid(props) {
   var getRowProps = props.getRowProps,
       getCellProps = props.getCellProps,
-      rowsPerPageOptionsComputed = props.rowsPerPageOptionsComputed;
+      rowsPerPageOptionsComputed = props.rowsPerPageOptionsComputed,
+      customFooterOptions = props.customFooterOptions;
 
   var _useContext = (0, _react.useContext)(_EAMGridContext.EAMGridContext),
       dataspies = _useContext.dataspies,
@@ -94,7 +95,7 @@ var EAMGrid = function EAMGrid(props) {
   })), /*#__PURE__*/_react["default"].createElement(_EAMGridFooter["default"], null, /*#__PURE__*/_react["default"].createElement(_core.Box, {
     flex: "1",
     display: "flex"
-  }, /*#__PURE__*/_react["default"].createElement(_reactBlockUi["default"], {
+  }, customFooterOptions ? customFooterOptions() : /*#__PURE__*/_react["default"].createElement(_reactBlockUi["default"], {
     tag: "div",
     blocking: loadingExportToCSV,
     style: {

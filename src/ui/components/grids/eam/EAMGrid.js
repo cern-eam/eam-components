@@ -15,6 +15,7 @@ const EAMGrid = (props) => {
         getRowProps,
         getCellProps,
         rowsPerPageOptionsComputed,
+        customFooterOptions,
     } = props;
     const {
         dataspies,
@@ -62,16 +63,23 @@ const EAMGrid = (props) => {
             </BlockUi>
             <EAMGridFooter>
                 <Box flex="1" display="flex">
-                    <BlockUi
-                        tag="div"
-                        blocking={loadingExportToCSV}
-                        style={{ minHeight: "auto" }}
-                    >
-                        <Button
-                            variant="outlined"
-                            size="small"
-                            onClick={handleExportToCSV}>Export to CSV</Button>
-                    </BlockUi>
+                    {customFooterOptions ? (
+                        customFooterOptions()
+                    ) : (
+                        <BlockUi
+                            tag="div"
+                            blocking={loadingExportToCSV}
+                            style={{ minHeight: "auto" }}
+                        >
+                            <Button
+                                variant="outlined"
+                                size="small"
+                                onClick={handleExportToCSV}
+                            >
+                                Export to CSV
+                            </Button>
+                        </BlockUi>
+                    )}
                 </Box>
                 <EAMGridPagination
                     labelRowsPerPage={"Per Page"}
