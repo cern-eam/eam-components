@@ -1,24 +1,3 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _react = _interopRequireDefault(require("react"));
-
-var _icons = require("@material-ui/icons");
-
-var _core = require("@material-ui/core");
-
-var _eamgrid = _interopRequireDefault(require("../eamgrid"));
-
-var _uiActions = require("../actions/uiActions");
-
-var _propTypes = _interopRequireDefault(require("prop-types"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -33,14 +12,20 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+import React from 'react';
+import { Search } from '@material-ui/icons';
+import { Dialog, DialogContent, withStyles } from '@material-ui/core';
+import EAMGrid from '../eamgrid';
+import { handleError } from '../actions/uiActions';
+import PropTypes from 'prop-types';
 var styles = {
   root: {
     padding: 0,
@@ -155,14 +140,14 @@ var EAMLookup = /*#__PURE__*/function (_React$Component) {
       } //Render component normally
 
 
-      return /*#__PURE__*/_react["default"].createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         style: {
           position: "relative"
         }
-      }, this.props.children, /*#__PURE__*/_react["default"].createElement(_icons.Search, {
+      }, this.props.children, /*#__PURE__*/React.createElement(Search, {
         style: this.iconButtonStyle,
         onClick: this.openDialog
-      }), /*#__PURE__*/_react["default"].createElement(_core.Dialog, {
+      }), /*#__PURE__*/React.createElement(Dialog, {
         open: this.state.open,
         onClose: this.closeDialog,
         "aria-labelledby": "alert-dialog-title",
@@ -170,16 +155,16 @@ var EAMLookup = /*#__PURE__*/function (_React$Component) {
         height: 500,
         maxWidth: 'md',
         classes: this.props.classes
-      }, /*#__PURE__*/_react["default"].createElement(_core.DialogContent, {
+      }, /*#__PURE__*/React.createElement(DialogContent, {
         classes: this.props.classes
-      }, /*#__PURE__*/_react["default"].createElement("div", {
+      }, /*#__PURE__*/React.createElement("div", {
         style: {
           height: "85vh",
           maxHeight: 650,
           marginBottom: -30,
           overflowY: "hidden"
         }
-      }, /*#__PURE__*/_react["default"].createElement(_eamgrid["default"], {
+      }, /*#__PURE__*/React.createElement(EAMGrid, {
         gridId: this.props.gridId,
         autorun: true,
         gridRequestAdapter: this.props.gridRequestAdapter,
@@ -188,22 +173,19 @@ var EAMLookup = /*#__PURE__*/function (_React$Component) {
           return _this2.grid = ref;
         },
         cache: false,
-        handleError: _uiActions.handleError,
+        handleError: handleError,
         filterVisible: this.props.filterVisible
       })))));
     }
   }]);
 
   return EAMLookup;
-}(_react["default"].Component);
+}(React.Component);
 
 EAMLookup.propTypes = {
-  filterVisible: _propTypes["default"].bool
+  filterVisible: PropTypes.bool
 };
 EAMLookup.defaultProps = {
   filterVisible: true
 };
-
-var _default = (0, _core.withStyles)(styles)(EAMLookup);
-
-exports["default"] = _default;
+export default withStyles(styles)(EAMLookup);

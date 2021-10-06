@@ -1,24 +1,9 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _react = _interopRequireDefault(require("react"));
-
-var _FormControl = _interopRequireDefault(require("@material-ui/core/FormControl"));
-
-var _Select = _interopRequireDefault(require("@material-ui/core/Select"));
-
-var _MenuItem = _interopRequireDefault(require("@material-ui/core/MenuItem"));
-
-var _ChecklistFieldCheckbox = _interopRequireDefault(require("./ChecklistFieldCheckbox"));
-
-var _styles = require("@material-ui/core/styles");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
+import React from 'react';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import ChecklistFieldCheckbox from './ChecklistFieldCheckbox';
+import { withStyles } from '@material-ui/core/styles';
 var style = {
   root: {
     margin: 5,
@@ -47,12 +32,12 @@ var ChecklistFieldFinding = function ChecklistFieldFinding(props) {
       classes = props.classes,
       disabled = props.disabled;
   var dropdown = props.dropdown === undefined ? true : props.dropdown;
-  if (dropdown) return /*#__PURE__*/_react["default"].createElement(_FormControl["default"], {
+  if (dropdown) return /*#__PURE__*/React.createElement(FormControl, {
     disabled: disabled,
     classes: {
       root: classes.root
     }
-  }, /*#__PURE__*/_react["default"].createElement(_Select["default"], {
+  }, /*#__PURE__*/React.createElement(Select, {
     classes: {
       root: classes.selectRoot,
       select: classes.select,
@@ -64,15 +49,15 @@ var ChecklistFieldFinding = function ChecklistFieldFinding(props) {
       return _handleChange(event.target.value);
     },
     disabled: disabled
-  }, /*#__PURE__*/_react["default"].createElement(_MenuItem["default"], {
+  }, /*#__PURE__*/React.createElement(MenuItem, {
     value: null
   }, "\u200B"), possibleFindings.map(function (finding) {
-    return /*#__PURE__*/_react["default"].createElement(_MenuItem["default"], {
+    return /*#__PURE__*/React.createElement(MenuItem, {
       key: finding.code,
       value: finding.code
     }, finding.desc);
   })));else return possibleFindings.map(function (findingElement) {
-    return /*#__PURE__*/_react["default"].createElement(_ChecklistFieldCheckbox["default"], {
+    return /*#__PURE__*/React.createElement(ChecklistFieldCheckbox, {
       code: findingElement.code,
       desc: findingElement.desc,
       checked: finding === findingElement.code,
@@ -85,6 +70,4 @@ var ChecklistFieldFinding = function ChecklistFieldFinding(props) {
   });
 };
 
-var _default = (0, _styles.withStyles)(style)(ChecklistFieldFinding);
-
-exports["default"] = _default;
+export default withStyles(style)(ChecklistFieldFinding);

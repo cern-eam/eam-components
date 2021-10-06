@@ -1,23 +1,12 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _react = _interopRequireDefault(require("react"));
-
-var _GridWS = _interopRequireDefault(require("../eamgrid/lib/GridWS"));
-
-var _EAMTableDataAdapter = _interopRequireDefault(require("./EAMTableDataAdapter"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+import React from "react";
+import GridWS from "../eamgrid/lib/GridWS";
+import EAMTableDataAdapter from "./EAMTableDataAdapter";
 
 var EAMTableGridRequestAdapter = function EAMTableGridRequestAdapter(props) {
   var gridRequest = props.gridRequest,
@@ -31,13 +20,13 @@ var EAMTableGridRequestAdapter = function EAMTableGridRequestAdapter(props) {
     return getGridFieldsColumns((responseBody.data || {}).gridField, headers);
   };
 
-  return /*#__PURE__*/_react["default"].createElement(_EAMTableDataAdapter["default"], {
+  return /*#__PURE__*/React.createElement(EAMTableDataAdapter, {
     fetchData: function _callee() {
       return regeneratorRuntime.async(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              return _context.abrupt("return", _GridWS["default"].getGridData(gridRequest));
+              return _context.abrupt("return", GridWS.getGridData(gridRequest));
 
             case 1:
             case "end":
@@ -53,8 +42,7 @@ var EAMTableGridRequestAdapter = function EAMTableGridRequestAdapter(props) {
   });
 };
 
-var _default = EAMTableGridRequestAdapter;
-exports["default"] = _default;
+export default EAMTableGridRequestAdapter;
 
 var flattenGridRow = function flattenGridRow(row) {
   return row.map(function (row) {

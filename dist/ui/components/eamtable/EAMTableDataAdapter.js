@@ -1,14 +1,3 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _react = _interopRequireDefault(require("react"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -17,41 +6,43 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+import React from 'react';
 
 var EAMTableDataAdapter = function EAMTableDataAdapter(props) {
   var fetchData = props.fetchData,
       convertRowData = props.convertRowData,
       convertColumnMetadata = props.convertColumnMetadata;
 
-  var _React$useState = _react["default"].useState(true),
+  var _React$useState = React.useState(true),
       _React$useState2 = _slicedToArray(_React$useState, 2),
       loading = _React$useState2[0],
       setLoading = _React$useState2[1];
 
-  var _React$useState3 = _react["default"].useState(true),
+  var _React$useState3 = React.useState(true),
       _React$useState4 = _slicedToArray(_React$useState3, 2),
       mounted = _React$useState4[0],
       setMounted = _React$useState4[1];
 
-  var _React$useState5 = _react["default"].useState(false),
+  var _React$useState5 = React.useState(false),
       _React$useState6 = _slicedToArray(_React$useState5, 2),
       requestError = _React$useState6[0],
       setRequestError = _React$useState6[1];
 
-  var _React$useState7 = _react["default"].useState([]),
+  var _React$useState7 = React.useState([]),
       _React$useState8 = _slicedToArray(_React$useState7, 2),
       rows = _React$useState8[0],
       setRows = _React$useState8[1];
 
-  var _React$useState9 = _react["default"].useState([]),
+  var _React$useState9 = React.useState([]),
       _React$useState10 = _slicedToArray(_React$useState9, 2),
       columnsMetadata = _React$useState10[0],
       setColumnsMetadata = _React$useState10[1];
 
-  _react["default"].useEffect(function () {
+  React.useEffect(function () {
     (function _callee() {
       var response, responseBody;
       return regeneratorRuntime.async(function _callee$(_context) {
@@ -99,7 +90,6 @@ var EAMTableDataAdapter = function EAMTableDataAdapter(props) {
       return setMounted(false);
     };
   }, []);
-
   var context = {
     loading: loading,
     requestError: requestError,
@@ -109,5 +99,4 @@ var EAMTableDataAdapter = function EAMTableDataAdapter(props) {
   return props.children(context);
 };
 
-var _default = EAMTableDataAdapter;
-exports["default"] = _default;
+export default EAMTableDataAdapter;

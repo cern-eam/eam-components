@@ -1,41 +1,8 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = exports.withFullscreen = void 0;
-
-var _react = _interopRequireWildcard(require("react"));
-
-var _ExpandMore = _interopRequireDefault(require("@material-ui/icons/ExpandMore"));
-
-var _Accordion = _interopRequireDefault(require("@material-ui/core/Accordion"));
-
-var _AccordionDetails = _interopRequireDefault(require("@material-ui/core/AccordionDetails"));
-
-var _AccordionSummary = _interopRequireDefault(require("@material-ui/core/AccordionSummary"));
-
-var _Icon = _interopRequireDefault(require("@material-ui/core/Icon"));
-
-var _IconButton = _interopRequireDefault(require("@material-ui/core/IconButton"));
-
-var _OpenInNew = _interopRequireDefault(require("mdi-material-ui/OpenInNew"));
-
-var _Fullscreen = _interopRequireDefault(require("@material-ui/icons/Fullscreen"));
-
-var _mdiMaterialUi = require("mdi-material-ui");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
@@ -53,13 +20,24 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+import React, { Component } from 'react';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import FontIcon from '@material-ui/core/Icon';
+import IconButton from '@material-ui/core/IconButton';
+import OpenInNewIcon from 'mdi-material-ui/OpenInNew';
+import Fullscreen from '@material-ui/icons/Fullscreen';
+import { FullscreenExit } from 'mdi-material-ui';
 
 var EISPanel = /*#__PURE__*/function (_Component) {
   _inherits(EISPanel, _Component);
@@ -126,30 +104,30 @@ var EISPanel = /*#__PURE__*/function (_Component) {
     key: "render",
     value: function render() {
       var linkIcon = this.props.icon;
-      return /*#__PURE__*/_react["default"].createElement(_Accordion["default"], _extends({
+      return /*#__PURE__*/React.createElement(Accordion, _extends({
         defaultExpanded: true,
         expanded: this.props.alwaysExpanded ? true : this.state.panelExpanded,
         TransitionProps: {
           timeout: 300
         },
         onChange: this._onPanelChange
-      }, this.props.ExpansionPanelProps), /*#__PURE__*/_react["default"].createElement(_AccordionSummary["default"], {
-        expandIcon: this.props.alwaysExpanded ? undefined : /*#__PURE__*/_react["default"].createElement(_ExpandMore["default"], null),
+      }, this.props.ExpansionPanelProps), /*#__PURE__*/React.createElement(AccordionSummary, {
+        expandIcon: this.props.alwaysExpanded ? undefined : /*#__PURE__*/React.createElement(ExpandMoreIcon, null),
         style: this.summaryStyle
-      }, /*#__PURE__*/_react["default"].createElement("div", {
+      }, /*#__PURE__*/React.createElement("div", {
         style: this.headingStyle
-      }, this.props.headingIcon && /*#__PURE__*/_react["default"].createElement(_Icon["default"], {
+      }, this.props.headingIcon && /*#__PURE__*/React.createElement(FontIcon, {
         style: this.headingIconStyle,
         className: 'fa ' + this.props.headingIcon
-      }), /*#__PURE__*/_react["default"].createElement("div", null, this.props.heading), this.props.link && /*#__PURE__*/_react["default"].createElement(_IconButton["default"], {
+      }), /*#__PURE__*/React.createElement("div", null, this.props.heading), this.props.link && /*#__PURE__*/React.createElement(IconButton, {
         onClick: this.linkClickHandler.bind(this),
         style: {
           height: 'auto',
           width: 35
         }
-      }, /*#__PURE__*/_react["default"].createElement("linkIcon", {
+      }, /*#__PURE__*/React.createElement("linkIcon", {
         style: this.linkIconStyle
-      })), this.props.headingBar)), /*#__PURE__*/_react["default"].createElement(_AccordionDetails["default"], {
+      })), this.props.headingBar)), /*#__PURE__*/React.createElement(AccordionDetails, {
         style: _objectSpread({}, this.props.detailsStyle)
       }, this.props.children));
     }
@@ -170,36 +148,33 @@ var EISPanel = /*#__PURE__*/function (_Component) {
   }]);
 
   return EISPanel;
-}(_react.Component);
+}(Component);
 
-var withFullscreen = function withFullscreen(props) {
+export var withFullscreen = function withFullscreen(props) {
   return function (Component) {
     var isOpen = props.isOpen,
         onFullscreenOpen = props.onFullscreenOpen,
         onFullscreenClose = props.onFullscreenClose;
     return function (props) {
-      return /*#__PURE__*/_react["default"].createElement(Component, _extends({
-        headingBar: isOpen ? /*#__PURE__*/_react["default"].createElement(_IconButton["default"], {
+      return /*#__PURE__*/React.createElement(Component, _extends({
+        headingBar: isOpen ? /*#__PURE__*/React.createElement(IconButton, {
           onClick: function onClick(e) {
             e.stopPropagation();
             onFullscreenOpen();
           }
-        }, /*#__PURE__*/_react["default"].createElement(_Fullscreen["default"], null)) : /*#__PURE__*/_react["default"].createElement(_IconButton["default"], {
+        }, /*#__PURE__*/React.createElement(Fullscreen, null)) : /*#__PURE__*/React.createElement(IconButton, {
           onClick: function onClick(e) {
             e.stopPropagation();
             onFullscreenClose();
           }
-        }, /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.FullscreenExit, null))
+        }, /*#__PURE__*/React.createElement(FullscreenExit, null))
       }, props));
     };
   };
 };
-
-exports.withFullscreen = withFullscreen;
 EISPanel.defaultProps = {
   alwaysExpanded: false,
   onPanelChange: undefined,
-  icon: /*#__PURE__*/_react["default"].createElement(_OpenInNew["default"], null)
+  icon: /*#__PURE__*/React.createElement(OpenInNewIcon, null)
 };
-var _default = EISPanel;
-exports["default"] = _default;
+export default EISPanel;

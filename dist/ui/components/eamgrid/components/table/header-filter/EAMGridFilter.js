@@ -1,39 +1,4 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _react = _interopRequireWildcard(require("react"));
-
-var _TextField = _interopRequireDefault(require("@material-ui/core/TextField"));
-
-var _EAMGridFilterTypeMenu = _interopRequireDefault(require("./EAMGridFilterTypeMenu"));
-
-var _index = require("@material-ui/core/styles/index");
-
-var _pickers = require("@material-ui/pickers");
-
-var _dateFns = _interopRequireDefault(require("@date-io/date-fns"));
-
-var _core = require("@material-ui/core");
-
-var _dateFns2 = require("date-fns");
-
-var _EAMGridFilterInput = _interopRequireDefault(require("./EAMGridFilterInput"));
-
-var _Constants = _interopRequireDefault(require("../../../../../../enums/Constants"));
-
-var _Tooltip = _interopRequireDefault(require("@material-ui/core/Tooltip"));
-
-var _ClickAwayListener = _interopRequireDefault(require("@material-ui/core/ClickAwayListener"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
@@ -43,11 +8,9 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -61,14 +24,26 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+import React, { Component } from 'react';
+import TextField from '@material-ui/core/TextField';
+import DataGridFilterTypeMenu from './EAMGridFilterTypeMenu';
+import { withStyles } from "@material-ui/core/styles/index";
+import { DatePicker, DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
+import { Icon } from '@material-ui/core';
+import { format } from 'date-fns';
+import EAMGridFilterInput from './EAMGridFilterInput';
+import Constants from '../../../../../../enums/Constants';
+import Tooltip from '@material-ui/core/Tooltip';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 var styles = {
   filterCell: {
     display: "flex",
@@ -148,11 +123,11 @@ var DataGridTableFilter = /*#__PURE__*/function (_Component) {
     };
 
     _this._readDate = function (date) {
-      return date ? (0, _dateFns2.format)(date, _Constants["default"].DATE_FORMAT_VALUE) : '';
+      return date ? format(date, Constants.DATE_FORMAT_VALUE) : '';
     };
 
     _this._readDateTime = function (date) {
-      return date ? (0, _dateFns2.format)(date, _Constants["default"].DATETIME_FORMAT_VALUE) : '';
+      return date ? format(date, Constants.DATETIME_FORMAT_VALUE) : '';
     };
 
     _this.state = {
@@ -193,21 +168,21 @@ var DataGridTableFilter = /*#__PURE__*/function (_Component) {
       var filterValue = this.state.filterValue;
       var dataTypes = ['VARCHAR', 'MIXVARCHAR', 'DECIMAL', 'NUMBER', 'DATETIME', 'DATE'];
       var tooltips = {
-        'DATE': _Constants["default"].DATE_FORMAT_DISPLAY.toUpperCase(),
-        'DATETIME': _Constants["default"].DATETIME_FORMAT_DISPLAY.toUpperCase()
+        'DATE': Constants.DATE_FORMAT_DISPLAY.toUpperCase(),
+        'DATETIME': Constants.DATETIME_FORMAT_DISPLAY.toUpperCase()
       };
-      return /*#__PURE__*/_react["default"].createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         className: classes.filterCell
-      }, /*#__PURE__*/_react["default"].createElement(_EAMGridFilterTypeMenu["default"], {
+      }, /*#__PURE__*/React.createElement(DataGridFilterTypeMenu, {
         filter: filter,
         onChange: this._onChange.bind(this),
         dataType: dataType
-      }), dataType && dataTypes.includes(dataType) && /*#__PURE__*/_react["default"].createElement(TooltipWrapper, {
+      }), dataType && dataTypes.includes(dataType) && /*#__PURE__*/React.createElement(TooltipWrapper, {
         text: tooltips[dataType],
         enabled: tooltips[dataType]
       }, function (_ref) {
         var openTooltip = _ref.openTooltip;
-        return /*#__PURE__*/_react["default"].createElement(_EAMGridFilterInput["default"], {
+        return /*#__PURE__*/React.createElement(EAMGridFilterInput, {
           onClick: openTooltip,
           disabled: _this2.state.inputDisabled,
           width: width,
@@ -221,22 +196,22 @@ var DataGridTableFilter = /*#__PURE__*/function (_Component) {
   }]);
 
   return DataGridTableFilter;
-}(_react.Component);
+}(Component);
 
-var CustomTooltip = (0, _index.withStyles)(function () {
+var CustomTooltip = withStyles(function () {
   return {
     tooltip: {
       fontSize: 'small'
     }
   };
-})(_Tooltip["default"]);
+})(Tooltip);
 
 var TooltipWrapper = function TooltipWrapper(props) {
   var children = props.children,
       text = props.text,
       enabled = props.enabled;
 
-  var _React$useState = _react["default"].useState(false),
+  var _React$useState = React.useState(false),
       _React$useState2 = _slicedToArray(_React$useState, 2),
       open = _React$useState2[0],
       setOpen = _React$useState2[1];
@@ -249,9 +224,9 @@ var TooltipWrapper = function TooltipWrapper(props) {
     return setOpen(true);
   };
 
-  return enabled ? /*#__PURE__*/_react["default"].createElement(_ClickAwayListener["default"], {
+  return enabled ? /*#__PURE__*/React.createElement(ClickAwayListener, {
     onClickAway: closeTooltip
-  }, /*#__PURE__*/_react["default"].createElement(CustomTooltip, {
+  }, /*#__PURE__*/React.createElement(CustomTooltip, {
     onClose: closeTooltip,
     open: open,
     disableFocusListener: true,
@@ -264,6 +239,4 @@ var TooltipWrapper = function TooltipWrapper(props) {
   }))) : children({});
 };
 
-var _default = (0, _index.withStyles)(styles)(DataGridTableFilter);
-
-exports["default"] = _default;
+export default withStyles(styles)(DataGridTableFilter);

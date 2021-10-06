@@ -1,33 +1,6 @@
-"use strict";
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _react = _interopRequireWildcard(require("react"));
-
-var _propTypes = _interopRequireDefault(require("prop-types"));
-
-var _reactSelect = _interopRequireDefault(require("react-select"));
-
-var _styles = require("@material-ui/core/styles");
-
-var _EAMBaseInput2 = _interopRequireWildcard(require("./EAMBaseInput"));
-
-var _EAMFormLabel = _interopRequireDefault(require("./EAMFormLabel"));
-
-var _classnames = _interopRequireDefault(require("classnames"));
-
-var _index = _interopRequireDefault(require("axios/index"));
-
-require("react-select/dist/react-select.css");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+var _excluded = ["elementInfo", "classes", "values", "value", "label", "labelStyle", "loadOptions", "valueKey", "columnsCodes", "columnsWidth", "validate"];
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
@@ -35,13 +8,11 @@ function _objectWithoutProperties(source, excluded) { if (source == null) return
 
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -55,13 +26,23 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Select from 'react-select';
+import { withStyles } from '@material-ui/core/styles';
+import EAMBaseInput, { formStyles } from "./EAMBaseInput";
+import EAMFormLabel from "./EAMFormLabel";
+import classNames from 'classnames';
+import axios from "axios/index";
+import 'react-select/dist/react-select.css';
 
 var autocompleteOptionStyles = function autocompleteOptionStyles() {
   return {
@@ -99,13 +80,13 @@ var AutocompleteOption = /*#__PURE__*/function (_Component) {
           classes = _this$props.classes,
           columnsCodes = _this$props.columnsCodes,
           columnsWidth = _this$props.columnsWidth;
-      return /*#__PURE__*/_react["default"].createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         className: this.props.className,
         title: this.props.option.code
-      }, /*#__PURE__*/_react["default"].createElement("div", {
+      }, /*#__PURE__*/React.createElement("div", {
         className: classes.rowMenuDiv
       }, columnsCodes.map(function (columnCode, index) {
-        return /*#__PURE__*/_react["default"].createElement("div", {
+        return /*#__PURE__*/React.createElement("div", {
           key: index,
           className: classes.cell,
           style: {
@@ -117,19 +98,19 @@ var AutocompleteOption = /*#__PURE__*/function (_Component) {
   }]);
 
   return AutocompleteOption;
-}(_react.Component);
+}(Component);
 
 AutocompleteOption.propTypes = {
-  children: _propTypes["default"].node,
-  className: _propTypes["default"].string,
-  isDisabled: _propTypes["default"].bool,
-  isFocused: _propTypes["default"].bool,
-  isSelected: _propTypes["default"].bool,
-  onFocus: _propTypes["default"].func,
-  onSelect: _propTypes["default"].func,
-  option: _propTypes["default"].object.isRequired
+  children: PropTypes.node,
+  className: PropTypes.string,
+  isDisabled: PropTypes.bool,
+  isFocused: PropTypes.bool,
+  isSelected: PropTypes.bool,
+  onFocus: PropTypes.func,
+  onSelect: PropTypes.func,
+  option: PropTypes.object.isRequired
 };
-AutocompleteOption = (0, _styles.withStyles)(autocompleteOptionStyles)(AutocompleteOption);
+AutocompleteOption = withStyles(autocompleteOptionStyles)(AutocompleteOption);
 
 var autocompleteValueStyles = function autocompleteValueStyles() {
   return {
@@ -181,33 +162,33 @@ var AutocompleteValue = /*#__PURE__*/function (_Component2) {
     key: "render",
     value: function render() {
       var classes = this.props.classes;
-      return /*#__PURE__*/_react["default"].createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         className: "Select-value",
         title: this.props.value.code
-      }, /*#__PURE__*/_react["default"].createElement("span", {
+      }, /*#__PURE__*/React.createElement("span", {
         className: "Select-value-icon",
         "aria-hidden": "true",
         onClick: this.removeOption
-      }, "x"), /*#__PURE__*/_react["default"].createElement("span", {
+      }, "x"), /*#__PURE__*/React.createElement("span", {
         className: "Select-value-label"
-      }, /*#__PURE__*/_react["default"].createElement("div", {
+      }, /*#__PURE__*/React.createElement("div", {
         className: classes.rowMenuDiv
-      }, /*#__PURE__*/_react["default"].createElement("div", {
-        className: (0, _classnames["default"])(classes.cell, classes.cellCode)
-      }, this.props.value.code), this.props.value.desc && /*#__PURE__*/_react["default"].createElement("div", {
-        className: (0, _classnames["default"])(classes.cell, classes.cellDesc)
+      }, /*#__PURE__*/React.createElement("div", {
+        className: classNames(classes.cell, classes.cellCode)
+      }, this.props.value.code), this.props.value.desc && /*#__PURE__*/React.createElement("div", {
+        className: classNames(classes.cell, classes.cellDesc)
       }, "- ", this.props.value.desc))));
     }
   }]);
 
   return AutocompleteValue;
-}(_react.Component);
+}(Component);
 
 AutocompleteValue.propTypes = {
-  children: _propTypes["default"].node,
-  value: _propTypes["default"].object
+  children: PropTypes.node,
+  value: PropTypes.object
 };
-AutocompleteValue = (0, _styles.withStyles)(autocompleteValueStyles)(AutocompleteValue);
+AutocompleteValue = withStyles(autocompleteValueStyles)(AutocompleteValue);
 
 var AutocompleteValueSingle = /*#__PURE__*/function (_Component3) {
   _inherits(AutocompleteValueSingle, _Component3);
@@ -224,29 +205,29 @@ var AutocompleteValueSingle = /*#__PURE__*/function (_Component3) {
     key: "render",
     value: function render() {
       var classes = this.props.classes;
-      return /*#__PURE__*/_react["default"].createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         className: "Select-value",
         title: this.props.value.code
-      }, /*#__PURE__*/_react["default"].createElement("span", {
+      }, /*#__PURE__*/React.createElement("span", {
         className: "Select-value-label"
-      }, /*#__PURE__*/_react["default"].createElement("div", {
+      }, /*#__PURE__*/React.createElement("div", {
         className: classes.rowMenuDiv
-      }, /*#__PURE__*/_react["default"].createElement("div", {
-        className: (0, _classnames["default"])(classes.cell, classes.cellCode)
-      }, this.props.value.code), this.props.value.desc && /*#__PURE__*/_react["default"].createElement("div", {
-        className: (0, _classnames["default"])(classes.cell, classes.cellDesc)
+      }, /*#__PURE__*/React.createElement("div", {
+        className: classNames(classes.cell, classes.cellCode)
+      }, this.props.value.code), this.props.value.desc && /*#__PURE__*/React.createElement("div", {
+        className: classNames(classes.cell, classes.cellDesc)
       }, "- ", this.props.value.desc))));
     }
   }]);
 
   return AutocompleteValueSingle;
-}(_react.Component);
+}(Component);
 
 AutocompleteValueSingle.propTypes = {
-  children: _propTypes["default"].node,
-  value: _propTypes["default"].object
+  children: PropTypes.node,
+  value: PropTypes.object
 };
-AutocompleteValueSingle = (0, _styles.withStyles)(autocompleteValueStyles)(AutocompleteValueSingle);
+AutocompleteValueSingle = withStyles(autocompleteValueStyles)(AutocompleteValueSingle);
 /**
  * Use the following property to override the width style
  * menuContainerStyle={{width: '400px'}}
@@ -338,7 +319,7 @@ var EAMAutocomplete = /*#__PURE__*/function (_EAMBaseInput) {
           _this3.cancelSource.cancel();
         }
 
-        _this3.cancelSource = _index["default"].CancelToken.source();
+        _this3.cancelSource = axios.CancelToken.source();
         return autocompleteFunction(code, {
           cancelToken: _this3.cancelSource.token
         });
@@ -440,7 +421,7 @@ var EAMAutocomplete = /*#__PURE__*/function (_EAMBaseInput) {
       var _this4 = this;
 
       if (this.isHidden()) {
-        return /*#__PURE__*/_react["default"].createElement("div", null);
+        return /*#__PURE__*/React.createElement("div", null);
       }
 
       var _this$props2 = this.props,
@@ -455,18 +436,18 @@ var EAMAutocomplete = /*#__PURE__*/function (_EAMBaseInput) {
           columnsCodes = _this$props2.columnsCodes,
           columnsWidth = _this$props2.columnsWidth,
           validate = _this$props2.validate,
-          otherProps = _objectWithoutProperties(_this$props2, ["elementInfo", "classes", "values", "value", "label", "labelStyle", "loadOptions", "valueKey", "columnsCodes", "columnsWidth", "validate"]);
+          otherProps = _objectWithoutProperties(_this$props2, _excluded);
 
-      var AsyncComponent = this.props.creatable ? _reactSelect["default"].AsyncCreatable : _reactSelect["default"].Async;
-      var selectClasses = this.props.selectStyle ? (0, _classnames["default"])(classes.select, this.props.selectStyle) : classes.select;
-      return /*#__PURE__*/_react["default"].createElement("div", {
+      var AsyncComponent = this.props.creatable ? Select.AsyncCreatable : Select.Async;
+      var selectClasses = this.props.selectStyle ? classNames(classes.select, this.props.selectStyle) : classes.select;
+      return /*#__PURE__*/React.createElement("div", {
         className: classes.fieldContainer
-      }, /*#__PURE__*/_react["default"].createElement(_EAMFormLabel["default"], {
+      }, /*#__PURE__*/React.createElement(EAMFormLabel, {
         required: this.isRequired(),
         label: label || elementInfo && elementInfo.text,
         labelStyle: labelStyle,
         error: this.state.error
-      }), /*#__PURE__*/_react["default"].createElement(AsyncComponent, _extends({
+      }), /*#__PURE__*/React.createElement(AsyncComponent, _extends({
         ref: function ref(_ref) {
           return _this4.asyncComponent = _ref;
         },
@@ -483,7 +464,7 @@ var EAMAutocomplete = /*#__PURE__*/function (_EAMBaseInput) {
         },
         backspaceRemoves: this.props.backspaceRemoves,
         optionRenderer: function optionRenderer(option) {
-          return /*#__PURE__*/_react["default"].createElement(AutocompleteOption, {
+          return /*#__PURE__*/React.createElement(AutocompleteOption, {
             option: option,
             columnsCodes: columnsCodes,
             columnsWidth: columnsWidth
@@ -496,7 +477,7 @@ var EAMAutocomplete = /*#__PURE__*/function (_EAMBaseInput) {
         searchPromptText: this.props.searchPromptText,
         promptTextCreator: this.props.promptTextCreator,
         arrowRenderer: function arrowRenderer() {
-          return /*#__PURE__*/_react["default"].createElement("span", null);
+          return /*#__PURE__*/React.createElement("span", null);
         },
         filterOptions: function filterOptions(options, label) {
           return options.filter(function (option) {
@@ -509,13 +490,13 @@ var EAMAutocomplete = /*#__PURE__*/function (_EAMBaseInput) {
   }]);
 
   return EAMAutocomplete;
-}(_EAMBaseInput2["default"]);
+}(EAMBaseInput);
 
 EAMAutocomplete.propTypes = {
-  columnsCodes: _propTypes["default"].array,
-  columnsWidth: _propTypes["default"].array,
-  autoSelectSingleElement: _propTypes["default"].bool,
-  backspaceRemoves: _propTypes["default"].bool
+  columnsCodes: PropTypes.array,
+  columnsWidth: PropTypes.array,
+  autoSelectSingleElement: PropTypes.bool,
+  backspaceRemoves: PropTypes.bool
 };
 EAMAutocomplete.defaultProps = {
   columnsCodes: ['code', 'desc'],
@@ -529,7 +510,4 @@ EAMAutocomplete.defaultProps = {
   backspaceRemoves: true,
   placeholder: ''
 };
-
-var _default = (0, _styles.withStyles)(_EAMBaseInput2.formStyles)(EAMAutocomplete);
-
-exports["default"] = _default;
+export default withStyles(formStyles)(EAMAutocomplete);

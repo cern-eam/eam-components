@@ -1,26 +1,3 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _react = _interopRequireDefault(require("react"));
-
-var _EDMSUtils = require("../utils/EDMSUtils");
-
-var _DescriptionStrip = _interopRequireDefault(require("./DescriptionStrip"));
-
-var _reactImageGallery = _interopRequireDefault(require("react-image-gallery"));
-
-require("./edmsgalleria.css");
-
-var _ChevronLeft = _interopRequireDefault(require("mdi-material-ui/ChevronLeft"));
-
-var _ChevronRight = _interopRequireDefault(require("mdi-material-ui/ChevronRight"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -35,13 +12,21 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+import React from 'react';
+import { getEDMSFileUrl, getEDMSFileThumbnailUrl } from '../utils/EDMSUtils';
+import DescriptionStrip from './DescriptionStrip';
+import ImageGallery from 'react-image-gallery';
+import './edmsgalleria.css';
+import ChevronLeft from 'mdi-material-ui/ChevronLeft';
+import ChevronRight from 'mdi-material-ui/ChevronRight';
 
 var EDMSGalleria = /*#__PURE__*/function (_React$Component) {
   _inherits(EDMSGalleria, _React$Component);
@@ -61,9 +46,9 @@ var EDMSGalleria = /*#__PURE__*/function (_React$Component) {
       return documentList.reduce(function (images, document) {
         return images.concat(document.files.map(function (file) {
           return {
-            original: (0, _EDMSUtils.getEDMSFileUrl)(file),
-            thumbnail: (0, _EDMSUtils.getEDMSFileUrl)(file),
-            description: (0, _DescriptionStrip["default"])(file)
+            original: getEDMSFileUrl(file),
+            thumbnail: getEDMSFileUrl(file),
+            description: DescriptionStrip(file)
           };
         }));
       }, []);
@@ -71,7 +56,7 @@ var EDMSGalleria = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "renderLeftNav",
     value: function renderLeftNav(onClick, disabled) {
-      return /*#__PURE__*/_react["default"].createElement(_ChevronLeft["default"], {
+      return /*#__PURE__*/React.createElement(ChevronLeft, {
         className: "image-gallery-left-nav",
         onClick: onClick
       });
@@ -79,7 +64,7 @@ var EDMSGalleria = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "renderRightNav",
     value: function renderRightNav(onClick, disabled) {
-      return /*#__PURE__*/_react["default"].createElement(_ChevronRight["default"], {
+      return /*#__PURE__*/React.createElement(ChevronRight, {
         className: "image-gallery-right-nav",
         onClick: onClick
       });
@@ -87,14 +72,14 @@ var EDMSGalleria = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      if (!this.props.documentList) return /*#__PURE__*/_react["default"].createElement("div", null);
+      if (!this.props.documentList) return /*#__PURE__*/React.createElement("div", null);
       var images = this.generateImagesList();
-      return /*#__PURE__*/_react["default"].createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         style: {
           width: "100%",
           marginTop: 0
         }
-      }, /*#__PURE__*/_react["default"].createElement(_reactImageGallery["default"], {
+      }, /*#__PURE__*/React.createElement(ImageGallery, {
         showPlayButton: false,
         showFullscreenButton: false,
         items: images,
@@ -105,6 +90,6 @@ var EDMSGalleria = /*#__PURE__*/function (_React$Component) {
   }]);
 
   return EDMSGalleria;
-}(_react["default"].Component);
+}(React.Component);
 
-exports["default"] = EDMSGalleria;
+export { EDMSGalleria as default };

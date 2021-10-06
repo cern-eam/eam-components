@@ -1,17 +1,4 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _axios = _interopRequireDefault(require("axios"));
-
-var _GridErrorTypes = _interopRequireDefault(require("./GridErrorTypes"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
@@ -23,10 +10,13 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+import axios from 'axios';
+import ErrorTypes from "./GridErrorTypes";
 /*
  * Default timeout is 20s.
  * This can be overidden with the config object
  */
+
 var DEFAULT_TIMEOUT = 20000;
 
 var AjaxGrid = /*#__PURE__*/function () {
@@ -36,15 +26,15 @@ var AjaxGrid = /*#__PURE__*/function () {
 
   _createClass(AjaxGrid, [{
     key: "get",
-
+    value:
     /**
      * Make a HTTP GET request
      */
-    value: function get(url) {
+    function get(url) {
       var _this = this;
 
       var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      return _axios["default"].get(url, _objectSpread({
+      return axios.get(url, _objectSpread({
         timeout: DEFAULT_TIMEOUT
       }, config)).then(function (response) {
         return _this._convertResponse(response);
@@ -62,7 +52,7 @@ var AjaxGrid = /*#__PURE__*/function () {
       var _this2 = this;
 
       var config = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-      return _axios["default"].post(url, data, config).then(function (response) {
+      return axios.post(url, data, config).then(function (response) {
         return _this2._convertResponse(response);
       })["catch"](function (error) {
         throw _this2._convertError(error);
@@ -78,7 +68,7 @@ var AjaxGrid = /*#__PURE__*/function () {
       var _this3 = this;
 
       var config = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-      return _axios["default"].put(url, data, config).then(function (response) {
+      return axios.put(url, data, config).then(function (response) {
         return _this3._convertResponse(response);
       })["catch"](function (error) {
         throw _this3._convertError(error);
@@ -94,7 +84,7 @@ var AjaxGrid = /*#__PURE__*/function () {
       var _this4 = this;
 
       var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      return _axios["default"]["delete"](url, config).then(function (response) {
+      return axios["delete"](url, config).then(function (response) {
         return _this4._convertResponse(response);
       })["catch"](function (error) {
         throw _this4._convertError(error);
@@ -125,15 +115,15 @@ var AjaxGrid = /*#__PURE__*/function () {
   }, {
     key: "_convertError",
     value: function _convertError(error) {
-      if (_axios["default"].isCancel(error)) {
+      if (axios.isCancel(error)) {
         return {
-          type: _GridErrorTypes["default"].REQUEST_CANCELLED
+          type: ErrorTypes.REQUEST_CANCELLED
         };
       }
 
       if (error.response) {
         return {
-          type: _GridErrorTypes["default"].SERVER_ERROR,
+          type: ErrorTypes.SERVER_ERROR,
           response: {
             status: error.response.status,
             body: error.response.data
@@ -141,11 +131,11 @@ var AjaxGrid = /*#__PURE__*/function () {
         };
       } else if (error.code === 'ECONNABORTED') {
         return {
-          type: _GridErrorTypes["default"].CONNECTION_ABORDED
+          type: ErrorTypes.CONNECTION_ABORDED
         };
       } else {
         return {
-          type: _GridErrorTypes["default"].NETWORK_ERROR
+          type: ErrorTypes.NETWORK_ERROR
         };
       }
     }
@@ -154,6 +144,4 @@ var AjaxGrid = /*#__PURE__*/function () {
   return AjaxGrid;
 }();
 
-var _default = new AjaxGrid();
-
-exports["default"] = _default;
+export default new AjaxGrid();

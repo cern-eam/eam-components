@@ -8,6 +8,7 @@
   },
   "author": "CERN EIS Dev Team",
   "license": "ISC",
+  "sideEffects": false,
   "dependencies": {
     "@babel/polyfill": "7.7.0",
     "@babel/runtime": "7.7.2",

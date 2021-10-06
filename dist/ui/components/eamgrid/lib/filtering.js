@@ -1,21 +1,10 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.getFilters = getFilters;
-exports.setFilter = setFilter;
-exports.clearFilters = clearFilters;
-exports.saveGridRequestInLocalStorage = saveGridRequestInLocalStorage;
-exports.loadGridRequestFromLocalStorage = loadGridRequestFromLocalStorage;
-
-var _tools = require("./tools");
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+import { findIndex } from './tools';
 
 function getDefaultFilterOperator(dataType) {
   switch (dataType) {
@@ -39,7 +28,7 @@ function getDefaultFilterOperator(dataType) {
   }
 }
 
-function getFilters() {
+export function getFilters() {
   return Object.values(this.filterMap);
 }
 /**
@@ -47,8 +36,7 @@ function getFilters() {
  * @param filter
  */
 
-
-function setFilter(filter, dataType) {
+export function setFilter(filter, dataType) {
   var newFilter;
   var oldFilter = this.filterMap[filter.fieldName];
 
@@ -66,8 +54,7 @@ function setFilter(filter, dataType) {
 
   this.filterMap[filter.fieldName] = newFilter;
 }
-
-function clearFilters(callback) {
+export function clearFilters(callback) {
   this.filterMap = {};
   this.setState(function (prevState) {
     return {
@@ -84,15 +71,13 @@ function clearFilters(callback) {
     }
   });
 }
-
-function saveGridRequestInLocalStorage() {
+export function saveGridRequestInLocalStorage() {
   // We use local storage unless the user explicitely ask not to
   if (this.props.useLocalStorage !== false) {
     localStorage.setItem("gridRequest".concat(this.props.gridId), JSON.stringify(this.state.gridRequest));
   }
 }
-
-function loadGridRequestFromLocalStorage() {
+export function loadGridRequestFromLocalStorage() {
   // We use local storage unless the user explicitely ask not to
   if (this.props.useLocalStorage !== false) {
     return localStorage.getItem("gridRequest".concat(this.props.gridId));

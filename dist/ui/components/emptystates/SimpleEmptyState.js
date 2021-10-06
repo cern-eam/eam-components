@@ -1,17 +1,6 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _react = _interopRequireDefault(require("react"));
-
-var _Info = _interopRequireDefault(require("@material-ui/icons/Info"));
-
-var _core = require("@material-ui/core");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+import React from 'react';
+import InfoIcon from '@material-ui/icons/Info';
+import { Typography, withStyles } from '@material-ui/core';
 
 var styles = function styles(theme) {
   return {
@@ -33,17 +22,15 @@ var SimpleEmptyState = function SimpleEmptyState(props) {
       style = props.style,
       iconStyle = props.iconStyle,
       classes = props.classes;
-  return /*#__PURE__*/_react["default"].createElement("div", {
+  return /*#__PURE__*/React.createElement("div", {
     className: classes.root,
     style: style
-  }, /*#__PURE__*/_react["default"].createElement(_Info["default"], {
+  }, /*#__PURE__*/React.createElement(InfoIcon, {
     className: classes.icon,
     style: iconStyle
-  }), /*#__PURE__*/_react["default"].createElement(_core.Typography, {
+  }), /*#__PURE__*/React.createElement(Typography, {
     variant: "caption"
   }, message));
 };
 
-var _default = (0, _core.withStyles)(styles)(SimpleEmptyState);
-
-exports["default"] = _default;
+export default withStyles(styles)(SimpleEmptyState);

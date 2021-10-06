@@ -1,33 +1,6 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _react = _interopRequireWildcard(require("react"));
-
-var _ChecklistItemInput = _interopRequireDefault(require("./ChecklistItemInput"));
-
-var _ChecklistItemNotes = _interopRequireDefault(require("./ChecklistItemNotes"));
-
-var _Collapse = _interopRequireDefault(require("@material-ui/core/Collapse"));
-
-var _ChecklistItemFollowUp = _interopRequireDefault(require("./ChecklistItemFollowUp"));
-
-var _ChecklistItemNotApplicableOptions = _interopRequireDefault(require("./ChecklistItemNotApplicableOptions"));
-
-var _WSChecklists = _interopRequireDefault(require("../../../tools/WSChecklists"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
@@ -45,13 +18,21 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+import React, { Component } from 'react';
+import ChecklistItemInput from './ChecklistItemInput';
+import ChecklistItemNotes from './ChecklistItemNotes';
+import Collapse from '@material-ui/core/Collapse';
+import ChecklistItemFollowUp from "./ChecklistItemFollowUp";
+import ChecklistItemNotApplicableOptions from './ChecklistItemNotApplicableOptions';
+import WSChecklists from '../../../tools/WSChecklists';
 
 var ChecklistItem = /*#__PURE__*/function (_Component) {
   _inherits(ChecklistItem, _Component);
@@ -133,7 +114,7 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       blocked: false,
       debounce: null
     };
-    _this.notes = _react["default"].createRef();
+    _this.notes = React.createRef();
     return _this;
   }
 
@@ -250,7 +231,7 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
           taskCode = _this$props.taskCode;
 
       if (checklistItem && checklistItem.notApplicableOptions === undefined) {
-        _WSChecklists["default"].getChecklistDefinition(taskCode, checklistItem.checklistDefinitionCode).then(function (response) {
+        WSChecklists.getChecklistDefinition(taskCode, checklistItem.checklistDefinitionCode).then(function (response) {
           _this3.setState({
             notApplicableOptions: response.body.data.notApplicableOptions
           });
@@ -274,8 +255,8 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
         return newProps;
       };
 
-      var createField = _ChecklistItemInput["default"].createField;
-      var _ChecklistItemInput$F = _ChecklistItemInput["default"].FIELD,
+      var createField = ChecklistItemInput.createField;
+      var _ChecklistItemInput$F = ChecklistItemInput.FIELD,
           CHECKBOX = _ChecklistItemInput$F.CHECKBOX,
           FINDING = _ChecklistItemInput$F.FINDING,
           NUMERIC = _ChecklistItemInput$F.NUMERIC;
@@ -286,7 +267,7 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
             code: "COMPLETED",
             desc: "Completed"
           })];
-          options.style = _ChecklistItemInput["default"].STYLE.SINGLE;
+          options.style = ChecklistItemInput.STYLE.SINGLE;
           break;
 
         case "02":
@@ -297,7 +278,7 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
             code: "NO",
             desc: "No"
           })];
-          options.style = _ChecklistItemInput["default"].STYLE.SAMELINE;
+          options.style = ChecklistItemInput.STYLE.SAMELINE;
           break;
 
         case "03":
@@ -351,7 +332,7 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
           }
 
           options.beforeOnChange = function (newProps, type, value) {
-            if (type === _ChecklistItemInput["default"].FIELD.CHECKBOX) {
+            if (type === ChecklistItemInput.FIELD.CHECKBOX) {
               delete newProps.finding;
             }
 
@@ -368,7 +349,7 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
             code: "POOR",
             desc: "Poor"
           })];
-          options.style = _ChecklistItemInput["default"].STYLE.SAMELINE;
+          options.style = ChecklistItemInput.STYLE.SAMELINE;
           break;
 
         case "09":
@@ -385,7 +366,7 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
             fields.push(createField(NUMERIC));
           }
 
-          options.style = _ChecklistItemInput["default"].STYLE.SAMELINE;
+          options.style = ChecklistItemInput.STYLE.SAMELINE;
           break;
 
         case "11":
@@ -399,10 +380,10 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
           })];
 
           if (checklistItem.type === "12") {
-            fields.push(createField(_ChecklistItemInput["default"].FIELD.NUMERIC));
+            fields.push(createField(ChecklistItemInput.FIELD.NUMERIC));
 
             options.beforeOnChange = function (newProps, type, value) {
-              if (type === _ChecklistItemInput["default"].FIELD.NUMERIC && newProps.result === null) {
+              if (type === ChecklistItemInput.FIELD.NUMERIC && newProps.result === null) {
                 newProps.result = "OK";
               }
 
@@ -410,12 +391,12 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
             };
           }
 
-          options.style = _ChecklistItemInput["default"].STYLE.SAMELINE;
+          options.style = ChecklistItemInput.STYLE.SAMELINE;
           break;
       }
 
-      if (fields === undefined) return /*#__PURE__*/_react["default"].createElement("div", null);
-      return /*#__PURE__*/_react["default"].createElement(_ChecklistItemInput["default"], {
+      if (fields === undefined) return /*#__PURE__*/React.createElement("div", null);
+      return /*#__PURE__*/React.createElement(ChecklistItemInput, {
         checklistItem: checklistItem,
         onChange: function onChange(value, onFail) {
           return _this4.onChange(value, onFail);
@@ -433,42 +414,42 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
 
       var checklistItem = this.props.checklistItem;
       var notApplicableOptions = this.state.notApplicableOptions;
-      return /*#__PURE__*/_react["default"].createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         style: this.containerStyle(this.state.blocked)
-      }, checklistItem.color ? /*#__PURE__*/_react["default"].createElement("div", {
+      }, checklistItem.color ? /*#__PURE__*/React.createElement("div", {
         style: this.colorStyle(checklistItem.color)
-      }) : null, /*#__PURE__*/_react["default"].createElement("div", {
+      }) : null, /*#__PURE__*/React.createElement("div", {
         style: this.getCheckListItemStyle(this.state.blocked)
-      }, /*#__PURE__*/_react["default"].createElement("div", {
+      }, /*#__PURE__*/React.createElement("div", {
         style: this.firstLine
-      }, /*#__PURE__*/_react["default"].createElement("div", {
+      }, /*#__PURE__*/React.createElement("div", {
         style: this.firstLineDesc,
         onClick: this.descClickHandler.bind(this)
-      }, /*#__PURE__*/_react["default"].createElement("label", null, checklistItem.desc), checklistItem.requiredToClose === true && /*#__PURE__*/_react["default"].createElement("label", {
+      }, /*#__PURE__*/React.createElement("label", null, checklistItem.desc), checklistItem.requiredToClose === true && /*#__PURE__*/React.createElement("label", {
         style: {
           color: "red"
         }
-      }, " *")), this.renderChecklistItemInput()), /*#__PURE__*/_react["default"].createElement(_Collapse["default"], {
+      }, " *")), this.renderChecklistItemInput()), /*#__PURE__*/React.createElement(Collapse, {
         "in": this.state.detailsVisible
-      }, /*#__PURE__*/_react["default"].createElement("div", {
+      }, /*#__PURE__*/React.createElement("div", {
         style: this.checklistDetailsStyle
-      }, /*#__PURE__*/_react["default"].createElement(_ChecklistItemNotes["default"], {
+      }, /*#__PURE__*/React.createElement(ChecklistItemNotes, {
         ref: this.notes,
         checklistItem: checklistItem,
         onChange: function onChange(value) {
           return _this5.onChange(value);
         },
         disabled: this.props.disabled
-      }), !checklistItem.hideFollowUp && /*#__PURE__*/_react["default"].createElement(_ChecklistItemFollowUp["default"], {
+      }), !checklistItem.hideFollowUp && /*#__PURE__*/React.createElement(ChecklistItemFollowUp, {
         checklistItem: checklistItem,
         onChange: function onChange(value) {
           return _this5.onChange(value);
         },
         getWoLink: this.props.getWoLink,
         disabled: this.props.disabled
-      })), Array.isArray(notApplicableOptions) && notApplicableOptions.length > 0 && /*#__PURE__*/_react["default"].createElement("div", {
+      })), Array.isArray(notApplicableOptions) && notApplicableOptions.length > 0 && /*#__PURE__*/React.createElement("div", {
         style: this.checklistNotApplicableStyle
-      }, /*#__PURE__*/_react["default"].createElement(_ChecklistItemNotApplicableOptions["default"], {
+      }, /*#__PURE__*/React.createElement(ChecklistItemNotApplicableOptions, {
         checklistItem: checklistItem,
         notApplicableOptions: notApplicableOptions,
         onChange: function onChange(value) {
@@ -480,6 +461,6 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
   }]);
 
   return ChecklistItem;
-}(_react.Component);
+}(Component);
 
-exports["default"] = ChecklistItem;
+export { ChecklistItem as default };

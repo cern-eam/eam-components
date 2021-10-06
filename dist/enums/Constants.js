@@ -1,10 +1,4 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-var _default = {
+export default {
   DATE_FORMAT_VALUE: 'dd-MMM-yyyy',
   DATE_FORMAT_DISPLAY: 'dd-MMM-yyyy',
   DATETIME_FORMAT_VALUE: 'dd-MMM-yyyy HH:mm',
@@ -12,4 +6,3 @@ var _default = {
   SORT_ASC: 'asc',
   SORT_DESC: 'desc'
 };
-exports["default"] = _default;

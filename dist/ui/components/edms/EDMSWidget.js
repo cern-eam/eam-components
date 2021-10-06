@@ -1,36 +1,3 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _react = _interopRequireWildcard(require("react"));
-
-var _reactBlockUi = _interopRequireDefault(require("react-block-ui"));
-
-var _EDMSGalleria = _interopRequireDefault(require("./galleria/EDMSGalleria"));
-
-var _DocumentList = _interopRequireDefault(require("./doclist/DocumentList"));
-
-var _WSEDMS = _interopRequireDefault(require("../../../tools/WSEDMS"));
-
-var _EDMSWidgetToolbar = _interopRequireDefault(require("./EDMSWidgetToolbar"));
-
-var _NCRCreation = _interopRequireDefault(require("./ncrwidget/ncrcreation/NCRCreation"));
-
-var _DocumentCreation = _interopRequireDefault(require("./documentwidget/doccreation/DocumentCreation"));
-
-var _ErrorOutline = _interopRequireDefault(require("@material-ui/icons/ErrorOutline"));
-
-var _SimpleEmptyState = _interopRequireDefault(require("../emptystates/SimpleEmptyState"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
@@ -47,14 +14,24 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+import React, { Component } from 'react';
+import BlockUi from 'react-block-ui';
+import EDMSGalleria from './galleria/EDMSGalleria';
+import DocumentList from './doclist/DocumentList';
+import WSEDMS from "../../../tools/WSEDMS";
+import EDMSWidgetToolbar from "./EDMSWidgetToolbar";
+import NCRCreation from "./ncrwidget/ncrcreation/NCRCreation";
+import DocumentCreation from "./documentwidget/doccreation/DocumentCreation";
+import ErrorOutline from "@material-ui/icons/ErrorOutline";
+import SimpleEmptyState from "../emptystates/SimpleEmptyState";
 var noCreationMode = 'DISABLED';
 var regularCreationMode = 'REGULAR';
 var NCRCreationMode = 'NCR';
@@ -85,14 +62,14 @@ var EDMSWidget = /*#__PURE__*/function (_Component) {
     _this.generateDocumentCreation = function (creationMode) {
       switch (creationMode) {
         case NCRCreationMode:
-          return /*#__PURE__*/_react["default"].createElement(_NCRCreation["default"], {
+          return /*#__PURE__*/React.createElement(NCRCreation, {
             createDocument: _this.createDocument,
             objectID: _this.props.objectID,
             objectType: _this.props.objectType
           });
 
         default:
-          return /*#__PURE__*/_react["default"].createElement(_DocumentCreation["default"], {
+          return /*#__PURE__*/React.createElement(DocumentCreation, {
             createDocument: _this.createDocument
           });
       }
@@ -120,8 +97,7 @@ var EDMSWidget = /*#__PURE__*/function (_Component) {
         documentLink: documentLink,
         mode: _this.props.creationMode
       };
-
-      _WSEDMS["default"].createNewDocument(data).then(function (response) {
+      WSEDMS.createNewDocument(data).then(function (response) {
         if (files.length > 0) {
           var _response$body$data = response.body.data,
               edmsId = _response$body$data.edmsId,
@@ -224,7 +200,7 @@ var EDMSWidget = /*#__PURE__*/function (_Component) {
       _this.blockUI(); //Get documents
 
 
-      _WSEDMS["default"].getEDMSDocuments(objectID, objectType, _this.props.creationMode).then(function (response) {
+      WSEDMS.getEDMSDocuments(objectID, objectType, _this.props.creationMode).then(function (response) {
         var documents = response.body.data;
 
         _this.setState(function () {
@@ -310,11 +286,11 @@ var EDMSWidget = /*#__PURE__*/function (_Component) {
           documentList = _this$state.documentList,
           isLoading = _this$state.isLoading;
       var isEmptyState = !documentList.length && !isLoading;
-      return /*#__PURE__*/_react["default"].createElement(_reactBlockUi["default"], {
+      return /*#__PURE__*/React.createElement(BlockUi, {
         tag: "div",
         blocking: this.state.isLoading,
         style: this.mainDivStyle
-      }, /*#__PURE__*/_react["default"].createElement(_EDMSWidgetToolbar["default"], {
+      }, /*#__PURE__*/React.createElement(EDMSWidgetToolbar, {
         link: hideLink ? undefined : this.props.edmsDocListLink + this.props.objectType + ":" + this.props.objectID + "::",
         currentView: this.state.currentView,
         documentCreationVisible: this.state.documentCreationVisible,
@@ -334,34 +310,34 @@ var EDMSWidget = /*#__PURE__*/function (_Component) {
             documentCreationVisible: !_this2.state.documentCreationVisible
           });
         }
-      }), this.state.documentCreationVisible && this.generateDocumentCreation(this.props.creationMode), this.state.errorMessage ? /*#__PURE__*/_react["default"].createElement("div", {
+      }), this.state.documentCreationVisible && this.generateDocumentCreation(this.props.creationMode), this.state.errorMessage ? /*#__PURE__*/React.createElement("div", {
         style: {
           display: 'flex',
           padding: 16,
           justifyContent: 'center',
           alignItems: 'center'
         }
-      }, /*#__PURE__*/_react["default"].createElement(_ErrorOutline["default"], {
+      }, /*#__PURE__*/React.createElement(ErrorOutline, {
         style: {
           padding: 4
         }
-      }), /*#__PURE__*/_react["default"].createElement("span", null, this.state.errorMessage)) : isEmptyState ? /*#__PURE__*/_react["default"].createElement(_SimpleEmptyState["default"], {
+      }), /*#__PURE__*/React.createElement("span", null, this.state.errorMessage)) : isEmptyState ? /*#__PURE__*/React.createElement(SimpleEmptyState, {
         message: this.getEmptyStateMessage(this.props.creationMode)
-      }) : !isLoading && /*#__PURE__*/_react["default"].createElement(_react["default"].Fragment, null, /*#__PURE__*/_react["default"].createElement("div", {
+      }) : !isLoading && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
         style: {
           display: this.state.currentView === 'GALLERIA' ? 'block' : 'none',
           margin: 5,
           minWidth: 514
         }
-      }, /*#__PURE__*/_react["default"].createElement(_EDMSGalleria["default"], _extends({
+      }, /*#__PURE__*/React.createElement(EDMSGalleria, _extends({
         documentList: documentList,
         handleFilesUpload: this.handleFilesUpload
-      }, this.props))), /*#__PURE__*/_react["default"].createElement("div", {
+      }, this.props))), /*#__PURE__*/React.createElement("div", {
         style: {
           display: this.state.currentView === 'DOCLIST' ? 'block' : 'none',
           margin: 5
         }
-      }, /*#__PURE__*/_react["default"].createElement(_DocumentList["default"], {
+      }, /*#__PURE__*/React.createElement(DocumentList, {
         documents: documentList,
         filesUploadHandler: this.handleFilesUpload
       }))));
@@ -369,12 +345,11 @@ var EDMSWidget = /*#__PURE__*/function (_Component) {
   }]);
 
   return EDMSWidget;
-}(_react.Component);
+}(Component);
 
 EDMSWidget.defaultProps = {
   mode: 'EDMS',
   title: 'EDMS DOCUMENTS',
   creationMode: 'REGULAR'
 };
-var _default = EDMSWidget;
-exports["default"] = _default;
+export default EDMSWidget;

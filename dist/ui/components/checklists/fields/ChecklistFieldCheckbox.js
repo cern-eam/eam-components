@@ -1,20 +1,7 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _react = _interopRequireDefault(require("react"));
-
-var _Checkbox = _interopRequireDefault(require("@material-ui/core/Checkbox"));
-
-var _FormControlLabel = _interopRequireDefault(require("@material-ui/core/FormControlLabel"));
-
-var _styles = require("@material-ui/core/styles");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
+import React from 'react';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { withStyles } from '@material-ui/core/styles';
 var labelStyle = {
   root: {
     margin: 5
@@ -31,12 +18,12 @@ var ChecklistFieldCheckbox = function ChecklistFieldCheckbox(props) {
       handleChange = props.handleChange,
       classes = props.classes,
       disabled = props.disabled;
-  return /*#__PURE__*/_react["default"].createElement(_FormControlLabel["default"], {
+  return /*#__PURE__*/React.createElement(FormControlLabel, {
     classes: {
       root: classes.root,
       label: classes.label
     },
-    control: /*#__PURE__*/_react["default"].createElement(_Checkbox["default"], {
+    control: /*#__PURE__*/React.createElement(Checkbox, {
       color: "primary",
       checked: checked,
       onMouseDown: function onMouseDown() {
@@ -51,6 +38,4 @@ var ChecklistFieldCheckbox = function ChecklistFieldCheckbox(props) {
   });
 };
 
-var _default = (0, _styles.withStyles)(labelStyle)(ChecklistFieldCheckbox);
-
-exports["default"] = _default;
+export default withStyles(labelStyle)(ChecklistFieldCheckbox);

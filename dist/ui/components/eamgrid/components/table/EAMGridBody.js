@@ -1,43 +1,6 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _react = _interopRequireWildcard(require("react"));
-
-var _reactInfiniteScrollComponent = _interopRequireDefault(require("react-infinite-scroll-component"));
-
-var _EAMGridLoadingSpinner = _interopRequireDefault(require("../EAMGridLoadingSpinner"));
-
-var _Checkbox = _interopRequireDefault(require("@material-ui/core/Checkbox"));
-
-var _CheckBox = _interopRequireDefault(require("@material-ui/icons/CheckBox"));
-
-var _CheckBoxOutlineBlank = _interopRequireDefault(require("@material-ui/icons/CheckBoxOutlineBlank"));
-
-var _grey = _interopRequireDefault(require("@material-ui/core/colors/grey"));
-
-var _Typography = _interopRequireDefault(require("@material-ui/core/Typography"));
-
-var _index = require("@material-ui/core/styles/index");
-
-var _Edit = _interopRequireDefault(require("@material-ui/icons/Edit"));
-
-var _classnames = _interopRequireDefault(require("classnames"));
-
-var _EAMGridCell = _interopRequireDefault(require("./EAMGridCell"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
@@ -55,14 +18,26 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+import React, { Component } from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import DataGridLoadingSpinner from '../EAMGridLoadingSpinner';
+import Checkbox from '@material-ui/core/Checkbox';
+import CheckBox from '@material-ui/icons/CheckBox';
+import CheckBoxOutlineBlank from '@material-ui/icons/CheckBoxOutlineBlank';
+import grey from '@material-ui/core/colors/grey';
+import Typography from '@material-ui/core/Typography';
+import { withStyles } from "@material-ui/core/styles/index";
+import Edit from "@material-ui/icons/Edit";
+import classNames from "classnames";
+import EAMGridCell from "./EAMGridCell";
 var styles = {
   searchRow: {
     wordBreak: "break-all",
@@ -165,9 +140,9 @@ var DataGridTableBody = /*#__PURE__*/function (_Component) {
       var _this2 = this;
 
       var classes = this.props.classes;
-      return /*#__PURE__*/_react["default"].createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         id: "tableResults"
-      }, /*#__PURE__*/_react["default"].createElement(_reactInfiniteScrollComponent["default"], {
+      }, /*#__PURE__*/React.createElement(InfiniteScroll, {
         style: {
           'overflow': 'visible'
         },
@@ -175,16 +150,16 @@ var DataGridTableBody = /*#__PURE__*/function (_Component) {
         hasMore: this.props.hasMore,
         height: this.props.height,
         scrollableTarget: this.props.parentScroll,
-        loader: /*#__PURE__*/_react["default"].createElement(_EAMGridLoadingSpinner["default"], {
+        loader: /*#__PURE__*/React.createElement(DataGridLoadingSpinner, {
           isloading: this.props.isloading
         })
       }, this.props.rows && this.props.rows.map(function (row, index) {
-        return /*#__PURE__*/_react["default"].createElement("div", {
+        return /*#__PURE__*/React.createElement("div", {
           key: row.id,
-          className: (0, _classnames["default"])(classes.searchRow, classes["searchRow".concat(index % 2 ? 'Odd' : 'Even')]),
+          className: classNames(classes.searchRow, classes["searchRow".concat(index % 2 ? 'Odd' : 'Even')]),
           style: _this2.props.rowStyler ? _this2.props.rowStyler(row) : {},
           onClick: _this2._onRowClick(row)
-        }, _this2.props.allowRowSelection && /*#__PURE__*/_react["default"].createElement(_EAMGridCell["default"], null, /*#__PURE__*/_react["default"].createElement(_Checkbox["default"], {
+        }, _this2.props.allowRowSelection && /*#__PURE__*/React.createElement(EAMGridCell, null, /*#__PURE__*/React.createElement(Checkbox, {
           style: {
             width: 'inherit',
             height: 'inherit'
@@ -194,7 +169,7 @@ var DataGridTableBody = /*#__PURE__*/function (_Component) {
           onChange: function onChange(event) {
             return _this2._toggleCheckbox(row, event.target.checked);
           }
-        })), _this2.props.onEditRow && /*#__PURE__*/_react["default"].createElement(_EAMGridCell["default"], null, /*#__PURE__*/_react["default"].createElement(_Edit["default"], {
+        })), _this2.props.onEditRow && /*#__PURE__*/React.createElement(EAMGridCell, null, /*#__PURE__*/React.createElement(Edit, {
           color: "primary",
           onClick: function onClick() {
             return _this2.props.onEditRow(row);
@@ -205,7 +180,7 @@ var DataGridTableBody = /*#__PURE__*/function (_Component) {
         })), _this2.props.extraColumns && _this2.props.extraColumns.filter(function (extraColumn) {
           return extraColumn.position !== 'after';
         }).map(function (extraColumn, index) {
-          return /*#__PURE__*/_react["default"].createElement(_EAMGridCell["default"], {
+          return /*#__PURE__*/React.createElement(EAMGridCell, {
             key: index,
             style: {
               'width': extraColumn.width || '20px',
@@ -213,34 +188,34 @@ var DataGridTableBody = /*#__PURE__*/function (_Component) {
             }
           }, _this2.props.cellRenderer && _this2.props.cellRenderer(extraColumn, row));
         }), row.cell.map(function (cell) {
-          return cell.order > 0 && !_this2.props.isHiddenField(cell.t) && _this2.props.getCellWidth(cell.t) && /*#__PURE__*/_react["default"].createElement("div", {
+          return cell.order > 0 && !_this2.props.isHiddenField(cell.t) && _this2.props.getCellWidth(cell.t) && /*#__PURE__*/React.createElement("div", {
             key: cell.n,
             className: classes.searchRowCell,
             style: {
               'width': "".concat(_this2.props.getCellWidth(cell.t).width, "px"),
               'minWidth': "".concat(_this2.props.getCellWidth(cell.t).width, "px")
             }
-          }, /*#__PURE__*/_react["default"].createElement("div", {
+          }, /*#__PURE__*/React.createElement("div", {
             className: classes.searchRowCellContent
-          }, _this2.props.cellRenderer && _this2.props.cellRenderer(cell, row) || (_this2.props.getCellWidth(cell.t).dataType === 'CHKBOOLEAN' ? /*#__PURE__*/_react["default"].createElement("div", {
+          }, _this2.props.cellRenderer && _this2.props.cellRenderer(cell, row) || (_this2.props.getCellWidth(cell.t).dataType === 'CHKBOOLEAN' ? /*#__PURE__*/React.createElement("div", {
             style: {
               justifyContent: "space-evenly",
               display: "flex",
               width: "100%"
             }
-          }, cell.value === 'true' ? /*#__PURE__*/_react["default"].createElement(_CheckBox["default"], {
+          }, cell.value === 'true' ? /*#__PURE__*/React.createElement(CheckBox, {
             style: {
-              color: _grey["default"][600],
+              color: grey[600],
               width: '20px',
               marginTop: '-3px'
             }
-          }) : /*#__PURE__*/_react["default"].createElement(_CheckBoxOutlineBlank["default"], {
+          }) : /*#__PURE__*/React.createElement(CheckBoxOutlineBlank, {
             style: {
-              color: _grey["default"][600],
+              color: grey[600],
               width: '20px',
               marginTop: '-3px'
             }
-          })) : /*#__PURE__*/_react["default"].createElement(_Typography["default"], {
+          })) : /*#__PURE__*/React.createElement(Typography, {
             style: {
               width: "calc(".concat(_this2.props.getCellWidth(cell.t).width, "px - 10px)"),
               color: 'inherit' //fontWeight: 'inherit'
@@ -250,7 +225,7 @@ var DataGridTableBody = /*#__PURE__*/function (_Component) {
         }), _this2.props.extraColumns && _this2.props.extraColumns.filter(function (extraColumn) {
           return extraColumn.position === 'after';
         }).map(function (extraColumn, index) {
-          return /*#__PURE__*/_react["default"].createElement(_EAMGridCell["default"], {
+          return /*#__PURE__*/React.createElement(EAMGridCell, {
             key: index,
             style: {
               'width': extraColumn.width || '20px',
@@ -263,8 +238,6 @@ var DataGridTableBody = /*#__PURE__*/function (_Component) {
   }]);
 
   return DataGridTableBody;
-}(_react.Component);
+}(Component);
 
-var _default = (0, _index.withStyles)(styles)(DataGridTableBody);
-
-exports["default"] = _default;
+export default withStyles(styles)(DataGridTableBody);

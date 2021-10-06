@@ -1,26 +1,3 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _react = _interopRequireDefault(require("react"));
-
-var _Checkbox = _interopRequireDefault(require("@material-ui/core/Checkbox"));
-
-var _EAMBaseInput2 = _interopRequireWildcard(require("./EAMBaseInput"));
-
-var _EAMFormLabel = _interopRequireDefault(require("./EAMFormLabel"));
-
-var _index = require("@material-ui/core/styles/index");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -35,13 +12,19 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+import React from 'react';
+import Checkbox from '@material-ui/core/Checkbox';
+import EAMBaseInput, { formStyles } from "./EAMBaseInput";
+import EAMFormLabel from "./EAMFormLabel";
+import { withStyles } from "@material-ui/core/styles/index";
 
 var EAMCheckbox = /*#__PURE__*/function (_EAMBaseInput) {
   _inherits(EAMCheckbox, _EAMBaseInput);
@@ -82,18 +65,18 @@ var EAMCheckbox = /*#__PURE__*/function (_EAMBaseInput) {
           labelStyle = _this$props.labelStyle,
           elementInfo = _this$props.elementInfo,
           label = _this$props.label;
-      return /*#__PURE__*/_react["default"].createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         className: this.props.classes.fieldContainer
-      }, /*#__PURE__*/_react["default"].createElement(_EAMFormLabel["default"], {
+      }, /*#__PURE__*/React.createElement(EAMFormLabel, {
         required: this.isRequired(),
         label: label || elementInfo && elementInfo.text,
         labelStyle: labelStyle,
         error: this.state.error
-      }), /*#__PURE__*/_react["default"].createElement("div", {
+      }), /*#__PURE__*/React.createElement("div", {
         style: {
           width: "100%"
         }
-      }, /*#__PURE__*/_react["default"].createElement(_Checkbox["default"], {
+      }, /*#__PURE__*/React.createElement(Checkbox, {
         color: "primary",
         checked: this.props.value === this.props.trueValue,
         value: '' + this.props.value,
@@ -106,13 +89,10 @@ var EAMCheckbox = /*#__PURE__*/function (_EAMBaseInput) {
   }]);
 
   return EAMCheckbox;
-}(_EAMBaseInput2["default"]);
+}(EAMBaseInput);
 
 EAMCheckbox.defaultProps = {
   trueValue: 'true',
   falseValue: 'false'
 };
-
-var _default = (0, _index.withStyles)(_EAMBaseInput2.formStyles)(EAMCheckbox);
-
-exports["default"] = _default;
+export default withStyles(formStyles)(EAMCheckbox);

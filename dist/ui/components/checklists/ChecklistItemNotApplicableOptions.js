@@ -1,30 +1,15 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _react = _interopRequireDefault(require("react"));
-
-var _Select = _interopRequireDefault(require("@material-ui/core/Select"));
-
-var _MenuItem = _interopRequireDefault(require("@material-ui/core/MenuItem"));
-
-var _FormControl = _interopRequireDefault(require("@material-ui/core/FormControl"));
-
-var _styles = require("@material-ui/core/styles");
-
-var _Cancel = _interopRequireDefault(require("@material-ui/icons/Cancel"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+import React from 'react';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import { withStyles } from '@material-ui/core/styles';
+import CancelIcon from '@material-ui/icons/Cancel';
 var style = {
   root: {
     margin: 5,
@@ -73,22 +58,22 @@ var ChecklistItemNotApplicableOptions = function ChecklistItemNotApplicableOptio
       _onChange = props.onChange,
       classes = props.classes,
       disabled = props.disabled;
-  return /*#__PURE__*/_react["default"].createElement("div", {
+  return /*#__PURE__*/React.createElement("div", {
     style: firstLine
-  }, /*#__PURE__*/_react["default"].createElement("div", {
+  }, /*#__PURE__*/React.createElement("div", {
     style: firstLineDesc
-  }, /*#__PURE__*/_react["default"].createElement(_Cancel["default"], {
+  }, /*#__PURE__*/React.createElement(CancelIcon, {
     style: {
       marginRight: '5px',
       color: 'rgb(206, 206, 206)'
     }
-  }), /*#__PURE__*/_react["default"].createElement("label", null, "Not Applicable Option")), /*#__PURE__*/_react["default"].createElement("div", {
+  }), /*#__PURE__*/React.createElement("label", null, "Not Applicable Option")), /*#__PURE__*/React.createElement("div", {
     style: rowStyle
-  }, /*#__PURE__*/_react["default"].createElement(_FormControl["default"], {
+  }, /*#__PURE__*/React.createElement(FormControl, {
     classes: {
       root: classes.root
     }
-  }, /*#__PURE__*/_react["default"].createElement(_Select["default"], {
+  }, /*#__PURE__*/React.createElement(Select, {
     classes: {
       root: classes.selectRoot,
       select: classes.select,
@@ -102,16 +87,14 @@ var ChecklistItemNotApplicableOptions = function ChecklistItemNotApplicableOptio
         notApplicableOption: event.target.value
       }));
     }
-  }, /*#__PURE__*/_react["default"].createElement(_MenuItem["default"], {
+  }, /*#__PURE__*/React.createElement(MenuItem, {
     value: ''
   }, "\u200B"), notApplicableOptions.map(function (option) {
-    return /*#__PURE__*/_react["default"].createElement(_MenuItem["default"], {
+    return /*#__PURE__*/React.createElement(MenuItem, {
       key: option.code,
       value: option.code
     }, option.desc);
   })))));
 };
 
-var _default = (0, _styles.withStyles)(style)(ChecklistItemNotApplicableOptions);
-
-exports["default"] = _default;
+export default withStyles(style)(ChecklistItemNotApplicableOptions);

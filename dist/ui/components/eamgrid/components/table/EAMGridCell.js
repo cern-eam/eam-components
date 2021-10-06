@@ -1,16 +1,5 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _react = _interopRequireDefault(require("react"));
-
-var _index = require("@material-ui/core/styles/index");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
+import React from 'react';
+import { withStyles } from "@material-ui/core/styles/index";
 var styles = {
   searchRowCell: {
     display: "flex",
@@ -42,14 +31,12 @@ var EAMGridCell = function EAMGridCell(props) {
     'width': '80px',
     'minWidth': '80px'
   } : _props$style;
-  return /*#__PURE__*/_react["default"].createElement("div", {
+  return /*#__PURE__*/React.createElement("div", {
     className: classes.searchRowCell,
     style: style
-  }, /*#__PURE__*/_react["default"].createElement("div", {
+  }, /*#__PURE__*/React.createElement("div", {
     className: classes.searchRowCellContent
   }, children));
 };
 
-var _default = (0, _index.withStyles)(styles)(EAMGridCell);
-
-exports["default"] = _default;
+export default withStyles(styles)(EAMGridCell);

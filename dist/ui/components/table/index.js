@@ -1,49 +1,6 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.TRANSFORM_KEYS = exports["default"] = void 0;
-
-var _react = _interopRequireWildcard(require("react"));
-
-var _Table = _interopRequireDefault(require("@material-ui/core/Table"));
-
-var _TableBody = _interopRequireDefault(require("@material-ui/core/TableBody"));
-
-var _TableCell = _interopRequireDefault(require("@material-ui/core/TableCell"));
-
-var _TableHead = _interopRequireDefault(require("@material-ui/core/TableHead"));
-
-var _TableRow = _interopRequireDefault(require("@material-ui/core/TableRow"));
-
-var _TableSortLabel = _interopRequireDefault(require("@material-ui/core/TableSortLabel"));
-
-var _Select = _interopRequireDefault(require("@material-ui/core/Select"));
-
-var _Tooltip = _interopRequireDefault(require("@material-ui/core/Tooltip"));
-
-require("./EISTable.css");
-
-var _reactRouterDom = require("react-router-dom");
-
-var _Checkbox = _interopRequireDefault(require("@material-ui/core/Checkbox"));
-
-var _propTypes = _interopRequireDefault(require("prop-types"));
-
-var _Constants = _interopRequireDefault(require("../../../enums/Constants"));
-
-var _dateFns = require("date-fns");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
@@ -57,7 +14,7 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -73,14 +30,29 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+import React, { Component } from 'react';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
+import Select from '@material-ui/core/Select';
+import Tooltip from '@material-ui/core/Tooltip';
+import './EISTable.css';
+import { Link } from 'react-router-dom';
+import Checkbox from '@material-ui/core/Checkbox';
+import PropTypes from 'prop-types';
+import Constants from '../../../enums/Constants';
+import { parse } from 'date-fns';
 var whiteBackground = {
   backgroundColor: '#ffffff'
 };
@@ -119,7 +91,7 @@ var EISTable = /*#__PURE__*/function (_Component) {
       _this.setState(function () {
         return {
           orderBy: -1,
-          order: _Constants["default"].SORT_ASC
+          order: Constants.SORT_ASC
         };
       });
     };
@@ -136,15 +108,15 @@ var EISTable = /*#__PURE__*/function (_Component) {
 
     _this.handleRequestSort = function (event, property) {
       //By default asc
-      var order = _Constants["default"].SORT_ASC;
+      var order = Constants.SORT_ASC;
 
       if (property >= 0 && property < _this.props.propCodes.length) {
-        if (_this.state.orderBy === property && _this.state.order === _Constants["default"].SORT_ASC) {
-          order = _Constants["default"].SORT_DESC;
+        if (_this.state.orderBy === property && _this.state.order === Constants.SORT_ASC) {
+          order = Constants.SORT_DESC;
         }
       } else {
         /*It's desc*/
-        order = _Constants["default"].SORT_DESC;
+        order = Constants.SORT_DESC;
       } //Assign final data
 
 
@@ -159,7 +131,7 @@ var EISTable = /*#__PURE__*/function (_Component) {
       if (!_this.props.linksMap.get(propCode)) {
         if (content[propCode] === 'true' || content[propCode] === 'false') {
           //Checkbox
-          return /*#__PURE__*/_react["default"].createElement(_Checkbox["default"], {
+          return /*#__PURE__*/React.createElement(Checkbox, {
             checked: content[propCode] === 'true',
             value: content[propCode],
             disabled: true
@@ -173,19 +145,19 @@ var EISTable = /*#__PURE__*/function (_Component) {
       var link = _this.props.linksMap.get(propCode);
 
       if (link.linkType === 'fixed') {
-        return /*#__PURE__*/_react["default"].createElement(_reactRouterDom.Link, {
+        return /*#__PURE__*/React.createElement(Link, {
           to: {
             pathname: "".concat(link.linkPrefix).concat(link.linkValue).concat(content[propCode])
           }
         }, content[propCode]);
       } else if (link.linkType === 'absolute') {
-        return /*#__PURE__*/_react["default"].createElement("a", {
+        return /*#__PURE__*/React.createElement("a", {
           href: "".concat(link.linkValue).concat(content[propCode]),
           target: "_blank"
         }, content[propCode]);
       } else {
         /*Dynamic link*/
-        return /*#__PURE__*/_react["default"].createElement(_reactRouterDom.Link, {
+        return /*#__PURE__*/React.createElement(Link, {
           to: {
             pathname: "".concat(link.linkPrefix).concat(content[link.linkValue])
           }
@@ -202,15 +174,15 @@ var EISTable = /*#__PURE__*/function (_Component) {
       listValues = listValues.concat(_this.props.headers.map(function (elem) {
         return "".concat(elem, " (Desc)");
       }));
-      return /*#__PURE__*/_react["default"].createElement(_Select["default"], {
+      return /*#__PURE__*/React.createElement(Select, {
         "native": true,
         value: _this.state.orderBy,
         onChange: _this.createSortHandlerMobile,
         className: "eamTableDropdown"
-      }, /*#__PURE__*/_react["default"].createElement("option", {
+      }, /*#__PURE__*/React.createElement("option", {
         value: -1
       }, "Select sort column..."), listValues.map(function (elem, index) {
-        return /*#__PURE__*/_react["default"].createElement("option", {
+        return /*#__PURE__*/React.createElement("option", {
           key: index,
           value: index
         }, elem);
@@ -254,13 +226,13 @@ var EISTable = /*#__PURE__*/function (_Component) {
 
         return datum;
       });
-      return order === _Constants["default"].SORT_DESC ? sorted.reverse() : sorted;
+      return order === Constants.SORT_DESC ? sorted.reverse() : sorted;
     };
 
     _this.state = {
       windowWidth: window.innerWidth,
       orderBy: props.defaultOrderBy === undefined ? -1 : props.propCodes.indexOf(props.defaultOrderBy),
-      order: props.defaultOrder === undefined ? _Constants["default"].SORT_ASC : props.defaultOrder,
+      order: props.defaultOrder === undefined ? Constants.SORT_ASC : props.defaultOrder,
       data: []
     };
     return _this;
@@ -305,14 +277,14 @@ var EISTable = /*#__PURE__*/function (_Component) {
       });
 
       if (isMobile) {
-        return /*#__PURE__*/_react["default"].createElement(_Table["default"], {
+        return /*#__PURE__*/React.createElement(Table, {
           className: "responsiveTable",
           style: {
             overflow: 'visible'
           }
-        }, /*#__PURE__*/_react["default"].createElement(_TableHead["default"], null, /*#__PURE__*/_react["default"].createElement(_TableRow["default"], {
+        }, /*#__PURE__*/React.createElement(TableHead, null, /*#__PURE__*/React.createElement(TableRow, {
           key: 'sortby'
-        }, /*#__PURE__*/_react["default"].createElement(_TableCell["default"], null, "Sort by:"), /*#__PURE__*/_react["default"].createElement(_TableCell["default"], null, this.renderSortByValuesMobile()))), tableData.map(function (content, index) {
+        }, /*#__PURE__*/React.createElement(TableCell, null, "Sort by:"), /*#__PURE__*/React.createElement(TableCell, null, this.renderSortByValuesMobile()))), tableData.map(function (content, index) {
           // every second row is grey
           var style = index % 2 === 0 ? whiteBackground : greyBackground;
 
@@ -347,42 +319,42 @@ var EISTable = /*#__PURE__*/function (_Component) {
             });
           }
 
-          return /*#__PURE__*/_react["default"].createElement(_TableBody["default"], {
+          return /*#__PURE__*/React.createElement(TableBody, {
             key: index,
             style: style,
             onClick: rowsSelectable ? function () {
               return onRowClick(content, index);
             } : function () {}
           }, propCodes.map(function (prop, index) {
-            return /*#__PURE__*/_react["default"].createElement(_TableRow["default"], {
+            return /*#__PURE__*/React.createElement(TableRow, {
               key: prop,
               style: style
-            }, /*#__PURE__*/_react["default"].createElement(_TableCell["default"], null, headers[index]), /*#__PURE__*/_react["default"].createElement(_TableCell["default"], null, _this2.renderContent(prop, content)));
+            }, /*#__PURE__*/React.createElement(TableCell, null, headers[index]), /*#__PURE__*/React.createElement(TableCell, null, _this2.renderContent(prop, content)));
           }));
         }));
       }
 
-      return /*#__PURE__*/_react["default"].createElement(_react["default"].Fragment, null, /*#__PURE__*/_react["default"].createElement(_Table["default"], {
+      return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Table, {
         className: "responsiveTable",
         style: {
           overflow: 'visible'
         }
-      }, /*#__PURE__*/_react["default"].createElement(_TableHead["default"], null, /*#__PURE__*/_react["default"].createElement(_TableRow["default"], {
+      }, /*#__PURE__*/React.createElement(TableHead, null, /*#__PURE__*/React.createElement(TableRow, {
         key: 'key'
       }, headers.map(function (header, index) {
-        return /*#__PURE__*/_react["default"].createElement(_TableCell["default"], {
+        return /*#__PURE__*/React.createElement(TableCell, {
           key: header,
           sortDirection: orderBy === index ? order : false
-        }, /*#__PURE__*/_react["default"].createElement(_Tooltip["default"], {
+        }, /*#__PURE__*/React.createElement(Tooltip, {
           title: "Sort",
           placement: 'bottom-end',
           enterDelay: 300
-        }, /*#__PURE__*/_react["default"].createElement(_TableSortLabel["default"], {
+        }, /*#__PURE__*/React.createElement(TableSortLabel, {
           active: orderBy === index,
           direction: order,
           onClick: _this2.createSortHandler(index)
         }, header)));
-      }))), /*#__PURE__*/_react["default"].createElement(_TableBody["default"], null, tableData.map(function (content, index) {
+      }))), /*#__PURE__*/React.createElement(TableBody, null, tableData.map(function (content, index) {
         var style = {};
 
         if (selectedRowIndexes && selectedRowIndexes.includes(index)) {
@@ -405,14 +377,14 @@ var EISTable = /*#__PURE__*/function (_Component) {
           });
         }
 
-        return /*#__PURE__*/_react["default"].createElement(_TableRow["default"], {
+        return /*#__PURE__*/React.createElement(TableRow, {
           key: index,
           style: style,
           onClick: rowsSelectable ? function () {
             return onRowClick(content, index);
           } : function () {}
         }, propCodes.map(function (propCode) {
-          return /*#__PURE__*/_react["default"].createElement(_TableCell["default"], {
+          return /*#__PURE__*/React.createElement(TableCell, {
             key: propCode
           }, _this2.renderContent(propCode, content));
         }));
@@ -432,37 +404,34 @@ var EISTable = /*#__PURE__*/function (_Component) {
   }]);
 
   return EISTable;
-}(_react.Component);
+}(Component);
 
 EISTable.propTypes = {
-  linksMap: _propTypes["default"].instanceOf(Map),
-  data: _propTypes["default"].array.isRequired,
-  headers: _propTypes["default"].array.isRequired,
-  propCodes: _propTypes["default"].array.isRequired,
-  selectedRowIndexes: _propTypes["default"].array,
-  onRowClick: _propTypes["default"].func,
-  stylesMap: _propTypes["default"].object,
-  keyMap: _propTypes["default"].object,
-  defaultOrderBy: _propTypes["default"].string,
-  defaultOrder: _propTypes["default"].string
+  linksMap: PropTypes.instanceOf(Map),
+  data: PropTypes.array.isRequired,
+  headers: PropTypes.array.isRequired,
+  propCodes: PropTypes.array.isRequired,
+  selectedRowIndexes: PropTypes.array,
+  onRowClick: PropTypes.func,
+  stylesMap: PropTypes.object,
+  keyMap: PropTypes.object,
+  defaultOrderBy: PropTypes.string,
+  defaultOrder: PropTypes.string
 };
 EISTable.defaultProps = {
   linksMap: new Map(),
   maxMobileSize: 540,
   keyMap: {}
 };
-
-var _default = _react["default"].memo(EISTable);
-
-exports["default"] = _default;
+export default React.memo(EISTable);
 
 var GENERATE_DATE_PARSER = function GENERATE_DATE_PARSER(parseString) {
   return function (value) {
-    return (0, _dateFns.parse)(value, parseString, new Date()).getTime();
+    return parse(value, parseString, new Date()).getTime();
   };
 };
 
-var TRANSFORM_KEYS = {
+export var TRANSFORM_KEYS = {
   DATE_DD_MMM_YYYY: GENERATE_DATE_PARSER('dd-MMM-yyyy'),
   DATE_DD_MMM_YYYY_HH_MM: GENERATE_DATE_PARSER('dd-MMM-yyyy HH:mm'),
   DEFAULT: function DEFAULT(value) {
@@ -470,4 +439,3 @@ var TRANSFORM_KEYS = {
   },
   GENERATE_DATE_PARSER: GENERATE_DATE_PARSER
 };
-exports.TRANSFORM_KEYS = TRANSFORM_KEYS;

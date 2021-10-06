@@ -1,13 +1,5 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _core = require("@material-ui/core");
-
-var EAMGridFooter = (0, _core.withStyles)(function (theme) {
+import { Box, withStyles } from "@material-ui/core";
+var EAMGridFooter = withStyles(function (theme) {
   return {
     root: {
       display: "flex",
@@ -22,6 +14,5 @@ var EAMGridFooter = (0, _core.withStyles)(function (theme) {
       flexWrap: "wrap"
     }
   };
-})(_core.Box);
-var _default = EAMGridFooter;
-exports["default"] = _default;
+})(Box);
+export default EAMGridFooter;
