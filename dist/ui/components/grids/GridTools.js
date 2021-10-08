@@ -54,7 +54,7 @@ var parseGridFilters = function parseGridFilters(gridFiltersString) {
 };
 
 var stringifyGridFilter = function stringifyGridFilter(gridFilter) {
-  return gridFilter.fieldName + VALUE_SEPARATOR + (gridFilter.fieldValue || '') + OPERATOR_SEPARATOR + gridFilter.operator;
+  return gridFilter.fieldValue ? gridFilter.fieldName + VALUE_SEPARATOR + (gridFilter.fieldValue || '') + OPERATOR_SEPARATOR + gridFilter.operator : '';
 };
 
 var stringifyGridFilters = function stringifyGridFilters() {
@@ -66,7 +66,12 @@ var replaceUrlParam = function replaceUrlParam(key, val) {
   var params = _queryString["default"].parse(window.location.search);
 
   params[key] = val;
-  return '?' + _queryString["default"].stringify(params);
+
+  var newParams = _queryString["default"].stringify(params, {
+    skipEmptyString: true
+  });
+
+  return newParams ? "?".concat(newParams) : '';
 };
 
 var getURLParameterByName = function getURLParameterByName(name) {
