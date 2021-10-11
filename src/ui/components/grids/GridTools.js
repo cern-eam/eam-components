@@ -27,7 +27,7 @@ const parseGridFilters = (gridFiltersString) => {
 }
 
 const stringifyGridFilter = gridFilter => {
-    return gridFilter.fieldName + VALUE_SEPARATOR + (gridFilter.fieldValue || '') + OPERATOR_SEPARATOR + gridFilter.operator
+    return gridFilter.fieldValue ? gridFilter.fieldName + VALUE_SEPARATOR + (gridFilter.fieldValue || '') + OPERATOR_SEPARATOR + gridFilter.operator : ''
 }
 
 const stringifyGridFilters = (gridFilters = []) => {
@@ -37,7 +37,8 @@ const stringifyGridFilters = (gridFilters = []) => {
 const replaceUrlParam = (key, val) => {
     const params = queryString.parse(window.location.search);
     params[key] = val;
-    return '?' + queryString.stringify(params);
+    const newParams = queryString.stringify(params, { skipEmptyString: true });
+    return newParams ? `?${newParams}` : '';
 }
 
 const getURLParameterByName = name => queryString.parse(window.location.search)[name] || '';
