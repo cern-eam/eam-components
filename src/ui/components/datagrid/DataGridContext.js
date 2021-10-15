@@ -1,12 +1,12 @@
 import React from "react";
 import { DATA_GRID_SORT_TYPES, DATA_GRID_SORT_DIRECTIONS } from "./Constants";
 
-const DataGridContext = React.createContext();
+export const DataGridContext = React.createContext();
 
 const getDisplayValue = ({ row, columnMetadata }) =>
     columnMetadata.getDisplayValue ? columnMetadata.getDisplayValue({ row, columnMetadata }) : row[columnMetadata.id];
 
-const DataGridProvider = props => {
+export const DataGridProvider = props => {
     const { rows, columnsMetadata, isSortEnabled, sortBy = {} } = props;
     const [columnID, setColumnID] = React.useState(sortBy.columnID);
     const [direction, setDirection] = React.useState(sortBy.direction || DATA_GRID_SORT_DIRECTIONS.ASC);
@@ -85,5 +85,3 @@ const stableSort = (array, comparator) => {
     });
     return stabilizedThis.map(el => el[0]);
 };
-
-export { DataGridContext, DataGridProvider };

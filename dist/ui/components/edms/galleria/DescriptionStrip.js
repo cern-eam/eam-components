@@ -1,37 +1,26 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _react = _interopRequireDefault(require("react"));
-
-var _EDMSUtils = _interopRequireDefault(require("./EDMSUtils"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+import React from 'react';
+import getEDMSFileUrl from "./EDMSUtils";
 
 var DescriptionStrip = function DescriptionStrip(file) {
-  return /*#__PURE__*/_react["default"].createElement("div", {
+  return /*#__PURE__*/React.createElement("div", {
     className: "filmStripContainer"
-  }, /*#__PURE__*/_react["default"].createElement("h4", {
+  }, /*#__PURE__*/React.createElement("h4", {
     className: "edmsContentHeader"
-  }, "EDMS: ", /*#__PURE__*/_react["default"].createElement("a", {
+  }, "EDMS: ", /*#__PURE__*/React.createElement("a", {
     href: file.docUrl,
     target: "_blank",
     className: "edmsLink"
-  }, file.edmsId), "\xA0\xA0\xA0\xA0 File: ", /*#__PURE__*/_react["default"].createElement("a", {
+  }, file.edmsId), "\xA0\xA0\xA0\xA0 File: ", /*#__PURE__*/React.createElement("a", {
     href: file.fullPath,
     target: "_blank",
     className: "edmsLink"
-  }, file.fileName)), /*#__PURE__*/_react["default"].createElement("p", {
+  }, file.fileName)), /*#__PURE__*/React.createElement("p", {
     className: "edmsTitle"
-  }, "Title: ", /*#__PURE__*/_react["default"].createElement("a", {
+  }, "Title: ", /*#__PURE__*/React.createElement("a", {
     href: file.docUrl,
     target: "_blank",
     className: "edmsLink"
   }, file.description)));
 };
 
-var _default = DescriptionStrip;
-exports["default"] = _default;
+export default DescriptionStrip;

@@ -1,35 +1,8 @@
-"use strict";
-
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = exports.getRowAsAnObject = exports.EAMCellField = exports.EAMFilterField = void 0;
-
-var _react = _interopRequireWildcard(require("react"));
-
-var _core = require("@material-ui/core");
-
-var _mdiMaterialUi = require("mdi-material-ui");
-
-var _pickers = require("@material-ui/pickers");
-
-var _icons = require("@material-ui/icons");
-
-var _reactTable = require("react-table");
-
-var _dateFns = require("date-fns");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -39,19 +12,26 @@ function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread n
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var BootstrapInput = (0, _core.withStyles)(function (theme) {
+import React, { useState } from "react";
+import { TextField, Checkbox, MenuItem, ListItemIcon, ListItemText, Menu, IconButton, InputAdornment, withStyles, Select, InputBase } from "@material-ui/core";
+import { ContainStart, ContainEnd, Contain, GreaterThan, GreaterThanOrEqual, LessThan, LessThanOrEqual, Equal, NotEqualVariant, Rhombus, RhombusOutline } from 'mdi-material-ui';
+import { DatePicker, DateTimePicker } from "@material-ui/pickers";
+import { Clear as ClearIcon, InsertInvitation as CalendarIcon } from "@material-ui/icons";
+import { useAsyncDebounce, useMountedLayoutEffect } from "react-table";
+import { format as formatDate } from "date-fns";
+var BootstrapInput = withStyles(function (theme) {
   return {
     root: {
       width: '100%',
@@ -74,8 +54,8 @@ var BootstrapInput = (0, _core.withStyles)(function (theme) {
       paddingLeft: '4px'
     }
   };
-})(_core.InputBase);
-var FilterTextField = (0, _core.withStyles)({
+})(InputBase);
+var FilterTextField = withStyles({
   root: {
     backgroundColor: "white",
     borderRadius: '4px',
@@ -89,12 +69,12 @@ var FilterTextField = (0, _core.withStyles)({
       borderBottom: '2px solid #c5c5c5'
     }
   }
-})(_core.TextField);
-var CustomStartAdornment = (0, _core.withStyles)({
+})(TextField);
+var CustomStartAdornment = withStyles({
   positionStart: {
     marginRight: 0
   }
-})(_core.InputAdornment);
+})(InputAdornment);
 var OPERATORS = {
   NOT_EQUAL: '!=',
   EQUAL: '=',
@@ -160,31 +140,31 @@ var getEAMFilterOperators = function getEAMFilterOperators(_ref) {
       return [{
         'value': OPERATORS.BEGINS,
         'label': 'Starts with',
-        'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.ContainStart, null)
+        'icon': /*#__PURE__*/React.createElement(ContainStart, null)
       }, {
         'value': OPERATORS.CONTAINS,
         'label': 'Contains',
-        'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.Contain, null)
+        'icon': /*#__PURE__*/React.createElement(Contain, null)
       }, {
         'value': OPERATORS.ENDS,
         'label': 'Ends with',
-        'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.ContainEnd, null)
+        'icon': /*#__PURE__*/React.createElement(ContainEnd, null)
       }, {
         'value': OPERATORS.EQUAL,
         'label': 'Equals',
-        'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.Equal, null)
+        'icon': /*#__PURE__*/React.createElement(Equal, null)
       }, {
         'value': OPERATORS.NOT_EQUAL,
         'label': 'Does not equal',
-        'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.NotEqualVariant, null)
+        'icon': /*#__PURE__*/React.createElement(NotEqualVariant, null)
       }, {
         'value': OPERATORS.IS_EMPTY,
         'label': 'Is empty',
-        'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.RhombusOutline, null)
+        'icon': /*#__PURE__*/React.createElement(RhombusOutline, null)
       }, {
         'value': OPERATORS.NOT_EMPTY,
         'label': 'Is not empty',
-        'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.Rhombus, null)
+        'icon': /*#__PURE__*/React.createElement(Rhombus, null)
       }];
 
     case "DATE":
@@ -192,35 +172,35 @@ var getEAMFilterOperators = function getEAMFilterOperators(_ref) {
       return [{
         'value': OPERATORS.GREATER_THAN,
         'label': 'Greater than',
-        'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.GreaterThan, null)
+        'icon': /*#__PURE__*/React.createElement(GreaterThan, null)
       }, {
         'value': OPERATORS.EQUAL,
         'label': 'Equals',
-        'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.Equal, null)
+        'icon': /*#__PURE__*/React.createElement(Equal, null)
       }, {
         'value': OPERATORS.LESS_THAN,
         'label': 'Less than',
-        'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.LessThan, null)
+        'icon': /*#__PURE__*/React.createElement(LessThan, null)
       }, {
         'value': OPERATORS.LESS_THAN_EQUALS,
         'label': 'Less than or equals',
-        'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.LessThanOrEqual, null)
+        'icon': /*#__PURE__*/React.createElement(LessThanOrEqual, null)
       }, {
         'value': OPERATORS.GREATER_THAN_EQUALS,
         'label': 'Greater than or equals',
-        'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.GreaterThanOrEqual, null)
+        'icon': /*#__PURE__*/React.createElement(GreaterThanOrEqual, null)
       }, {
         'value': OPERATORS.IS_EMPTY,
         'label': 'Is empty',
-        'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.RhombusOutline, null)
+        'icon': /*#__PURE__*/React.createElement(RhombusOutline, null)
       }, {
         'value': OPERATORS.NOT_EMPTY,
         'label': 'Is not empty',
-        'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.Rhombus, null)
+        'icon': /*#__PURE__*/React.createElement(Rhombus, null)
       }, {
         'value': OPERATORS.NOT_EQUAL,
         'label': 'Does not equal',
-        'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.NotEqualVariant, null)
+        'icon': /*#__PURE__*/React.createElement(NotEqualVariant, null)
       }];
 
     case "DECIMAL":
@@ -228,35 +208,35 @@ var getEAMFilterOperators = function getEAMFilterOperators(_ref) {
       return [{
         'value': OPERATORS.EQUAL,
         'label': 'Equals',
-        'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.Equal, null)
+        'icon': /*#__PURE__*/React.createElement(Equal, null)
       }, {
         'value': OPERATORS.LESS_THAN,
         'label': 'Less than',
-        'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.LessThan, null)
+        'icon': /*#__PURE__*/React.createElement(LessThan, null)
       }, {
         'value': OPERATORS.GREATER_THAN,
         'label': 'Greater than',
-        'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.GreaterThan, null)
+        'icon': /*#__PURE__*/React.createElement(GreaterThan, null)
       }, {
         'value': OPERATORS.LESS_THAN_EQUALS,
         'label': 'Less than or equals',
-        'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.LessThanOrEqual, null)
+        'icon': /*#__PURE__*/React.createElement(LessThanOrEqual, null)
       }, {
         'value': OPERATORS.GREATER_THAN_EQUALS,
         'label': 'Greater than or equals',
-        'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.GreaterThanOrEqual, null)
+        'icon': /*#__PURE__*/React.createElement(GreaterThanOrEqual, null)
       }, {
         'value': OPERATORS.IS_EMPTY,
         'label': 'Is empty',
-        'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.RhombusOutline, null)
+        'icon': /*#__PURE__*/React.createElement(RhombusOutline, null)
       }, {
         'value': OPERATORS.NOT_EMPTY,
         'label': 'Is not empty',
-        'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.Rhombus, null)
+        'icon': /*#__PURE__*/React.createElement(Rhombus, null)
       }, {
         'value': OPERATORS.NOT_EQUAL,
         'label': 'Does not equal',
-        'icon': /*#__PURE__*/_react["default"].createElement(_mdiMaterialUi.NotEqualVariant, null)
+        'icon': /*#__PURE__*/React.createElement(NotEqualVariant, null)
       }];
 
     default:
@@ -282,33 +262,29 @@ var QualifierMenuAdornment = function QualifierMenuAdornment(_ref3) {
       localFilter = _ref3.localFilter,
       setLocalFilter = _ref3.setLocalFilter;
 
-  var _useState = (0, _react.useState)(),
+  var _useState = useState(),
       _useState2 = _slicedToArray(_useState, 2),
       anchorEl = _useState2[0],
       setAnchorEl = _useState2[1];
 
-  var operators = _react["default"].useMemo(function () {
+  var operators = React.useMemo(function () {
     return getEAMFilterOperators({
       column: column
     });
   }, [column]);
-
   var currentQualifier = operators.find(function (q) {
     return q.value === localFilter.operator;
   });
   var currentQualiferIcon = currentQualifier && currentQualifier.icon;
-
-  var onMenuOpen = _react["default"].useCallback(function (e) {
+  var onMenuOpen = React.useCallback(function (e) {
     setAnchorEl(e.currentTarget);
     e.stopPropagation();
   }, []);
-
-  var onMenuClose = _react["default"].useCallback(function (e) {
+  var onMenuClose = React.useCallback(function (e) {
     setAnchorEl(null);
     e.stopPropagation();
   }, []);
-
-  var onMenuOptionClick = _react["default"].useCallback(function (operator) {
+  var onMenuOptionClick = React.useCallback(function (operator) {
     return function (e) {
       setAnchorEl(null);
       setLocalFilter(_objectSpread({}, localFilter, {
@@ -317,23 +293,22 @@ var QualifierMenuAdornment = function QualifierMenuAdornment(_ref3) {
       e.stopPropagation();
     };
   }, [localFilter, setLocalFilter]);
-
-  return _react["default"].useMemo(function () {
-    return /*#__PURE__*/_react["default"].createElement(CustomStartAdornment, {
+  return React.useMemo(function () {
+    return /*#__PURE__*/React.createElement(CustomStartAdornment, {
       position: "start"
-    }, /*#__PURE__*/_react["default"].createElement(_core.IconButton, {
+    }, /*#__PURE__*/React.createElement(IconButton, {
       size: "small",
       onClick: onMenuOpen
-    }, currentQualiferIcon), /*#__PURE__*/_react["default"].createElement(_core.Menu, {
+    }, currentQualiferIcon), /*#__PURE__*/React.createElement(Menu, {
       anchorEl: anchorEl,
       open: Boolean(anchorEl),
       onClose: onMenuClose
     }, operators.map(function (operator) {
-      return /*#__PURE__*/_react["default"].createElement(_core.MenuItem, {
+      return /*#__PURE__*/React.createElement(MenuItem, {
         key: operator.value,
         selected: operator.value === localFilter.operator,
         onClick: onMenuOptionClick(operator)
-      }, /*#__PURE__*/_react["default"].createElement(_core.ListItemIcon, null, operator.icon), /*#__PURE__*/_react["default"].createElement(_core.ListItemText, {
+      }, /*#__PURE__*/React.createElement(ListItemIcon, null, operator.icon), /*#__PURE__*/React.createElement(ListItemText, {
         primary: operator.label
       }));
     })));
@@ -343,10 +318,10 @@ var QualifierMenuAdornment = function QualifierMenuAdornment(_ref3) {
 var DateFilterAdornment = function DateFilterAdornment(_ref4) {
   var localFilter = _ref4.localFilter,
       setLocalFilter = _ref4.setLocalFilter;
-  return _react["default"].useMemo(function () {
-    return localFilter.fieldValue ? /*#__PURE__*/_react["default"].createElement(_core.InputAdornment, {
+  return React.useMemo(function () {
+    return localFilter.fieldValue ? /*#__PURE__*/React.createElement(InputAdornment, {
       position: "end"
-    }, /*#__PURE__*/_react["default"].createElement(_core.IconButton, {
+    }, /*#__PURE__*/React.createElement(IconButton, {
       size: "small",
       onClick: function onClick(e) {
         setLocalFilter(_objectSpread({}, localFilter, {
@@ -355,11 +330,11 @@ var DateFilterAdornment = function DateFilterAdornment(_ref4) {
         }));
         e.stopPropagation();
       }
-    }, /*#__PURE__*/_react["default"].createElement(_icons.Clear, null))) : /*#__PURE__*/_react["default"].createElement(_core.InputAdornment, {
+    }, /*#__PURE__*/React.createElement(ClearIcon, null))) : /*#__PURE__*/React.createElement(InputAdornment, {
       position: "end"
-    }, /*#__PURE__*/_react["default"].createElement(_core.IconButton, {
+    }, /*#__PURE__*/React.createElement(IconButton, {
       size: "small"
-    }, /*#__PURE__*/_react["default"].createElement(_icons.InsertInvitation, null)));
+    }, /*#__PURE__*/React.createElement(CalendarIcon, null)));
   }, [localFilter, setLocalFilter]);
 };
 
@@ -369,14 +344,14 @@ var EAMCellField = function EAMCellField(_ref5) {
 
   switch (column.dataType) {
     case "CHKBOOLEAN":
-      return /*#__PURE__*/_react["default"].createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         style: {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           width: '100%'
         }
-      }, /*#__PURE__*/_react["default"].createElement(_core.Checkbox, {
+      }, /*#__PURE__*/React.createElement(Checkbox, {
         disabled: true,
         checked: (value ?? '').toLowerCase() === "true",
         indeterminate: !value,
@@ -391,38 +366,33 @@ var EAMCellField = function EAMCellField(_ref5) {
   }
 };
 
-exports.EAMCellField = EAMCellField;
-
 var EAMFilterField = function EAMFilterField(_ref6) {
   var column = _ref6.column;
   var dataType = column.dataType,
       filter = column.filterValue,
       setFilter = column.setFilter;
 
-  var _useState3 = (0, _react.useState)(filter || getDefaultFilterValue(column)),
+  var _useState3 = useState(filter || getDefaultFilterValue(column)),
       _useState4 = _slicedToArray(_useState3, 2),
       localFilter = _useState4[0],
       setLocalFilter = _useState4[1];
 
-  (0, _reactTable.useMountedLayoutEffect)(function () {
+  useMountedLayoutEffect(function () {
     return setLocalFilter(filter || getDefaultFilterValue(column));
   }, [filter]);
-  var debouncedSetFilter = (0, _reactTable.useAsyncDebounce)(function (filter) {
+  var debouncedSetFilter = useAsyncDebounce(function (filter) {
     return setFilter(filter);
   }, process.env.NODE_ENV === 'development' ? 100 : 0);
-
-  var updateFilter = _react["default"].useCallback(function (filter) {
+  var updateFilter = React.useCallback(function (filter) {
     setLocalFilter(filter);
     debouncedSetFilter(filter);
   }, [debouncedSetFilter]);
-
-  var handleFilterTextFieldChange = _react["default"].useCallback(function (e) {
+  var handleFilterTextFieldChange = React.useCallback(function (e) {
     return updateFilter(_objectSpread({}, localFilter, {
       fieldValue: e.target.value
     }));
   }, [localFilter, updateFilter]);
-
-  var handleCheckboxChange = _react["default"].useCallback(function () {
+  var handleCheckboxChange = React.useCallback(function () {
     var values = [CHECKBOX_FILTERS.CHECKED, CHECKBOX_FILTERS.UNCHECKED, CHECKBOX_FILTERS.INDETERMINATE];
     var nextValueIndex = (values.findIndex(function (e) {
       return e === Number(localFilter.fieldValue);
@@ -432,10 +402,9 @@ var EAMFilterField = function EAMFilterField(_ref6) {
       fieldValue: nextValue
     }));
   }, [localFilter, updateFilter]);
-
-  var handleDatePickersChange = _react["default"].useCallback(function (value) {
+  var handleDatePickersChange = React.useCallback(function (value) {
     return updateFilter(_objectSpread({}, localFilter, {
-      fieldValue: (0, _dateFns.format)(value, "dd-MMM-yyyy"),
+      fieldValue: formatDate(value, "dd-MMM-yyyy"),
       _dateValue: value
     }));
   }, [localFilter, updateFilter]);
@@ -445,12 +414,12 @@ var EAMFilterField = function EAMFilterField(_ref6) {
     case "MIXVARCHAR":
     case "DECIMAL":
     case "NUMBER":
-      return /*#__PURE__*/_react["default"].createElement(FilterTextField, {
+      return /*#__PURE__*/React.createElement(FilterTextField, {
         value: localFilter.fieldValue || '',
         onChange: handleFilterTextFieldChange,
         disabled: [OPERATORS.IS_EMPTY, OPERATORS.NOT_EMPTY].includes(localFilter.operator),
         InputProps: {
-          startAdornment: /*#__PURE__*/_react["default"].createElement(QualifierMenuAdornment, {
+          startAdornment: /*#__PURE__*/React.createElement(QualifierMenuAdornment, {
             column: column,
             localFilter: localFilter,
             setLocalFilter: updateFilter
@@ -459,7 +428,7 @@ var EAMFilterField = function EAMFilterField(_ref6) {
       });
 
     case "CHKBOOLEAN":
-      return /*#__PURE__*/_react["default"].createElement(_core.Checkbox, {
+      return /*#__PURE__*/React.createElement(Checkbox, {
         checked: getCheckedValue(localFilter.fieldValue),
         indeterminate: isIndeterminate(localFilter.fieldValue),
         onChange: handleCheckboxChange,
@@ -470,7 +439,7 @@ var EAMFilterField = function EAMFilterField(_ref6) {
       });
 
     case "DATE":
-      return /*#__PURE__*/_react["default"].createElement(_pickers.DatePicker, {
+      return /*#__PURE__*/React.createElement(DatePicker, {
         autoOk: true,
         clearable: 1,
         variant: "inline",
@@ -480,12 +449,12 @@ var EAMFilterField = function EAMFilterField(_ref6) {
         format: "dd-MMM-yyyy",
         TextFieldComponent: FilterTextField,
         InputProps: {
-          startAdornment: /*#__PURE__*/_react["default"].createElement(QualifierMenuAdornment, {
+          startAdornment: /*#__PURE__*/React.createElement(QualifierMenuAdornment, {
             column: column,
             localFilter: localFilter,
             setLocalFilter: updateFilter
           }),
-          endAdornment: /*#__PURE__*/_react["default"].createElement(DateFilterAdornment, {
+          endAdornment: /*#__PURE__*/React.createElement(DateFilterAdornment, {
             localFilter: localFilter,
             setLocalFilter: updateFilter
           })
@@ -493,7 +462,7 @@ var EAMFilterField = function EAMFilterField(_ref6) {
       });
 
     case "DATETIME":
-      return /*#__PURE__*/_react["default"].createElement(_pickers.DateTimePicker, {
+      return /*#__PURE__*/React.createElement(DateTimePicker, {
         autoOk: true,
         clearable: 1,
         variant: "inline",
@@ -503,12 +472,12 @@ var EAMFilterField = function EAMFilterField(_ref6) {
         format: "dd-MMM-yyyy HH:mm",
         TextFieldComponent: FilterTextField,
         InputProps: {
-          startAdornment: /*#__PURE__*/_react["default"].createElement(QualifierMenuAdornment, {
+          startAdornment: /*#__PURE__*/React.createElement(QualifierMenuAdornment, {
             column: column,
             localFilter: localFilter,
             setLocalFilter: updateFilter
           }),
-          endAdornment: /*#__PURE__*/_react["default"].createElement(DateFilterAdornment, {
+          endAdornment: /*#__PURE__*/React.createElement(DateFilterAdornment, {
             localFilter: localFilter,
             setLocalFilter: updateFilter
           })
@@ -516,15 +485,15 @@ var EAMFilterField = function EAMFilterField(_ref6) {
       });
 
     case "__SELECT":
-      return /*#__PURE__*/_react["default"].createElement(_core.Select, {
+      return /*#__PURE__*/React.createElement(Select, {
         "native": true,
         value: localFilter.fieldValue || '',
         onChange: handleFilterTextFieldChange,
-        input: /*#__PURE__*/_react["default"].createElement(BootstrapInput, null)
-      }, /*#__PURE__*/_react["default"].createElement("option", {
+        input: /*#__PURE__*/React.createElement(BootstrapInput, null)
+      }, /*#__PURE__*/React.createElement("option", {
         value: ""
       }), column?.selectOptions?.map(function (e) {
-        return /*#__PURE__*/_react["default"].createElement("option", {
+        return /*#__PURE__*/React.createElement("option", {
           value: column.getOptionValue(e),
           key: column.getOptionValue(e)
         }, column.getOptionLabel(e));
@@ -535,17 +504,14 @@ var EAMFilterField = function EAMFilterField(_ref6) {
   }
 };
 
-exports.EAMFilterField = EAMFilterField;
-
 var getRowAsAnObject = function getRowAsAnObject(row) {
   return row.cell.reduce(function (acc, cell) {
     return _objectSpread({}, acc, _defineProperty({}, cell.t, cell.value || ""));
   }, {});
 };
 
-exports.getRowAsAnObject = getRowAsAnObject;
-var _default = {
+export { EAMFilterField, EAMCellField, getRowAsAnObject };
+export default {
   getEAMFilterOperators: getEAMFilterOperators,
   getEAMInitialState: getEAMInitialState
 };
-exports["default"] = _default;

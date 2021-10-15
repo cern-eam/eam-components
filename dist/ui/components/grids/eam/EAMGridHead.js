@@ -1,43 +1,22 @@
-"use strict";
-
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _core = require("@material-ui/core");
-
-var _FilterList = _interopRequireDefault(require("@material-ui/icons/FilterList"));
-
-var _Search = _interopRequireDefault(require("@material-ui/icons/Search"));
-
-var _Autocomplete = _interopRequireDefault(require("@material-ui/lab/Autocomplete"));
-
-var _react = _interopRequireWildcard(require("react"));
-
-var _DataspyAutocompleteInput = _interopRequireDefault(require("./DataspyAutocompleteInput"));
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-var ContainerGrid = (0, _core.withStyles)(function (theme) {
+import { Box, Button, Chip, Grid, makeStyles, Typography, withStyles } from "@material-ui/core";
+import FilterIcon from "@material-ui/icons/FilterList";
+import SearchIcon from "@material-ui/icons/Search";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import React, { createRef, useCallback, useEffect, useMemo, useState } from "react";
+import DataspyAutocompleteInput from "./DataspyAutocompleteInput";
+var ContainerGrid = withStyles(function (theme) {
   return {
     root: {
       padding: "8px",
@@ -47,8 +26,8 @@ var ContainerGrid = (0, _core.withStyles)(function (theme) {
       borderRadius: "4px 4px 0px 0px"
     }
   };
-})(_core.Grid);
-var useStyles = (0, _core.makeStyles)(function (theme) {
+})(Grid);
+var useStyles = makeStyles(function (theme) {
   return {
     dataspyChip: {
       display: 'flex',
@@ -71,31 +50,31 @@ var EAMGridHead = function EAMGridHead(_ref) {
       onDataspyChange = _ref.onDataspyChange,
       onResetFilters = _ref.onResetFilters;
   var classes = useStyles();
-  var showDataspyChips = (0, _react.useMemo)(function () {
+  var showDataspyChips = useMemo(function () {
     return dataspies.length < 4;
   }, [dataspies]);
-  return /*#__PURE__*/_react["default"].createElement(_core.Box, {
+  return /*#__PURE__*/React.createElement(Box, {
     padding: "0.5rem"
-  }, /*#__PURE__*/_react["default"].createElement(_core.Grid, {
+  }, /*#__PURE__*/React.createElement(Grid, {
     container: true,
     spacing: 1,
     direction: "row",
     alignItems: "center"
-  }, /*#__PURE__*/_react["default"].createElement(_core.Grid, {
+  }, /*#__PURE__*/React.createElement(Grid, {
     item: true,
     xs: 12,
     sm: 12,
     md: showDataspyChips ? 7 : 5
-  }, showDataspyChips ? /*#__PURE__*/_react["default"].createElement(_core.Box, {
+  }, showDataspyChips ? /*#__PURE__*/React.createElement(Box, {
     display: "flex",
     alignItems: "center"
-  }, dataspies.length ? /*#__PURE__*/_react["default"].createElement(_core.Typography, {
+  }, dataspies.length ? /*#__PURE__*/React.createElement(Typography, {
     variant: "body2",
     color: "textSecondary"
-  }, "Dataspy:") : null, /*#__PURE__*/_react["default"].createElement(_core.Box, {
+  }, "Dataspy:") : null, /*#__PURE__*/React.createElement(Box, {
     className: classes.dataspyChip
   }, dataspies.filter(Boolean).map(function (dataspy, i) {
-    return /*#__PURE__*/_react["default"].createElement(_core.Chip, {
+    return /*#__PURE__*/React.createElement(Chip, {
       key: dataspy.code,
       size: "small",
       label: dataspy.label,
@@ -104,7 +83,7 @@ var EAMGridHead = function EAMGridHead(_ref) {
         return onDataspyChange(dataspy);
       }
     });
-  }))) : /*#__PURE__*/_react["default"].createElement(_core.Box, null, /*#__PURE__*/_react["default"].createElement(_Autocomplete["default"], {
+  }))) : /*#__PURE__*/React.createElement(Box, null, /*#__PURE__*/React.createElement(Autocomplete, {
     autoHighlight: true,
     filterSelectedOptions: true,
     loading: loading,
@@ -118,45 +97,44 @@ var EAMGridHead = function EAMGridHead(_ref) {
       return dataspy.label || "";
     },
     renderInput: function renderInput(params) {
-      return (0, _DataspyAutocompleteInput["default"])(loading, params);
+      return DataspyAutocompleteInput(loading, params);
     },
     onChange: function onChange(e, newDataspy) {
       return onDataspyChange(newDataspy);
     }
-  }))), /*#__PURE__*/_react["default"].createElement(_core.Grid, {
+  }))), /*#__PURE__*/React.createElement(Grid, {
     item: true,
     xs: 12,
     sm: 12,
     md: showDataspyChips ? 5 : 7
-  }, /*#__PURE__*/_react["default"].createElement(_core.Grid, {
+  }, /*#__PURE__*/React.createElement(Grid, {
     container: true,
     spacing: 1,
     direction: "row",
     justify: "flex-end",
     alignItems: "center",
     wrap: "nowrap"
-  }, /*#__PURE__*/_react["default"].createElement(_core.Grid, {
+  }, /*#__PURE__*/React.createElement(Grid, {
     item: true
-  }, /*#__PURE__*/_react["default"].createElement(_core.Button, {
+  }, /*#__PURE__*/React.createElement(Button, {
     size: "small",
     variant: "outlined",
     onClick: toggleFilters,
-    startIcon: /*#__PURE__*/_react["default"].createElement(_FilterList["default"], null)
-  }, disableFilters ? "Show Filters" : "Hide Filters")), /*#__PURE__*/_react["default"].createElement(_core.Grid, {
+    startIcon: /*#__PURE__*/React.createElement(FilterIcon, null)
+  }, disableFilters ? "Show Filters" : "Hide Filters")), /*#__PURE__*/React.createElement(Grid, {
     item: true
-  }, /*#__PURE__*/_react["default"].createElement(_core.Button, {
+  }, /*#__PURE__*/React.createElement(Button, {
     size: "small",
     variant: "outlined",
     onClick: onResetFilters
-  }, "Reset Filters")), /*#__PURE__*/_react["default"].createElement(_core.Grid, {
+  }, "Reset Filters")), /*#__PURE__*/React.createElement(Grid, {
     item: true
-  }, /*#__PURE__*/_react["default"].createElement(_core.Button, {
+  }, /*#__PURE__*/React.createElement(Button, {
     size: "small",
     color: "primary",
     variant: "outlined",
     onClick: onSearch
-  }, /*#__PURE__*/_react["default"].createElement(_Search["default"], null)))))));
+  }, /*#__PURE__*/React.createElement(SearchIcon, null)))))));
 };
 
-var _default = EAMGridHead;
-exports["default"] = _default;
+export default EAMGridHead;

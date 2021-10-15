@@ -1,33 +1,6 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _react = _interopRequireDefault(require("react"));
-
-var _reactSelect = _interopRequireDefault(require("react-select"));
-
-require("react-select/dist/react-select.css");
-
-var _EAMBaseInput2 = _interopRequireWildcard(require("./EAMBaseInput"));
-
-var _propTypes = _interopRequireDefault(require("prop-types"));
-
-var _styles = require("@material-ui/core/styles");
-
-var _EAMFormLabel = _interopRequireDefault(require("./EAMFormLabel"));
-
-var _classnames = _interopRequireDefault(require("classnames"));
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+var _excluded = ["elementInfo", "classes", "values", "value", "valueKey", "label", "labelStyle", "validate", "forceSearchable"];
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
@@ -47,13 +20,22 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+import React from 'react';
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
+import EAMBaseInput, { formStyles } from './EAMBaseInput';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import EAMFormLabel from "./EAMFormLabel";
+import classNames from 'classnames';
 
 var EAMSelect = /*#__PURE__*/function (_EAMBaseInput) {
   _inherits(EAMSelect, _EAMBaseInput);
@@ -182,25 +164,25 @@ var EAMSelect = /*#__PURE__*/function (_EAMBaseInput) {
           labelStyle = _this$props2.labelStyle,
           validate = _this$props2.validate,
           forceSearchable = _this$props2.forceSearchable,
-          otherProps = _objectWithoutProperties(_this$props2, ["elementInfo", "classes", "values", "value", "valueKey", "label", "labelStyle", "validate", "forceSearchable"]);
+          otherProps = _objectWithoutProperties(_this$props2, _excluded);
 
       var searchable = window.innerWidth > 1000;
       var iOS = /iPad|iPhone/.test(navigator.userAgent) && !window.MSStream;
 
       if (this.isHidden()) {
-        return /*#__PURE__*/_react["default"].createElement("div", null);
+        return /*#__PURE__*/React.createElement("div", null);
       }
 
-      var SelectComponent = this.props.creatable ? _reactSelect["default"].Creatable : _reactSelect["default"];
-      var selectClasses = this.props.selectStyle ? (0, _classnames["default"])(classes.select, this.props.selectStyle) : classes.select;
-      return /*#__PURE__*/_react["default"].createElement("div", {
+      var SelectComponent = this.props.creatable ? Select.Creatable : Select;
+      var selectClasses = this.props.selectStyle ? classNames(classes.select, this.props.selectStyle) : classes.select;
+      return /*#__PURE__*/React.createElement("div", {
         className: classes.fieldContainer
-      }, /*#__PURE__*/_react["default"].createElement(_EAMFormLabel["default"], {
+      }, /*#__PURE__*/React.createElement(EAMFormLabel, {
         required: this.isRequired(),
         label: label || elementInfo && elementInfo.text,
         labelStyle: labelStyle,
         error: this.state.error
-      }), /*#__PURE__*/_react["default"].createElement(SelectComponent, _extends({
+      }), /*#__PURE__*/React.createElement(SelectComponent, _extends({
         ref: !this.props.creatable ? function (ref) {
           return _this2.selectComponent = ref;
         } : undefined,
@@ -223,19 +205,16 @@ var EAMSelect = /*#__PURE__*/function (_EAMBaseInput) {
   }]);
 
   return EAMSelect;
-}(_EAMBaseInput2["default"]);
+}(EAMBaseInput);
 
 EAMSelect.propTypes = {
-  labelStyle: _propTypes["default"].object,
-  creatable: _propTypes["default"].bool,
-  forceSearchable: _propTypes["default"].bool,
-  autoSelectSingleResult: _propTypes["default"].bool
+  labelStyle: PropTypes.object,
+  creatable: PropTypes.bool,
+  forceSearchable: PropTypes.bool,
+  autoSelectSingleResult: PropTypes.bool
 };
 EAMSelect.defaultProps = {
   autoSelectSingleResult: false,
   placeholder: ''
 };
-
-var _default = (0, _styles.withStyles)(_EAMBaseInput2.formStyles)(EAMSelect);
-
-exports["default"] = _default;
+export default withStyles(formStyles)(EAMSelect);

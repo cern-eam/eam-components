@@ -1,43 +1,6 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = exports.initialGridRequest = void 0;
-
-var _react = _interopRequireWildcard(require("react"));
-
-var _propTypes = _interopRequireDefault(require("prop-types"));
-
-var _EAMGridTable = _interopRequireDefault(require("./components/table/EAMGridTable"));
-
-var _EAMGridSelectDataspy = _interopRequireDefault(require("./components/EAMGridSelectDataspy"));
-
-var _GridWS = _interopRequireDefault(require("./lib/GridWS"));
-
-var _sorting = require("./lib/sorting");
-
-var _filtering = require("./lib/filtering");
-
-var _GridErrorTypes = _interopRequireDefault(require("./lib/GridErrorTypes"));
-
-var _index = _interopRequireDefault(require("axios/index"));
-
-var _index2 = require("@material-ui/core/styles/index");
-
-var _KeyCode = _interopRequireDefault(require("./enums/KeyCode"));
-
-var _HttpStatus = _interopRequireDefault(require("./enums/HttpStatus"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
@@ -55,14 +18,26 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import DataGridResultTable from './components/table/EAMGridTable';
+import DataGridSelectDataspy from './components/EAMGridSelectDataspy';
+import GridWS from "./lib/GridWS";
+import { toggleSortField } from './lib/sorting';
+import { clearFilters, saveGridRequestInLocalStorage, loadGridRequestFromLocalStorage, setFilter, getFilters } from './lib/filtering';
+import ErrorTypes from "./lib/GridErrorTypes";
+import axios from "axios/index";
+import { withStyles } from "@material-ui/core/styles/index";
+import KeyCode from "./enums/KeyCode";
+import HttpStatus from "./enums/HttpStatus";
 var styles = {
   dataGridMainContainer: {
     display: "flex",
@@ -72,7 +47,7 @@ var styles = {
     "-webkit-box-sizing": "border-box"
   }
 };
-var initialGridRequest = {
+export var initialGridRequest = {
   rowCount: 50,
   cursorPosition: 1,
   gridSort: [],
@@ -80,7 +55,6 @@ var initialGridRequest = {
   useNative: true,
   includeMetadata: true
 };
-exports.initialGridRequest = initialGridRequest;
 
 var EAMGrid = /*#__PURE__*/function (_Component) {
   _inherits(EAMGrid, _Component);
@@ -109,10 +83,10 @@ var EAMGrid = /*#__PURE__*/function (_Component) {
     };
     _this.filterMap = null;
     _this.fieldsWidthInfo = new Map();
-    _this.toggleSortField = _sorting.toggleSortField.bind(_assertThisInitialized(_this));
-    _this.setFilter = _filtering.setFilter.bind(_assertThisInitialized(_this));
-    _this.getFilters = _filtering.getFilters.bind(_assertThisInitialized(_this));
-    _this.clearFilters = _filtering.clearFilters.bind(_assertThisInitialized(_this));
+    _this.toggleSortField = toggleSortField.bind(_assertThisInitialized(_this));
+    _this.setFilter = setFilter.bind(_assertThisInitialized(_this));
+    _this.getFilters = getFilters.bind(_assertThisInitialized(_this));
+    _this.clearFilters = clearFilters.bind(_assertThisInitialized(_this));
 
     _this.init = function (props) {
       if (props.gridId || props.screenCode) {
@@ -144,7 +118,7 @@ var EAMGrid = /*#__PURE__*/function (_Component) {
         isloading: true,
         rows: []
       }, function () {
-        return _GridWS["default"].getGridData(request).then(function (data) {
+        return GridWS.getGridData(request).then(function (data) {
           var metadata = data.body.data;
 
           if (gridRequest.includeMetadata) {
@@ -177,7 +151,7 @@ var EAMGrid = /*#__PURE__*/function (_Component) {
             gridRequest: _objectSpread({}, gridRequest)
           });
 
-          if (error.status === _HttpStatus["default"].NOT_FOUND) {
+          if (error.status === HttpStatus.NOT_FOUND) {
             alert("Metadata for this grid does not exist");
           }
         });
@@ -278,8 +252,8 @@ var EAMGrid = /*#__PURE__*/function (_Component) {
     }
   }, {
     key: "runSearch",
-    // Execute search
-    value: function runSearch() {
+    value: // Execute search
+    function runSearch() {
       var _this3 = this;
 
       // Run search, update state with latest state of filters
@@ -321,7 +295,7 @@ var EAMGrid = /*#__PURE__*/function (_Component) {
       } // get axios token to allow transaction cancellation
 
 
-      this.cancelSource = _index["default"].CancelToken.source();
+      this.cancelSource = axios.CancelToken.source();
       this.setState(function (prevState) {
         return _objectSpread({}, prevState, {
           isloading: true
@@ -330,7 +304,7 @@ var EAMGrid = /*#__PURE__*/function (_Component) {
         // clean filter by removing filters without value
         var request = _this4.props.gridRequestAdapter(_this4._cleanFilters());
 
-        _GridWS["default"].getGridData(request, {
+        GridWS.getGridData(request, {
           cancelToken: _this4.cancelSource.token
         }).then(function (data) {
           // nullify info of current transaction
@@ -349,7 +323,7 @@ var EAMGrid = /*#__PURE__*/function (_Component) {
             });
           });
         })["catch"](function (error) {
-          if (error.type !== _GridErrorTypes["default"].REQUEST_CANCELLED) {
+          if (error.type !== ErrorTypes.REQUEST_CANCELLED) {
             _this4.setState({
               isloading: false
             });
@@ -368,10 +342,10 @@ var EAMGrid = /*#__PURE__*/function (_Component) {
         exporterBlocked: true
       }); // get axios token to allow transaction cancellation
 
-      this.cancelSource = _index["default"].CancelToken.source(); // clean filter by removing filters without value
+      this.cancelSource = axios.CancelToken.source(); // clean filter by removing filters without value
 
       var request = this.props.gridRequestAdapter(this._cleanFilters());
-      return _GridWS["default"].exportDataToCSV(request, {
+      return GridWS.exportDataToCSV(request, {
         cancelToken: this.cancelSource.token
       }).then(function (data) {
         // nullify info of current transaction
@@ -383,7 +357,7 @@ var EAMGrid = /*#__PURE__*/function (_Component) {
 
         return data.body;
       })["catch"](function (error) {
-        if (error.type !== _GridErrorTypes["default"].REQUEST_CANCELLED) {
+        if (error.type !== ErrorTypes.REQUEST_CANCELLED) {
           _this5.setState({
             exporterBlocked: false
           });
@@ -423,9 +397,9 @@ var EAMGrid = /*#__PURE__*/function (_Component) {
   }, {
     key: "handleKeyDown",
     value: function handleKeyDown(event) {
-      if (event.key === _KeyCode["default"].F7) {
+      if (event.key === KeyCode.F7) {
         this.toggleFilter();
-      } else if (event.key === _KeyCode["default"].F8) {
+      } else if (event.key === KeyCode.F8) {
         this.runSearch();
       }
     }
@@ -433,13 +407,13 @@ var EAMGrid = /*#__PURE__*/function (_Component) {
     key: "render",
     value: function render() {
       var classes = this.props.classes;
-      return /*#__PURE__*/_react["default"].createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         className: classes.dataGridMainContainer,
         style: {
           height: "calc(100% - ".concat(this.state.filterVisible ? this.props.heightFilterVisible : this.props.heightFilterNotVisible, ")"),
           width: "".concat(this.props.width)
         }
-      }, this.props.showDataspySelection && /*#__PURE__*/_react["default"].createElement(_EAMGridSelectDataspy["default"], {
+      }, this.props.showDataspySelection && /*#__PURE__*/React.createElement(DataGridSelectDataspy, {
         dataSpy: this.state.gridRequest.dataspyID || '',
         listOfDataSpy: this.state.listOfDataSpy,
         handleChangeDataSpy: this.handleChangeDataSpy.bind(this),
@@ -447,7 +421,7 @@ var EAMGrid = /*#__PURE__*/function (_Component) {
         filterVisible: this.state.filterVisible,
         runSearch: this.runSearch.bind(this),
         clearFilters: this.clearFilters.bind(this)
-      }), /*#__PURE__*/_react["default"].createElement(_EAMGridTable["default"], {
+      }), /*#__PURE__*/React.createElement(DataGridResultTable, {
         toggleSortField: this.toggleSortField.bind(this),
         getCellWidth: this.getCellWidth.bind(this),
         fields: this.state.fields,
@@ -481,22 +455,22 @@ var EAMGrid = /*#__PURE__*/function (_Component) {
   }]);
 
   return EAMGrid;
-}(_react.Component);
+}(Component);
 
 EAMGrid.propTypes = {
-  gridId: _propTypes["default"].string.isRequired,
-  showDataspySelection: _propTypes["default"].bool,
-  cache: _propTypes["default"].bool,
-  selectColumn: _propTypes["default"].bool,
-  autorun: _propTypes["default"].bool,
-  editColumn: _propTypes["default"].bool,
-  gridRequestAdapter: _propTypes["default"].func,
-  extraColumns: _propTypes["default"].array,
-  language: _propTypes["default"].string,
-  onRowClick: _propTypes["default"].func,
-  allowRowSelection: _propTypes["default"].bool,
-  rowStyler: _propTypes["default"].func,
-  filterVisible: _propTypes["default"].bool
+  gridId: PropTypes.string.isRequired,
+  showDataspySelection: PropTypes.bool,
+  cache: PropTypes.bool,
+  selectColumn: PropTypes.bool,
+  autorun: PropTypes.bool,
+  editColumn: PropTypes.bool,
+  gridRequestAdapter: PropTypes.func,
+  extraColumns: PropTypes.array,
+  language: PropTypes.string,
+  onRowClick: PropTypes.func,
+  allowRowSelection: PropTypes.bool,
+  rowStyler: PropTypes.func,
+  filterVisible: PropTypes.bool
 };
 EAMGrid.defaultProps = {
   cache: true,
@@ -521,7 +495,4 @@ EAMGrid.defaultProps = {
   filterVisible: true,
   searchOnMount: true
 };
-
-var _default = (0, _index2.withStyles)(styles)(EAMGrid);
-
-exports["default"] = _default;
+export default withStyles(styles)(EAMGrid);

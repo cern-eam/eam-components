@@ -1,55 +1,6 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _react = _interopRequireWildcard(require("react"));
-
-var _Button = _interopRequireDefault(require("@material-ui/core/Button"));
-
-var _ExpansionPanel = _interopRequireDefault(require("@material-ui/core/ExpansionPanel"));
-
-var _ExpansionPanelDetails = _interopRequireDefault(require("@material-ui/core/ExpansionPanelDetails"));
-
-var _ExpansionPanelSummary = _interopRequireDefault(require("@material-ui/core/ExpansionPanelSummary"));
-
-var _ExpandMore = _interopRequireDefault(require("@material-ui/icons/ExpandMore"));
-
-var _WSChecklists = _interopRequireDefault(require("../../../tools/WSChecklists"));
-
-var _ChecklistEquipment = _interopRequireDefault(require("./ChecklistEquipment"));
-
-var _ChecklistItem = _interopRequireDefault(require("./ChecklistItem"));
-
-var _ChecklistSignature = _interopRequireDefault(require("./ChecklistSignature"));
-
-var _reactBlockUi = _interopRequireDefault(require("react-block-ui"));
-
-var _EAMSelect = _interopRequireDefault(require("../inputs/EAMSelect"));
-
-var _SimpleEmptyState = _interopRequireDefault(require("../../components/emptystates/SimpleEmptyState"));
-
-var _styles = require("@material-ui/core/styles");
-
-var _Paper = _interopRequireDefault(require("@material-ui/core/Paper"));
-
-var _Dialog = _interopRequireDefault(require("@material-ui/core/Dialog"));
-
-var _Checkbox = _interopRequireDefault(require("@material-ui/core/Checkbox"));
-
-var _FormControlLabel = _interopRequireDefault(require("@material-ui/core/FormControlLabel"));
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 var _SIGNATURE_ORDER;
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
@@ -57,7 +8,7 @@ function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread n
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
@@ -75,27 +26,45 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+import React, { Component } from 'react';
+import Button from '@material-ui/core/Button';
+import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import WSChecklists from '../../../tools/WSChecklists';
+import ChecklistEquipment from "./ChecklistEquipment";
+import ChecklistItem from './ChecklistItem';
+import ChecklistSignature from './ChecklistSignature';
+import BlockUi from 'react-block-ui';
+import EAMSelect from '../inputs/EAMSelect';
+import SimpleEmptyState from '../../components/emptystates/SimpleEmptyState';
+import { withStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Dialog from '@material-ui/core/Dialog';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 var SIGNATURE_TYPES = {
   PERFORMER_1: 'PB01',
   PERFORMER_2: 'PB02',
   REVIEWER: 'RB01'
 };
 var SIGNATURE_ORDER = (_SIGNATURE_ORDER = {}, _defineProperty(_SIGNATURE_ORDER, SIGNATURE_TYPES.PERFORMER_1, 1), _defineProperty(_SIGNATURE_ORDER, SIGNATURE_TYPES.PERFORMER_2, 2), _defineProperty(_SIGNATURE_ORDER, SIGNATURE_TYPES.REVIEWER, 3), _SIGNATURE_ORDER);
-var ActivityExpansionPanel = (0, _styles.withStyles)({
+var ActivityExpansionPanel = withStyles({
   root: {
     backgroundColor: '#fafafa',
     border: '1px solid #eeeeee',
@@ -111,8 +80,8 @@ var ActivityExpansionPanel = (0, _styles.withStyles)({
     }
   },
   expanded: {}
-})(_ExpansionPanel["default"]);
-var EquipmentExpansionPanel = (0, _styles.withStyles)({
+})(MuiExpansionPanel);
+var EquipmentExpansionPanel = withStyles({
   root: {
     boxShadow: 'none',
     '&:before': {
@@ -123,7 +92,7 @@ var EquipmentExpansionPanel = (0, _styles.withStyles)({
     }
   },
   expanded: {}
-})(_ExpansionPanel["default"]);
+})(MuiExpansionPanel);
 
 function getExpandedActivities(activities) {
   var makeEquipmentsFromActivity = function makeEquipmentsFromActivity(activity) {
@@ -275,7 +244,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
         blocking: true
       });
 
-      _WSChecklists["default"].createFolowUpWorkOrders(activity).then(function (resp) {
+      WSChecklists.createFolowUpWorkOrders(activity).then(function (resp) {
         _this.readActivities(activity.workOrderNumber);
 
         _this.props.showSuccess('Follow-up workorders successfully created.');
@@ -436,7 +405,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
         return null;
       }
 
-      return /*#__PURE__*/_react["default"].createElement(EquipmentExpansionPanel, {
+      return /*#__PURE__*/React.createElement(EquipmentExpansionPanel, {
         key: key,
         expanded: !collapsed,
         TransitionProps: {
@@ -446,22 +415,22 @@ var Checklists = /*#__PURE__*/function (_Component) {
         onChange: function onChange(_, expanded) {
           return _this3.setCollapsedEquipment(!expanded, activity.index, equipmentCode);
         }
-      }, /*#__PURE__*/_react["default"].createElement(_ExpansionPanelSummary["default"], {
-        expandIcon: /*#__PURE__*/_react["default"].createElement(_ExpandMore["default"], null)
-      }, /*#__PURE__*/_react["default"].createElement(_ChecklistEquipment["default"], {
+      }, /*#__PURE__*/React.createElement(ExpansionPanelSummary, {
+        expandIcon: /*#__PURE__*/React.createElement(ExpandMoreIcon, null)
+      }, /*#__PURE__*/React.createElement(ChecklistEquipment, {
         key: firstChecklist.checkListCode + "_equipment",
         equipmentCode: equipmentCode,
         equipmentDesc: firstChecklist.equipmentDesc
-      })), /*#__PURE__*/_react["default"].createElement(_ExpansionPanelDetails["default"], {
+      })), /*#__PURE__*/React.createElement(ExpansionPanelDetails, {
         style: {
           marginTop: -18
         }
-      }, /*#__PURE__*/_react["default"].createElement("div", {
+      }, /*#__PURE__*/React.createElement("div", {
         style: {
           width: "100%"
         }
       }, checklists.map(function (checklist) {
-        return /*#__PURE__*/_react["default"].createElement(_ChecklistItem["default"], {
+        return /*#__PURE__*/React.createElement(ChecklistItem, {
           key: 'checklistItem$' + checklist.checkListCode,
           updateChecklistItem: updateChecklistItem,
           onUpdateChecklistItem: _this3.onUpdateChecklistItem,
@@ -491,7 +460,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
       });
 
       if (checklists.length === 0) {
-        return /*#__PURE__*/_react["default"].createElement("p", {
+        return /*#__PURE__*/React.createElement("p", {
           style: {
             textAlign: 'center'
           }
@@ -558,7 +527,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
       }).filter(function (signature) {
         return _this5.shouldRenderSignature(activity.signatures, signature);
       }).map(function (signature) {
-        return /*#__PURE__*/_react["default"].createElement(_ChecklistSignature["default"], {
+        return /*#__PURE__*/React.createElement(ChecklistSignature, {
           signature: signature,
           workOrderCode: activity.workOrderNumber,
           activityCode: activity.activityCode,
@@ -579,7 +548,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
       }).map(function (activity) {
         var renderedSignatures = _this6.renderSignatures(activity);
 
-        return /*#__PURE__*/_react["default"].createElement(ActivityExpansionPanel, {
+        return /*#__PURE__*/React.createElement(ActivityExpansionPanel, {
           key: activity.activityCode,
           expanded: !activity.collapsed,
           TransitionProps: {
@@ -592,22 +561,22 @@ var Checklists = /*#__PURE__*/function (_Component) {
           style: {
             marginTop: '5px'
           }
-        }, /*#__PURE__*/_react["default"].createElement(_ExpansionPanelSummary["default"], {
-          expandIcon: /*#__PURE__*/_react["default"].createElement(_ExpandMore["default"], null)
-        }, /*#__PURE__*/_react["default"].createElement("div", {
+        }, /*#__PURE__*/React.createElement(ExpansionPanelSummary, {
+          expandIcon: /*#__PURE__*/React.createElement(ExpandMoreIcon, null)
+        }, /*#__PURE__*/React.createElement("div", {
           style: {
             padding: 2,
             flexGrow: "1",
             display: "flex",
             alignItems: "center"
           }
-        }, /*#__PURE__*/_react["default"].createElement("span", {
+        }, /*#__PURE__*/React.createElement("span", {
           style: {
             fontWeight: 500
           }
         }, activity.activityCode, " \u2014 ", activity.activityNote), activity.checklists.some(function (checklist) {
           return !checklist.hideFollowUp;
-        }) && /*#__PURE__*/_react["default"].createElement(_Button["default"], {
+        }) && /*#__PURE__*/React.createElement(Button, {
           key: activity.activityCode + '$createfuwo',
           onClick: function onClick(evt) {
             evt.stopPropagation();
@@ -621,16 +590,16 @@ var Checklists = /*#__PURE__*/function (_Component) {
           disabled: _this6.props.disabled || activity.checklists.every(function (checklist) {
             return typeof checklist.followUpWorkOrder === 'string' || checklist.followUp === false;
           })
-        }, "Create Follow-up WO"))), /*#__PURE__*/_react["default"].createElement(_ExpansionPanelDetails["default"], {
+        }, "Create Follow-up WO"))), /*#__PURE__*/React.createElement(ExpansionPanelDetails, {
           style: {
             margin: 0,
             padding: 0
           }
-        }, /*#__PURE__*/_react["default"].createElement("div", {
+        }, /*#__PURE__*/React.createElement("div", {
           style: {
             width: "100%"
           }
-        }, _this6.renderChecklistsForActivity(activity, filteredEquipment))), activity.signatures && renderedSignatures.length && /*#__PURE__*/_react["default"].createElement(ActivityExpansionPanel, {
+        }, _this6.renderChecklistsForActivity(activity, filteredEquipment))), activity.signatures && renderedSignatures.length && /*#__PURE__*/React.createElement(ActivityExpansionPanel, {
           style: {
             backgroundColor: 'white',
             border: '0px'
@@ -639,20 +608,20 @@ var Checklists = /*#__PURE__*/function (_Component) {
           onChange: function onChange(_, expanded) {
             return _this6.expandSignature(activity, expanded);
           }
-        }, /*#__PURE__*/_react["default"].createElement(_ExpansionPanelSummary["default"], {
-          expandIcon: /*#__PURE__*/_react["default"].createElement(_ExpandMore["default"], null)
-        }, /*#__PURE__*/_react["default"].createElement("span", {
+        }, /*#__PURE__*/React.createElement(ExpansionPanelSummary, {
+          expandIcon: /*#__PURE__*/React.createElement(ExpandMoreIcon, null)
+        }, /*#__PURE__*/React.createElement("span", {
           style: {
             fontWeight: 500
           }
-        }, "E-SIGNATURES")), /*#__PURE__*/_react["default"].createElement(_ExpansionPanelDetails["default"], {
+        }, "E-SIGNATURES")), /*#__PURE__*/React.createElement(ExpansionPanelDetails, {
           style: {
             margin: 0,
             padding: '0 24px',
             backgroundColor: 'white',
             minHeight: '50px'
           }
-        }, /*#__PURE__*/_react["default"].createElement("div", {
+        }, /*#__PURE__*/React.createElement("div", {
           style: {
             width: "100%"
           }
@@ -730,13 +699,13 @@ var Checklists = /*#__PURE__*/function (_Component) {
     }
   }, {
     key: "render",
-
+    value:
     /**s
      * Render the main checklists panel (only when there is at least one activity with checklist)
      *
      * @returns {*}
      */
-    value: function render() {
+    function render() {
       var _this8 = this;
 
       var _this$state = this.state,
@@ -767,57 +736,55 @@ var Checklists = /*#__PURE__*/function (_Component) {
 
       var isEmptyState = filteredActivities.length === 0;
       var activity = this.state.createFollowUpActivity;
-
-      var dialog = activity && /*#__PURE__*/_react["default"].createElement(_Paper["default"], {
+      var dialog = activity && /*#__PURE__*/React.createElement(Paper, {
         elevation: 3,
         style: {
           padding: '30px',
           textAlign: 'center'
         }
-      }, /*#__PURE__*/_react["default"].createElement("div", {
+      }, /*#__PURE__*/React.createElement("div", {
         style: {
           fontSize: '25px',
           marginBottom: '15px'
         }
-      }, "Create follow-up work orders?"), /*#__PURE__*/_react["default"].createElement("p", null, "Activity ", activity.activityCode, " \u2014 ", activity.activityNote), /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement(_Button["default"], {
+      }, "Create follow-up work orders?"), /*#__PURE__*/React.createElement("p", null, "Activity ", activity.activityCode, " \u2014 ", activity.activityNote), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(Button, {
         type: "submit",
         onClick: this.hideCreateFollowUpWODialog
-      }, "Cancel"), /*#__PURE__*/_react["default"].createElement(_Button["default"], {
+      }, "Cancel"), /*#__PURE__*/React.createElement(Button, {
         onClick: function onClick() {
           return _this8.createFollowUpWOs(_this8.state.createFollowUpActivity);
         },
         color: "primary"
       }, "Confirm")));
-
-      return !blocking && isEmptyState ? /*#__PURE__*/_react["default"].createElement(_SimpleEmptyState["default"], {
+      return !blocking && isEmptyState ? /*#__PURE__*/React.createElement(SimpleEmptyState, {
         message: "No Checklists to show."
-      }) : /*#__PURE__*/_react["default"].createElement("div", {
+      }) : /*#__PURE__*/React.createElement("div", {
         style: divStyle
-      }, /*#__PURE__*/_react["default"].createElement(_reactBlockUi["default"], {
+      }, /*#__PURE__*/React.createElement(BlockUi, {
         blocking: blocking
-      }, /*#__PURE__*/_react["default"].createElement("div", {
+      }, /*#__PURE__*/React.createElement("div", {
         style: {
           display: 'flex',
           justifyContent: 'start'
         }
-      }, /*#__PURE__*/_react["default"].createElement("div", {
+      }, /*#__PURE__*/React.createElement("div", {
         style: {
           flexBasis: '75px'
         }
-      }, this.props.topSlot), !blocking && /*#__PURE__*/_react["default"].createElement(_FormControlLabel["default"], {
-        control: /*#__PURE__*/_react["default"].createElement(_Checkbox["default"], {
+      }, this.props.topSlot), !blocking && /*#__PURE__*/React.createElement(FormControlLabel, {
+        control: /*#__PURE__*/React.createElement(Checkbox, {
           color: "primary",
           checked: Object.keys(this.state.checklistsHidden).length > 0
         }),
         label: 'Hide filled items',
         onMouseDown: this.toggleFilledFilter,
         onTouchStart: this.toggleFilledFilter
-      })), /*#__PURE__*/_react["default"].createElement("div", {
+      })), /*#__PURE__*/React.createElement("div", {
         style: {
           paddingLeft: 25,
           paddingRight: 25
         }
-      }, activities.length > 1 && /*#__PURE__*/_react["default"].createElement(_EAMSelect["default"], {
+      }, activities.length > 1 && /*#__PURE__*/React.createElement(EAMSelect, {
         children: null,
         label: "Activity",
         values: [{
@@ -840,7 +807,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
         menuContainerStyle: {
           'zIndex': 999
         }
-      }), Object.keys(equipments).length > 1 && /*#__PURE__*/_react["default"].createElement(_EAMSelect["default"], {
+      }), Object.keys(equipments).length > 1 && /*#__PURE__*/React.createElement(EAMSelect, {
         children: null,
         label: "Equipment",
         values: [{
@@ -864,21 +831,20 @@ var Checklists = /*#__PURE__*/function (_Component) {
         menuContainerStyle: {
           'zIndex': 999
         }
-      })), this.renderActivities(filteredActivity, filteredEquipment), this.props.bottomSlot), /*#__PURE__*/_react["default"].createElement(_Dialog["default"], {
+      })), this.renderActivities(filteredActivity, filteredEquipment), this.props.bottomSlot), /*#__PURE__*/React.createElement(Dialog, {
         open: this.state.createFollowUpActivity !== null
       }, dialog));
     }
   }]);
 
   return Checklists;
-}(_react.Component);
+}(Component);
 
 Checklists.defaultProps = {
-  getWorkOrderActivities: _WSChecklists["default"].getWorkOrderActivities,
-  updateChecklistItem: _WSChecklists["default"].updateChecklistItem,
+  getWorkOrderActivities: WSChecklists.getWorkOrderActivities,
+  updateChecklistItem: WSChecklists.updateChecklistItem,
   readonly: false,
   minFindingsDropdown: 3,
   maxExpandedChecklistItems: 50
 };
-var _default = Checklists;
-exports["default"] = _default;
+export default Checklists;

@@ -1,31 +1,6 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _InputAdornment = _interopRequireDefault(require("@material-ui/core/InputAdornment"));
-
-var _MenuItem = _interopRequireDefault(require("@material-ui/core/MenuItem"));
-
-var _Paper = _interopRequireDefault(require("@material-ui/core/Paper"));
-
-var _styles = require("@material-ui/core/styles");
-
-var _SvgIcon = _interopRequireDefault(require("@material-ui/core/SvgIcon"));
-
-var _react = _interopRequireDefault(require("react"));
-
-var _reactAutosuggest = _interopRequireDefault(require("react-autosuggest"));
-
-var _EAMBaseInput2 = _interopRequireDefault(require("./EAMBaseInput"));
-
-var _EAMTextField = _interopRequireDefault(require("./EAMTextField"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+var _excluded = ["classes", "autoFocus", "value", "label", "disabled", "error", "helperText", "required"];
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
@@ -33,7 +8,7 @@ function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread n
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
@@ -51,17 +26,17 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
@@ -71,9 +46,19 @@ function _objectWithoutProperties(source, excluded) { if (source == null) return
 
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
+import InputAdornment from '@material-ui/core/InputAdornment';
+import MenuItem from '@material-ui/core/MenuItem';
+import Paper from '@material-ui/core/Paper';
+import { makeStyles } from '@material-ui/core/styles';
+import SvgIcon from '@material-ui/core/SvgIcon';
+import React from 'react';
+import Autosuggest from 'react-autosuggest';
+import EAMBaseInput from './EAMBaseInput';
+import EAMTextField from './EAMTextField';
 /**
  * Default input, if none is provided
  */
+
 function renderInput(inputProps) {
   var classes = inputProps.classes,
       autoFocus = inputProps.autoFocus,
@@ -83,7 +68,7 @@ function renderInput(inputProps) {
       error = inputProps.error,
       helperText = inputProps.helperText,
       required = inputProps.required,
-      other = _objectWithoutProperties(inputProps, ["classes", "autoFocus", "value", "label", "disabled", "error", "helperText", "required"]);
+      other = _objectWithoutProperties(inputProps, _excluded);
 
   var arrowIconStyle = {
     color: "rgba(0, 0, 0, 0.54)",
@@ -91,7 +76,7 @@ function renderInput(inputProps) {
     position: "absolute",
     right: 0
   };
-  return /*#__PURE__*/_react["default"].createElement(_EAMTextField["default"], {
+  return /*#__PURE__*/React.createElement(EAMTextField, {
     required: required,
     error: error,
     helperText: helperText,
@@ -101,11 +86,11 @@ function renderInput(inputProps) {
     value: value,
     className: classes.textField,
     InputProps: _objectSpread({
-      endAdornment: !disabled && /*#__PURE__*/_react["default"].createElement(_InputAdornment["default"], {
+      endAdornment: !disabled && /*#__PURE__*/React.createElement(InputAdornment, {
         position: "end"
-      }, /*#__PURE__*/_react["default"].createElement(_SvgIcon["default"], {
+      }, /*#__PURE__*/React.createElement(SvgIcon, {
         style: arrowIconStyle
-      }, /*#__PURE__*/_react["default"].createElement("path", {
+      }, /*#__PURE__*/React.createElement("path", {
         d: "M7 10l5 5 5-5z"
       }))),
       classes: {
@@ -120,10 +105,10 @@ function renderInput(inputProps) {
 
 
 function renderSuggestionContainer(child, suggestion, isHighlighted) {
-  return /*#__PURE__*/_react["default"].createElement(_MenuItem["default"], {
+  return /*#__PURE__*/React.createElement(MenuItem, {
     selected: isHighlighted,
     component: "div"
-  }, /*#__PURE__*/_react["default"].createElement("div", null, child));
+  }, /*#__PURE__*/React.createElement("div", null, child));
 }
 /**
  * Global container containing all suggestions
@@ -133,12 +118,12 @@ function renderSuggestionContainer(child, suggestion, isHighlighted) {
 function renderSuggestionsContainer(options) {
   var containerProps = options.containerProps,
       children = options.children;
-  return /*#__PURE__*/_react["default"].createElement(_Paper["default"], _extends({}, containerProps, {
+  return /*#__PURE__*/React.createElement(Paper, _extends({}, containerProps, {
     square: true
   }), children);
 }
 
-var useStyles = (0, _styles.makeStyles)(function (theme) {
+var useStyles = makeStyles(function (theme) {
   return {
     container: {
       flexGrow: 1,
@@ -297,7 +282,7 @@ var EAMSelect = /*#__PURE__*/function (_EAMBaseInput) {
       var suggestionRenderer = renderSuggestion || this.renderValue;
       var valueRenderer = renderValue || this.renderValue;
       if (!value) return null;
-      return /*#__PURE__*/_react["default"].createElement(_reactAutosuggest["default"], {
+      return /*#__PURE__*/React.createElement(Autosuggest, {
         theme: {
           container: classes.container,
           suggestionsContainerOpen: classes.suggestionsContainerOpen,
@@ -332,20 +317,18 @@ var EAMSelect = /*#__PURE__*/function (_EAMBaseInput) {
   }]);
 
   return EAMSelect;
-}(_EAMBaseInput2["default"]);
+}(EAMBaseInput);
 
 var ClassComponentStyler = function ClassComponentStyler(props) {
   var classes = useStyles(props);
   var Component = props.component;
-  return /*#__PURE__*/_react["default"].createElement(Component, _extends({
+  return /*#__PURE__*/React.createElement(Component, _extends({
     classes: classes
   }, props));
 };
 
-var _default = function _default(props) {
-  return /*#__PURE__*/_react["default"].createElement(ClassComponentStyler, _extends({
+export default (function (props) {
+  return /*#__PURE__*/React.createElement(ClassComponentStyler, _extends({
     component: EAMSelect
   }, props));
-};
-
-exports["default"] = _default;
+});

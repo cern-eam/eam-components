@@ -1,30 +1,3 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _react = _interopRequireWildcard(require("react"));
-
-require("./Comments.css");
-
-var _CommentBar = _interopRequireDefault(require("./CommentBar"));
-
-var _CommentAvatar = _interopRequireDefault(require("./CommentAvatar"));
-
-var _reactAutosizeTextarea = _interopRequireDefault(require("react-autosize-textarea"));
-
-var _ListItem = _interopRequireDefault(require("@material-ui/core/ListItem"));
-
-var _index = require("@material-ui/core/styles/index");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -39,14 +12,21 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+import React, { Component } from 'react';
+import './Comments.css';
+import CommentBar from "./CommentBar";
+import CommentAvatar from "./CommentAvatar";
+import TextareaAutosize from 'react-autosize-textarea';
+import ListItem from '@material-ui/core/ListItem';
+import { withStyles } from "@material-ui/core/styles/index";
 var initialContainerStyle = {
   opacity: 1.0,
   pointerEvents: 'all'
@@ -139,35 +119,35 @@ var CommentNew = /*#__PURE__*/function (_Component) {
     value: function render() {
       var disabled = this.props.disabled;
       var placeholder = disabled ? 'Commenting is disabled' : 'Enter new comment here';
-      return /*#__PURE__*/_react["default"].createElement(_ListItem["default"], {
+      return /*#__PURE__*/React.createElement(ListItem, {
         classes: {
           root: this.props.classes.root
         }
-      }, /*#__PURE__*/_react["default"].createElement(_CommentAvatar["default"], {
+      }, /*#__PURE__*/React.createElement(CommentAvatar, {
         name: this.props.userCode
-      }), /*#__PURE__*/_react["default"].createElement("div", {
+      }), /*#__PURE__*/React.createElement("div", {
         className: "commentContainer",
         style: this.state.containerStyle
-      }, /*#__PURE__*/_react["default"].createElement("div", {
+      }, /*#__PURE__*/React.createElement("div", {
         className: "triangle"
-      }), /*#__PURE__*/_react["default"].createElement("div", {
+      }), /*#__PURE__*/React.createElement("div", {
         className: "innerTriangle"
-      }), this.state.displayBar && /*#__PURE__*/_react["default"].createElement("div", {
+      }), this.state.displayBar && /*#__PURE__*/React.createElement("div", {
         className: "commentInfoContainer"
-      }, /*#__PURE__*/_react["default"].createElement("div", {
+      }, /*#__PURE__*/React.createElement("div", {
         style: {
           height: 20
         }
-      }), /*#__PURE__*/_react["default"].createElement(_CommentBar["default"], {
+      }), /*#__PURE__*/React.createElement(CommentBar, {
         saveCommentHandler: this.props.createCommentHandler,
         displayBar: this.state.displayBar,
         comment: this.state.comment,
         displayClosingCheck: this.props.entityCode === 'EVNT',
         showUpdatingHandler: this.showUpdating
-      })), /*#__PURE__*/_react["default"].createElement("div", {
+      })), /*#__PURE__*/React.createElement("div", {
         className: "commentTextContainer",
         onKeyDown: this.onKeyDownHandler
-      }, /*#__PURE__*/_react["default"].createElement(_reactAutosizeTextarea["default"], {
+      }, /*#__PURE__*/React.createElement(TextareaAutosize, {
         placeholder: placeholder,
         className: "commentText",
         onInput: this.inputTextArea,
@@ -179,8 +159,6 @@ var CommentNew = /*#__PURE__*/function (_Component) {
   }]);
 
   return CommentNew;
-}(_react.Component);
+}(Component);
 
-var _default = (0, _index.withStyles)(styles)(CommentNew);
-
-exports["default"] = _default;
+export default withStyles(styles)(CommentNew);

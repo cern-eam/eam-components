@@ -1,33 +1,16 @@
-"use strict";
-
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _react = _interopRequireWildcard(require("react"));
-
-var _core = require("@material-ui/core");
-
-var _reactVirtualized = require("react-virtualized");
-
-var _reactScrollSync = require("react-scroll-sync");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var DefaultBodyCellComponent = (0, _core.withStyles)(function (theme) {
+import React, { useCallback, useEffect, useRef } from "react";
+import { TableContainer, TableHead, TableRow, TableCell, TableBody, withStyles, Table, TableSortLabel, Typography } from "@material-ui/core";
+import { CellMeasurer, CellMeasurerCache, List, AutoSizer } from "react-virtualized";
+import { ScrollSync, ScrollSyncPane } from "react-scroll-sync";
+var DefaultBodyCellComponent = withStyles(function (theme) {
   return {
     root: {
       overflow: 'hidden',
@@ -38,8 +21,8 @@ var DefaultBodyCellComponent = (0, _core.withStyles)(function (theme) {
       wordBreak: 'break-word'
     }
   };
-})(_core.TableCell);
-var DefaultHeadCellComponent = (0, _core.withStyles)(function (theme) {
+})(TableCell);
+var DefaultHeadCellComponent = withStyles(function (theme) {
   return {
     root: {
       whiteSpace: 'nowrap',
@@ -48,15 +31,15 @@ var DefaultHeadCellComponent = (0, _core.withStyles)(function (theme) {
     }
   };
 })(DefaultBodyCellComponent);
-var DefaultTableComponent = (0, _core.withStyles)(function (theme) {
+var DefaultTableComponent = withStyles(function (theme) {
   return {
     root: {
       borderLeft: "1px solid ".concat(theme.palette.grey[200]),
       borderBottom: "1px solid ".concat(theme.palette.grey[200])
     }
   };
-})(_core.Table);
-var DefaultTableSortLabel = (0, _core.withStyles)(function (theme) {
+})(Table);
+var DefaultTableSortLabel = withStyles(function (theme) {
   return {
     root: {
       position: "absolute",
@@ -69,7 +52,7 @@ var DefaultTableSortLabel = (0, _core.withStyles)(function (theme) {
       backgroundColor: theme.palette.grey[100]
     }
   };
-})(_core.TableSortLabel);
+})(TableSortLabel);
 
 var defaultPropsGetter = function defaultPropsGetter() {
   return {};
@@ -100,8 +83,8 @@ var EAMGridMain = function EAMGridMain(props) {
       rows = tableInstance.rows,
       prepareRow = tableInstance.prepareRow,
       selectedFlatRows = tableInstance.selectedFlatRows;
-  (0, _react.useEffect)(function () {
-    _cache = new _reactVirtualized.CellMeasurerCache({
+  useEffect(function () {
+    _cache = new CellMeasurerCache({
       fixedWidth: true,
       defaultHeight: 41,
       keyMapper: function keyMapper(index) {
@@ -109,7 +92,7 @@ var EAMGridMain = function EAMGridMain(props) {
       }
     });
   }, []);
-  (0, _react.useEffect)(function () {
+  useEffect(function () {
     rows.forEach(function (_, i) {
       return _cache.clear(i);
     });
@@ -120,8 +103,7 @@ var EAMGridMain = function EAMGridMain(props) {
       _list.scrollToRow(0);
     }
   }, [rows]);
-
-  var RenderRow = _react["default"].useCallback(function (_ref) {
+  var RenderRow = React.useCallback(function (_ref) {
     var index = _ref.index,
         key = _ref.key,
         parent = _ref.parent,
@@ -133,7 +115,7 @@ var EAMGridMain = function EAMGridMain(props) {
     var tableRowProps = row.getRowProps(_objectSpread({}, customRowProps, {
       style: _objectSpread({}, style, {}, customRowProps.style)
     }));
-    return /*#__PURE__*/_react["default"].createElement(_reactVirtualized.CellMeasurer, {
+    return /*#__PURE__*/React.createElement(CellMeasurer, {
       cache: _cache,
       columnIndex: 0,
       key: key,
@@ -141,7 +123,7 @@ var EAMGridMain = function EAMGridMain(props) {
       parent: parent
     }, function (_ref2) {
       var measure = _ref2.measure;
-      return /*#__PURE__*/_react["default"].createElement(_core.TableRow, _extends({
+      return /*#__PURE__*/React.createElement(TableRow, _extends({
         className: "tr",
         component: "div"
       }, tableRowProps), row.cells.map(function (cell) {
@@ -151,7 +133,7 @@ var EAMGridMain = function EAMGridMain(props) {
             width: cell.column.width
           }
         }, getCellProps(cell)].filter(Boolean);
-        return /*#__PURE__*/_react["default"].createElement(BodyCellComponent, _extends({}, cell.getCellProps(cellProps), {
+        return /*#__PURE__*/React.createElement(BodyCellComponent, _extends({}, cell.getCellProps(cellProps), {
           className: "td",
           component: "div"
         }), cell.render("Cell"));
@@ -159,15 +141,14 @@ var EAMGridMain = function EAMGridMain(props) {
     });
   }, // eslint-disable-next-line react-hooks/exhaustive-deps
   [getCellProps, getRowProps, prepareRow, rows, selectedFlatRows, _cache]);
-
   var noResults = !rows.length && !loading;
-  return /*#__PURE__*/_react["default"].createElement(_core.TableContainer, {
+  return /*#__PURE__*/React.createElement(TableContainer, {
     style: {
       height: '100%',
       overflowY: 'hidden',
       padding: '1px'
     }
-  }, /*#__PURE__*/_react["default"].createElement(_reactScrollSync.ScrollSync, null, /*#__PURE__*/_react["default"].createElement(TableComponent, _extends({
+  }, /*#__PURE__*/React.createElement(ScrollSync, null, /*#__PURE__*/React.createElement(TableComponent, _extends({
     stickyHeader: true
   }, getTableProps({
     style: {
@@ -175,9 +156,9 @@ var EAMGridMain = function EAMGridMain(props) {
     }
   }), {
     component: "div"
-  }), /*#__PURE__*/_react["default"].createElement(_reactScrollSync.ScrollSyncPane, {
+  }), /*#__PURE__*/React.createElement(ScrollSyncPane, {
     group: "horizontal"
-  }, /*#__PURE__*/_react["default"].createElement(_core.TableHead, {
+  }, /*#__PURE__*/React.createElement(TableHead, {
     style: {
       display: noResults ? 'flex' : 'grid',
       overflow: 'hidden',
@@ -185,7 +166,7 @@ var EAMGridMain = function EAMGridMain(props) {
     },
     component: "div"
   }, headerGroups.map(function (headerGroup) {
-    return /*#__PURE__*/_react["default"].createElement(_core.TableRow, _extends({}, headerGroup.getHeaderGroupProps(), {
+    return /*#__PURE__*/React.createElement(TableRow, _extends({}, headerGroup.getHeaderGroupProps(), {
       component: "div"
     }), headerGroup.headers.map(function (column) {
       var headerProps = [{
@@ -194,27 +175,27 @@ var EAMGridMain = function EAMGridMain(props) {
           width: column.width
         }
       }, getColumnProps(column)].filter(Boolean);
-      return /*#__PURE__*/_react["default"].createElement(HeadCellComponent, _extends({
+      return /*#__PURE__*/React.createElement(HeadCellComponent, _extends({
         key: column.id
       }, column.getHeaderProps(headerProps), {
         component: "div"
-      }), /*#__PURE__*/_react["default"].createElement("div", column.getSortByToggleProps(), column.render("Header"), column.id !== 'selection' ? /*#__PURE__*/_react["default"].createElement(DefaultTableSortLabel, {
+      }), /*#__PURE__*/React.createElement("div", column.getSortByToggleProps(), column.render("Header"), column.id !== 'selection' ? /*#__PURE__*/React.createElement(DefaultTableSortLabel, {
         active: column.isSorted,
         direction: column.isSortedDesc ? 'desc' : 'asc'
-      }) : null), column.id !== 'selection' && /*#__PURE__*/_react["default"].createElement("div", {
+      }) : null), column.id !== 'selection' && /*#__PURE__*/React.createElement("div", {
         style: {
           display: 'flex',
           justifyContent: 'center'
         }
       }, column.canFilter ? column.render('Filter') : null));
     }));
-  }))), /*#__PURE__*/_react["default"].createElement(_core.TableBody, _extends({}, getTableBodyProps(), {
+  }))), /*#__PURE__*/React.createElement(TableBody, _extends({}, getTableBodyProps(), {
     style: {
       height: '100%',
       display: 'table-row'
     },
     component: "div"
-  }), !rows.length && !loading ? /*#__PURE__*/_react["default"].createElement("div", {
+  }), !rows.length && !loading ? /*#__PURE__*/React.createElement("div", {
     style: {
       width: "100%",
       position: "absolute",
@@ -222,20 +203,20 @@ var EAMGridMain = function EAMGridMain(props) {
       flexDirection: "column",
       padding: "1rem"
     }
-  }, /*#__PURE__*/_react["default"].createElement(_core.Typography, {
+  }, /*#__PURE__*/React.createElement(Typography, {
     variant: "body2",
     color: "textSecondary"
-  }, "No records to show")) : /*#__PURE__*/_react["default"].createElement("div", {
+  }, "No records to show")) : /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'block',
       height: '100%'
     }
-  }, /*#__PURE__*/_react["default"].createElement(_reactVirtualized.AutoSizer, null, function (_ref3) {
+  }, /*#__PURE__*/React.createElement(AutoSizer, null, function (_ref3) {
     var height = _ref3.height,
         width = _ref3.width;
-    return /*#__PURE__*/_react["default"].createElement(_reactScrollSync.ScrollSyncPane, {
+    return /*#__PURE__*/React.createElement(ScrollSyncPane, {
       group: "horizontal"
-    }, /*#__PURE__*/_react["default"].createElement(_reactVirtualized.List, {
+    }, /*#__PURE__*/React.createElement(List, {
       ref: function ref(element) {
         _list = element;
       },
@@ -255,5 +236,4 @@ var EAMGridMain = function EAMGridMain(props) {
   }))))));
 };
 
-var _default = EAMGridMain;
-exports["default"] = _default;
+export default EAMGridMain;

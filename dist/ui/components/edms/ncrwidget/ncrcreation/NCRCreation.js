@@ -1,43 +1,6 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _react = _interopRequireWildcard(require("react"));
-
-var _reactDropzone = _interopRequireDefault(require("react-dropzone"));
-
-var _Tune = _interopRequireDefault(require("mdi-material-ui/Tune"));
-
-var _ContentSaveOutline = _interopRequireDefault(require("mdi-material-ui/ContentSaveOutline"));
-
-var _IconButton = _interopRequireDefault(require("@material-ui/core/IconButton"));
-
-var _FilePlus = _interopRequireDefault(require("mdi-material-ui/FilePlus"));
-
-var _DotsVertical = _interopRequireDefault(require("mdi-material-ui/DotsVertical"));
-
-var _NCRCreationProperties = _interopRequireDefault(require("./NCRCreationProperties"));
-
-var _FileList = _interopRequireDefault(require("../../FileList"));
-
-var _WSEDMS = _interopRequireDefault(require("../../../../../tools/WSEDMS"));
-
-var _EAMInput = _interopRequireDefault(require("../../../inputs/EAMInput"));
-
-var _EAMSelect = _interopRequireDefault(require("../../../inputs/EAMSelect"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
@@ -55,13 +18,26 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+import React, { Component } from 'react';
+import Dropzone from 'react-dropzone';
+import Tune from 'mdi-material-ui/Tune';
+import ContentSaveOutline from 'mdi-material-ui/ContentSaveOutline';
+import IconButton from '@material-ui/core/IconButton';
+import FilePlus from 'mdi-material-ui/FilePlus';
+import DotsVertial from 'mdi-material-ui/DotsVertical';
+import NCRCreationProperties from "./NCRCreationProperties";
+import FileList from "../../FileList";
+import WSEDMS from "../../../../../tools/WSEDMS";
+import EAMInput from "../../../inputs/EAMInput";
+import EAMSelect from "../../../inputs/EAMSelect";
 
 var NCRCreation = /*#__PURE__*/function (_Component) {
   _inherits(NCRCreation, _Component);
@@ -171,14 +147,13 @@ var NCRCreation = /*#__PURE__*/function (_Component) {
       var _this$props = _this.props,
           objectType = _this$props.objectType,
           objectID = _this$props.objectID;
-
-      _WSEDMS["default"].getNCRKeyWords(objectID).then(function (response) {
+      WSEDMS.getNCRKeyWords(objectID).then(function (response) {
         _this.setStateProperty('NCRKeyWords', response.body.data);
       });
     };
 
     _this.getNCRProperties = function () {
-      _WSEDMS["default"].getNCRProperties().then(function (response) {
+      WSEDMS.getNCRProperties().then(function (response) {
         _this.setStateProperty('NCRProperties', response.body.data);
       });
     };
@@ -187,8 +162,7 @@ var NCRCreation = /*#__PURE__*/function (_Component) {
       var _this$props2 = _this.props,
           objectType = _this$props2.objectType,
           objectID = _this$props2.objectID;
-
-      _WSEDMS["default"].getEquipmentWorkOrders(objectType, objectID).then(function (response) {
+      WSEDMS.getEquipmentWorkOrders(objectType, objectID).then(function (response) {
         if (objectType === 'J' && Object.keys(response.body.data) && Object.keys(response.body.data).length > 0) {
           var equipmentWorkOrder = Object.keys(response.body.data).map(function (key) {
             return response.body.data[key];
@@ -270,15 +244,15 @@ var NCRCreation = /*#__PURE__*/function (_Component) {
 
   }, {
     key: "render",
-    //
+    value: //
     // RENDER
     //
-    value: function render() {
+    function render() {
       var _this2 = this;
 
-      return /*#__PURE__*/_react["default"].createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         style: this.mainDivStyle
-      }, /*#__PURE__*/_react["default"].createElement(_reactDropzone["default"], {
+      }, /*#__PURE__*/React.createElement(Dropzone, {
         style: this.dropZoneStyle,
         activeStyle: this.dropZoneActiveStyle,
         disableClick: true,
@@ -286,11 +260,11 @@ var NCRCreation = /*#__PURE__*/function (_Component) {
         ref: function ref(dropzone) {
           return _this2.dropzone = dropzone;
         }
-      }, /*#__PURE__*/_react["default"].createElement("div", {
+      }, /*#__PURE__*/React.createElement("div", {
         style: this.newDocStyle
-      }, /*#__PURE__*/_react["default"].createElement("div", {
+      }, /*#__PURE__*/React.createElement("div", {
         style: this.titleStyle
-      }, /*#__PURE__*/_react["default"].createElement(_EAMInput["default"], {
+      }, /*#__PURE__*/React.createElement(EAMInput, {
         label: "NCR Title:",
         value: this.state.title,
         valueKey: "title",
@@ -299,41 +273,41 @@ var NCRCreation = /*#__PURE__*/function (_Component) {
         updateProperty: function updateProperty(key, value) {
           return _this2.setStateProperty(key, value);
         }
-      }), this.state.NCRKeyWords && this.state.NCRKeyWords.length > 0 && /*#__PURE__*/_react["default"].createElement("div", {
+      }), this.state.NCRKeyWords && this.state.NCRKeyWords.length > 0 && /*#__PURE__*/React.createElement("div", {
         style: {
           marginLeft: 148
         }
-      }, /*#__PURE__*/_react["default"].createElement(_EAMSelect["default"], {
+      }, /*#__PURE__*/React.createElement(EAMSelect, {
         searchable: true,
         value: this.state.NCRKeyWord,
         values: this.state.NCRKeyWords,
         updateProperty: this.NCRKeyWordsHandler
-      }))), /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement(_IconButton["default"], {
+      }))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(IconButton, {
         onClick: function onClick() {
           return _this2.dropzone.open();
         }
-      }, /*#__PURE__*/_react["default"].createElement(_FilePlus["default"], null))), /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement(_IconButton["default"], {
+      }, /*#__PURE__*/React.createElement(FilePlus, null))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(IconButton, {
         onClick: this.createDocumentHandler
-      }, /*#__PURE__*/_react["default"].createElement(_ContentSaveOutline["default"], null))), /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement(_IconButton["default"], {
+      }, /*#__PURE__*/React.createElement(ContentSaveOutline, null))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(IconButton, {
         style: this.computeNCRPropertiesButtonStyle(),
         onClick: function onClick() {
           return _this2.setState({
             showNCRProperties: !_this2.state.showNCRProperties
           });
         }
-      }, /*#__PURE__*/_react["default"].createElement(_DotsVertical["default"], null)))), this.state.files.length > 0 && /*#__PURE__*/_react["default"].createElement(_FileList["default"], {
+      }, /*#__PURE__*/React.createElement(DotsVertial, null)))), this.state.files.length > 0 && /*#__PURE__*/React.createElement(FileList, {
         files: this.state.files
-      }), /*#__PURE__*/_react["default"].createElement(_EAMInput["default"], {
+      }), /*#__PURE__*/React.createElement(EAMInput, {
         label: "Description",
         valueKey: "description",
         value: this.state.description,
         updateProperty: this.setStateProperty
-      }), (this.props.objectType === 'A' || this.props.objectType === 'S') && /*#__PURE__*/_react["default"].createElement(_EAMSelect["default"], {
+      }), (this.props.objectType === 'A' || this.props.objectType === 'S') && /*#__PURE__*/React.createElement(EAMSelect, {
         label: "Work Orders",
         value: this.state.currentEquipmentWorkOrder,
         values: this.equipmentWorkOrderValues(),
         updateProperty: this.equipmentWorkOrdersHandler
-      }), /*#__PURE__*/_react["default"].createElement(_NCRCreationProperties["default"], {
+      }), /*#__PURE__*/React.createElement(NCRCreationProperties, {
         onNCRPropertyChange: this.setNCRPropertyValue,
         onPropertyChange: this.setStateProperty,
         type: this.state.type,
@@ -345,7 +319,6 @@ var NCRCreation = /*#__PURE__*/function (_Component) {
   }]);
 
   return NCRCreation;
-}(_react.Component);
+}(Component);
 
-var _default = NCRCreation;
-exports["default"] = _default;
+export default NCRCreation;

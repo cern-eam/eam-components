@@ -1,29 +1,18 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _core = require("@material-ui/core");
-
-var _react = _interopRequireDefault(require("react"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
+import { TablePagination, withStyles } from "@material-ui/core";
+import React from "react";
 var defaultOptions = [50, 100, 250, 500, 1000];
 
 var getCount = function getCount(hasUnknownCount, count) {
   return hasUnknownCount ? "".concat(count, "+") : count;
 };
 
-var CustomTablePagination = (0, _core.withStyles)(function () {
+var CustomTablePagination = withStyles(function () {
   return {
     toolbar: {
       padding: 0
     }
   };
-})(_core.TablePagination);
+})(TablePagination);
 
 var EAMGridPagination = function EAMGridPagination(_ref) {
   var pageIndex = _ref.pageIndex,
@@ -54,7 +43,7 @@ var EAMGridPagination = function EAMGridPagination(_ref) {
     return "".concat(from, "-").concat(to, " of ").concat(getCount(hasUnkownTotalRecords, count));
   };
 
-  return /*#__PURE__*/_react["default"].createElement(CustomTablePagination, {
+  return /*#__PURE__*/React.createElement(CustomTablePagination, {
     component: "div",
     page: pageIndex,
     count: totalRecords,
@@ -67,5 +56,4 @@ var EAMGridPagination = function EAMGridPagination(_ref) {
   });
 };
 
-var _default = EAMGridPagination;
-exports["default"] = _default;
+export default EAMGridPagination;

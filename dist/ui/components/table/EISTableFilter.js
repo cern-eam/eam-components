@@ -1,20 +1,7 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _react = _interopRequireDefault(require("react"));
-
-var _Select = _interopRequireDefault(require("@material-ui/core/Select"));
-
-var _FilterList = _interopRequireDefault(require("@material-ui/icons/FilterList"));
-
-var _MenuItem = _interopRequireDefault(require("@material-ui/core/MenuItem"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
+import React from 'react';
+import Select from '@material-ui/core/Select';
+import FilterListIcon from '@material-ui/icons/FilterList';
+import MenuItem from '@material-ui/core/MenuItem';
 var filterSelectStyle = {
   fontSize: '0.8125rem'
 };
@@ -28,29 +15,28 @@ var EISTableFilter = function EISTableFilter(props) {
     handleFilterChange(e.target.value);
   };
 
-  return filters && Object.keys(filters).length && /*#__PURE__*/_react["default"].createElement("div", {
+  return filters && Object.keys(filters).length && /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
       justifyContent: 'space-between'
     }
-  }, /*#__PURE__*/_react["default"].createElement(_FilterList["default"], {
+  }, /*#__PURE__*/React.createElement(FilterListIcon, {
     style: {
       marginLeft: 'auto'
     }
-  }), /*#__PURE__*/_react["default"].createElement(_Select["default"], {
+  }), /*#__PURE__*/React.createElement(Select, {
     style: filterSelectStyle,
     value: filters[activeFilter].text,
     onChange: propagateFilterChange,
     renderValue: function renderValue(value) {
-      return /*#__PURE__*/_react["default"].createElement("span", null, value);
+      return /*#__PURE__*/React.createElement("span", null, value);
     }
   }, Object.keys(filters).map(function (key) {
-    return /*#__PURE__*/_react["default"].createElement(_MenuItem["default"], {
+    return /*#__PURE__*/React.createElement(MenuItem, {
       key: key,
       value: key
     }, filters[key].text);
   })));
 };
 
-var _default = EISTableFilter;
-exports["default"] = _default;
+export default EISTableFilter;

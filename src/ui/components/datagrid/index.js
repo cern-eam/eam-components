@@ -1,4 +1,2 @@
-import DataGrid from "./DataGrid";
-import DataGridContext from "./DataGridContext";
-
-export { DataGrid, DataGridContext };
+export { default as DataGrid } from "./DataGrid";
+export { DataGridContext } from "./DataGridContext";

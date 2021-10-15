@@ -1,34 +1,3 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _dateFns = _interopRequireDefault(require("@date-io/date-fns"));
-
-var _Icon = _interopRequireDefault(require("@material-ui/core/Icon"));
-
-var _dateFns2 = require("date-fns");
-
-var _parse = _interopRequireDefault(require("date-fns/parse"));
-
-var _pickers = require("@material-ui/pickers");
-
-var _propTypes = _interopRequireDefault(require("prop-types"));
-
-var _react = _interopRequireDefault(require("react"));
-
-var _EAMBaseInput2 = _interopRequireDefault(require("./EAMBaseInput"));
-
-var _EAMTextField = _interopRequireDefault(require("./EAMTextField"));
-
-var _Event = _interopRequireDefault(require("@material-ui/icons/Event"));
-
-var _core = require("@material-ui/core");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
@@ -45,20 +14,32 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+import DateFnsUtils from '@date-io/date-fns';
+import Icon from '@material-ui/core/Icon';
+import { format } from 'date-fns';
+import parse from "date-fns/parse";
+import { DatePicker, DateTimePicker } from '@material-ui/pickers';
+import PropTypes from 'prop-types';
+import React from 'react';
+import EAMBaseInput from './EAMBaseInput';
+import EAMTextField from './EAMTextField';
+import EventIcon from '@material-ui/icons/Event';
+import { InputAdornment, IconButton } from "@material-ui/core";
+
 var DefaultEndAdornment = function DefaultEndAdornment(props) {
-  return /*#__PURE__*/_react["default"].createElement(_core.InputAdornment, {
+  return /*#__PURE__*/React.createElement(InputAdornment, {
     position: "end"
-  }, props.endAdornment ? props.endAdornment : '', /*#__PURE__*/_react["default"].createElement(_core.IconButton, {
+  }, props.endAdornment ? props.endAdornment : '', /*#__PURE__*/React.createElement(IconButton, {
     size: "small"
-  }, /*#__PURE__*/_react["default"].createElement(_Event["default"], null)));
+  }, /*#__PURE__*/React.createElement(EventIcon, null)));
 };
 
 var EAMDatePicker = /*#__PURE__*/function (_EAMBaseInput) {
@@ -82,11 +63,11 @@ var EAMDatePicker = /*#__PURE__*/function (_EAMBaseInput) {
     };
 
     _this.readValue = function (value) {
-      return value instanceof Date ? value : typeof value === "string" && value.length ? (0, _parse["default"])(value.substring(0, _this.props.dateFormatValue.length), _this.props.dateFormatValue, new Date()) : typeof value === "number" ? new Date(value) : null;
+      return value instanceof Date ? value : typeof value === "string" && value.length ? parse(value.substring(0, _this.props.dateFormatValue.length), _this.props.dateFormatValue, new Date()) : typeof value === "number" ? new Date(value) : null;
     };
 
     _this.readDate = function (date) {
-      return !date ? _this.props.timestamp ? null : '' : _this.props.timestamp ? date.getTime() : (0, _dateFns2.format)(date, _this.props.dateFormatValue);
+      return !date ? _this.props.timestamp ? null : '' : _this.props.timestamp ? date.getTime() : format(date, _this.props.dateFormatValue);
     };
 
     _this.convert = function (value) {
@@ -139,9 +120,9 @@ var EAMDatePicker = /*#__PURE__*/function (_EAMBaseInput) {
         },
         format: dateFormatDisplay,
         label: elementInfo && elementInfo.text,
-        leftArrowIcon: /*#__PURE__*/_react["default"].createElement(_Icon["default"], null, " keyboard_arrow_left "),
-        rightArrowIcon: /*#__PURE__*/_react["default"].createElement(_Icon["default"], null, " keyboard_arrow_right "),
-        TextFieldComponent: _EAMTextField["default"]
+        leftArrowIcon: /*#__PURE__*/React.createElement(Icon, null, " keyboard_arrow_left "),
+        rightArrowIcon: /*#__PURE__*/React.createElement(Icon, null, " keyboard_arrow_right "),
+        TextFieldComponent: EAMTextField
       };
     }
   }, {
@@ -151,16 +132,16 @@ var EAMDatePicker = /*#__PURE__*/function (_EAMBaseInput) {
           showTime = _this$props.showTime,
           endAdornment = _this$props.endAdornment;
       var pickerProps = this.getPickerProps(this.state, this.props);
-      return showTime ? /*#__PURE__*/_react["default"].createElement(_pickers.DateTimePicker, _extends({}, pickerProps, {
+      return showTime ? /*#__PURE__*/React.createElement(DateTimePicker, _extends({}, pickerProps, {
         ampm: false,
         InputProps: {
-          endAdornment: /*#__PURE__*/_react["default"].createElement(DefaultEndAdornment, {
+          endAdornment: /*#__PURE__*/React.createElement(DefaultEndAdornment, {
             endAdornment: endAdornment
           })
         }
-      })) : /*#__PURE__*/_react["default"].createElement(_pickers.DatePicker, _extends({}, pickerProps, {
+      })) : /*#__PURE__*/React.createElement(DatePicker, _extends({}, pickerProps, {
         InputProps: {
-          endAdornment: /*#__PURE__*/_react["default"].createElement(DefaultEndAdornment, {
+          endAdornment: /*#__PURE__*/React.createElement(DefaultEndAdornment, {
             endAdornment: endAdornment
           })
         }
@@ -169,13 +150,13 @@ var EAMDatePicker = /*#__PURE__*/function (_EAMBaseInput) {
   }]);
 
   return EAMDatePicker;
-}(_EAMBaseInput2["default"]);
+}(EAMBaseInput);
 
-exports["default"] = EAMDatePicker;
+export { EAMDatePicker as default };
 EAMDatePicker.propTypes = {
-  dateFormatDisplay: _propTypes["default"].string.isRequired,
-  dateFormatValue: _propTypes["default"].string.isRequired,
-  showTime: _propTypes["default"].bool.isRequired
+  dateFormatDisplay: PropTypes.string.isRequired,
+  dateFormatValue: PropTypes.string.isRequired,
+  showTime: PropTypes.bool.isRequired
 };
 EAMDatePicker.defaultProps = {
   showTime: false

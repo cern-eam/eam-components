@@ -1,34 +1,3 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _react = _interopRequireWildcard(require("react"));
-
-var _Button = _interopRequireDefault(require("@material-ui/core/Button"));
-
-var _Search = _interopRequireDefault(require("@material-ui/icons/Search"));
-
-var _core = require("@material-ui/core");
-
-var _Select = _interopRequireDefault(require("@material-ui/core/Select"));
-
-var _styles = require("@material-ui/core/styles");
-
-var _classnames = _interopRequireDefault(require("classnames"));
-
-var _FilterOutline = _interopRequireDefault(require("mdi-material-ui/FilterOutline"));
-
-var _FilterRemoveOutline = _interopRequireDefault(require("mdi-material-ui/FilterRemoveOutline"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -43,14 +12,24 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+import React, { Component } from 'react';
+import Button from '@material-ui/core/Button';
+import SearchIcon from '@material-ui/icons/Search';
+import { InputBase, MenuItem } from '@material-ui/core';
+import { FormControl } from '@material-ui/core';
+import Select from '@material-ui/core/Select';
+import { withStyles } from '@material-ui/core/styles';
+import classNames from 'classnames';
+import FilterOutline from 'mdi-material-ui/FilterOutline';
+import FilterRemoveOutline from 'mdi-material-ui/FilterRemoveOutline';
 var styles = {
   mainPanelStyle: {
     backgroundColor: '#fafafa',
@@ -118,50 +97,48 @@ var DataGridSelectDataSpy = /*#__PURE__*/function (_Component) {
     key: "render",
     value: function render() {
       var classes = this.props.classes;
-      return /*#__PURE__*/_react["default"].createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         className: classes.mainPanelStyle
-      }, /*#__PURE__*/_react["default"].createElement("form", null, /*#__PURE__*/_react["default"].createElement(_core.FormControl, {
+      }, /*#__PURE__*/React.createElement("form", null, /*#__PURE__*/React.createElement(FormControl, {
         className: classes.root
-      }, /*#__PURE__*/_react["default"].createElement("div", {
+      }, /*#__PURE__*/React.createElement("div", {
         className: classes.formStyle
-      }, /*#__PURE__*/_react["default"].createElement("div", {
+      }, /*#__PURE__*/React.createElement("div", {
         className: classes.dataspyFormStyle
-      }, /*#__PURE__*/_react["default"].createElement("div", {
-        className: (0, _classnames["default"])(classes.formItem, classes.dataspyLabel)
-      }, "Dataspy:"), /*#__PURE__*/_react["default"].createElement(_Select["default"], {
-        className: (0, _classnames["default"])(classes.formItem, classes.selectDataspyInput),
+      }, /*#__PURE__*/React.createElement("div", {
+        className: classNames(classes.formItem, classes.dataspyLabel)
+      }, "Dataspy:"), /*#__PURE__*/React.createElement(Select, {
+        className: classNames(classes.formItem, classes.selectDataspyInput),
         value: this.props.dataSpy,
         onChange: this.props.handleChangeDataSpy,
         inputProps: {
           name: 'dataspy',
           id: 'dataspy-select'
         },
-        input: /*#__PURE__*/_react["default"].createElement(_core.InputBase, null)
+        input: /*#__PURE__*/React.createElement(InputBase, null)
       }, this.props.listOfDataSpy && this.props.listOfDataSpy.map(function (dataspy) {
-        return /*#__PURE__*/_react["default"].createElement(_core.MenuItem, {
+        return /*#__PURE__*/React.createElement(MenuItem, {
           key: dataspy.code,
           value: dataspy.code
         }, dataspy.label);
-      })), /*#__PURE__*/_react["default"].createElement(_Button["default"], {
+      })), /*#__PURE__*/React.createElement(Button, {
         variant: "outlined",
-        className: (0, _classnames["default"])(classes.formItem, classes.toggleFilterButton),
+        className: classNames(classes.formItem, classes.toggleFilterButton),
         onClick: this.props.toggleFilter
-      }, this.props.filterVisible ? 'HIDE FILTERS' : 'SHOW FILTERS'), this.props.filterVisible && /*#__PURE__*/_react["default"].createElement(_Button["default"], {
+      }, this.props.filterVisible ? 'HIDE FILTERS' : 'SHOW FILTERS'), this.props.filterVisible && /*#__PURE__*/React.createElement(Button, {
         variant: "outlined",
         className: classes.cleanFiltersButton,
         onClick: this.props.clearFilters
-      }, "Clean filters")), /*#__PURE__*/_react["default"].createElement(_Button["default"], {
+      }, "Clean filters")), /*#__PURE__*/React.createElement(Button, {
         variant: "outlined",
         color: "primary",
         className: classes.fetchDataButton,
         onClick: this.props.runSearch
-      }, /*#__PURE__*/_react["default"].createElement(_Search["default"], null), "SEARCH")))));
+      }, /*#__PURE__*/React.createElement(SearchIcon, null), "SEARCH")))));
     }
   }]);
 
   return DataGridSelectDataSpy;
-}(_react.Component);
+}(Component);
 
-var _default = (0, _styles.withStyles)(styles)(DataGridSelectDataSpy);
-
-exports["default"] = _default;
+export default withStyles(styles)(DataGridSelectDataSpy);

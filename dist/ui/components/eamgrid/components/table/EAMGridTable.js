@@ -1,30 +1,3 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _react = _interopRequireWildcard(require("react"));
-
-var _EAMGridHeader = _interopRequireDefault(require("./EAMGridHeader"));
-
-var _EAMGridBody = _interopRequireDefault(require("./EAMGridBody"));
-
-var _EAMGridLoadingSpinner = _interopRequireDefault(require("../EAMGridLoadingSpinner"));
-
-var _EAMGridFooter = _interopRequireDefault(require("./EAMGridFooter"));
-
-var _index = require("@material-ui/core/styles/index");
-
-var _EAMGridActions = _interopRequireDefault(require("./EAMGridActions"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -39,14 +12,21 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+import React, { Component } from 'react';
+import DataGridTableHeader from './EAMGridHeader';
+import DataGridTableBody from './EAMGridBody';
+import DataGridLoadingSpinner from '../EAMGridLoadingSpinner';
+import DataGridFooter from './EAMGridFooter';
+import { withStyles } from "@material-ui/core/styles/index";
+import DataGridActions from './EAMGridActions';
 var styles = {
   searchresults: {
     height: '100%',
@@ -97,12 +77,12 @@ var DataGridResultTable = /*#__PURE__*/function (_Component) {
       var _this = this;
 
       var classes = this.props.classes;
-      return /*#__PURE__*/_react["default"].createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         style: {
           flex: "1 0",
           minHeight: 0
         }
-      }, /*#__PURE__*/_react["default"].createElement(_EAMGridActions["default"], {
+      }, /*#__PURE__*/React.createElement(DataGridActions, {
         selectButtons: this.props.allowRowSelection,
         onUnselectAll: function onUnselectAll() {
           _this.tableBody.unselectAll();
@@ -110,13 +90,13 @@ var DataGridResultTable = /*#__PURE__*/function (_Component) {
         onSelectAll: function onSelectAll() {
           _this.tableBody.selectAll();
         }
-      }), this.props.fields && /*#__PURE__*/_react["default"].createElement("div", {
+      }), this.props.fields && /*#__PURE__*/React.createElement("div", {
         id: "tableHeaderWrapper",
         className: classes.tableHeaderWrapper,
         ref: function ref(tableHeader) {
           _this.tableHeader = tableHeader;
         }
-      }, /*#__PURE__*/_react["default"].createElement(_EAMGridHeader["default"], {
+      }, /*#__PURE__*/React.createElement(DataGridTableHeader, {
         fields: this.props.fields,
         toggleSortField: this.props.toggleSortField,
         filterVisible: this.props.filterVisible,
@@ -129,7 +109,7 @@ var DataGridResultTable = /*#__PURE__*/function (_Component) {
         editColumn: this.props.onEditRow !== undefined,
         extraColumns: this.props.extraColumns,
         headerStyle: classes.headerStyle
-      })), /*#__PURE__*/_react["default"].createElement("div", {
+      })), /*#__PURE__*/React.createElement("div", {
         id: "searchresults",
         className: classes.searchresults,
         style: {
@@ -140,7 +120,7 @@ var DataGridResultTable = /*#__PURE__*/function (_Component) {
           _this.searchresults = searchresults;
         },
         onScroll: this._handleScroll.bind(this)
-      }, this.props.rows.length > 0 ? /*#__PURE__*/_react["default"].createElement(_EAMGridBody["default"], {
+      }, this.props.rows.length > 0 ? /*#__PURE__*/React.createElement(DataGridTableBody, {
         fields: this.props.fields,
         rows: this.props.rows,
         refCallback: function refCallback(tableBody) {
@@ -162,16 +142,16 @@ var DataGridResultTable = /*#__PURE__*/function (_Component) {
         handleSelectRow: this.props.handleSelectRow,
         selectedRows: this.props.selectedRows,
         rowStyler: this.props.rowStyler
-      }) : this.props.hasMore ? /*#__PURE__*/_react["default"].createElement(_EAMGridLoadingSpinner["default"], {
+      }) : this.props.hasMore ? /*#__PURE__*/React.createElement(DataGridLoadingSpinner, {
         isloading: this.props.isloading
-      }) : /*#__PURE__*/_react["default"].createElement("div", {
+      }) : /*#__PURE__*/React.createElement("div", {
         style: {
           width: "100%",
           padding: "20px",
           fontWeight: "bold",
           textAlign: "center"
         }
-      }, "No result found")), this.props.fields && /*#__PURE__*/_react["default"].createElement(_EAMGridFooter["default"], {
+      }, "No result found")), this.props.fields && /*#__PURE__*/React.createElement(DataGridFooter, {
         rows: this.props.rows,
         totalRecords: this.props.totalRecords,
         exportData: this.props.exportData,
@@ -181,8 +161,6 @@ var DataGridResultTable = /*#__PURE__*/function (_Component) {
   }]);
 
   return DataGridResultTable;
-}(_react.Component);
+}(Component);
 
-var _default = (0, _index.withStyles)(styles)(DataGridResultTable);
-
-exports["default"] = _default;
+export default withStyles(styles)(DataGridResultTable);

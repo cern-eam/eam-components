@@ -1,37 +1,13 @@
-"use strict";
-
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _react = _interopRequireWildcard(require("react"));
-
-var _EAMGridMain = _interopRequireDefault(require("./EAMGridMain"));
-
-var _EAMGridPagination = _interopRequireDefault(require("./EAMGridPagination"));
-
-var _EAMGridFooter = _interopRequireDefault(require("./EAMGridFooter"));
-
-var _EAMGridHead = _interopRequireDefault(require("./EAMGridHead"));
-
-var _EAMGridContext = require("./EAMGridContext");
-
-var _reactBlockUi = _interopRequireDefault(require("react-block-ui"));
-
-require("react-block-ui/style.css");
-
-var _EAMGridKeyboardHandler = _interopRequireDefault(require("./EAMGridKeyboardHandler"));
-
-var _core = require("@material-ui/core");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+import React, { useContext } from "react";
+import EAMGridMain from "./EAMGridMain";
+import EAMGridPagination from "./EAMGridPagination";
+import EAMGridFooter from "./EAMGridFooter";
+import EAMGridHead from "./EAMGridHead";
+import { EAMGridContext } from "./EAMGridContext";
+import BlockUi from "react-block-ui";
+import "react-block-ui/style.css";
+import EAMGridKeyboardHandler from "./EAMGridKeyboardHandler";
+import { Box, Button } from "@material-ui/core";
 
 var EAMGrid = function EAMGrid(props) {
   var getRowProps = props.getRowProps,
@@ -39,7 +15,7 @@ var EAMGrid = function EAMGrid(props) {
       rowsPerPageOptionsComputed = props.rowsPerPageOptionsComputed,
       customFooterOptions = props.customFooterOptions;
 
-  var _useContext = (0, _react.useContext)(_EAMGridContext.EAMGridContext),
+  var _useContext = useContext(EAMGridContext),
       dataspies = _useContext.dataspies,
       selectedDataspy = _useContext.selectedDataspy,
       disableFilters = _useContext.disableFilters,
@@ -58,7 +34,7 @@ var EAMGrid = function EAMGrid(props) {
       loading = _useContext.loading,
       loadingExportToCSV = _useContext.loadingExportToCSV;
 
-  return /*#__PURE__*/_react["default"].createElement("div", {
+  return /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
       flexDirection: "column",
@@ -66,11 +42,11 @@ var EAMGrid = function EAMGrid(props) {
       height: "100%",
       background: "white"
     }
-  }, /*#__PURE__*/_react["default"].createElement(_EAMGridKeyboardHandler["default"], {
+  }, /*#__PURE__*/React.createElement(EAMGridKeyboardHandler, {
     tableInstance: tableInstance,
     onSearch: handleOnSearch,
     toggleFilters: toggleFilters
-  }), /*#__PURE__*/_react["default"].createElement(_EAMGridHead["default"], {
+  }), /*#__PURE__*/React.createElement(EAMGridHead, {
     selectedDataspy: selectedDataspy,
     dataspies: dataspies,
     onSearch: handleOnSearch,
@@ -78,7 +54,7 @@ var EAMGrid = function EAMGrid(props) {
     toggleFilters: toggleFilters,
     onDataspyChange: handleDataspyChange,
     onResetFilters: handleResetFilters
-  }), /*#__PURE__*/_react["default"].createElement(_reactBlockUi["default"], {
+  }), /*#__PURE__*/React.createElement(BlockUi, {
     tag: "div",
     blocking: loading,
     style: {
@@ -87,25 +63,25 @@ var EAMGrid = function EAMGrid(props) {
       alignItems: "center",
       justifyContent: "center"
     }
-  }, /*#__PURE__*/_react["default"].createElement(_EAMGridMain["default"], {
+  }, /*#__PURE__*/React.createElement(EAMGridMain, {
     loading: loading,
     tableInstance: tableInstance,
     getRowProps: getRowProps,
     getCellProps: getCellProps
-  })), /*#__PURE__*/_react["default"].createElement(_EAMGridFooter["default"], null, /*#__PURE__*/_react["default"].createElement(_core.Box, {
+  })), /*#__PURE__*/React.createElement(EAMGridFooter, null, /*#__PURE__*/React.createElement(Box, {
     flex: "1",
     display: "flex"
-  }, customFooterOptions ? customFooterOptions() : /*#__PURE__*/_react["default"].createElement(_reactBlockUi["default"], {
+  }, customFooterOptions ? customFooterOptions() : /*#__PURE__*/React.createElement(BlockUi, {
     tag: "div",
     blocking: loadingExportToCSV,
     style: {
       minHeight: "auto"
     }
-  }, /*#__PURE__*/_react["default"].createElement(_core.Button, {
+  }, /*#__PURE__*/React.createElement(Button, {
     variant: "outlined",
     size: "small",
     onClick: handleExportToCSV
-  }, "Export to CSV"))), /*#__PURE__*/_react["default"].createElement(_EAMGridPagination["default"], {
+  }, "Export to CSV"))), /*#__PURE__*/React.createElement(EAMGridPagination, {
     labelRowsPerPage: "Per Page",
     onChangePage: handleChangePage,
     onChangeRowsPerPage: handleChangeRowsPerPage,
@@ -117,5 +93,4 @@ var EAMGrid = function EAMGrid(props) {
   })));
 };
 
-var _default = EAMGrid;
-exports["default"] = _default;
+export default EAMGrid;

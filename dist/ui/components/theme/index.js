@@ -1,25 +1,10 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = exports.theme = void 0;
-
-var _styles = require("@material-ui/core/styles");
-
-var _blue = _interopRequireDefault(require("@material-ui/core/colors/blue"));
-
-var _green = _interopRequireDefault(require("@material-ui/core/colors/green"));
-
-var _red = _interopRequireDefault(require("@material-ui/core/colors/red"));
-
-var _lightBlue = _interopRequireDefault(require("@material-ui/core/colors/lightBlue"));
-
-var _lightGreen = _interopRequireDefault(require("@material-ui/core/colors/lightGreen"));
-
-var _deepOrange = _interopRequireDefault(require("@material-ui/core/colors/deepOrange"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+import { createMuiTheme } from '@material-ui/core/styles';
+import blue from '@material-ui/core/colors/blue';
+import green from '@material-ui/core/colors/green';
+import red from '@material-ui/core/colors/red';
+import lightBlue from '@material-ui/core/colors/lightBlue';
+import lightGreen from '@material-ui/core/colors/lightGreen';
+import deepOrange from '@material-ui/core/colors/deepOrange';
 
 var muiSettings = function muiSettings(_ref) {
   var primaryColor = _ref.primaryColor,
@@ -50,31 +35,29 @@ var muiSettings = function muiSettings(_ref) {
   };
 };
 
-var theme = (0, _styles.createMuiTheme)({
-  primaryColor: _blue["default"][500],
-  secondaryColor: _lightBlue["default"][900]
+export var theme = createMuiTheme({
+  primaryColor: blue[500],
+  secondaryColor: lightBlue[900]
 });
-exports.theme = theme;
-var BLUE = (0, _styles.createMuiTheme)(muiSettings({
-  primaryColor: _blue["default"][500],
-  secondaryColor: _lightBlue["default"][900]
+var BLUE = createMuiTheme(muiSettings({
+  primaryColor: blue[500],
+  secondaryColor: lightBlue[900]
 }));
-var GREEN = (0, _styles.createMuiTheme)(muiSettings({
-  primaryColor: _green["default"][600],
-  secondaryColor: _lightGreen["default"][900]
+var GREEN = createMuiTheme(muiSettings({
+  primaryColor: green[600],
+  secondaryColor: lightGreen[900]
 }));
-var RED = (0, _styles.createMuiTheme)(muiSettings({
-  primaryColor: _red["default"][500],
-  secondaryColor: _deepOrange["default"][900]
+var RED = createMuiTheme(muiSettings({
+  primaryColor: red[500],
+  secondaryColor: deepOrange[900]
 }));
-var DANGER = (0, _styles.createMuiTheme)(muiSettings({
-  primaryColor: _red["default"][900],
-  secondaryColor: _red["default"][500]
+var DANGER = createMuiTheme(muiSettings({
+  primaryColor: red[900],
+  secondaryColor: red[500]
 }));
-var _default = {
+export default {
   BLUE: BLUE,
   GREEN: GREEN,
   RED: RED,
   DANGER: DANGER
 };
-exports["default"] = _default;

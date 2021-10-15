@@ -1,34 +1,3 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _react = _interopRequireDefault(require("react"));
-
-var _pickers = require("@material-ui/pickers");
-
-var _core = require("@material-ui/core");
-
-var _EAMBaseInput2 = _interopRequireWildcard(require("./EAMBaseInput"));
-
-var _dateFns = require("date-fns");
-
-var _dateFns2 = _interopRequireDefault(require("@date-io/date-fns"));
-
-var _parse = _interopRequireDefault(require("date-fns/parse"));
-
-var _EAMFormLabel = _interopRequireDefault(require("./EAMFormLabel"));
-
-var _index = require("@material-ui/core/styles/index");
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -43,22 +12,32 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+import React from 'react';
+import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { Icon } from '@material-ui/core';
+import EAMBaseInput, { formStyles } from './EAMBaseInput';
+import { format } from 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
+import parse from 'date-fns/parse';
+import EAMFormLabel from "./EAMFormLabel";
+import { withStyles } from "@material-ui/core/styles/index";
+
 var styles = function styles(theme) {
-  var defaultStyles = (0, _EAMBaseInput2.formStyles)(theme);
+  var defaultStyles = formStyles(theme);
   return _objectSpread({}, defaultStyles, {
     textFieldInput: _objectSpread({}, defaultStyles.textFieldInput, {
       padding: '0px 9px'
@@ -89,7 +68,7 @@ var EAMDateTimePicker = /*#__PURE__*/function (_EAMBaseInput) {
           return value;
         }
 
-        return (0, _parse["default"])(value, Constants.DATETIME_FORMAT_VALUE, new Date());
+        return parse(value, Constants.DATETIME_FORMAT_VALUE, new Date());
       } else {
         return null;
       }
@@ -98,7 +77,7 @@ var EAMDateTimePicker = /*#__PURE__*/function (_EAMBaseInput) {
     key: "readDate",
     value: function readDate(date) {
       if (date) {
-        return (0, _dateFns.format)(date, Constants.DATETIME_FORMAT_VALUE);
+        return format(date, Constants.DATETIME_FORMAT_VALUE);
       } else {
         return '';
       }
@@ -111,7 +90,7 @@ var EAMDateTimePicker = /*#__PURE__*/function (_EAMBaseInput) {
       var text = this.props.elementInfo.text;
 
       if (this.isHidden()) {
-        return /*#__PURE__*/_react["default"].createElement("div", null);
+        return /*#__PURE__*/React.createElement("div", null);
       }
 
       var _this$props = this.props,
@@ -119,16 +98,16 @@ var EAMDateTimePicker = /*#__PURE__*/function (_EAMBaseInput) {
           elementInfo = _this$props.elementInfo,
           label = _this$props.label,
           validate = _this$props.validate;
-      return /*#__PURE__*/_react["default"].createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         className: this.props.classes.fieldContainer
-      }, /*#__PURE__*/_react["default"].createElement(_EAMFormLabel["default"], {
+      }, /*#__PURE__*/React.createElement(EAMFormLabel, {
         required: this.isRequired(),
         label: label || elementInfo && elementInfo.text,
         labelStyle: labelStyle,
         error: this.state.error
-      }), /*#__PURE__*/_react["default"].createElement(_pickers.MuiPickersUtilsProvider, {
-        utils: _dateFns2["default"]
-      }, /*#__PURE__*/_react["default"].createElement(_pickers.DateTimePicker, {
+      }), /*#__PURE__*/React.createElement(MuiPickersUtilsProvider, {
+        utils: DateFnsUtils
+      }, /*#__PURE__*/React.createElement(DateTimePicker, {
         inputadornmentprops: {
           style: {
             marginRight: -12
@@ -151,15 +130,13 @@ var EAMDateTimePicker = /*#__PURE__*/function (_EAMBaseInput) {
         },
         format: Constants.DATETIME_FORMAT_DISPLAY,
         margin: "normal",
-        leftArrowIcon: /*#__PURE__*/_react["default"].createElement(_core.Icon, null, " keyboard_arrow_left "),
-        rightArrowIcon: /*#__PURE__*/_react["default"].createElement(_core.Icon, null, " keyboard_arrow_right ")
+        leftArrowIcon: /*#__PURE__*/React.createElement(Icon, null, " keyboard_arrow_left "),
+        rightArrowIcon: /*#__PURE__*/React.createElement(Icon, null, " keyboard_arrow_right ")
       })));
     }
   }]);
 
   return EAMDateTimePicker;
-}(_EAMBaseInput2["default"]);
+}(EAMBaseInput);
 
-var _default = (0, _index.withStyles)(styles)(EAMDateTimePicker);
-
-exports["default"] = _default;
+export default withStyles(styles)(EAMDateTimePicker);
