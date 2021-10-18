@@ -1,8 +1,15 @@
-import Axios from 'axios';
-import React, { useState, createContext, useCallback, useMemo, useEffect } from 'react';
-import GridWS from '../../eamgrid/lib/GridWS';
-import { EAMCellField, EAMFilterField, getRowAsAnObject } from './utils';
-import useEAMGridTableInstance from './useEAMGridTableInstance';
+import Axios from "axios";
+import React, {
+    useState,
+    createContext,
+    useCallback,
+    useMemo,
+    useEffect,
+} from "react";
+import GridWS from "../../eamgrid/lib/GridWS";
+import { EAMCellField, EAMFilterField, getRowAsAnObject } from "./utils";
+import useEAMGridTableInstance from "./useEAMGridTableInstance";
+import { useAsyncDebounce } from "react-table";
 
 const defaultCreateColumns = ({ gridField, cellRenderer }) =>
     (gridField || [])
@@ -24,7 +31,11 @@ const processFilters = (filters) => {
         .map((f) => {
             const filter = f.value;
             const allowedFilter = Object.keys(filter)
-                .filter((key) => ['fieldName', 'fieldValue', 'joiner', 'operator'].includes(key))
+                .filter((key) =>
+                    ["fieldName", "fieldValue", "joiner", "operator"].includes(
+                        key
+                    )
+                )
                 .reduce(
                     (newFilterObj, key) => ({
                         ...newFilterObj,
@@ -37,15 +48,25 @@ const processFilters = (filters) => {
         .filter(
             (filter) =>
                 filter.fieldValue !== undefined ||
-                filter.fieldValue !== '' ||
-                ['IS EMPTY', 'NOT EMPTY'].includes(filter.operator)
+                filter.fieldValue !== "" ||
+                ["IS EMPTY", "NOT EMPTY"].includes(filter.operator)
         );
 };
+
+const processSortBy = (sortBy) =>
+    (sortBy || []).map((sort) => ({
+        sortBy: sort.id,
+        sortType: sort.desc === true ? "DESC" : "ASC",
+    }));
 
 const hasCustomFieldColumn = (columns) => {
     return columns
         .map(({ id }) => id.toLowerCase())
-        .some((id) => id.startsWith('c_') && ['_evnt', '_obj', '_part'].some((ending) => id.endsWith(ending)));
+        .some(
+            (id) =>
+                id.startsWith("c_") &&
+                ["_evnt", "_obj", "_part"].some((ending) => id.endsWith(ending))
+        );
 };
 
 export const EAMGridContext = createContext();
@@ -59,6 +80,7 @@ export const EAMGridContextProvider = (props) => {
         initialRowsPerPage,
         initialFilters,
         initialDataspyID,
+        initialSortBy = [],
         tableInstanceProps,
         onChangeSelectedRows,
         onChangeFilters,
@@ -81,27 +103,6 @@ export const EAMGridContextProvider = (props) => {
     const [loading, setLoading] = useState(false);
     const [gridResult, setGridResult] = useState({});
     const [gridField, setGridField] = useState();
-    const [gridRequest, setGridRequest] = useState({
-        gridName,
-        userFunctionName: userFunctionName ?? gridName,
-        gridID,
-        useNative,
-        dataspyID: initialDataspyID || null,
-        countTotal: true,
-        includeMetadata: true,
-        rowCount: rowsPerPage,
-    });
-    const [fetchDataCancelToken, setFetchDataCancelToken] = useState();
-    const [loadingExportToCSV, setLoadingExportToCSV] = useState(false);
-    const columnCreator = createColumns ?? defaultCreateColumns;
-    const dataCreator = processData ?? (({ data: d }) => d);
-
-    const columns = useMemo(() => columnCreator({ gridField, cellRenderer }), [gridField, cellRenderer, columnCreator]);
-    const data = useMemo(() => dataCreator({ data: (gridResult?.row || []).map(getRowAsAnObject) }), [gridResult.row]);
-
-    const hasUnkownTotalRecords = useMemo(() => (gridResult?.records ?? '').includes('+'), [gridResult]);
-    const recordsNumber = +(gridResult?.records ?? '').replace('+', '');
-    const totalRecords = recordsNumber <= rowsPerPage ? data.length : recordsNumber;
 
     const resetFilters = useMemo(
         () =>
@@ -111,12 +112,49 @@ export const EAMGridContextProvider = (props) => {
             })),
         [initialFilters]
     );
+    const [gridRequest, setGridRequest] = useState({
+        gridName,
+        userFunctionName: userFunctionName ?? gridName,
+        gridID,
+        useNative,
+        dataspyID: initialDataspyID || null,
+        countTotal: true,
+        includeMetadata: true,
+        rowCount: rowsPerPage,
+        gridSort: processSortBy(initialSortBy),
+        gridFilter: processFilters(resetFilters),
+    });
+    const [fetchDataCancelToken, setFetchDataCancelToken] = useState();
+    const [loadingExportToCSV, setLoadingExportToCSV] = useState(false);
+    const columnCreator = createColumns ?? defaultCreateColumns;
+    const dataCreator = processData ?? (({ data: d }) => d);
+
+    const columns = useMemo(
+        () => columnCreator({ gridField, cellRenderer }),
+        [gridField, cellRenderer, columnCreator]
+    );
+    const data = useMemo(
+        () =>
+            dataCreator({
+                data: (gridResult?.row || []).map(getRowAsAnObject),
+            }),
+        [gridResult.row]
+    );
+
+    const hasUnkownTotalRecords = useMemo(
+        () => (gridResult?.records ?? "").includes("+"),
+        [gridResult]
+    );
+    const recordsNumber = +(gridResult?.records ?? "").replace("+", "");
+    const totalRecords =
+        recordsNumber <= rowsPerPage ? data.length : recordsNumber;
 
     const tableInstance = useEAMGridTableInstance({
         columns,
         data,
         initialState: {
             filters: resetFilters,
+            sortBy: initialSortBy,
         },
         manualFilters: true,
         manualSortBy: true,
@@ -134,17 +172,18 @@ export const EAMGridContextProvider = (props) => {
         prepareRow,
     } = tableInstance;
 
-    const toggleFilters = useCallback(() => setDisableFilters(!disableFilters), [disableFilters, setDisableFilters]);
+    const toggleFilters = useCallback(
+        () => setDisableFilters(!disableFilters),
+        [disableFilters, setDisableFilters]
+    );
 
     useEffect(() => {
         dataCallback && dataCallback({ data });
     }, [data]);
 
     useEffect(() => {
-        fetchData({
+        fetchDataDebounced({
             ...gridRequest,
-            gridFilter: processFilters(resetFilters),
-            gridSort: sortBy || [],
             rowCount: searchOnMount ? rowsPerPage : 0,
         });
         return () => {
@@ -168,7 +207,9 @@ export const EAMGridContextProvider = (props) => {
                 .then((response) => {
                     const newGridResult = response.body.data;
                     if (gr.includeMetadata) {
-                        const dataspy = newGridResult.gridDataspy.find((ds) => ds.code === newGridResult.dataSpyId);
+                        const dataspy = newGridResult.gridDataspy.find(
+                            (ds) => ds.code === newGridResult.dataSpyId
+                        );
                         setDataspies(newGridResult.gridDataspy);
                         setSelectedDataspy(dataspy);
                         setGridField(newGridResult.gridField);
@@ -183,6 +224,8 @@ export const EAMGridContextProvider = (props) => {
         [fetchDataCancelToken, setFetchDataCancelToken]
     );
 
+    const fetchDataDebounced = useAsyncDebounce(fetchData, 100);
+
     const handleOnSearch = useCallback(() => {
         setPageIndex(0);
         const newGridRequest = {
@@ -191,18 +234,23 @@ export const EAMGridContextProvider = (props) => {
         };
         setGridRequest(newGridRequest);
         tableInstance.toggleAllRowsSelected(false);
-        fetchData(newGridRequest);
-    }, [tableInstance, fetchData, gridRequest]);
+        fetchDataDebounced(newGridRequest);
+    }, [tableInstance, fetchDataDebounced, gridRequest]);
 
     const handleExportToCSV = useCallback(() => {
         setLoadingExportToCSV(true);
         return GridWS.exportDataToCSV(gridRequest)
             .then((result) => {
-                const hiddenElement = document.createElement('a');
+                const hiddenElement = document.createElement("a");
                 // utf8BOM used to enable detection of utf-8 encoding by excel when opening the CSV file
-                const utf8BOM = '\uFEFF';
-                hiddenElement.href = 'data:text/csv;charset=UTF-8,' + encodeURI(`${utf8BOM}${result.body}`).replaceAll('#', '%23');
-                hiddenElement.target = '_blank';
+                const utf8BOM = "\uFEFF";
+                hiddenElement.href =
+                    "data:text/csv;charset=UTF-8," +
+                    encodeURI(`${utf8BOM}${result.body}`).replaceAll(
+                        "#",
+                        "%23"
+                    );
+                hiddenElement.target = "_blank";
                 hiddenElement.download = `exported_data.csv`;
                 hiddenElement.click();
             })
@@ -213,19 +261,24 @@ export const EAMGridContextProvider = (props) => {
 
     useEffect(() => {
         const newGridFilters = processFilters(filters);
-        if (JSON.stringify(newGridFilters) === JSON.stringify(gridRequest.gridFilter)) return;
+        if (
+            JSON.stringify(newGridFilters) ===
+            JSON.stringify(gridRequest.gridFilter)
+        )
+            return;
         setGridRequest({
             ...gridRequest,
             gridFilter: newGridFilters,
-            cursorPosition: 1,
+            cursorPosition: 0,
         });
         onChangeFilters && onChangeFilters(newGridFilters);
     }, [filters, gridRequest, onChangeFilters, tableInstance]);
 
     useEffect(() => {
-        const newGridSort = sortBy.map((sort) => ({ sortBy: sort.id, sortType: sort.desc === true ? 'DESC' : 'ASC' }));
+        const newGridSort = processSortBy(sortBy);
         if (
-            JSON.stringify(newGridSort) === JSON.stringify(gridRequest.gridSort) ||
+            JSON.stringify(newGridSort) ===
+                JSON.stringify(gridRequest.gridSort) ||
             (!newGridSort.length && !gridRequest.gridSort)
         )
             return;
@@ -236,25 +289,41 @@ export const EAMGridContextProvider = (props) => {
         };
         setPageIndex(0);
         setGridRequest(newGridRequest);
-        fetchData(newGridRequest);
+        fetchDataDebounced(newGridRequest);
         onChangeSortBy && onChangeSortBy(sortBy);
-    }, [sortBy, gridRequest, onChangeSortBy, fetchData, tableInstance]);
+    }, [
+        sortBy,
+        gridRequest,
+        onChangeSortBy,
+        fetchDataDebounced,
+        tableInstance,
+    ]);
 
     const handleChangePage = useCallback(
         (page) => {
             setPageIndex(page);
             const newCursorPosition = page * rowsPerPage + 1;
-            if (newCursorPosition === gridRequest.cursorPosition && gridRequest.rowCount === rowsPerPage) return;
+            if (
+                newCursorPosition === gridRequest.cursorPosition &&
+                gridRequest.rowCount === rowsPerPage
+            )
+                return;
             const newGridRequest = {
                 ...gridRequest,
                 cursorPosition: newCursorPosition,
             };
             tableInstance.toggleAllRowsSelected(false);
             setGridRequest(newGridRequest);
-            fetchData(newGridRequest);
+            fetchDataDebounced(newGridRequest);
             onChangePage && onChangePage(page);
         },
-        [fetchData, gridRequest, rowsPerPage, tableInstance, onChangePage]
+        [
+            fetchDataDebounced,
+            gridRequest,
+            rowsPerPage,
+            tableInstance,
+            onChangePage,
+        ]
     );
 
     const handleChangeRowsPerPage = useCallback(
@@ -268,10 +337,10 @@ export const EAMGridContextProvider = (props) => {
             };
             tableInstance.toggleAllRowsSelected(false);
             setGridRequest(newGridRequest);
-            fetchData(newGridRequest);
+            fetchDataDebounced(newGridRequest);
             onChangeRowsPerPage && onChangeRowsPerPage(perPage);
         },
-        [fetchData, gridRequest, tableInstance, onChangeRowsPerPage]
+        [fetchDataDebounced, gridRequest, tableInstance, onChangeRowsPerPage]
     );
 
     const handleDataspyChange = useCallback(
@@ -289,10 +358,16 @@ export const EAMGridContextProvider = (props) => {
             tableInstance.setAllFilters([]);
             tableInstance.setSortBy([]);
             setGridRequest(newGridRequest);
-            fetchData(newGridRequest);
+            fetchDataDebounced(newGridRequest);
             onChangeDataspy && onChangeDataspy(dataspy);
         },
-        [fetchData, gridRequest, resetFilters, tableInstance, onChangeDataspy]
+        [
+            fetchDataDebounced,
+            gridRequest,
+            resetFilters,
+            tableInstance,
+            onChangeDataspy,
+        ]
     );
 
     const handleResetFilters = useCallback(() => {
@@ -344,5 +419,9 @@ export const EAMGridContextProvider = (props) => {
         loadingExportToCSV,
     };
 
-    return <EAMGridContext.Provider value={context}>{props.children}</EAMGridContext.Provider>;
+    return (
+        <EAMGridContext.Provider value={context}>
+            {props.children}
+        </EAMGridContext.Provider>
+    );
 };

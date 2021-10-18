@@ -6,21 +6,22 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-import Axios from 'axios';
-import React, { useState, createContext, useCallback, useMemo, useEffect } from 'react';
-import GridWS from '../../eamgrid/lib/GridWS';
-import { EAMCellField, EAMFilterField, getRowAsAnObject } from './utils';
-import useEAMGridTableInstance from './useEAMGridTableInstance';
+import Axios from "axios";
+import React, { useState, createContext, useCallback, useMemo, useEffect } from "react";
+import GridWS from "../../eamgrid/lib/GridWS";
+import { EAMCellField, EAMFilterField, getRowAsAnObject } from "./utils";
+import useEAMGridTableInstance from "./useEAMGridTableInstance";
+import { useAsyncDebounce } from "react-table";
 
 var defaultCreateColumns = function defaultCreateColumns(_ref) {
   var gridField = _ref.gridField,
@@ -46,13 +47,22 @@ var processFilters = function processFilters(filters) {
   return filters.map(function (f) {
     var filter = f.value;
     var allowedFilter = Object.keys(filter).filter(function (key) {
-      return ['fieldName', 'fieldValue', 'joiner', 'operator'].includes(key);
+      return ["fieldName", "fieldValue", "joiner", "operator"].includes(key);
     }).reduce(function (newFilterObj, key) {
       return _objectSpread({}, newFilterObj, _defineProperty({}, key, filter[key]));
     }, {});
     return allowedFilter;
   }).filter(function (filter) {
-    return filter.fieldValue !== undefined || filter.fieldValue !== '' || ['IS EMPTY', 'NOT EMPTY'].includes(filter.operator);
+    return filter.fieldValue !== undefined || filter.fieldValue !== "" || ["IS EMPTY", "NOT EMPTY"].includes(filter.operator);
+  });
+};
+
+var processSortBy = function processSortBy(sortBy) {
+  return (sortBy || []).map(function (sort) {
+    return {
+      sortBy: sort.id,
+      sortType: sort.desc === true ? "DESC" : "ASC"
+    };
   });
 };
 
@@ -61,7 +71,7 @@ var hasCustomFieldColumn = function hasCustomFieldColumn(columns) {
     var id = _ref2.id;
     return id.toLowerCase();
   }).some(function (id) {
-    return id.startsWith('c_') && ['_evnt', '_obj', '_part'].some(function (ending) {
+    return id.startsWith("c_") && ["_evnt", "_obj", "_part"].some(function (ending) {
       return id.endsWith(ending);
     });
   });
@@ -77,6 +87,8 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
       initialRowsPerPage = props.initialRowsPerPage,
       initialFilters = props.initialFilters,
       initialDataspyID = props.initialDataspyID,
+      _props$initialSortBy = props.initialSortBy,
+      initialSortBy = _props$initialSortBy === void 0 ? [] : _props$initialSortBy,
       tableInstanceProps = props.tableInstanceProps,
       onChangeSelectedRows = props.onChangeSelectedRows,
       onChangeFilters = props.onChangeFilters,
@@ -131,6 +143,15 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
       gridField = _useState16[0],
       setGridField = _useState16[1];
 
+  var resetFilters = useMemo(function () {
+    return (initialFilters || []).map(function (filter) {
+      return {
+        id: filter.fieldName,
+        value: filter
+      };
+    });
+  }, [initialFilters]);
+
   var _useState17 = useState({
     gridName: gridName,
     userFunctionName: userFunctionName ?? gridName,
@@ -139,7 +160,9 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
     dataspyID: initialDataspyID || null,
     countTotal: true,
     includeMetadata: true,
-    rowCount: rowsPerPage
+    rowCount: rowsPerPage,
+    gridSort: processSortBy(initialSortBy),
+    gridFilter: processFilters(resetFilters)
   }),
       _useState18 = _slicedToArray(_useState17, 2),
       gridRequest = _useState18[0],
@@ -174,23 +197,16 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
     });
   }, [gridResult.row]);
   var hasUnkownTotalRecords = useMemo(function () {
-    return (gridResult?.records ?? '').includes('+');
+    return (gridResult?.records ?? "").includes("+");
   }, [gridResult]);
-  var recordsNumber = +(gridResult?.records ?? '').replace('+', '');
+  var recordsNumber = +(gridResult?.records ?? "").replace("+", "");
   var totalRecords = recordsNumber <= rowsPerPage ? data.length : recordsNumber;
-  var resetFilters = useMemo(function () {
-    return (initialFilters || []).map(function (filter) {
-      return {
-        id: filter.fieldName,
-        value: filter
-      };
-    });
-  }, [initialFilters]);
   var tableInstance = useEAMGridTableInstance(_objectSpread({
     columns: columns,
     data: data,
     initialState: {
-      filters: resetFilters
+      filters: resetFilters,
+      sortBy: initialSortBy
     },
     manualFilters: true,
     manualSortBy: true,
@@ -214,9 +230,7 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
     });
   }, [data]);
   useEffect(function () {
-    fetchData(_objectSpread({}, gridRequest, {
-      gridFilter: processFilters(resetFilters),
-      gridSort: sortBy || [],
+    fetchDataDebounced(_objectSpread({}, gridRequest, {
       rowCount: searchOnMount ? rowsPerPage : 0
     }));
     return function () {
@@ -254,6 +268,7 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
       handleError && handleError(error);
     });
   }, [fetchDataCancelToken, setFetchDataCancelToken]);
+  var fetchDataDebounced = useAsyncDebounce(fetchData, 100);
   var handleOnSearch = useCallback(function () {
     setPageIndex(0);
 
@@ -263,16 +278,16 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
 
     setGridRequest(newGridRequest);
     tableInstance.toggleAllRowsSelected(false);
-    fetchData(newGridRequest);
-  }, [tableInstance, fetchData, gridRequest]);
+    fetchDataDebounced(newGridRequest);
+  }, [tableInstance, fetchDataDebounced, gridRequest]);
   var handleExportToCSV = useCallback(function () {
     setLoadingExportToCSV(true);
     return GridWS.exportDataToCSV(gridRequest).then(function (result) {
-      var hiddenElement = document.createElement('a'); // utf8BOM used to enable detection of utf-8 encoding by excel when opening the CSV file
+      var hiddenElement = document.createElement("a"); // utf8BOM used to enable detection of utf-8 encoding by excel when opening the CSV file
 
       var utf8BOM = "\uFEFF";
-      hiddenElement.href = 'data:text/csv;charset=UTF-8,' + encodeURI("".concat(utf8BOM).concat(result.body)).replaceAll('#', '%23');
-      hiddenElement.target = '_blank';
+      hiddenElement.href = "data:text/csv;charset=UTF-8," + encodeURI("".concat(utf8BOM).concat(result.body)).replaceAll("#", "%23");
+      hiddenElement.target = "_blank";
       hiddenElement.download = "exported_data.csv";
       hiddenElement.click();
     })["finally"](function () {
@@ -284,17 +299,12 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
     if (JSON.stringify(newGridFilters) === JSON.stringify(gridRequest.gridFilter)) return;
     setGridRequest(_objectSpread({}, gridRequest, {
       gridFilter: newGridFilters,
-      cursorPosition: 1
+      cursorPosition: 0
     }));
     onChangeFilters && onChangeFilters(newGridFilters);
   }, [filters, gridRequest, onChangeFilters, tableInstance]);
   useEffect(function () {
-    var newGridSort = sortBy.map(function (sort) {
-      return {
-        sortBy: sort.id,
-        sortType: sort.desc === true ? 'DESC' : 'ASC'
-      };
-    });
+    var newGridSort = processSortBy(sortBy);
     if (JSON.stringify(newGridSort) === JSON.stringify(gridRequest.gridSort) || !newGridSort.length && !gridRequest.gridSort) return;
 
     var newGridRequest = _objectSpread({}, gridRequest, {
@@ -304,9 +314,9 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
 
     setPageIndex(0);
     setGridRequest(newGridRequest);
-    fetchData(newGridRequest);
+    fetchDataDebounced(newGridRequest);
     onChangeSortBy && onChangeSortBy(sortBy);
-  }, [sortBy, gridRequest, onChangeSortBy, fetchData, tableInstance]);
+  }, [sortBy, gridRequest, onChangeSortBy, fetchDataDebounced, tableInstance]);
   var handleChangePage = useCallback(function (page) {
     setPageIndex(page);
     var newCursorPosition = page * rowsPerPage + 1;
@@ -318,9 +328,9 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
 
     tableInstance.toggleAllRowsSelected(false);
     setGridRequest(newGridRequest);
-    fetchData(newGridRequest);
+    fetchDataDebounced(newGridRequest);
     onChangePage && onChangePage(page);
-  }, [fetchData, gridRequest, rowsPerPage, tableInstance, onChangePage]);
+  }, [fetchDataDebounced, gridRequest, rowsPerPage, tableInstance, onChangePage]);
   var handleChangeRowsPerPage = useCallback(function (perPage) {
     setPageIndex(0);
     setRowsPerPage(perPage);
@@ -332,9 +342,9 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
 
     tableInstance.toggleAllRowsSelected(false);
     setGridRequest(newGridRequest);
-    fetchData(newGridRequest);
+    fetchDataDebounced(newGridRequest);
     onChangeRowsPerPage && onChangeRowsPerPage(perPage);
-  }, [fetchData, gridRequest, tableInstance, onChangeRowsPerPage]);
+  }, [fetchDataDebounced, gridRequest, tableInstance, onChangeRowsPerPage]);
   var handleDataspyChange = useCallback(function (dataspy) {
     if (!dataspy) return;
     setSelectedDataspy(dataspy);
@@ -350,9 +360,9 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
     tableInstance.setAllFilters([]);
     tableInstance.setSortBy([]);
     setGridRequest(newGridRequest);
-    fetchData(newGridRequest);
+    fetchDataDebounced(newGridRequest);
     onChangeDataspy && onChangeDataspy(dataspy);
-  }, [fetchData, gridRequest, resetFilters, tableInstance, onChangeDataspy]);
+  }, [fetchDataDebounced, gridRequest, resetFilters, tableInstance, onChangeDataspy]);
   var handleResetFilters = useCallback(function () {
     tableInstance.setAllFilters([]);
   }, [resetFilters, tableInstance]);
