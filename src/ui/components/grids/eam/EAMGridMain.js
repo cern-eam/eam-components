@@ -155,7 +155,7 @@ const EAMGridMain = (props) => {
                                         ].filter(Boolean)
                                         return (
                                             <HeadCellComponent key={column.id} {...column.getHeaderProps(headerProps)} component="div">
-                                                <div {...column.getSortByToggleProps()}>
+                                                <div {...column.getSortByToggleProps({ title: 'Toggle Sort By' })}>
                                                     {column.render("Header")}
                                                     {column.id !== 'selection' ? (
                                                         <DefaultTableSortLabel
