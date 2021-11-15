@@ -140,7 +140,7 @@ class Checklists extends Component {
     }
 
     readActivities(workorder) {
-        const { getWorkOrderActivities } = this.props;
+        const { getWorkOrderActivities, hideFilledItems, activity } = this.props;
 
         getWorkOrderActivities(workorder)
             .then(response => {
@@ -152,6 +152,14 @@ class Checklists extends Component {
                 this.setState({
                     activities,
                     blocking: false
+                }, () => {
+                    if (hideFilledItems) {
+                        this.toggleFilledFilter();
+                    }
+
+                    if (activity) {
+                        this.setNewFilter({ activity: {code: activity} });
+                    }
                 })
             })
     }
