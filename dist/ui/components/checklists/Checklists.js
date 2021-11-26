@@ -347,7 +347,10 @@ var Checklists = /*#__PURE__*/function (_Component) {
     value: function readActivities(workorder) {
       var _this2 = this;
 
-      var getWorkOrderActivities = this.props.getWorkOrderActivities;
+      var _this$props = this.props,
+          getWorkOrderActivities = _this$props.getWorkOrderActivities,
+          hideFilledItems = _this$props.hideFilledItems,
+          activity = _this$props.activity;
       getWorkOrderActivities(workorder).then(function (response) {
         var activities = getExpandedActivities(response.body.data);
         var checklists = activities.reduce(function (checklists, activity) {
@@ -359,6 +362,18 @@ var Checklists = /*#__PURE__*/function (_Component) {
         _this2.setState({
           activities: activities,
           blocking: false
+        }, function () {
+          if (hideFilledItems) {
+            _this2.toggleFilledFilter();
+          }
+
+          if (activity) {
+            _this2.setNewFilter({
+              activity: {
+                code: activity
+              }
+            });
+          }
         });
       });
     }
@@ -390,12 +405,12 @@ var Checklists = /*#__PURE__*/function (_Component) {
       var _this3 = this;
 
       var isDisabled = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-      var _this$props = this.props,
-          updateChecklistItem = _this$props.updateChecklistItem,
-          minFindingsDropdown = _this$props.minFindingsDropdown,
-          handleError = _this$props.handleError,
-          getWoLink = _this$props.getWoLink,
-          showError = _this$props.showError;
+      var _this$props2 = this.props,
+          updateChecklistItem = _this$props2.updateChecklistItem,
+          minFindingsDropdown = _this$props2.minFindingsDropdown,
+          handleError = _this$props2.handleError,
+          getWoLink = _this$props2.getWoLink,
+          showError = _this$props2.showError;
       var firstChecklist = checklists[0];
       var equipmentCode = firstChecklist.equipmentCode;
       var collapsed = activity.equipments[equipmentCode].collapsed;
