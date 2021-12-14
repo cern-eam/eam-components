@@ -180,7 +180,10 @@ var Comments = /*#__PURE__*/function (_Component) {
           allowHtml: allowHtml,
           key: comment.pk,
           comment: comment,
-          updateCommentHandler: _this2.updateComment
+          updateCommentHandler: _this2.updateComment,
+          commentFooter: _this2.props.commentFooterMapper?.({
+            comment: comment
+          })
         });
       }), /*#__PURE__*/React.createElement(CommentNew, {
         userCode: this.props.userCode,
@@ -189,6 +192,7 @@ var Comments = /*#__PURE__*/function (_Component) {
         entityKeyCode: this.props.entityKeyCode,
         newCommentText: this.state.newCommentText,
         updateNewCommentText: this.updateNewCommentText,
+        displayPrivateCheck: this.props.displayPrivateCheck,
         disabled: disabled
       }));
     }
@@ -212,6 +216,8 @@ Comments.propTypes = {
   title: PropTypes.string,
   readComments: PropTypes.func,
   updateComment: PropTypes.func,
-  createComment: PropTypes.func
+  createComment: PropTypes.func,
+  commentFooterMapper: PropTypes.func,
+  displayPrivateCheck: PropTypes.bool
 };
 export default Comments;

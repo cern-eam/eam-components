@@ -25,7 +25,7 @@ import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import SaveIcon from '@material-ui/icons/Save';
-import { FlagCheckered } from 'mdi-material-ui';
+import { FlagCheckered, Lock } from 'mdi-material-ui';
 var notClosingButtonStyle = {
   backgroundColor: '#e0e0e0'
 };
@@ -33,6 +33,11 @@ var saveIconStyle = {
   width: 16,
   height: 16,
   marginRight: 5
+};
+var optionIconStyle = {
+  width: 18,
+  height: 18,
+  margin: '0 5px'
 };
 
 var CommentBar = /*#__PURE__*/function (_Component) {
@@ -52,6 +57,7 @@ var CommentBar = /*#__PURE__*/function (_Component) {
     _this = _super.call.apply(_super, [this].concat(args));
     _this.state = {
       isClosing: false,
+      isPrivate: false,
       closingButtonStyle: notClosingButtonStyle
     };
 
@@ -64,12 +70,15 @@ var CommentBar = /*#__PURE__*/function (_Component) {
 
       if (_this.state.isClosing) {
         comment.typeCode = '+';
+      } else if (_this.state.isPrivate) {
+        comment.typeCode = 'P';
       } //Update the closing
 
 
       _this.setState(function () {
         return {
           isClosing: false,
+          isPrivate: false,
           closingButtonStyle: notClosingButtonStyle
         };
       }); //Save the comment with the method received
@@ -95,21 +104,47 @@ var CommentBar = /*#__PURE__*/function (_Component) {
           color: "primary"
         }, /*#__PURE__*/React.createElement(SaveIcon, {
           style: saveIconStyle
-        }), " Save"), this.props.displayClosingCheck && /*#__PURE__*/React.createElement(FormControlLabel, {
+        }), " Save"), this.props.displayPrivateCheck && /*#__PURE__*/React.createElement(FormControlLabel, {
           style: {
             height: 22,
             marginRight: -5
           },
           control: /*#__PURE__*/React.createElement(Checkbox, {
             color: "primary",
-            icon: /*#__PURE__*/React.createElement(FlagCheckered, null),
-            checkedIcon: /*#__PURE__*/React.createElement(FlagCheckered, null),
+            icon: /*#__PURE__*/React.createElement(Lock, {
+              style: optionIconStyle
+            }),
+            checkedIcon: /*#__PURE__*/React.createElement(Lock, {
+              style: optionIconStyle
+            }),
+            checked: this.state.isPrivate,
+            onChange: function onChange(event, checked) {
+              return _this2.setState({
+                isPrivate: checked
+              });
+            },
+            title: "Private comment"
+          })
+        }), this.props.displayClosingCheck && /*#__PURE__*/React.createElement(FormControlLabel, {
+          style: {
+            height: 22,
+            marginRight: -5
+          },
+          control: /*#__PURE__*/React.createElement(Checkbox, {
+            color: "primary",
+            icon: /*#__PURE__*/React.createElement(FlagCheckered, {
+              style: optionIconStyle
+            }),
+            checkedIcon: /*#__PURE__*/React.createElement(FlagCheckered, {
+              style: optionIconStyle
+            }),
             checked: this.state.isClosing,
             onChange: function onChange(event, checked) {
               return _this2.setState({
                 isClosing: checked
               });
-            }
+            },
+            title: "Closing"
           })
         }));
       }

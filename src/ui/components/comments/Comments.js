@@ -114,7 +114,13 @@ class Comments extends Component {
             <List style={{width: "100%"}}>
                 {
                     this.state.comments.map(comment =>
-                        <Comment allowHtml={allowHtml} key={comment.pk} comment={comment} updateCommentHandler={this.updateComment}/>
+                        <Comment 
+                            allowHtml={allowHtml} 
+                            key={comment.pk} 
+                            comment={comment} 
+                            updateCommentHandler={this.updateComment}
+                            commentFooter={this.props.commentFooterMapper?.({ comment })}
+                        />
                     )
                 }
 
@@ -124,6 +130,7 @@ class Comments extends Component {
                     entityKeyCode={this.props.entityKeyCode}
                     newCommentText={this.state.newCommentText}
                     updateNewCommentText={this.updateNewCommentText}
+                    displayPrivateCheck={this.props.displayPrivateCheck}
                     disabled={disabled} />
             </List>
         );
@@ -146,7 +153,9 @@ Comments.propTypes = {
     title: PropTypes.string,
     readComments: PropTypes.func,
     updateComment: PropTypes.func,
-    createComment: PropTypes.func
+    createComment: PropTypes.func,
+    commentFooterMapper: PropTypes.func,
+    displayPrivateCheck: PropTypes.bool,
 };
 
 export default Comments;
