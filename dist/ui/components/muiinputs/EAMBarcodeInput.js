@@ -28,6 +28,9 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import MenuItem from '@material-ui/core/MenuItem';
+import TextField from '@material-ui/core/TextField';
 
 var EAMBarcodeInput = /*#__PURE__*/function (_Component) {
   _inherits(EAMBarcodeInput, _Component);
@@ -47,7 +50,9 @@ var EAMBarcodeInput = /*#__PURE__*/function (_Component) {
     _this.codeReader = null;
     _this.state = {
       open: false,
-      showBarcodeButton: false
+      showBarcodeButton: false,
+      videoInputDevices: [],
+      currentCamera: ""
     };
 
     _this.handleClickOpen = function () {
@@ -65,7 +70,9 @@ var EAMBarcodeInput = /*#__PURE__*/function (_Component) {
     };
 
     _this.startDecoding = function () {
-      _this.codeReader.decodeFromInputVideoDevice(undefined, 'video').then(function (result) {
+      var camera = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _this.state.currentCamera;
+
+      _this.codeReader.decodeFromInputVideoDevice(camera, 'video').then(function (result) {
         _this.onDetectedCallback(result.text);
 
         _this.codeReader.reset();
@@ -74,6 +81,18 @@ var EAMBarcodeInput = /*#__PURE__*/function (_Component) {
       })["catch"](function (err) {
         return console.error(err);
       });
+    };
+
+    _this.handleCameraChange = function (camera) {
+      _this.codeReader.reset();
+
+      _this.setState({
+        currentCamera: camera
+      }, function () {
+        return _this.startDecoding(camera);
+      });
+
+      localStorage.setItem("camera", camera);
     };
 
     _this.onChangeHandler = function (value) {
@@ -90,41 +109,33 @@ var EAMBarcodeInput = /*#__PURE__*/function (_Component) {
   _createClass(EAMBarcodeInput, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      var deviceCount;
-      return regeneratorRuntime.async(function componentDidMount$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              _context.next = 2;
-              return regeneratorRuntime.awrap(navigator.mediaDevices.enumerateDevices());
+      var _this2 = this;
 
-            case 2:
-              deviceCount = _context.sent;
+      this.codeReader = new BrowserMultiFormatReader();
+      this.codeReader.listVideoInputDevices().then(function (devices) {
+        var videoInputDevices = devices;
+        var camera = localStorage.getItem("camera");
+        var currentCamera = devices.find(function (device) {
+          return device.deviceId === camera;
+        }).deviceId || "";
+        var showBarcodeButton = videoInputDevices.length > 0;
 
-              if (deviceCount.length > 0 && navigator && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                this.setState({
-                  showBarcodeButton: true
-                });
-              }
-
-            case 4:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, null, this, null, Promise);
+        _this2.setState({
+          currentCamera: currentCamera,
+          showBarcodeButton: showBarcodeButton,
+          videoInputDevices: videoInputDevices
+        });
+      });
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      this.codeReader.reset();
     }
   }, {
     key: "startScanner",
     value: function startScanner() {
-      var _this2 = this;
-
-      this.codeReader = new BrowserMultiFormatReader();
-      this.codeReader.listVideoInputDevices().then(function (videoInputDevices) {
-        return _this2.startDecoding(videoInputDevices[0].deviceId);
-      })["catch"](function (err) {
-        return console.error(err);
-      });
+      this.startDecoding();
     }
   }, {
     key: "onDetectedCallback",
@@ -148,7 +159,10 @@ var EAMBarcodeInput = /*#__PURE__*/function (_Component) {
         height: 32,
         zIndex: 100,
         padding: 0
-      }; // Display just the children when no support for user media
+      };
+      var _this$state = this.state,
+          currentCamera = _this$state.currentCamera,
+          videoInputDevices = _this$state.videoInputDevices; // Display just the children when no support for user media
 
       if (!this.state.showBarcodeButton) {
         return /*#__PURE__*/React.createElement("div", {
@@ -173,18 +187,40 @@ var EAMBarcodeInput = /*#__PURE__*/function (_Component) {
           }
         },
         open: this.state.open,
+        fullScreen: true,
         onClose: this.handleClose,
         "aria-labelledby": "alert-dialog-title",
         "aria-describedby": "alert-dialog-description"
-      }, /*#__PURE__*/React.createElement(DialogContent, {
+      }, videoInputDevices?.length > 1 && /*#__PURE__*/React.createElement(DialogTitle, null, /*#__PURE__*/React.createElement(TextField, {
+        value: currentCamera,
+        onChange: function onChange(e) {
+          return _this3.handleCameraChange(e.target.value);
+        },
+        select: true,
+        label: "Choose the camera",
         style: {
-          maxWidth: 320,
-          maxHeight: 320
+          minWidth: 250
+        }
+      }, videoInputDevices.map(function (videoInputDevice) {
+        return /*#__PURE__*/React.createElement(MenuItem, {
+          key: videoInputDevice.deviceId,
+          value: videoInputDevice.deviceId
+        }, videoInputDevice.label);
+      }))), /*#__PURE__*/React.createElement(DialogContent, {
+        style: {
+          padding: 0
         }
       }, /*#__PURE__*/React.createElement("video", {
+        autoPlay: true,
+        muted: true,
+        playsInline: true,
         id: "video",
-        width: "200",
-        height: "200"
+        style: {
+          maxWidth: "100%",
+          maxHeight: "100%",
+          width: "100%",
+          height: "100%"
+        }
       })), /*#__PURE__*/React.createElement(DialogActions, null, /*#__PURE__*/React.createElement(Button, {
         onClick: this.handleClose,
         color: "primary",

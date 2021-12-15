@@ -6,6 +6,9 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import MenuItem from '@material-ui/core/MenuItem';
+import TextField from '@material-ui/core/TextField';
 
 class EAMBarcodeInput extends Component {
     codeReader = null;
@@ -13,13 +16,23 @@ class EAMBarcodeInput extends Component {
     state = {
         open: false,
         showBarcodeButton: false,
+        videoInputDevices: [],
+        currentCamera: "",
     };
 
-    async componentDidMount() {
-        const deviceCount = await navigator.mediaDevices.enumerateDevices();
-        if (deviceCount.length > 0 && navigator && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            this.setState({ showBarcodeButton: true });
-        }
+    componentDidMount() {
+        this.codeReader = new BrowserMultiFormatReader();
+        this.codeReader.listVideoInputDevices().then((devices) => {
+            const videoInputDevices = devices;
+            const camera = localStorage.getItem("camera");
+            const currentCamera = devices.find((device) => device.deviceId === camera).deviceId || "";
+            const showBarcodeButton = videoInputDevices.length > 0;
+            this.setState({ currentCamera, showBarcodeButton, videoInputDevices });
+        });
+    }
+
+    componentWillUnmount() {
+        this.codeReader.reset();
     }
 
     handleClickOpen = () => {
@@ -32,22 +45,24 @@ class EAMBarcodeInput extends Component {
     };
 
     startScanner() {
-        this.codeReader = new BrowserMultiFormatReader();
-        this.codeReader
-            .listVideoInputDevices()
-            .then((videoInputDevices) => this.startDecoding(videoInputDevices[0].deviceId))
-            .catch((err) => console.error(err));
+        this.startDecoding();
     }
 
-    startDecoding = () => {
+    startDecoding = (camera = this.state.currentCamera) => {
         this.codeReader
-            .decodeFromInputVideoDevice(undefined, 'video')
+            .decodeFromInputVideoDevice(camera, 'video')
             .then((result) => {
                 this.onDetectedCallback(result.text);
                 this.codeReader.reset();
                 this.handleClose();
             })
             .catch((err) => console.error(err));
+    };
+
+    handleCameraChange = (camera) => {
+        this.codeReader.reset();
+        this.setState({ currentCamera: camera }, () => this.startDecoding(camera));
+        localStorage.setItem("camera", camera);
     };
 
     onChangeHandler = (value) => {
@@ -73,6 +88,7 @@ class EAMBarcodeInput extends Component {
             zIndex: 100,
             padding: 0,
         };
+        const { currentCamera, videoInputDevices } = this.state;
 
         // Display just the children when no support for user media
         if (!this.state.showBarcodeButton) {
@@ -94,12 +110,27 @@ class EAMBarcodeInput extends Component {
                             this.startScanner(this.onDetectedCallback.bind(this), this.handleClose.bind(this)),
                     }}
                     open={this.state.open}
+                    fullScreen
                     onClose={this.handleClose}
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"
                 >
-                    <DialogContent style={{ maxWidth: 320, maxHeight: 320 }}>
-                        <video id="video" width="200" height="200"></video>
+                    {videoInputDevices?.length > 1 && (
+                        <DialogTitle>
+                            <TextField
+                                value={currentCamera}
+                                onChange={(e) => this.handleCameraChange(e.target.value)}
+                                select
+                                label="Choose the camera"
+                                style={{ minWidth: 250 }}
+                            >
+                                {videoInputDevices.map((videoInputDevice) =>
+                                    <MenuItem key={videoInputDevice.deviceId} value={videoInputDevice.deviceId}>{videoInputDevice.label}</MenuItem>)}
+                            </TextField>
+                        </DialogTitle>
+                    )}
+                    <DialogContent style={{ padding: 0 }}>
+                        <video autoPlay muted playsInline id="video" style={{ maxWidth: "100%", maxHeight: "100%", width: "100%", height: "100%" }} />
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleClose} color="primary" autoFocus>
