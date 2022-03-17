@@ -141,7 +141,7 @@ const EAMGridMain = (props) => {
     const noResults = !rows.length && !loading;
 
     return (
-        <TableContainer style={{ height: '100%', overflowY: 'hidden', padding: '1px' }}>
+        <TableContainer style={{ height: '100%', overflowY: 'hidden', overflowX: noResults ? 'auto' : 'hidden' }}>
             <ScrollSync>
                 <TableComponent stickyHeader {...getTableProps({ style: { height: '100%' } })} component="div">
                     <ScrollSyncPane group="horizontal">
