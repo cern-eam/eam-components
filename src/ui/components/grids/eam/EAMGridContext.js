@@ -26,7 +26,7 @@ const defaultCreateColumns = ({ gridField, cellRenderer }) =>
             Cell: cellRenderer ? cellRenderer : EAMCellField,
         }));
 
-const processFilters = (filters) => {
+const processFilters = (filters, filterProcessor) => {
     return filters
         .map((f) => {
             const filter = f.value;
@@ -50,14 +50,17 @@ const processFilters = (filters) => {
                 filter.fieldValue !== undefined ||
                 filter.fieldValue !== "" ||
                 ["IS EMPTY", "NOT EMPTY"].includes(filter.operator)
-        );
+        )
+        .map(filterProcessor);
 };
 
-const processSortBy = (sortBy) =>
-    (sortBy || []).map((sort) => ({
-        sortBy: sort.id,
-        sortType: sort.desc === true ? "DESC" : "ASC",
-    }));
+const processSortBy = (sortBy, sortByProcessor) =>
+    (sortBy || [])
+        .map((sort) => ({
+            sortBy: sort.id,
+            sortType: sort.desc === true ? "DESC" : "ASC",
+        }))
+        .map(sortByProcessor);
 
 const hasCustomFieldColumn = (columns) => {
     return columns
@@ -94,6 +97,8 @@ export const EAMGridContextProvider = (props) => {
         createColumns,
         dataCallback,
         processData,
+        sortByProcessor = (e) => e,
+        filterProcessor = (e) => e,
     } = props;
     const [pageIndex, setPageIndex] = useState(0);
     const [selectedDataspy, setSelectedDataspy] = useState(undefined);
@@ -121,8 +126,8 @@ export const EAMGridContextProvider = (props) => {
         countTotal: true,
         includeMetadata: true,
         rowCount: rowsPerPage,
-        gridSort: processSortBy(initialSortBy),
-        gridFilter: processFilters(resetFilters),
+        gridSort: processSortBy(initialSortBy, sortByProcessor),
+        gridFilter: processFilters(resetFilters, filterProcessor),
     });
     const [fetchDataCancelToken, setFetchDataCancelToken] = useState();
     const [loadingExportToCSV, setLoadingExportToCSV] = useState(false);
@@ -260,7 +265,7 @@ export const EAMGridContextProvider = (props) => {
     }, [gridRequest]);
 
     useEffect(() => {
-        const newGridFilters = processFilters(filters);
+        const newGridFilters = processFilters(filters, filterProcessor);
         if (
             JSON.stringify(newGridFilters) ===
             JSON.stringify(gridRequest.gridFilter)
@@ -275,7 +280,7 @@ export const EAMGridContextProvider = (props) => {
     }, [filters, gridRequest, onChangeFilters, tableInstance]);
 
     useEffect(() => {
-        const newGridSort = processSortBy(sortBy);
+        const newGridSort = processSortBy(sortBy, sortByProcessor);
         if (
             JSON.stringify(newGridSort) ===
                 JSON.stringify(gridRequest.gridSort) ||

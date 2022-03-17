@@ -6,11 +6,11 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
@@ -43,7 +43,7 @@ var defaultCreateColumns = function defaultCreateColumns(_ref) {
   });
 };
 
-var processFilters = function processFilters(filters) {
+var processFilters = function processFilters(filters, filterProcessor) {
   return filters.map(function (f) {
     var filter = f.value;
     var allowedFilter = Object.keys(filter).filter(function (key) {
@@ -54,16 +54,16 @@ var processFilters = function processFilters(filters) {
     return allowedFilter;
   }).filter(function (filter) {
     return filter.fieldValue !== undefined || filter.fieldValue !== "" || ["IS EMPTY", "NOT EMPTY"].includes(filter.operator);
-  });
+  }).map(filterProcessor);
 };
 
-var processSortBy = function processSortBy(sortBy) {
+var processSortBy = function processSortBy(sortBy, sortByProcessor) {
   return (sortBy || []).map(function (sort) {
     return {
       sortBy: sort.id,
       sortType: sort.desc === true ? "DESC" : "ASC"
     };
-  });
+  }).map(sortByProcessor);
 };
 
 var hasCustomFieldColumn = function hasCustomFieldColumn(columns) {
@@ -101,7 +101,15 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
       handleError = props.handleError,
       createColumns = props.createColumns,
       dataCallback = props.dataCallback,
-      processData = props.processData;
+      processData = props.processData,
+      _props$sortByProcesso = props.sortByProcessor,
+      sortByProcessor = _props$sortByProcesso === void 0 ? function (e) {
+    return e;
+  } : _props$sortByProcesso,
+      _props$filterProcesso = props.filterProcessor,
+      filterProcessor = _props$filterProcesso === void 0 ? function (e) {
+    return e;
+  } : _props$filterProcesso;
 
   var _useState = useState(0),
       _useState2 = _slicedToArray(_useState, 2),
@@ -161,8 +169,8 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
     countTotal: true,
     includeMetadata: true,
     rowCount: rowsPerPage,
-    gridSort: processSortBy(initialSortBy),
-    gridFilter: processFilters(resetFilters)
+    gridSort: processSortBy(initialSortBy, sortByProcessor),
+    gridFilter: processFilters(resetFilters, filterProcessor)
   }),
       _useState18 = _slicedToArray(_useState17, 2),
       gridRequest = _useState18[0],
@@ -295,7 +303,7 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
     });
   }, [gridRequest]);
   useEffect(function () {
-    var newGridFilters = processFilters(filters);
+    var newGridFilters = processFilters(filters, filterProcessor);
     if (JSON.stringify(newGridFilters) === JSON.stringify(gridRequest.gridFilter)) return;
     setGridRequest(_objectSpread({}, gridRequest, {
       gridFilter: newGridFilters,
@@ -304,7 +312,7 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
     onChangeFilters && onChangeFilters(newGridFilters);
   }, [filters, gridRequest, onChangeFilters, tableInstance]);
   useEffect(function () {
-    var newGridSort = processSortBy(sortBy);
+    var newGridSort = processSortBy(sortBy, sortByProcessor);
     if (JSON.stringify(newGridSort) === JSON.stringify(gridRequest.gridSort) || !newGridSort.length && !gridRequest.gridSort) return;
 
     var newGridRequest = _objectSpread({}, gridRequest, {
