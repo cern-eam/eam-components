@@ -27,7 +27,7 @@ class EAMInput extends EAMBaseInput {
 
 
     renderComponent () {
-        const { elementInfo } = this.props;
+        const { elementInfo, inputProps } = this.props;
 
         return (
             <EAMTextField
@@ -40,6 +40,7 @@ class EAMInput extends EAMBaseInput {
                 onChange={event => this.setValue(event.target.value)}
                 onBlur={this.onLoseFocus}
                 InputLabelProps={{ shrink: true }}
+                inputProps={inputProps}
                 {...this.generateInputProps(this.props)}/>
         )
     }
