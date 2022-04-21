@@ -410,7 +410,8 @@ var Checklists = /*#__PURE__*/function (_Component) {
           minFindingsDropdown = _this$props2.minFindingsDropdown,
           handleError = _this$props2.handleError,
           getWoLink = _this$props2.getWoLink,
-          showError = _this$props2.showError;
+          showError = _this$props2.showError,
+          eqpMap = _this$props2.eqpMap;
       var firstChecklist = checklists[0];
       var equipmentCode = firstChecklist.equipmentCode;
       var collapsed = activity.equipments[equipmentCode].collapsed;
@@ -435,7 +436,8 @@ var Checklists = /*#__PURE__*/function (_Component) {
       }, /*#__PURE__*/React.createElement(ChecklistEquipment, {
         key: firstChecklist.checkListCode + "_equipment",
         equipmentCode: equipmentCode,
-        equipmentDesc: firstChecklist.equipmentDesc
+        equipmentDesc: firstChecklist.equipmentDesc,
+        otherId: eqpMap?.[equipmentCode]
       })), /*#__PURE__*/React.createElement(ExpansionPanelDetails, {
         style: {
           marginTop: -18

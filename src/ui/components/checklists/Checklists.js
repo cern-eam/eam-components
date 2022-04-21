@@ -228,7 +228,8 @@ class Checklists extends Component {
             minFindingsDropdown,
             handleError,
             getWoLink,
-            showError
+            showError,
+            eqpMap
         } = this.props;
 
         const firstChecklist = checklists[0];
@@ -249,7 +250,8 @@ class Checklists extends Component {
                 <ChecklistEquipment 
                     key={firstChecklist.checkListCode + "_equipment"}
                     equipmentCode={equipmentCode}
-                    equipmentDesc={firstChecklist.equipmentDesc}/>
+                    equipmentDesc={firstChecklist.equipmentDesc}
+                    otherId={eqpMap?.[equipmentCode]}/>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails style={{marginTop: -18}}>
                 <div style={{width: "100%"}}>
