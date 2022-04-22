@@ -59,7 +59,7 @@ var ChecklistEquipment = /*#__PURE__*/function (_Component) {
         style: this.mainStyle
       }, /*#__PURE__*/React.createElement(Settings, {
         style: this.settingsIconStyle
-      }), this.props.equipmentCode, " \u2014 ", this.props.equipmentDesc, " \u2014 ", this.props.otherId);
+      }), this.props.equipmentCode, " \u2014 ", this.props.equipmentDesc, " ", this.props.otherId && "\u2014 ".concat(this.props.otherId));
     }
   }]);
 
