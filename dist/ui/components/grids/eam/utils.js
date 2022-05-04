@@ -102,7 +102,7 @@ var isIndeterminate = function isIndeterminate(valueType) {
   return valueType === null || valueType === CHECKBOX_FILTERS.INDETERMINATE;
 };
 
-var getDefaultFilterValue = function getDefaultFilterValue(column) {
+var getEAMDefaultFilterValue = function getEAMDefaultFilterValue(column) {
   var baseFitler = {
     fieldName: column.id,
     fieldValue: undefined,
@@ -249,7 +249,7 @@ var getEAMInitialState = function getEAMInitialState(_ref2) {
   var initialFilters = columns.reduce(function (acc, column) {
     return [].concat(_toConsumableArray(acc), [{
       id: column.id,
-      value: getDefaultFilterValue(column)
+      value: getEAMDefaultFilterValue(column)
     }]);
   }, []);
   return {
@@ -367,18 +367,20 @@ var EAMCellField = function EAMCellField(_ref5) {
 };
 
 var EAMFilterField = function EAMFilterField(_ref6) {
-  var column = _ref6.column;
+  var column = _ref6.column,
+      _ref6$getDefaultValue = _ref6.getDefaultValue,
+      getDefaultValue = _ref6$getDefaultValue === void 0 ? getEAMDefaultFilterValue : _ref6$getDefaultValue;
   var dataType = column.dataType,
       filter = column.filterValue,
       setFilter = column.setFilter;
 
-  var _useState3 = useState(filter || getDefaultFilterValue(column)),
+  var _useState3 = useState(filter || getDefaultValue(column)),
       _useState4 = _slicedToArray(_useState3, 2),
       localFilter = _useState4[0],
       setLocalFilter = _useState4[1];
 
   useMountedLayoutEffect(function () {
-    return setLocalFilter(filter || getDefaultFilterValue(column));
+    return setLocalFilter(filter || getDefaultValue(column));
   }, [filter]);
   var debouncedSetFilter = useAsyncDebounce(function (filter) {
     return setFilter(filter);
@@ -510,7 +512,7 @@ var getRowAsAnObject = function getRowAsAnObject(row) {
   }, {});
 };
 
-export { EAMFilterField, EAMCellField, getRowAsAnObject };
+export { EAMFilterField, EAMCellField, getRowAsAnObject, OPERATORS, getEAMDefaultFilterValue };
 export default {
   getEAMFilterOperators: getEAMFilterOperators,
   getEAMInitialState: getEAMInitialState
