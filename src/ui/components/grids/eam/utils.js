@@ -102,7 +102,7 @@ const CHECKBOX_FILTERS = {
 const getCheckedValue = (valueType) => Number(valueType) === CHECKBOX_FILTERS.CHECKED;
 const isIndeterminate = (valueType) => valueType === null || valueType === CHECKBOX_FILTERS.INDETERMINATE;
 
-const getDefaultFilterValue = (column) => {
+const getEAMDefaultFilterValue = (column) => {
     const baseFitler = {
         fieldName: column.id,
         fieldValue: undefined,
@@ -178,7 +178,7 @@ const getEAMInitialState = ({ columns }) => {
             ...acc,
             {
                 id: column.id,
-                value: getDefaultFilterValue(column)
+                value: getEAMDefaultFilterValue(column)
             }
         ]
     }, []);
@@ -281,11 +281,11 @@ const EAMCellField = ({ column, value }) => {
     }
 }
 
-const EAMFilterField = ({ column }) => {
+const EAMFilterField = ({ column, getDefaultValue = getEAMDefaultFilterValue }) => {
     const { dataType, filterValue: filter, setFilter } = column;
-    const [localFilter, setLocalFilter] = useState(filter || getDefaultFilterValue(column));
+    const [localFilter, setLocalFilter] = useState(filter || getDefaultValue(column));
 
-    useMountedLayoutEffect(() => setLocalFilter(filter || getDefaultFilterValue(column)), [filter])
+    useMountedLayoutEffect(() => setLocalFilter(filter || getDefaultValue(column)), [filter])
 
     const debouncedSetFilter = useAsyncDebounce(filter => setFilter(filter), process.env.NODE_ENV === 'development' ? 100 : 0);
 
@@ -431,6 +431,8 @@ export {
     EAMFilterField,
     EAMCellField,
     getRowAsAnObject,
+    OPERATORS,
+    getEAMDefaultFilterValue,
 }
 
 export default {
