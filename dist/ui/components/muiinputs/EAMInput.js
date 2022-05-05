@@ -80,7 +80,9 @@ var EAMInput = /*#__PURE__*/function (_EAMBaseInput) {
     value: function renderComponent() {
       var _this2 = this;
 
-      var elementInfo = this.props.elementInfo;
+      var _this$props = this.props,
+          elementInfo = _this$props.elementInfo,
+          inputProps = _this$props.inputProps;
       return /*#__PURE__*/React.createElement(EAMTextField, _extends({
         disabled: this.state.disabled || elementInfo && elementInfo.readonly,
         error: this.state.error,
@@ -94,7 +96,8 @@ var EAMInput = /*#__PURE__*/function (_EAMBaseInput) {
         onBlur: this.onLoseFocus,
         InputLabelProps: {
           shrink: true
-        }
+        },
+        inputProps: inputProps
       }, this.generateInputProps(this.props)));
     }
   }]);
