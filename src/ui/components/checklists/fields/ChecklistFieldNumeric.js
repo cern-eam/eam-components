@@ -10,7 +10,8 @@ const inputStyle = {
     borderTopRightRadius: 0,
     borderBottomRightRadius: 0,
     zIndex: 20,
-    backgroundColor: "#fff"
+    backgroundColor: "#fff",
+    fontFamily: "Roboto, Helvetica, Arial, sans-serif"
 }
 
 const labelUOMStyle = {
