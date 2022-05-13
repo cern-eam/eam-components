@@ -36,6 +36,7 @@ import React, { Component } from 'react';
 import ChecklistFieldNumeric from './fields/ChecklistFieldNumeric';
 import ChecklistFieldCheckbox from './fields/ChecklistFieldCheckbox';
 import ChecklistFieldFinding from './fields/ChecklistFieldFinding';
+import ChecklistFieldAlphaNumeric from './fields/ChecklistFieldAlphaNumeric';
 
 var ChecklistItemInput = /*#__PURE__*/function (_Component) {
   _inherits(ChecklistItemInput, _Component);
@@ -54,8 +55,9 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
       var _this$props$checklist = this.props.checklistItem,
           result = _this$props$checklist.result,
           finding = _this$props$checklist.finding,
-          numericValue = _this$props$checklist.numericValue;
-      var newResult, newFinding, newNumericValue;
+          numericValue = _this$props$checklist.numericValue,
+          freeText = _this$props$checklist.freeText;
+      var newResult, newFinding, newNumericValue, newAlphaNumericValue;
 
       switch (type) {
         case ChecklistItemInput.FIELD.CHECKBOX:
@@ -69,12 +71,17 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
         case ChecklistItemInput.FIELD.NUMERIC:
           newNumericValue = value;
           break;
+
+        case ChecklistItemInput.FIELD.ALPHANUMERIC:
+          newAlphaNumericValue = value;
+          break;
       }
 
       var newProps = _objectSpread({}, this.props.checklistItem, {
         result: newResult === undefined ? result : newResult,
         finding: newFinding === undefined ? finding : newFinding,
-        numericValue: newNumericValue === undefined ? numericValue : newNumericValue
+        numericValue: newNumericValue === undefined ? numericValue : newNumericValue,
+        freeText: newAlphaNumericValue === undefined ? freeText : newAlphaNumericValue.trim()
       });
 
       if (this.options.beforeOnChange && typeof this.options.beforeOnChange === 'function') {
@@ -133,6 +140,17 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
             showError: showError,
             disabled: disabled
           });
+
+        case ChecklistItemInput.FIELD.ALPHANUMERIC:
+          return /*#__PURE__*/React.createElement(ChecklistFieldAlphaNumeric, {
+            value: checklistItem.freeText,
+            maxLength: 4000,
+            handleChange: function handleChange(value, onFail) {
+              return _this.handleChange(ChecklistItemInput.FIELD.ALPHANUMERIC, value, onFail);
+            },
+            key: key,
+            disabled: disabled
+          });
       }
     }
   }, {
@@ -172,12 +190,18 @@ export { ChecklistItemInput as default };
 ChecklistItemInput.FIELD = {
   CHECKBOX: "CHECKBOX",
   NUMERIC: "NUMERIC",
-  FINDING: "FINDING"
+  FINDING: "FINDING",
+  ALPHANUMERIC: "ALPHANUMERIC"
 };
 var SINGLE = {
   flex: "0 0 186px",
   display: "flex",
   marginLeft: "auto"
+};
+var SINGLE_EXPAND = {
+  flex: "1 0 auto",
+  marginLeft: "auto",
+  display: "flex"
 };
 var ROWS = {
   flex: "0 0 186px",
@@ -196,7 +220,8 @@ var SAMELINE = {
 ChecklistItemInput.STYLE = {
   SINGLE: SINGLE,
   ROWS: ROWS,
-  SAMELINE: SAMELINE
+  SAMELINE: SAMELINE,
+  SINGLE_EXPAND: SINGLE_EXPAND
 };
 
 ChecklistItemInput.createField = function (type, options) {
