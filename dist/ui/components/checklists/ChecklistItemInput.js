@@ -37,6 +37,7 @@ import ChecklistFieldNumeric from './fields/ChecklistFieldNumeric';
 import ChecklistFieldCheckbox from './fields/ChecklistFieldCheckbox';
 import ChecklistFieldFinding from './fields/ChecklistFieldFinding';
 import ChecklistFieldAlphaNumeric from './fields/ChecklistFieldAlphaNumeric';
+import ChecklistFieldDateWrapper from './fields/ChecklistFieldDateWrapper';
 
 var ChecklistItemInput = /*#__PURE__*/function (_Component) {
   _inherits(ChecklistItemInput, _Component);
@@ -56,8 +57,10 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
           result = _this$props$checklist.result,
           finding = _this$props$checklist.finding,
           numericValue = _this$props$checklist.numericValue,
-          freeText = _this$props$checklist.freeText;
-      var newResult, newFinding, newNumericValue, newAlphaNumericValue;
+          freeText = _this$props$checklist.freeText,
+          date = _this$props$checklist.date,
+          dateTime = _this$props$checklist.dateTime;
+      var newResult, newFinding, newNumericValue, newAlphaNumericValue, newDate, newDateTime;
 
       switch (type) {
         case ChecklistItemInput.FIELD.CHECKBOX:
@@ -75,13 +78,23 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
         case ChecklistItemInput.FIELD.ALPHANUMERIC:
           newAlphaNumericValue = value;
           break;
+
+        case ChecklistItemInput.FIELD.DATE:
+          newDate = value;
+          break;
+
+        case ChecklistItemInput.FIELD.DATETIME:
+          newDateTime = value;
+          break;
       }
 
       var newProps = _objectSpread({}, this.props.checklistItem, {
         result: newResult === undefined ? result : newResult,
         finding: newFinding === undefined ? finding : newFinding,
         numericValue: newNumericValue === undefined ? numericValue : newNumericValue,
-        freeText: newAlphaNumericValue === undefined ? freeText : newAlphaNumericValue.trim()
+        freeText: newAlphaNumericValue === undefined ? freeText : newAlphaNumericValue.trim(),
+        date: newDate === undefined ? date : newDate,
+        dateTime: newDateTime === undefined ? dateTime : newDateTime
       });
 
       if (this.options.beforeOnChange && typeof this.options.beforeOnChange === 'function') {
@@ -151,6 +164,28 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
             key: key,
             disabled: disabled
           });
+
+        case ChecklistItemInput.FIELD.DATE:
+          return /*#__PURE__*/React.createElement(ChecklistFieldDateWrapper, {
+            isDateTime: false,
+            value: checklistItem.date,
+            handleChange: function handleChange(value, onFail) {
+              return _this.handleChange(ChecklistItemInput.FIELD.DATE, value, onFail);
+            },
+            key: key,
+            disabled: disabled
+          });
+
+        case ChecklistItemInput.FIELD.DATETIME:
+          return /*#__PURE__*/React.createElement(ChecklistFieldDateWrapper, {
+            isDateTime: true,
+            value: checklistItem.dateTime,
+            handleChange: function handleChange(value, onFail) {
+              return _this.handleChange(ChecklistItemInput.FIELD.DATETIME, value, onFail);
+            },
+            key: key,
+            disabled: disabled
+          });
       }
     }
   }, {
@@ -191,7 +226,9 @@ ChecklistItemInput.FIELD = {
   CHECKBOX: "CHECKBOX",
   NUMERIC: "NUMERIC",
   FINDING: "FINDING",
-  ALPHANUMERIC: "ALPHANUMERIC"
+  ALPHANUMERIC: "ALPHANUMERIC",
+  DATE: "DATE",
+  DATETIME: "DATETIME"
 };
 var SINGLE = {
   flex: "0 0 186px",

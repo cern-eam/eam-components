@@ -3,12 +3,13 @@ import ChecklistFieldNumeric from './fields/ChecklistFieldNumeric';
 import ChecklistFieldCheckbox from './fields/ChecklistFieldCheckbox';
 import ChecklistFieldFinding from './fields/ChecklistFieldFinding';
 import ChecklistFieldAlphaNumeric from './fields/ChecklistFieldAlphaNumeric';
+import ChecklistFieldDateWrapper from './fields/ChecklistFieldDateWrapper';
 
 export default class ChecklistItemInput extends Component {
     handleChange(type, value, onFail) {
-        const {result, finding, numericValue, freeText} = this.props.checklistItem;
+        const {result, finding, numericValue, freeText, date, dateTime} = this.props.checklistItem;
 
-        let newResult, newFinding, newNumericValue, newAlphaNumericValue;
+        let newResult, newFinding, newNumericValue, newAlphaNumericValue, newDate, newDateTime;
 
         switch(type) {
             case ChecklistItemInput.FIELD.CHECKBOX:
@@ -23,6 +24,12 @@ export default class ChecklistItemInput extends Component {
             case ChecklistItemInput.FIELD.ALPHANUMERIC:
                 newAlphaNumericValue = value;
                 break;
+            case ChecklistItemInput.FIELD.DATE:
+                newDate = value;
+                break;
+            case ChecklistItemInput.FIELD.DATETIME:
+                newDateTime = value;
+                break;
         }
 
         let newProps = {
@@ -31,6 +38,8 @@ export default class ChecklistItemInput extends Component {
             finding: newFinding === undefined ? finding : newFinding,
             numericValue: newNumericValue === undefined ? numericValue : newNumericValue,
             freeText: newAlphaNumericValue === undefined ? freeText : newAlphaNumericValue.trim(),
+            date: newDate === undefined ? date : newDate,
+            dateTime: newDateTime === undefined ? dateTime : newDateTime,
         };
 
         if(this.options.beforeOnChange && typeof this.options.beforeOnChange === 'function') {
@@ -85,6 +94,22 @@ export default class ChecklistItemInput extends Component {
                     key={key}
                     disabled={disabled}
                 />
+            case ChecklistItemInput.FIELD.DATE:
+                return <ChecklistFieldDateWrapper
+                    isDateTime={false}
+                    value={checklistItem.date}
+                    handleChange={(value, onFail) => this.handleChange(ChecklistItemInput.FIELD.DATE, value, onFail)}
+                    key={key}
+                    disabled={disabled}
+                />
+            case ChecklistItemInput.FIELD.DATETIME:
+                return <ChecklistFieldDateWrapper
+                    isDateTime={true}
+                    value={checklistItem.dateTime}
+                    handleChange={(value, onFail) => this.handleChange(ChecklistItemInput.FIELD.DATETIME, value, onFail)}
+                    key={key}
+                    disabled={disabled}
+                />
         }
     }
 
@@ -110,7 +135,9 @@ ChecklistItemInput.FIELD = {
     CHECKBOX: "CHECKBOX",
     NUMERIC: "NUMERIC",
     FINDING: "FINDING",
-    ALPHANUMERIC: "ALPHANUMERIC"
+    ALPHANUMERIC: "ALPHANUMERIC",
+    DATE: "DATE",
+    DATETIME: "DATETIME"
 }
 
 const SINGLE = {
