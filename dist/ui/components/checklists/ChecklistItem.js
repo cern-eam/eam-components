@@ -259,7 +259,10 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       var _ChecklistItemInput$F = ChecklistItemInput.FIELD,
           CHECKBOX = _ChecklistItemInput$F.CHECKBOX,
           FINDING = _ChecklistItemInput$F.FINDING,
-          NUMERIC = _ChecklistItemInput$F.NUMERIC;
+          NUMERIC = _ChecklistItemInput$F.NUMERIC,
+          ALPHANUMERIC = _ChecklistItemInput$F.ALPHANUMERIC,
+          DATE = _ChecklistItemInput$F.DATE,
+          DATETIME = _ChecklistItemInput$F.DATETIME;
 
       switch (checklistItem.type) {
         case "01":
@@ -392,6 +395,21 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
           }
 
           options.style = ChecklistItemInput.STYLE.SAMELINE;
+          break;
+
+        case "13":
+          fields = [createField(DATE)];
+          options.style = ChecklistItemInput.STYLE.SINGLE;
+          break;
+
+        case "14":
+          fields = [createField(DATETIME)];
+          options.style = ChecklistItemInput.STYLE.SINGLE;
+          break;
+
+        case "15":
+          fields = [createField(ALPHANUMERIC)];
+          options.style = ChecklistItemInput.STYLE.SINGLE_EXPAND;
           break;
       }
 

@@ -2,12 +2,14 @@ import React, {Component} from 'react';
 import ChecklistFieldNumeric from './fields/ChecklistFieldNumeric';
 import ChecklistFieldCheckbox from './fields/ChecklistFieldCheckbox';
 import ChecklistFieldFinding from './fields/ChecklistFieldFinding';
+import ChecklistFieldAlphaNumeric from './fields/ChecklistFieldAlphaNumeric';
+import ChecklistFieldDateWrapper from './fields/ChecklistFieldDateWrapper';
 
 export default class ChecklistItemInput extends Component {
     handleChange(type, value, onFail) {
-        const {result, finding, numericValue} = this.props.checklistItem;
+        const {result, finding, numericValue, freeText, date, dateTime} = this.props.checklistItem;
 
-        let newResult,  newFinding, newNumericValue;
+        let newResult, newFinding, newNumericValue, newAlphaNumericValue, newDate, newDateTime;
 
         switch(type) {
             case ChecklistItemInput.FIELD.CHECKBOX:
@@ -19,13 +21,25 @@ export default class ChecklistItemInput extends Component {
             case ChecklistItemInput.FIELD.NUMERIC:
                 newNumericValue = value;
                 break;
+            case ChecklistItemInput.FIELD.ALPHANUMERIC:
+                newAlphaNumericValue = value;
+                break;
+            case ChecklistItemInput.FIELD.DATE:
+                newDate = value;
+                break;
+            case ChecklistItemInput.FIELD.DATETIME:
+                newDateTime = value;
+                break;
         }
 
         let newProps = {
             ...this.props.checklistItem,
             result: newResult === undefined ? result : newResult,
             finding: newFinding === undefined ? finding : newFinding,
-            numericValue: newNumericValue === undefined ? numericValue : newNumericValue
+            numericValue: newNumericValue === undefined ? numericValue : newNumericValue,
+            freeText: newAlphaNumericValue === undefined ? freeText : newAlphaNumericValue.trim(),
+            date: newDate === undefined ? date : newDate,
+            dateTime: newDateTime === undefined ? dateTime : newDateTime,
         };
 
         if(this.options.beforeOnChange && typeof this.options.beforeOnChange === 'function') {
@@ -72,6 +86,30 @@ export default class ChecklistItemInput extends Component {
                     showError={showError}
                     disabled={disabled}
                 />
+            case ChecklistItemInput.FIELD.ALPHANUMERIC:
+                return <ChecklistFieldAlphaNumeric
+                    value={checklistItem.freeText}
+                    maxLength={4000}
+                    handleChange={(value, onFail) => this.handleChange(ChecklistItemInput.FIELD.ALPHANUMERIC, value, onFail)}
+                    key={key}
+                    disabled={disabled}
+                />
+            case ChecklistItemInput.FIELD.DATE:
+                return <ChecklistFieldDateWrapper
+                    isDateTime={false}
+                    value={checklistItem.date}
+                    handleChange={(value, onFail) => this.handleChange(ChecklistItemInput.FIELD.DATE, value, onFail)}
+                    key={key}
+                    disabled={disabled}
+                />
+            case ChecklistItemInput.FIELD.DATETIME:
+                return <ChecklistFieldDateWrapper
+                    isDateTime={true}
+                    value={checklistItem.dateTime}
+                    handleChange={(value, onFail) => this.handleChange(ChecklistItemInput.FIELD.DATETIME, value, onFail)}
+                    key={key}
+                    disabled={disabled}
+                />
         }
     }
 
@@ -96,13 +134,22 @@ export default class ChecklistItemInput extends Component {
 ChecklistItemInput.FIELD = {
     CHECKBOX: "CHECKBOX",
     NUMERIC: "NUMERIC",
-    FINDING: "FINDING"
+    FINDING: "FINDING",
+    ALPHANUMERIC: "ALPHANUMERIC",
+    DATE: "DATE",
+    DATETIME: "DATETIME"
 }
 
 const SINGLE = {
     flex: "0 0 186px",
     display: "flex",
     marginLeft: "auto"
+}
+
+const SINGLE_EXPAND = {
+    flex: "1 0 auto",
+    marginLeft: "auto",
+    display: "flex",
 }
 
 const ROWS = {
@@ -124,7 +171,8 @@ const SAMELINE = {
 ChecklistItemInput.STYLE = {
     SINGLE,
     ROWS,
-    SAMELINE
+    SAMELINE,
+    SINGLE_EXPAND
 };
 
 ChecklistItemInput.createField = (type, options) => [type, options];
