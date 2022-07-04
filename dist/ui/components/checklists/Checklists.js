@@ -411,7 +411,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
           handleError = _this$props2.handleError,
           getWoLink = _this$props2.getWoLink,
           showError = _this$props2.showError,
-          eqpMap = _this$props2.eqpMap;
+          eqpToOtherId = _this$props2.eqpToOtherId;
       var firstChecklist = checklists[0];
       var equipmentCode = firstChecklist.equipmentCode;
       var collapsed = activity.equipments[equipmentCode].collapsed;
@@ -421,6 +421,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
         return null;
       }
 
+      var equipmentChecklistDesc = "".concat(equipmentCode, " \u2014 ").concat(firstChecklist.equipmentDesc) + (eqpToOtherId?.[equipmentCode] ? " \u2014 ".concat(eqpToOtherId[equipmentCode]) : '');
       return /*#__PURE__*/React.createElement(EquipmentExpansionPanel, {
         key: key,
         expanded: !collapsed,
@@ -435,9 +436,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
         expandIcon: /*#__PURE__*/React.createElement(ExpandMoreIcon, null)
       }, /*#__PURE__*/React.createElement(ChecklistEquipment, {
         key: firstChecklist.checkListCode + "_equipment",
-        equipmentCode: equipmentCode,
-        equipmentDesc: firstChecklist.equipmentDesc,
-        otherId: eqpMap?.[equipmentCode]
+        description: equipmentChecklistDesc
       })), /*#__PURE__*/React.createElement(ExpansionPanelDetails, {
         style: {
           marginTop: -18
