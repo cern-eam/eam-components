@@ -50,6 +50,11 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       pointerEvents: "initial",
       color: "rgba(0, 0, 0, 0.87)"
     };
+    /**
+     * Compute the style for notes div container
+     *
+     * @returns {{marginLeft: number, marginTop: number, position: string, display: string}}
+     */
     _this.checklistDetailsStyle = {
       margin: 5,
       display: "flex",
@@ -97,6 +102,17 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       this.init(this.props.checklistItem);
     }
   }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this$props = this.props,
+        checklistItem = _this$props.checklistItem,
+        expandChecklistOptions = _this$props.expandChecklistOptions,
+        taskCode = _this$props.taskCode;
+      // Handles expand/collapse of options when the checkbox was ticked before
+      // the equipment's checklist had been expanded.
+      this.expandChecklistOptionsHandler(expandChecklistOptions, checklistItem, taskCode);
+    }
+  }, {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
       var debounce = this.state.debounce;
@@ -119,6 +135,12 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
           });
           this.init(checklistItem);
         }
+      }
+      var expandChecklistOptions = nextProps.expandChecklistOptions,
+        taskCode = nextProps.taskCode;
+      // Expand/collapse options when the equipment's checklists are already expanded
+      if (expandChecklistOptions !== this.props.expandChecklistOptions) {
+        this.expandChecklistOptionsHandler(expandChecklistOptions, checklistItemProps, taskCode);
       }
     }
   }, {
@@ -169,24 +191,9 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       });
     }
   }, {
-    key: "descClickHandler",
-    value: function descClickHandler() {
+    key: "fetchChecklistDefinition",
+    value: function fetchChecklistDefinition(checklistItem, taskCode) {
       var _this3 = this;
-      var notes = this.notes.current;
-      this.setState(function (state, props) {
-        var detailsVisible = !state.detailsVisible;
-        if (detailsVisible) {
-          setTimeout(function () {
-            return _this3.notes.current.focus();
-          }, 0);
-        }
-        return {
-          detailsVisible: detailsVisible
-        };
-      });
-      var _this$props = this.props,
-        checklistItem = _this$props.checklistItem,
-        taskCode = _this$props.taskCode;
       if (checklistItem && checklistItem.notApplicableOptions === undefined) {
         WSChecklists.getChecklistDefinition(taskCode, checklistItem.checklistDefinitionCode).then(function (response) {
           _this3.setState({
@@ -196,13 +203,56 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       }
     }
   }, {
-    key: "renderChecklistItemInput",
-    value: function renderChecklistItemInput() {
+    key: "expandChecklistOptionsHandler",
+    value: function expandChecklistOptionsHandler(expandChecklist, checklistItem, taskCode) {
+      var notes = this.notes.current.input.current.value;
+      var followUp = checklistItem.followUp;
+      var detailsVisible;
+
+      // Only collapse empty details
+      if (notes || followUp) {
+        detailsVisible = true;
+      } else {
+        detailsVisible = expandChecklist;
+      }
+      this.setState({
+        detailsVisible: detailsVisible
+      });
+
+      // Don't perform the WS call when collapsing
+      if (expandChecklist) {
+        this.fetchChecklistDefinition(checklistItem, taskCode);
+      }
+    }
+  }, {
+    key: "descClickHandler",
+    value: function descClickHandler() {
       var _this4 = this;
+      var notes = this.notes.current;
+      this.setState(function (state) {
+        var detailsVisible = !state.detailsVisible;
+        if (detailsVisible) {
+          setTimeout(function () {
+            return _this4.notes.current.focus();
+          }, 0);
+        }
+        return {
+          detailsVisible: detailsVisible
+        };
+      });
       var _this$props2 = this.props,
         checklistItem = _this$props2.checklistItem,
-        showError = _this$props2.showError,
-        disabled = _this$props2.disabled;
+        taskCode = _this$props2.taskCode;
+      this.fetchChecklistDefinition(checklistItem, taskCode);
+    }
+  }, {
+    key: "renderChecklistItemInput",
+    value: function renderChecklistItemInput() {
+      var _this5 = this;
+      var _this$props3 = this.props,
+        checklistItem = _this$props3.checklistItem,
+        showError = _this$props3.showError,
+        disabled = _this$props3.disabled;
       var fields = [];
       var options = {};
 
@@ -348,7 +398,7 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       return /*#__PURE__*/React.createElement(ChecklistItemInput, {
         checklistItem: checklistItem,
         onChange: function onChange(value, onFail) {
-          return _this4.onChange(value, onFail);
+          return _this5.onChange(value, onFail);
         },
         fields: fields,
         options: options,
@@ -359,10 +409,10 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this5 = this;
-      var _this$props3 = this.props,
-        checklistItem = _this$props3.checklistItem,
-        hideFollowUpProp = _this$props3.hideFollowUpProp;
+      var _this6 = this;
+      var _this$props4 = this.props,
+        checklistItem = _this$props4.checklistItem,
+        hideFollowUpProp = _this$props4.hideFollowUpProp;
       var notApplicableOptions = this.state.notApplicableOptions;
       return /*#__PURE__*/React.createElement("div", {
         style: this.containerStyle(this.state.blocked)
@@ -387,13 +437,13 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
         ref: this.notes,
         checklistItem: checklistItem,
         onChange: function onChange(value) {
-          return _this5.onChange(value);
+          return _this6.onChange(value);
         },
         disabled: this.props.disabled
       }), !checklistItem.hideFollowUp && /*#__PURE__*/React.createElement(ChecklistItemFollowUp, {
         checklistItem: checklistItem,
         onChange: function onChange(value) {
-          return _this5.onChange(value);
+          return _this6.onChange(value);
         },
         getWoLink: this.props.getWoLink,
         disabled: this.props.disabled
@@ -403,7 +453,7 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
         checklistItem: checklistItem,
         notApplicableOptions: notApplicableOptions,
         onChange: function onChange(value) {
-          return _this5.onChange(value);
+          return _this6.onChange(value);
         },
         disabled: this.props.disabled
       })))));

@@ -21,6 +21,13 @@ export default class ChecklistItem extends Component {
     componentWillMount() {
         this.init(this.props.checklistItem);
     }
+    
+    componentDidMount() {
+        const { checklistItem, expandChecklistOptions, taskCode } = this.props;
+        // Handles expand/collapse of options when the checkbox was ticked before
+        // the equipment's checklist had been expanded.
+        this.expandChecklistOptionsHandler(expandChecklistOptions, checklistItem, taskCode);
+    }
 
     componentWillUnmount() {
         const { debounce } = this.state;
@@ -44,6 +51,12 @@ export default class ChecklistItem extends Component {
                 }
                 this.init(checklistItem);
             }
+        }
+
+        const { expandChecklistOptions, taskCode } = nextProps;
+        // Expand/collapse options when the equipment's checklists are already expanded
+        if (expandChecklistOptions !== this.props.expandChecklistOptions) {
+            this.expandChecklistOptionsHandler(expandChecklistOptions, checklistItemProps, taskCode);
         }
     }
 
@@ -133,10 +146,40 @@ export default class ChecklistItem extends Component {
         });
     }
 
+    fetchChecklistDefinition(checklistItem, taskCode) {
+        if (checklistItem && checklistItem.notApplicableOptions === undefined) {
+            WSChecklists.getChecklistDefinition(taskCode, checklistItem.checklistDefinitionCode).then(response => {
+                this.setState({
+                    notApplicableOptions: response.body.data.notApplicableOptions
+                });
+            });
+        }
+    }
+
+    expandChecklistOptionsHandler(expandChecklist, checklistItem, taskCode) {
+        const notes = this.notes.current.input.current.value;
+        const followUp = checklistItem.followUp;
+        let detailsVisible;
+
+        // Only collapse empty details
+        if (notes || followUp) {
+            detailsVisible = true;
+        } else {
+            detailsVisible = expandChecklist;
+        }
+
+        this.setState({ detailsVisible });
+
+        // Don't perform the WS call when collapsing
+        if (expandChecklist) {
+            this.fetchChecklistDefinition(checklistItem, taskCode);
+        }
+    }
+
     descClickHandler() {
         const notes = this.notes.current;
 
-        this.setState((state, props) => {
+        this.setState((state) => {
             const detailsVisible = !state.detailsVisible;
 
             if(detailsVisible) {
@@ -145,15 +188,9 @@ export default class ChecklistItem extends Component {
 
             return {detailsVisible}
         });
-
+        
         const { checklistItem, taskCode } = this.props;
-        if (checklistItem && checklistItem.notApplicableOptions === undefined) {
-            WSChecklists.getChecklistDefinition(taskCode, checklistItem.checklistDefinitionCode).then(response => {
-                this.setState({
-                    notApplicableOptions: response.body.data.notApplicableOptions
-                });
-            });
-        }
+        this.fetchChecklistDefinition(checklistItem, taskCode);
     }
 
     renderChecklistItemInput() {
