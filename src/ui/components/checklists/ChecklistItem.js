@@ -152,7 +152,7 @@ export default class ChecklistItem extends Component {
                 this.setState({
                     notApplicableOptions: response.body.data.notApplicableOptions
                 });
-            });
+            }).catch((error) => { this.props.handleError(error); });
         }
     }
 
@@ -184,13 +184,13 @@ export default class ChecklistItem extends Component {
 
             if(detailsVisible) {
                 setTimeout(() => this.notes.current.focus(), 0);
+                // Don't perform the WS call when collapsing
+                const { checklistItem, taskCode } = this.props;
+                this.fetchChecklistDefinition(checklistItem, taskCode);
             }
 
             return {detailsVisible}
         });
-        
-        const { checklistItem, taskCode } = this.props;
-        this.fetchChecklistDefinition(checklistItem, taskCode);
     }
 
     renderChecklistItemInput() {
