@@ -37,7 +37,8 @@ import ChecklistFieldNumeric from './fields/ChecklistFieldNumeric';
 import ChecklistFieldCheckbox from './fields/ChecklistFieldCheckbox';
 import ChecklistFieldFinding from './fields/ChecklistFieldFinding';
 import ChecklistFieldAlphaNumeric from './fields/ChecklistFieldAlphaNumeric';
-import ChecklistFieldDateWrapper from './fields/ChecklistFieldDateWrapper';
+import EAMDatePicker from "../muiinputs/EAMDatePicker";
+import EAMDateTimePicker from "../muiinputs/EAMDateTimePicker";
 
 var ChecklistItemInput = /*#__PURE__*/function (_Component) {
   _inherits(ChecklistItemInput, _Component);
@@ -166,10 +167,9 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
           });
 
         case ChecklistItemInput.FIELD.DATE:
-          return /*#__PURE__*/React.createElement(ChecklistFieldDateWrapper, {
-            isDateTime: false,
+          return /*#__PURE__*/React.createElement(EAMDatePicker, {
             value: checklistItem.date,
-            handleChange: function handleChange(value, onFail) {
+            updateProperty: function updateProperty(value, onFail) {
               return _this.handleChange(ChecklistItemInput.FIELD.DATE, value, onFail);
             },
             key: key,
@@ -177,10 +177,9 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
           });
 
         case ChecklistItemInput.FIELD.DATETIME:
-          return /*#__PURE__*/React.createElement(ChecklistFieldDateWrapper, {
-            isDateTime: true,
+          return /*#__PURE__*/React.createElement(EAMDateTimePicker, {
             value: checklistItem.dateTime,
-            handleChange: function handleChange(value, onFail) {
+            updateProperty: function updateProperty(value, onFail) {
               return _this.handleChange(ChecklistItemInput.FIELD.DATETIME, value, onFail);
             },
             key: key,

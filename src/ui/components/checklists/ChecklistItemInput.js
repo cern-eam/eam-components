@@ -3,7 +3,8 @@ import ChecklistFieldNumeric from './fields/ChecklistFieldNumeric';
 import ChecklistFieldCheckbox from './fields/ChecklistFieldCheckbox';
 import ChecklistFieldFinding from './fields/ChecklistFieldFinding';
 import ChecklistFieldAlphaNumeric from './fields/ChecklistFieldAlphaNumeric';
-import ChecklistFieldDateWrapper from './fields/ChecklistFieldDateWrapper';
+import EAMDatePicker from "../muiinputs/EAMDatePicker";
+import EAMDateTimePicker from "../muiinputs/EAMDateTimePicker";
 
 export default class ChecklistItemInput extends Component {
     handleChange(type, value, onFail) {
@@ -95,18 +96,16 @@ export default class ChecklistItemInput extends Component {
                     disabled={disabled}
                 />
             case ChecklistItemInput.FIELD.DATE:
-                return <ChecklistFieldDateWrapper
-                    isDateTime={false}
+                return <EAMDatePicker
                     value={checklistItem.date}
-                    handleChange={(value, onFail) => this.handleChange(ChecklistItemInput.FIELD.DATE, value, onFail)}
+                    updateProperty={(value, onFail) => this.handleChange(ChecklistItemInput.FIELD.DATE, value, onFail)}
                     key={key}
                     disabled={disabled}
                 />
             case ChecklistItemInput.FIELD.DATETIME:
-                return <ChecklistFieldDateWrapper
-                    isDateTime={true}
+                return <EAMDateTimePicker
                     value={checklistItem.dateTime}
-                    handleChange={(value, onFail) => this.handleChange(ChecklistItemInput.FIELD.DATETIME, value, onFail)}
+                    updateProperty={(value, onFail) => this.handleChange(ChecklistItemInput.FIELD.DATETIME, value, onFail)}
                     key={key}
                     disabled={disabled}
                 />

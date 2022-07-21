@@ -25,17 +25,20 @@ var ChecklistFieldDateWrapper = function ChecklistFieldDateWrapper(props) {
       setSelectedDate = _useState2[1];
 
   var onChangeHandler = function onChangeHandler(date) {
+    console.log(date);
     var msTime = new Date(date).getTime(); // same format as from the backend
 
     setSelectedDate(msTime);
     handleChange(msTime);
   };
 
-  var DatePickerType = isDateTime && EAMDateTimePicker || EAMDatePicker;
-  return /*#__PURE__*/React.createElement(DatePickerType, {
-    value: selectedDate,
-    updateProperty: onChangeHandler
-  });
+  var PickerComponent = isDateTime ? EAMDateTimePicker : EAMDatePicker;
+  return /*#__PURE__*/React.createElement(PickerComponent, {
+    value: value,
+    updateProperty: handleChange
+  }); // return (
+  //     <DatePickerType value={selectedDate} updateProperty={onChangeHandler} />
+  // );
 };
 
 export default ChecklistFieldDateWrapper;

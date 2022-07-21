@@ -302,10 +302,10 @@ export default class ChecklistItem extends Component {
 
         if(fields === undefined) return <div/>
 
-        return <ChecklistItemInput checklistItem={checklistItem} 
-                                onChange={(value, onFail) => this.onChange(value, onFail)} 
-                                fields={fields} options={options} 
-                                showError={showError} 
+        return <ChecklistItemInput checklistItem={checklistItem}
+                                onChange={(value, onFail) => this.onChange(value, onFail)}
+                                fields={fields} options={options}
+                                showError={showError}
                                 disabled={disabled} />
     }
 
