@@ -13,7 +13,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 import React from "react";
 import { DataGrid } from "../datagrid";
 import { MUITableHeader, MUITableBody } from "../datagrid/presentation/table";
-import { Table, TableCell, TableContainer, Checkbox, Fade, withStyles } from "@material-ui/core";
+import { Table, TableCell, TableContainer, Checkbox, Fade } from "@mui/material";
+import withStyles from '@mui/styles/withStyles';
 import BlockUi from 'react-block-ui';
 var CustomCellComponent = withStyles(function (theme) {
   return {

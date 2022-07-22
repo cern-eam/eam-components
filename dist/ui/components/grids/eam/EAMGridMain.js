@@ -7,7 +7,8 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 import React, { useCallback, useEffect, useRef } from "react";
-import { TableContainer, TableHead, TableRow, TableCell, TableBody, withStyles, Table, TableSortLabel, Typography } from "@material-ui/core";
+import { TableContainer, TableHead, TableRow, TableCell, TableBody, Table, TableSortLabel, Typography } from "@mui/material";
+import withStyles from '@mui/styles/withStyles';
 import { CellMeasurer, CellMeasurerCache, List, AutoSizer } from "react-virtualized";
 import { ScrollSync, ScrollSyncPane } from "react-scroll-sync";
 var DefaultBodyCellComponent = withStyles(function (theme) {

@@ -33,17 +33,17 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 import React, { Component } from 'react';
-import TextField from '@material-ui/core/TextField';
+import TextField from '@mui/material/TextField';
 import DataGridFilterTypeMenu from './EAMGridFilterTypeMenu';
-import { withStyles } from "@material-ui/core/styles/index";
+import withStyles from '@mui/styles/withStyles';
 import { DatePicker, DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import { Icon } from '@material-ui/core';
+import { Icon } from '@mui/material';
 import { format } from 'date-fns';
 import EAMGridFilterInput from './EAMGridFilterInput';
 import Constants from '../../../../../../enums/Constants';
-import Tooltip from '@material-ui/core/Tooltip';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Tooltip from '@mui/material/Tooltip';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
 var styles = {
   filterCell: {
     display: "flex",

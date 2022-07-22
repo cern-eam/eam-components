@@ -30,7 +30,7 @@ import WSEDMS from "../../../tools/WSEDMS";
 import EDMSWidgetToolbar from "./EDMSWidgetToolbar";
 import NCRCreation from "./ncrwidget/ncrcreation/NCRCreation";
 import DocumentCreation from "./documentwidget/doccreation/DocumentCreation";
-import ErrorOutline from "@material-ui/icons/ErrorOutline";
+import ErrorOutline from "@mui/icons-material/ErrorOutline";
 import SimpleEmptyState from "../emptystates/SimpleEmptyState";
 var noCreationMode = 'DISABLED';
 var regularCreationMode = 'REGULAR';

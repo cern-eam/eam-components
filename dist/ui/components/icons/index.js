@@ -12,11 +12,11 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 import React from 'react';
-import SvgIcon from '@material-ui/core/SvgIcon';
-import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
+import SvgIcon from '@mui/material/SvgIcon';
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import { ToggleSwitch, HomeModern, HelpCircle } from 'mdi-material-ui';
-import CheckCircle from '@material-ui/icons/CheckCircle';
-import green from '@material-ui/core/colors/green';
+import CheckCircle from '@mui/icons-material/CheckCircle';
+import green from '@mui/material/colors/green';
 export var PartIcon = React.forwardRef(function (props, ref) {
   return /*#__PURE__*/React.createElement(SvgIcon, _extends({}, props, {
     ref: ref,

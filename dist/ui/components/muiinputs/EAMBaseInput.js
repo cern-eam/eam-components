@@ -41,10 +41,9 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 import React, { Component } from 'react';
-import IconButton from '@material-ui/core/IconButton';
+import IconButton from '@mui/material/IconButton';
 import OpenInNewIcon from 'mdi-material-ui/OpenInNew';
 import { Link } from 'react-router-dom';
-var typingNumberReg = /^\-?\d*\.?\d*?$/;
 
 var EAMBaseInput = /*#__PURE__*/function (_Component) {
   _inherits(EAMBaseInput, _Component);
@@ -90,7 +89,6 @@ var EAMBaseInput = /*#__PURE__*/function (_Component) {
       var children = props.children,
           elementInfo = props.elementInfo,
           customValidators = props.customValidators,
-          valueKey = props.valueKey,
           transformers = props.transformers;
 
       if (children && elementInfo) {
@@ -293,7 +291,8 @@ var EAMBaseInput = /*#__PURE__*/function (_Component) {
         style: this.mainDivStyle
       }, this.renderComponent(), this.props.link && this.props.link(this.state.value) && /*#__PURE__*/React.createElement(IconButton, {
         style: this.linkButtonStyle,
-        component: eamLink
+        component: eamLink,
+        size: "large"
       }, this.props.icon));
     }
   }]);

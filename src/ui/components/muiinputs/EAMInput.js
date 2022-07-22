@@ -1,7 +1,7 @@
 import React from 'react';
 import EAMBaseInput from './EAMBaseInput';
 import EAMTextField from './EAMTextField';
-import InputAdornment from '@material-ui/core/InputAdornment';
+import InputAdornment from '@mui/material/InputAdornment';
 
 class EAMInput extends EAMBaseInput {
 
@@ -27,7 +27,7 @@ class EAMInput extends EAMBaseInput {
 
 
     renderComponent () {
-        const { elementInfo, inputProps } = this.props;
+        const { elementInfo } = this.props;
 
         return (
             <EAMTextField
@@ -40,7 +40,6 @@ class EAMInput extends EAMBaseInput {
                 onChange={event => this.setValue(event.target.value)}
                 onBlur={this.onLoseFocus}
                 InputLabelProps={{ shrink: true }}
-                inputProps={inputProps}
                 {...this.generateInputProps(this.props)}/>
         )
     }

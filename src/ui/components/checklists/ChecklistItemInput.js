@@ -3,8 +3,8 @@ import ChecklistFieldNumeric from './fields/ChecklistFieldNumeric';
 import ChecklistFieldCheckbox from './fields/ChecklistFieldCheckbox';
 import ChecklistFieldFinding from './fields/ChecklistFieldFinding';
 import ChecklistFieldAlphaNumeric from './fields/ChecklistFieldAlphaNumeric';
-import EAMDatePicker from "../muiinputs/EAMDatePicker";
-import EAMDateTimePicker from "../muiinputs/EAMDateTimePicker";
+import EAMDatePicker from "../inputs-ng/EAMDatePicker";
+import EAMDateTimePicker from "../inputs-ng/EAMDateTimePicker";
 
 export default class ChecklistItemInput extends Component {
     handleChange(type, value, onFail) {
@@ -34,7 +34,7 @@ export default class ChecklistItemInput extends Component {
         }
 
         let newProps = {
-            ...this.props.checklistItem,
+            ...this.props.checklistItem, 
             result: newResult === undefined ? result : newResult,
             finding: newFinding === undefined ? finding : newFinding,
             numericValue: newNumericValue === undefined ? numericValue : newNumericValue,

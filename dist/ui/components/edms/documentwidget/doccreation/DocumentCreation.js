@@ -26,7 +26,7 @@ import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
 import Tune from 'mdi-material-ui/Tune';
 import ContentSaveOutline from 'mdi-material-ui/ContentSaveOutline';
-import IconButton from '@material-ui/core/IconButton';
+import IconButton from '@mui/material/IconButton';
 import FilePlus from 'mdi-material-ui/FilePlus';
 import DocumentCreationOptions from "./DocumentCreationOptions";
 import FileList from "../../FileList";

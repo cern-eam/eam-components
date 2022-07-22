@@ -1,7 +1,9 @@
-import { Box, Button, Chip, Grid, makeStyles, Typography, withStyles } from "@material-ui/core";
-import FilterIcon from "@material-ui/icons/FilterList";
-import SearchIcon from "@material-ui/icons/Search";
-import Autocomplete from "@material-ui/lab/Autocomplete";
+import { Box, Button, Chip, Grid, Typography } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
+import withStyles from '@mui/styles/withStyles';
+import FilterIcon from "@mui/icons-material/FilterList";
+import SearchIcon from "@mui/icons-material/Search";
+import Autocomplete from '@mui/material/Autocomplete';
 import React, { createRef, useCallback, useEffect, useMemo, useState } from "react";
 
 import DataspyAutocompleteInput from "./DataspyAutocompleteInput";

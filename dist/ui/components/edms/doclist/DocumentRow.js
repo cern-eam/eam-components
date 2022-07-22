@@ -22,7 +22,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 import React, { Component } from 'react';
 import { ChevronDown, ChevronRight } from 'mdi-material-ui';
-import IconButton from '@material-ui/core/IconButton';
+import IconButton from '@mui/material/IconButton';
 import FileList from './FileList';
 import MoreDetailsList from './MoreDetailsList';
 import Dropzone from 'react-dropzone';

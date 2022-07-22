@@ -19,7 +19,8 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToAr
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 import React from "react";
-import { Checkbox, withStyles } from "@material-ui/core";
+import { Checkbox } from "@mui/material";
+import withStyles from '@mui/styles/withStyles';
 import { useFilters, useFlexLayout, useRowSelect, useSortBy, useTable } from "react-table";
 var DefaultCheckbox = withStyles(function () {
   return {

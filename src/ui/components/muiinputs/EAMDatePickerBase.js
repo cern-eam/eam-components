@@ -1,14 +1,13 @@
-import DateFnsUtils from '@date-io/date-fns';
-import Icon from '@material-ui/core/Icon';
+import Icon from '@mui/material/Icon';
 import { format } from 'date-fns';
 import parse from "date-fns/parse";
-import { DatePicker, DateTimePicker } from '@material-ui/pickers';
+import { DatePicker, DateTimePicker } from '@mui/x-date-pickers';
 import PropTypes from 'prop-types';
 import React from 'react';
 import EAMBaseInput from './EAMBaseInput';
 import EAMTextField from './EAMTextField';
-import EventIcon from '@material-ui/icons/Event';
-import { InputAdornment, IconButton } from "@material-ui/core";
+import EventIcon from '@mui/icons-material/Event';
+import { InputAdornment, IconButton } from "@mui/material";
 
 const DefaultEndAdornment = props => (
     <InputAdornment position="end">
@@ -75,7 +74,7 @@ export default class EAMDatePicker extends EAMBaseInput {
             label: elementInfo && elementInfo.text,
             leftArrowIcon: <Icon> keyboard_arrow_left </Icon>,
             rightArrowIcon: <Icon> keyboard_arrow_right </Icon>,
-            TextFieldComponent: EAMTextField,
+            renderInput: (props) => <EAMTextField {...props} />,
         }
     }
 
@@ -87,6 +86,7 @@ export default class EAMDatePicker extends EAMBaseInput {
         return (showTime ? 
             <DateTimePicker
                 {...pickerProps}
+                
                 ampm={false}
                 InputProps={{
                     endAdornment: <DefaultEndAdornment endAdornment={endAdornment} />

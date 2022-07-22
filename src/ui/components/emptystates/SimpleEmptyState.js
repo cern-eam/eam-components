@@ -1,6 +1,7 @@
 import React from 'react'
-import InfoIcon from '@material-ui/icons/Info';
-import { Typography, withStyles } from '@material-ui/core';
+import InfoIcon from '@mui/icons-material/Info';
+import { Typography } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
 
 const styles = theme => ({
     root: {
@@ -9,9 +10,6 @@ const styles = theme => ({
         alignItems: 'center',
         width: '100%',
         color: '#737373'
-    },
-    icon: {
-        padding: theme.spacing()
     }
 })
 

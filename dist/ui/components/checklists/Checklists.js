@@ -41,23 +41,23 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 import React, { Component } from 'react';
-import Button from '@material-ui/core/Button';
-import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Button from '@mui/material/Button';
+import MuiExpansionPanel from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import WSChecklists from '../../../tools/WSChecklists';
 import ChecklistEquipment from "./ChecklistEquipment";
 import ChecklistItem from './ChecklistItem';
 import ChecklistSignature from './ChecklistSignature';
 import BlockUi from 'react-block-ui';
-import EAMSelect from '../inputs/EAMSelect';
+import EAMSelect from '../inputs-ng/EAMSelect';
 import SimpleEmptyState from '../../components/emptystates/SimpleEmptyState';
-import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Dialog from '@material-ui/core/Dialog';
-import Checkbox from '@material-ui/core/Checkbox';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
+import withStyles from '@mui/styles/withStyles';
+import Paper from '@mui/material/Paper';
+import Dialog from '@mui/material/Dialog';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 var SIGNATURE_TYPES = {
   PERFORMER_1: 'PB01',
   PERFORMER_2: 'PB02',
@@ -432,12 +432,12 @@ var Checklists = /*#__PURE__*/function (_Component) {
         onChange: function onChange(_, expanded) {
           return _this3.setCollapsedEquipment(!expanded, activity.index, equipmentCode);
         }
-      }, /*#__PURE__*/React.createElement(ExpansionPanelSummary, {
+      }, /*#__PURE__*/React.createElement(AccordionSummary, {
         expandIcon: /*#__PURE__*/React.createElement(ExpandMoreIcon, null)
       }, /*#__PURE__*/React.createElement(ChecklistEquipment, {
         key: firstChecklist.checkListCode + "_equipment",
         description: equipmentChecklistDesc
-      })), /*#__PURE__*/React.createElement(ExpansionPanelDetails, {
+      })), /*#__PURE__*/React.createElement(AccordionDetails, {
         style: {
           marginTop: -18
         }
@@ -577,7 +577,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
           style: {
             marginTop: '5px'
           }
-        }, /*#__PURE__*/React.createElement(ExpansionPanelSummary, {
+        }, /*#__PURE__*/React.createElement(AccordionSummary, {
           expandIcon: /*#__PURE__*/React.createElement(ExpandMoreIcon, null)
         }, /*#__PURE__*/React.createElement("div", {
           style: {
@@ -606,7 +606,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
           disabled: _this6.props.disabled || activity.checklists.every(function (checklist) {
             return typeof checklist.followUpWorkOrder === 'string' || checklist.followUp === false;
           })
-        }, "Create Follow-up WO"))), /*#__PURE__*/React.createElement(ExpansionPanelDetails, {
+        }, "Create Follow-up WO"))), /*#__PURE__*/React.createElement(AccordionDetails, {
           style: {
             margin: 0,
             padding: 0
@@ -624,13 +624,13 @@ var Checklists = /*#__PURE__*/function (_Component) {
           onChange: function onChange(_, expanded) {
             return _this6.expandSignature(activity, expanded);
           }
-        }, /*#__PURE__*/React.createElement(ExpansionPanelSummary, {
+        }, /*#__PURE__*/React.createElement(AccordionSummary, {
           expandIcon: /*#__PURE__*/React.createElement(ExpandMoreIcon, null)
         }, /*#__PURE__*/React.createElement("span", {
           style: {
             fontWeight: 500
           }
-        }, "E-SIGNATURES")), /*#__PURE__*/React.createElement(ExpansionPanelDetails, {
+        }, "E-SIGNATURES")), /*#__PURE__*/React.createElement(AccordionDetails, {
           style: {
             margin: 0,
             padding: '0 24px',

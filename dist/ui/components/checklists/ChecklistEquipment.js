@@ -21,7 +21,7 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 import React, { Component } from 'react';
-import Settings from 'mdi-material-ui/Settings';
+import Cog from 'mdi-material-ui/Cog';
 
 var ChecklistEquipment = /*#__PURE__*/function (_Component) {
   _inherits(ChecklistEquipment, _Component);
@@ -57,7 +57,7 @@ var ChecklistEquipment = /*#__PURE__*/function (_Component) {
     value: function render() {
       return /*#__PURE__*/React.createElement("div", {
         style: this.mainStyle
-      }, /*#__PURE__*/React.createElement(Settings, {
+      }, /*#__PURE__*/React.createElement(Cog, {
         style: this.settingsIconStyle
       }), this.props.description);
     }

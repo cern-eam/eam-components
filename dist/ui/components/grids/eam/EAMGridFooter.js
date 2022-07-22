@@ -1,4 +1,5 @@
-import { Box, withStyles } from "@material-ui/core";
+import { Box } from "@mui/material";
+import withStyles from '@mui/styles/withStyles';
 var EAMGridFooter = withStyles(function (theme) {
   return {
     root: {

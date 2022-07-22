@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import FileRow from './FileRow'
 import FilePlus from 'mdi-material-ui/FilePlus'
-import IconButton from '@material-ui/core/IconButton';
+import IconButton from '@mui/material/IconButton';
 
 class FileList extends Component {
 

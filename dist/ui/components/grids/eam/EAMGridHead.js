@@ -10,10 +10,12 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToAr
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-import { Box, Button, Chip, Grid, makeStyles, Typography, withStyles } from "@material-ui/core";
-import FilterIcon from "@material-ui/icons/FilterList";
-import SearchIcon from "@material-ui/icons/Search";
-import Autocomplete from "@material-ui/lab/Autocomplete";
+import { Box, Button, Chip, Grid, Typography } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
+import withStyles from '@mui/styles/withStyles';
+import FilterIcon from "@mui/icons-material/FilterList";
+import SearchIcon from "@mui/icons-material/Search";
+import Autocomplete from '@mui/material/Autocomplete';
 import React, { createRef, useCallback, useEffect, useMemo, useState } from "react";
 import DataspyAutocompleteInput from "./DataspyAutocompleteInput";
 var ContainerGrid = withStyles(function (theme) {

@@ -25,7 +25,7 @@ import DataGridTableHeader from './EAMGridHeader';
 import DataGridTableBody from './EAMGridBody';
 import DataGridLoadingSpinner from '../EAMGridLoadingSpinner';
 import DataGridFooter from './EAMGridFooter';
-import { withStyles } from "@material-ui/core/styles/index";
+import withStyles from '@mui/styles/withStyles';
 import DataGridActions from './EAMGridActions';
 var styles = {
   searchresults: {

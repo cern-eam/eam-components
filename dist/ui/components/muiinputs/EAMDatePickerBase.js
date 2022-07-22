@@ -22,17 +22,16 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-import DateFnsUtils from '@date-io/date-fns';
-import Icon from '@material-ui/core/Icon';
+import Icon from '@mui/material/Icon';
 import { format } from 'date-fns';
 import parse from "date-fns/parse";
-import { DatePicker, DateTimePicker } from '@material-ui/pickers';
+import { DatePicker, DateTimePicker } from '@mui/x-date-pickers';
 import PropTypes from 'prop-types';
 import React from 'react';
 import EAMBaseInput from './EAMBaseInput';
 import EAMTextField from './EAMTextField';
-import EventIcon from '@material-ui/icons/Event';
-import { InputAdornment, IconButton } from "@material-ui/core";
+import EventIcon from '@mui/icons-material/Event';
+import { InputAdornment, IconButton } from "@mui/material";
 
 var DefaultEndAdornment = function DefaultEndAdornment(props) {
   return /*#__PURE__*/React.createElement(InputAdornment, {
@@ -122,7 +121,9 @@ var EAMDatePicker = /*#__PURE__*/function (_EAMBaseInput) {
         label: elementInfo && elementInfo.text,
         leftArrowIcon: /*#__PURE__*/React.createElement(Icon, null, " keyboard_arrow_left "),
         rightArrowIcon: /*#__PURE__*/React.createElement(Icon, null, " keyboard_arrow_right "),
-        TextFieldComponent: EAMTextField
+        renderInput: function renderInput(props) {
+          return /*#__PURE__*/React.createElement(EAMTextField, props);
+        }
       };
     }
   }, {

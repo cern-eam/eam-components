@@ -37,8 +37,8 @@ import ChecklistFieldNumeric from './fields/ChecklistFieldNumeric';
 import ChecklistFieldCheckbox from './fields/ChecklistFieldCheckbox';
 import ChecklistFieldFinding from './fields/ChecklistFieldFinding';
 import ChecklistFieldAlphaNumeric from './fields/ChecklistFieldAlphaNumeric';
-import EAMDatePicker from "../muiinputs/EAMDatePicker";
-import EAMDateTimePicker from "../muiinputs/EAMDateTimePicker";
+import EAMDatePicker from "../inputs-ng/EAMDatePicker";
+import EAMDateTimePicker from "../inputs-ng/EAMDateTimePicker";
 
 var ChecklistItemInput = /*#__PURE__*/function (_Component) {
   _inherits(ChecklistItemInput, _Component);

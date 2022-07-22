@@ -22,7 +22,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 import React from 'react';
 import { Search } from '@material-ui/icons';
-import { Dialog, DialogContent, withStyles } from '@material-ui/core';
+import { Dialog, DialogContent, withStyles } from '@mui/material';
 import EAMGrid from '../eamgrid';
 import { handleError } from '../actions/uiActions';
 import PropTypes from 'prop-types';

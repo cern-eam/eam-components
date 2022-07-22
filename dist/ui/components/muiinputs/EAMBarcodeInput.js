@@ -22,15 +22,12 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 import React, { Component } from 'react';
 import { BrowserMultiFormatReader } from '@zxing/library';
-import IconButton from '@material-ui/core/IconButton';
+import IconButton from '@mui/material/IconButton';
 import { BarcodeScan } from 'mdi-material-ui';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import MenuItem from '@material-ui/core/MenuItem';
-import TextField from '@material-ui/core/TextField';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
 
 var EAMBarcodeInput = /*#__PURE__*/function (_Component) {
   _inherits(EAMBarcodeInput, _Component);
@@ -50,9 +47,7 @@ var EAMBarcodeInput = /*#__PURE__*/function (_Component) {
     _this.codeReader = null;
     _this.state = {
       open: false,
-      showBarcodeButton: false,
-      videoInputDevices: [],
-      currentCamera: ""
+      showBarcodeButton: false
     };
 
     _this.handleClickOpen = function () {
@@ -70,9 +65,7 @@ var EAMBarcodeInput = /*#__PURE__*/function (_Component) {
     };
 
     _this.startDecoding = function () {
-      var camera = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _this.state.currentCamera;
-
-      _this.codeReader.decodeFromInputVideoDevice(camera, 'video').then(function (result) {
+      _this.codeReader.decodeFromInputVideoDevice(undefined, 'video').then(function (result) {
         _this.onDetectedCallback(result.text);
 
         _this.codeReader.reset();
@@ -81,18 +74,6 @@ var EAMBarcodeInput = /*#__PURE__*/function (_Component) {
       })["catch"](function (err) {
         return console.error(err);
       });
-    };
-
-    _this.handleCameraChange = function (camera) {
-      _this.codeReader.reset();
-
-      _this.setState({
-        currentCamera: camera
-      }, function () {
-        return _this.startDecoding(camera);
-      });
-
-      localStorage.setItem("camera", camera);
     };
 
     _this.onChangeHandler = function (value) {
@@ -109,33 +90,41 @@ var EAMBarcodeInput = /*#__PURE__*/function (_Component) {
   _createClass(EAMBarcodeInput, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      var _this2 = this;
+      var deviceCount;
+      return regeneratorRuntime.async(function componentDidMount$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return regeneratorRuntime.awrap(navigator.mediaDevices.enumerateDevices());
 
-      this.codeReader = new BrowserMultiFormatReader();
-      this.codeReader.listVideoInputDevices().then(function (devices) {
-        if (devices.length > 0) {
-          var camera = localStorage.getItem("camera");
-          var currentCamera = devices.find(function (device) {
-            return device.deviceId === camera;
-          })?.deviceId || devices[0].deviceId;
+            case 2:
+              deviceCount = _context.sent;
 
-          _this2.setState({
-            currentCamera: currentCamera,
-            showBarcodeButton: true,
-            videoInputDevices: devices
-          });
+              if (deviceCount.length > 0 && navigator && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                this.setState({
+                  showBarcodeButton: true
+                });
+              }
+
+            case 4:
+            case "end":
+              return _context.stop();
+          }
         }
-      });
-    }
-  }, {
-    key: "componentWillUnmount",
-    value: function componentWillUnmount() {
-      this.codeReader.reset();
+      }, null, this, null, Promise);
     }
   }, {
     key: "startScanner",
     value: function startScanner() {
-      this.startDecoding();
+      var _this2 = this;
+
+      this.codeReader = new BrowserMultiFormatReader();
+      this.codeReader.listVideoInputDevices().then(function (videoInputDevices) {
+        return _this2.startDecoding(videoInputDevices[0].deviceId);
+      })["catch"](function (err) {
+        return console.error(err);
+      });
     }
   }, {
     key: "onDetectedCallback",
@@ -159,10 +148,7 @@ var EAMBarcodeInput = /*#__PURE__*/function (_Component) {
         height: 32,
         zIndex: 100,
         padding: 0
-      };
-      var _this$state = this.state,
-          currentCamera = _this$state.currentCamera,
-          videoInputDevices = _this$state.videoInputDevices; // Display just the children when no support for user media
+      }; // Display just the children when no support for user media
 
       if (!this.state.showBarcodeButton) {
         return /*#__PURE__*/React.createElement("div", {
@@ -179,7 +165,8 @@ var EAMBarcodeInput = /*#__PURE__*/function (_Component) {
         }
       }, this.props.children, /*#__PURE__*/React.createElement(IconButton, {
         style: iconButtonStyle,
-        onClick: this.handleClickOpen.bind(this)
+        onClick: this.handleClickOpen.bind(this),
+        size: "large"
       }, /*#__PURE__*/React.createElement(BarcodeScan, null)), /*#__PURE__*/React.createElement(Dialog, {
         TransitionProps: {
           onEntered: function onEntered() {
@@ -187,40 +174,18 @@ var EAMBarcodeInput = /*#__PURE__*/function (_Component) {
           }
         },
         open: this.state.open,
-        fullScreen: true,
         onClose: this.handleClose,
         "aria-labelledby": "alert-dialog-title",
         "aria-describedby": "alert-dialog-description"
-      }, videoInputDevices?.length > 1 && /*#__PURE__*/React.createElement(DialogTitle, null, /*#__PURE__*/React.createElement(TextField, {
-        value: currentCamera,
-        onChange: function onChange(e) {
-          return _this3.handleCameraChange(e.target.value);
-        },
-        select: true,
-        label: "Choose the camera",
+      }, /*#__PURE__*/React.createElement(DialogContent, {
         style: {
-          minWidth: 250
-        }
-      }, videoInputDevices.map(function (videoInputDevice) {
-        return /*#__PURE__*/React.createElement(MenuItem, {
-          key: videoInputDevice.deviceId,
-          value: videoInputDevice.deviceId
-        }, videoInputDevice.label);
-      }))), /*#__PURE__*/React.createElement(DialogContent, {
-        style: {
-          padding: 0
+          maxWidth: 320,
+          maxHeight: 320
         }
       }, /*#__PURE__*/React.createElement("video", {
-        autoPlay: true,
-        muted: true,
-        playsInline: true,
         id: "video",
-        style: {
-          maxWidth: "100%",
-          maxHeight: "100%",
-          width: "100%",
-          height: "100%"
-        }
+        width: "200",
+        height: "200"
       })), /*#__PURE__*/React.createElement(DialogActions, null, /*#__PURE__*/React.createElement(Button, {
         onClick: this.handleClose,
         color: "primary",

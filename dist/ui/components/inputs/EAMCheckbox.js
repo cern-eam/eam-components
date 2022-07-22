@@ -21,10 +21,10 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 import React from 'react';
-import Checkbox from '@material-ui/core/Checkbox';
+import Checkbox from '@mui/material/Checkbox';
 import EAMBaseInput, { formStyles } from "./EAMBaseInput";
 import EAMFormLabel from "./EAMFormLabel";
-import { withStyles } from "@material-ui/core/styles/index";
+import withStyles from '@mui/styles/withStyles';
 
 var EAMCheckbox = /*#__PURE__*/function (_EAMBaseInput) {
   _inherits(EAMCheckbox, _EAMBaseInput);

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import IconButton from '@material-ui/core/IconButton';
+import IconButton from '@mui/material/IconButton';
 import ImageFilter from 'mdi-material-ui/ImageFilter'
 import FormatListBulleted from 'mdi-material-ui/FormatListBulleted'
 import PlusBox from 'mdi-material-ui/PlusBox'

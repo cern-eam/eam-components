@@ -10,35 +10,39 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-import React, { useState } from "react";
-import EAMDatePicker from "../../muiinputs/EAMDatePicker";
-import EAMDateTimePicker from "../../muiinputs/EAMDateTimePicker";
+import React, { useState } from 'react';
+import { areEqual } from './tools/input-tools';
+import { renderDatePickerInput, onChangeHandler } from './tools/date-tools';
+import EAMBaseInput from './components/EAMBaseInput';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import enLocale from 'date-fns/locale/en-GB';
 
-var ChecklistFieldDateWrapper = function ChecklistFieldDateWrapper(props) {
+var EAMDatePicker = function EAMDatePicker(props) {
   var value = props.value,
-      handleChange = props.handleChange,
-      isDateTime = props.isDateTime;
+      valueKey = props.valueKey,
+      updateProperty = props.updateProperty,
+      style = props.style;
 
-  var _useState = useState(value),
+  var _useState = useState(false),
       _useState2 = _slicedToArray(_useState, 2),
-      selectedDate = _useState2[0],
-      setSelectedDate = _useState2[1];
+      isInvalidDate = _useState2[0],
+      setIsInvalidDate = _useState2[1];
 
-  var onChangeHandler = function onChangeHandler(date) {
-    console.log(date);
-    var msTime = new Date(date).getTime(); // same format as from the backend
-
-    setSelectedDate(msTime);
-    handleChange(msTime);
-  };
-
-  var PickerComponent = isDateTime ? EAMDateTimePicker : EAMDatePicker;
-  return /*#__PURE__*/React.createElement(PickerComponent, {
+  return /*#__PURE__*/React.createElement(EAMBaseInput, props, /*#__PURE__*/React.createElement(LocalizationProvider, {
+    dateAdapter: AdapterDateFns,
+    adapterLocale: enLocale
+  }, /*#__PURE__*/React.createElement(DatePicker, {
+    renderInput: function renderInput(props) {
+      return renderDatePickerInput(props, isInvalidDate, style);
+    },
     value: value,
-    updateProperty: handleChange
-  }); // return (
-  //     <DatePickerType value={selectedDate} updateProperty={onChangeHandler} />
-  // );
+    disableMaskedInput: true,
+    inputFormat: "dd-MMM-yyyy" //TODO shouldn't be hardcoded 
+    ,
+    onChange: onChangeHandler.bind(null, updateProperty, setIsInvalidDate, valueKey)
+  })));
 };
 
-export default ChecklistFieldDateWrapper;
+export default React.memo(EAMDatePicker, areEqual);
