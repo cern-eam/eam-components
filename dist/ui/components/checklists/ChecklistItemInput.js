@@ -169,8 +169,8 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
         case ChecklistItemInput.FIELD.DATE:
           return /*#__PURE__*/React.createElement(EAMDatePicker, {
             value: checklistItem.date,
-            updateProperty: function updateProperty(value, onFail) {
-              return _this.handleChange(ChecklistItemInput.FIELD.DATE, value, onFail);
+            updateProperty: function updateProperty(valueKey, value) {
+              return _this.handleChange(ChecklistItemInput.FIELD.DATE, value, null);
             },
             key: key,
             disabled: disabled

@@ -51,10 +51,11 @@ var useFetchAutocompleteOptions = function useFetchAutocompleteOptions(autocompl
     }
 
     if (!inputValue?.trim()) {
+      //fetchOptionsDebounced?.cancel()
       if (!open) {
         return; // Don't proceed if the input is empty or there is no popup
       } else {
-        setOptions(fetchHistory(fieldId)); // By focus on empty inputy fetch the history
+        setOptions(fetchHistory(fieldId)); // By focus on empty input fetch the history
 
         return;
       }
@@ -62,7 +63,7 @@ var useFetchAutocompleteOptions = function useFetchAutocompleteOptions(autocompl
 
     abortController.current = new AbortController();
     fetchOptionsDebounced(autocompleteHandlerParams, inputValue);
-  }, [inputValue, value, open]); // Memoizing as we always need the same instance of the function that remembers / debounces previous requests 
+  }, [inputValue, value, open]); // Memoizing as we always need the same instance of the function that remembers and debounces previous requests 
 
   var fetchOptionsDebounced = useMemo(function () {
     return debounce(function () {

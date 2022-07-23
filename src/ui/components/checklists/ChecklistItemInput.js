@@ -98,7 +98,7 @@ export default class ChecklistItemInput extends Component {
             case ChecklistItemInput.FIELD.DATE:
                 return <EAMDatePicker
                     value={checklistItem.date}
-                    updateProperty={(value, onFail) => this.handleChange(ChecklistItemInput.FIELD.DATE, value, onFail)}
+                    updateProperty={(valueKey, value) => this.handleChange(ChecklistItemInput.FIELD.DATE, value, null)}
                     key={key}
                     disabled={disabled}
                 />

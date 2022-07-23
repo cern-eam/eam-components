@@ -20,10 +20,11 @@ const useFetchAutocompleteOptions = (autocompleteHandler, autocompleteHandlerPar
         }
 
         if (!inputValue?.trim()) {
+            //fetchOptionsDebounced?.cancel()
             if (!open) {
                 return; // Don't proceed if the input is empty or there is no popup
             } else {
-                setOptions(fetchHistory(fieldId)); // By focus on empty inputy fetch the history
+                setOptions(fetchHistory(fieldId)); // By focus on empty input fetch the history
                 return;
             }
         }
@@ -32,7 +33,7 @@ const useFetchAutocompleteOptions = (autocompleteHandler, autocompleteHandlerPar
         fetchOptionsDebounced(autocompleteHandlerParams, inputValue)
     }, [inputValue, value, open]) 
 
-    // Memoizing as we always need the same instance of the function that remembers / debounces previous requests 
+    // Memoizing as we always need the same instance of the function that remembers and debounces previous requests 
     const fetchOptionsDebounced = useMemo(
         () => debounce( (...args) => fetchOptions(...args), 200), []
     );

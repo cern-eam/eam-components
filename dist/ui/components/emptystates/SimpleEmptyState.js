@@ -11,6 +11,9 @@ var styles = function styles(theme) {
       alignItems: 'center',
       width: '100%',
       color: '#737373'
+    },
+    icon: {
+      padding: theme.spacing()
     }
   };
 };
