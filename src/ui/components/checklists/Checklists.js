@@ -324,7 +324,7 @@ class Checklists extends Component {
             result.push(this.renderChecklistsForEquipment(equipmentCode + start, checklists.slice(start, end), activity, isDisabled));
         }
         
-        
+
         return result;
     }
 
@@ -607,8 +607,7 @@ class Checklists extends Component {
                                         label={'Hide filled items'}
                                         onMouseDown={this.toggleFilledFilter}
                                         onTouchStart={this.toggleFilledFilter}
-                                        />
-                                    }
+                                    />}
                                     {!blocking && <FormControlLabel
                                         control={<Checkbox
                                             color="primary"
@@ -617,8 +616,7 @@ class Checklists extends Component {
                                         label={'Expand Checklist Options'}
                                         onMouseDown={this.toggleExpandChecklistOptions}
                                         onTouchStart={this.toggleExpandChecklistOptions}
-                                        />
-                                    } 
+                                    />}
                                 </div>
                                 <div style={{paddingLeft: 25, paddingRight: 25}}>
                                     {activities.length > 1 && <EAMSelect
