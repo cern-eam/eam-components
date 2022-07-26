@@ -25,7 +25,6 @@ export const areEqual = (prevProps, nextProps) => {
 }
 
 export const processElementInfo = (elementInfo) => {
-        console.log('ei', elementInfo)
 
         return {
                 required: isRequired(elementInfo),
