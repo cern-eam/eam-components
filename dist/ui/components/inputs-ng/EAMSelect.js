@@ -37,7 +37,8 @@ var EAMSelect = function EAMSelect(props) {
       onChangeValue = props.onChangeValue,
       options = props.options,
       optionsTransformer = props.optionsTransformer,
-      elementInfo = props.elementInfo,
+      required = props.required,
+      id = props.id,
       renderValue = props.renderValue,
       endTextAdornment = props.endTextAdornment;
 
@@ -92,7 +93,7 @@ var EAMSelect = function EAMSelect(props) {
   var onChangeHandler = function onChangeHandler(event, newValue, reason) {
     if (reason === 'clear') {
       // Don't allow clearing the value if mandatory
-      if (isRequired(elementInfo)) {
+      if (required) {
         return;
       }
 
@@ -130,7 +131,7 @@ var EAMSelect = function EAMSelect(props) {
     onChange: onChangeHandler,
     onInputChange: onInputChangeHandler // Misc
     ,
-    id: getElementKey(elementInfo),
+    id: id,
     value: value === undefined ? '' : value,
     isOptionEqualToValue: isOptionEqualToValueHandler,
     onClose: onCloseHandler // Visuals 

@@ -1,9 +1,9 @@
 import React from 'react';
 import WSUDF from "tools/WSUDF";
-import EAMAutocomplete from "eam-components/ui/components/inputs-ng/EAMAutocomplete";
-import EAMSelect from "eam-components/ui/components/inputs-ng/EAMSelect";
-import EAMTextField from 'eam-components/ui/components/inputs-ng/EAMTextField';
-import { areEqual } from './tools/input-tools';
+import EAMAutocomplete from "./EAMAutocomplete";
+import EAMSelect from "./EAMSelect";
+import EAMTextField from './EAMTextField';
+import { areEqual, processElementInfo } from './tools/input-tools';
 
 const NONE = 'NONE';
 const CODE = 'CODE';
@@ -19,7 +19,7 @@ const EAMUDF = (props) => {
         case CODE:
             return (
                 <EAMSelect
-                    elementInfo={elementInfo}
+                    {...processElementInfo(elementInfo)}
                     valueKey={valueKey}
                     value={value}
                     updateProperty={updateProperty}
@@ -29,7 +29,7 @@ const EAMUDF = (props) => {
         case CODEDESC:
             return (
                 <EAMSelect
-                    elementInfo={elementInfo}
+                    {...processElementInfo(elementInfo)}
                     valueKey={valueKey}
                     value={value}
                     updateProperty={updateProperty}
@@ -38,7 +38,7 @@ const EAMUDF = (props) => {
                 />)
         case RENT:
             return (<EAMAutocomplete
-                    elementInfo={elementInfo}
+                    {...processElementInfo(elementInfo)}
                     valueKey={valueKey}
                     value={value}
                     descKey={descKey}
@@ -50,7 +50,7 @@ const EAMUDF = (props) => {
         case NONE:
         default:
             return (<EAMTextField
-                    elementInfo={elementInfo}
+                    {...processElementInfo(elementInfo)}
                     valueKey={valueKey}
                     value={value}
                     updateProperty={updateProperty}

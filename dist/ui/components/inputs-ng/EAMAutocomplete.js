@@ -31,7 +31,7 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
       valueKey = props.valueKey,
       descKey = props.descKey,
       updateProperty = props.updateProperty,
-      elementInfo = props.elementInfo,
+      id = props.id,
       renderValue = props.renderValue,
       onChangeValue = props.onChangeValue;
 
@@ -45,7 +45,7 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
       open = _useState4[0],
       setOpen = _useState4[1];
 
-  var _useFetchAutocomplete = useFetchAutocompleteOptions(autocompleteHandler, autocompleteHandlerParams, inputValue, value, open, getElementKey(elementInfo)),
+  var _useFetchAutocomplete = useFetchAutocompleteOptions(autocompleteHandler, autocompleteHandlerParams, inputValue, value, open, id),
       _useFetchAutocomplete2 = _slicedToArray(_useFetchAutocomplete, 2),
       fetchedOptions = _useFetchAutocomplete2[0],
       loading = _useFetchAutocomplete2[1];
@@ -68,7 +68,7 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
       return;
     }
 
-    saveHistory(getElementKey(elementInfo), newValue.code, newValue.desc);
+    saveHistory(id, newValue.code, newValue.desc);
     updateCodeDesc(updateProperty, valueKey, newValue.code, descKey, newValue.desc, onChangeValue); // Don't bubble up any events (won't trigger a save when we select something by pressing enter)
 
     event.stopPropagation();
@@ -104,7 +104,7 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
     filterOptions: function filterOptions(x) {
       return x;
     },
-    id: getElementKey(elementInfo),
+    id: id,
     freeSolo: true,
     value: value === undefined ? '' : value,
     openOnFocus: true //blurOnSelect

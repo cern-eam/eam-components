@@ -3,13 +3,9 @@ import Checkbox from '@mui/material/Checkbox';
 import EAMBaseInput from './components/EAMBaseInput';
 import { areEqual } from './tools/input-tools';
 
-
 const rootStyle = {
-    //width: "calc(50% - 20px)",
-    //boxSizing: "border-box",
-    //float: "left",
     width: "auto",
-    flex: "1 1 170px",
+    flex: "0 1 180px",
     flexFlow: "row nowrap"
 }
 
@@ -29,11 +25,9 @@ const EAMCheckbox = (props) => {
         updateProperty(valueKey, checked.toString());
     };
 
-
     return (
-        <EAMBaseInput {...props} rootStyle={rootStyle}>
+        <EAMBaseInput  {...props} rootStyle={rootStyle}>
             <Checkbox
-                style={{boxSizing: "border-box"}}
                 color="primary"
                 checked={isChecked(value)}
                 onChange={handleChange}

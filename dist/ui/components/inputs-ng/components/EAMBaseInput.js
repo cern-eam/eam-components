@@ -20,10 +20,12 @@ var requiredStyle = {
 };
 
 var EAMBaseInput = function EAMBaseInput(props) {
-  var elementInfo = props.elementInfo,
-      disabled = props.disabled; // Hide 
+  var hidden = props.hidden,
+      disabled = props.disabled,
+      required = props.required,
+      label = props.label; // Hide 
 
-  if (isHidden(elementInfo)) {
+  if (hidden) {
     return React.Fragment;
   }
 
@@ -36,17 +38,16 @@ var EAMBaseInput = function EAMBaseInput(props) {
     alignItems: "center"
   }; // Disable
 
-  if (disabled || elementInfo && elementInfo.readonly) {
+  if (disabled) {
     rootStyle.opacity = "0.8";
     rootStyle.pointerEvents = "none";
   }
 
-  console.log("render", elementInfo?.text);
   return /*#__PURE__*/React.createElement("div", {
     style: _objectSpread({}, rootStyle, {}, props.rootStyle)
-  }, elementInfo?.text && /*#__PURE__*/React.createElement("div", {
+  }, label && /*#__PURE__*/React.createElement("div", {
     style: divLabelStyle
-  }, /*#__PURE__*/React.createElement("span", null, elementInfo.text), isRequired(elementInfo) && /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React.createElement("span", null, label), required && /*#__PURE__*/React.createElement("span", {
     style: requiredStyle
   }, "*")), props.children);
 };

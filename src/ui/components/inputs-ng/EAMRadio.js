@@ -7,7 +7,7 @@ import { areEqual } from './tools/input-tools';
 
 const EAMRadio = (props) => {
 
-    const { elementInfo, updateProperty, values, value, valueKey, onChangeValue } = props;
+    const { updateProperty, values, value, valueKey, onChangeValue } = props;
 
     const generateRadioButtons = (values) => {
         if (values) {
@@ -26,8 +26,8 @@ const EAMRadio = (props) => {
     return (
         <EAMBaseInput {...props}>
             <RadioGroup
-                aria-label={elementInfo && elementInfo.elementId}
-                name={elementInfo && elementInfo.elementId}
+                aria-label={id}
+                name={eid}
                 value={value || ''}
                 onChange={onChangeHandler}
                 style={{flexDirection: 'row'}}>

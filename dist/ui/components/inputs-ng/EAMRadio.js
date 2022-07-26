@@ -6,8 +6,7 @@ import EAMBaseInput from './components/EAMBaseInput';
 import { areEqual } from './tools/input-tools';
 
 var EAMRadio = function EAMRadio(props) {
-  var elementInfo = props.elementInfo,
-      updateProperty = props.updateProperty,
+  var updateProperty = props.updateProperty,
       values = props.values,
       value = props.value,
       valueKey = props.valueKey,
@@ -34,8 +33,8 @@ var EAMRadio = function EAMRadio(props) {
   };
 
   return /*#__PURE__*/React.createElement(EAMBaseInput, props, /*#__PURE__*/React.createElement(RadioGroup, {
-    "aria-label": elementInfo && elementInfo.elementId,
-    name: elementInfo && elementInfo.elementId,
+    "aria-label": id,
+    name: eid,
     value: value || '',
     onChange: onChangeHandler,
     style: {

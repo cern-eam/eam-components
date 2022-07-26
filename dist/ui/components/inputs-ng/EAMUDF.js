@@ -1,9 +1,11 @@
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
 import React from 'react';
 import WSUDF from "tools/WSUDF";
-import EAMAutocomplete from "eam-components/ui/components/inputs-ng/EAMAutocomplete";
-import EAMSelect from "eam-components/ui/components/inputs-ng/EAMSelect";
-import EAMTextField from 'eam-components/ui/components/inputs-ng/EAMTextField';
-import { areEqual } from './tools/input-tools';
+import EAMAutocomplete from "./EAMAutocomplete";
+import EAMSelect from "./EAMSelect";
+import EAMTextField from './EAMTextField';
+import { areEqual, processElementInfo } from './tools/input-tools';
 var NONE = 'NONE';
 var CODE = 'CODE';
 var CODEDESC = 'CODEDESC';
@@ -22,28 +24,25 @@ var EAMUDF = function EAMUDF(props) {
 
   switch (udfLookupType) {
     case CODE:
-      return /*#__PURE__*/React.createElement(EAMSelect, {
-        elementInfo: elementInfo,
+      return /*#__PURE__*/React.createElement(EAMSelect, _extends({}, processElementInfo(elementInfo), {
         valueKey: valueKey,
         value: value,
         updateProperty: updateProperty,
         autocompleteHandler: WSUDF.getUDFCodeValues,
         autocompleteHandlerParams: [udfLookupEntity, elementId]
-      });
+      }));
 
     case CODEDESC:
-      return /*#__PURE__*/React.createElement(EAMSelect, {
-        elementInfo: elementInfo,
+      return /*#__PURE__*/React.createElement(EAMSelect, _extends({}, processElementInfo(elementInfo), {
         valueKey: valueKey,
         value: value,
         updateProperty: updateProperty,
         autocompleteHandler: WSUDF.getUDFCodeDescValues,
         autocompleteHandlerParams: [udfLookupEntity, elementId]
-      });
+      }));
 
     case RENT:
-      return /*#__PURE__*/React.createElement(EAMAutocomplete, {
-        elementInfo: elementInfo,
+      return /*#__PURE__*/React.createElement(EAMAutocomplete, _extends({}, processElementInfo(elementInfo), {
         valueKey: valueKey,
         value: value,
         descKey: descKey,
@@ -51,16 +50,15 @@ var EAMUDF = function EAMUDF(props) {
         updateProperty: updateProperty,
         autocompleteHandler: WSUDF.autocompleteUserDefinedField,
         autocompleteHandlerParams: [udfLookupEntity]
-      });
+      }));
 
     case NONE:
     default:
-      return /*#__PURE__*/React.createElement(EAMTextField, {
-        elementInfo: elementInfo,
+      return /*#__PURE__*/React.createElement(EAMTextField, _extends({}, processElementInfo(elementInfo), {
         valueKey: valueKey,
         value: value,
         updateProperty: updateProperty
-      });
+      }));
   }
 };
 

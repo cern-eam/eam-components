@@ -15,10 +15,26 @@ export const areEqual = (prevProps, nextProps) => {
     return prevProps.value === nextProps.value &&
            prevProps.desc === nextProps.desc &&
            prevProps.disabled === nextProps.disabled &&
-           prevProps.elementInfo?.readonly === nextProps.elementInfo?.readonly &&
+           prevProps.readonly === nextProps.readonly &&
+           prevProps.required === nextProps.required &&
+           prevProps.uppercase === nextProps.uppercase &&
+           prevProps.label === nextProps.label &&
            isEqual(prevProps.autocompleteHandlerParams, nextProps.autocompleteHandlerParams) &&
            isEqual(prevProps.options, nextProps.options) &&
            isEqual(prevProps.renderDependencies, nextProps.renderDependencies);
+}
+
+export const processElementInfo = (elementInfo) => {
+        console.log('ei', elementInfo)
+
+        return {
+                required: isRequired(elementInfo),
+                hidden: isHidden(elementInfo),
+                uppercase: isUpperCase(elementInfo),
+                label: elementInfo.text,
+                disabled: elementInfo.readonly,
+                id: getElementKey(elementInfo)
+        }
 }
 
 export const getElementKey = (elementInfo) => {

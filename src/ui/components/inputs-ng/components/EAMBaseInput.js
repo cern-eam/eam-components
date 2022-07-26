@@ -18,10 +18,10 @@ const requiredStyle = {
 
 const EAMBaseInput = (props) => {
 
-    const {elementInfo, disabled} = props;
+    const {hidden, disabled, required, label} = props;
 
     // Hide 
-    if (isHidden(elementInfo)) {
+    if (hidden) {
         return React.Fragment;
     }
 
@@ -35,18 +35,16 @@ const EAMBaseInput = (props) => {
     }
 
     // Disable
-    if (disabled || ( elementInfo && elementInfo.readonly)) {
+    if (disabled) {
         rootStyle.opacity = "0.8";
         rootStyle.pointerEvents = "none";
     }
 
-    console.log("render", elementInfo?.text)
-
     return (<div style={{...rootStyle, ...props.rootStyle}}>
-        {elementInfo?.text &&
+        {label &&
         <div style = {divLabelStyle}>
-            <span>{elementInfo.text}</span>
-            {isRequired(elementInfo) && <span style={requiredStyle}>*</span>}
+            <span>{label}</span>
+            {required && <span style={requiredStyle}>*</span>}
         </div>}
         {props.children}
     </div>);

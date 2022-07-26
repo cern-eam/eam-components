@@ -15,11 +15,11 @@ const EAMAutocomplete = (props) => {
    
   let {autocompleteHandler, autocompleteHandlerParams, 
        value, valueKey, descKey,
-       updateProperty, elementInfo, renderValue, onChangeValue} = props;
+       updateProperty, id, renderValue, onChangeValue} = props;
 
     let [inputValue, setInputValue] = useState("")
     let [open, setOpen] = useState(false)
-    let [fetchedOptions, loading] = useFetchAutocompleteOptions(autocompleteHandler, autocompleteHandlerParams, inputValue, value, open, getElementKey(elementInfo))
+    let [fetchedOptions, loading] = useFetchAutocompleteOptions(autocompleteHandler, autocompleteHandlerParams, inputValue, value, open, id)
   
     const getOptionLabelHandler = option => {
         return option.code ?? option;
@@ -38,7 +38,7 @@ const EAMAutocomplete = (props) => {
         return;
       }
       
-      saveHistory(getElementKey(elementInfo), newValue.code, newValue.desc)
+      saveHistory(id, newValue.code, newValue.desc)
       updateCodeDesc(updateProperty, valueKey, newValue.code, descKey, newValue.desc, onChangeValue);
 
       // Don't bubble up any events (won't trigger a save when we select something by pressing enter)
@@ -73,7 +73,7 @@ const EAMAutocomplete = (props) => {
             onInputChange={onInputChangeHandler}
             // Misc
             filterOptions={x => x}
-            id={getElementKey(elementInfo)}
+            id={id}
             freeSolo = {true}
             value={value === undefined ? '' : value}
             openOnFocus

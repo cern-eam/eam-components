@@ -17,7 +17,7 @@ const EAMSelect = (props) => {
     value, valueKey, descKey, desc,
     updateProperty, onChangeValue,
     options, optionsTransformer,
-    elementInfo,
+    required, id,
     renderValue, endTextAdornment} = props;
 
     let [inputValue, setInputValue] = useState("")
@@ -59,7 +59,7 @@ const EAMSelect = (props) => {
     const onChangeHandler = (event, newValue, reason) => {
       if (reason === 'clear') {
         // Don't allow clearing the value if mandatory
-        if (isRequired(elementInfo)) {
+        if (required) {
             return;
         }
         updateCodeDesc(updateProperty, valueKey, '', descKey, '', onChangeValue);
@@ -95,7 +95,7 @@ const EAMSelect = (props) => {
             onChange={onChangeHandler} 
             onInputChange={onInputChangeHandler}
             // Misc
-            id={getElementKey(elementInfo)}
+            id={id}
             value={value === undefined ? '' : value} 
             isOptionEqualToValue={isOptionEqualToValueHandler}
             onClose={onCloseHandler}

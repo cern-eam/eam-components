@@ -5,11 +5,8 @@ import Checkbox from '@mui/material/Checkbox';
 import EAMBaseInput from './components/EAMBaseInput';
 import { areEqual } from './tools/input-tools';
 var rootStyle = {
-  //width: "calc(50% - 20px)",
-  //boxSizing: "border-box",
-  //float: "left",
   width: "auto",
-  flex: "1 1 170px",
+  flex: "0 1 180px",
   flexFlow: "row nowrap"
 };
 
@@ -30,9 +27,6 @@ var EAMCheckbox = function EAMCheckbox(props) {
   return /*#__PURE__*/React.createElement(EAMBaseInput, _extends({}, props, {
     rootStyle: rootStyle
   }), /*#__PURE__*/React.createElement(Checkbox, {
-    style: {
-      boxSizing: "border-box"
-    },
     color: "primary",
     checked: isChecked(value),
     onChange: handleChange
