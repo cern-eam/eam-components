@@ -3,6 +3,7 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 import React from 'react';
 import WSUDF from "tools/WSUDF";
 import EAMAutocomplete from "./EAMAutocomplete";
+import EAMCheckbox from './EAMCheckbox';
 import EAMSelect from "./EAMSelect";
 import EAMTextField from './EAMTextField';
 import { areEqual, processElementInfo } from './tools/input-tools';
@@ -20,7 +21,16 @@ var EAMUDF = function EAMUDF(props) {
       updateProperty = props.updateProperty;
   var udfLookupType = elementInfo.udfLookupType,
       udfLookupEntity = elementInfo.udfLookupEntity,
-      elementId = elementInfo.elementId;
+      elementId = elementInfo.elementId,
+      fieldType = elementInfo.fieldType;
+
+  if (fieldType === 'checkbox') {
+    return /*#__PURE__*/React.createElement(EAMCheckbox, _extends({}, processElementInfo(elementInfo), {
+      valueKey: valueKey,
+      value: value,
+      updateProperty: updateProperty
+    }));
+  }
 
   switch (udfLookupType) {
     case CODE:

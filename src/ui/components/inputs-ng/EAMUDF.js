@@ -1,6 +1,7 @@
 import React from 'react';
 import WSUDF from "tools/WSUDF";
 import EAMAutocomplete from "./EAMAutocomplete";
+import EAMCheckbox from './EAMCheckbox';
 import EAMSelect from "./EAMSelect";
 import EAMTextField from './EAMTextField';
 import { areEqual, processElementInfo } from './tools/input-tools';
@@ -13,7 +14,17 @@ const RENT = 'RENT';
 const EAMUDF = (props) => {
 
     const {elementInfo, valueKey, value, descKey, desc, updateProperty} = props;
-    const {udfLookupType, udfLookupEntity, elementId} = elementInfo;
+    const {udfLookupType, udfLookupEntity, elementId, fieldType} = elementInfo;
+
+    if (fieldType === 'checkbox') {
+        return (
+            <EAMCheckbox {...processElementInfo(elementInfo)} 
+                valueKey={valueKey}
+                value={value}
+                updateProperty={updateProperty}
+            />
+        )
+    }
 
     switch (udfLookupType) {
         case CODE:

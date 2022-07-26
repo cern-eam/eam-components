@@ -10,7 +10,8 @@ var EAMRadio = function EAMRadio(props) {
       values = props.values,
       value = props.value,
       valueKey = props.valueKey,
-      onChangeValue = props.onChangeValue;
+      onChangeValue = props.onChangeValue,
+      id = props.id;
 
   var generateRadioButtons = function generateRadioButtons(values) {
     if (values) {
@@ -34,7 +35,7 @@ var EAMRadio = function EAMRadio(props) {
 
   return /*#__PURE__*/React.createElement(EAMBaseInput, props, /*#__PURE__*/React.createElement(RadioGroup, {
     "aria-label": id,
-    name: eid,
+    name: id,
     value: value || '',
     onChange: onChangeHandler,
     style: {
