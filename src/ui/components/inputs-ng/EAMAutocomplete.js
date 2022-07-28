@@ -75,7 +75,7 @@ const EAMAutocomplete = (props) => {
             filterOptions={x => x}
             id={id}
             freeSolo = {true}
-            value={value === undefined ? '' : value}
+            value={value ? value : ''}
             openOnFocus
             //blurOnSelect
             // Visuals 

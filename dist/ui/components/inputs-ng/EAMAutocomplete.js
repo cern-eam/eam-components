@@ -106,7 +106,7 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
     },
     id: id,
     freeSolo: true,
-    value: value === undefined ? '' : value,
+    value: value ? value : '',
     openOnFocus: true //blurOnSelect
     // Visuals 
     ,

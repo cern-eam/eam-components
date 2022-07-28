@@ -127,11 +127,11 @@ var Comments = /*#__PURE__*/function (_Component) {
       });
     };
 
-    _this.createCommentForNewEntity = function () {
+    _this.createCommentForNewEntity = function (entityKeyCode) {
       if (_this.state.newCommentText) {
         _this.createComment({
           entityCode: _this.props.entityCode,
-          entityKeyCode: _this.props.entityKeyCode,
+          entityKeyCode: _this.props.entityKeyCode ? _this.props.entityKeyCode : entityKeyCode,
           text: _this.state.newCommentText
         });
       }

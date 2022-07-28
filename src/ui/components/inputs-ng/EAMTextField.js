@@ -9,7 +9,7 @@ const EAMTextField = (props) => {
 
     let inputProps = {
         onChange: (event) => updateProperty(valueKey, event.target.value),
-        value: value
+        value: value ? value : ''
     };
 
     return (

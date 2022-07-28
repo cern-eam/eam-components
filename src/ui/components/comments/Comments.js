@@ -97,11 +97,11 @@ class Comments extends Component {
         )
     };
 
-    createCommentForNewEntity = () => {
+    createCommentForNewEntity = (entityKeyCode) => {
         if (this.state.newCommentText) {
             this.createComment({
                 entityCode: this.props.entityCode,
-                entityKeyCode: this.props.entityKeyCode,
+                entityKeyCode: this.props.entityKeyCode ? this.props.entityKeyCode : entityKeyCode,
                 text: this.state.newCommentText
             });
         }

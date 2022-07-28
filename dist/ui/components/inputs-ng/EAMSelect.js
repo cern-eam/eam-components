@@ -132,7 +132,7 @@ var EAMSelect = function EAMSelect(props) {
     onInputChange: onInputChangeHandler // Misc
     ,
     id: id,
-    value: value === undefined ? '' : value,
+    value: value ? value : '',
     isOptionEqualToValue: isOptionEqualToValueHandler,
     onClose: onCloseHandler // Visuals 
     ,

@@ -13,7 +13,7 @@ var EAMTextField = function EAMTextField(props) {
     onChange: function onChange(event) {
       return updateProperty(valueKey, event.target.value);
     },
-    value: value
+    value: value ? value : ''
   };
   return /*#__PURE__*/React.createElement(EAMBaseInput, props, /*#__PURE__*/React.createElement(TextField, _extends({}, props, {
     inputProps: inputProps
