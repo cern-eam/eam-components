@@ -3,22 +3,30 @@ import AutocompleteDescription from './AutocompleteDescription';
 import EAMBarcodeScanner from './EAMBarcodeScanner';
 import EAMLink from './EAMLink';
 import './TextField.css'
+import { styled } from '@mui/material/styles';
 
-let inputStyle = {
-    display: "block",
-    width: "100%",
-    boxSizing: "border-box",
-    padding: "7px 8px",
-    fontSize: "15px",
-    lineHeight: 1.5,
-    color: "#495057",
-    backgroundClip: "padding-box",
-    border: "1px solid #ced4da",
-    borderRadius: "4px",
-    transition: "border-color .15s ease-in-out,box-shadow .15s ease-in-out",
-    backgroundColor: "#fdfdfd",
-    //backgroundColor: "#fefefe"
-}
+const StyledInput = styled('input')({
+    '&': {
+        display: "block",
+        width: "100%",
+        boxSizing: "border-box",
+        padding: "7px 8px",
+        fontSize: "15px",
+        lineHeight: 1.5,
+        color: "#495057",
+        backgroundClip: "padding-box",
+        border: "1px solid #ced4da",
+        borderRadius: "4px",
+        //transition: "border-color .15s ease-in-out,box-shadow .15s ease-in-out",
+        backgroundColor: "#fdfdfd"
+    },
+    '&:focus': {
+        //backgroundColor: "blue",
+        outline: "none",
+        backgroundColor: "#fff",
+        boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px"
+    }
+})
 
 const divInputStyle = {
     flex: "1 1 auto",
@@ -59,7 +67,7 @@ const TextField = (props) => {
         <div style={{...divRootContainerStyle, ...style}}>
             <div style={divInputContainerStyle}>
                 <div style={divInputStyle} ref={props.InputProps?.ref}>
-                    <input style={inputStyle} type="text" ref={inputRef} {...inputProps} />
+                    <StyledInput type="text" ref={inputRef} {...inputProps} />
                     {!hideDescription &&<AutocompleteDescription
                         description = {desc}
                         value = {value}

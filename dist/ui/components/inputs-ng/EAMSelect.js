@@ -21,6 +21,7 @@ import EAMBaseInput from './components/EAMBaseInput';
 import TextField from './components/TextField';
 import useFetchSelectOptions from './hooks/useFetchSelectOptions';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import OptionsPaper from './components/OptionsPaper';
 var autocompleteDivStyle = {
   flex: "999 1 auto",
   display: "flex"
@@ -136,16 +137,10 @@ var EAMSelect = function EAMSelect(props) {
     isOptionEqualToValue: isOptionEqualToValueHandler,
     onClose: onCloseHandler // Visuals 
     ,
+    PaperComponent: OptionsPaper,
     loading: loading,
     size: "small",
     fullWidth: true,
-    componentsProps: {
-      paper: {
-        sx: {
-          marginTop: "2px"
-        }
-      }
-    },
     renderInput: function renderInput(params) {
       return /*#__PURE__*/React.createElement(TextField, _extends({
         hideDescription: true

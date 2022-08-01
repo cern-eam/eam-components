@@ -11,21 +11,29 @@ import AutocompleteDescription from './AutocompleteDescription';
 import EAMBarcodeScanner from './EAMBarcodeScanner';
 import EAMLink from './EAMLink';
 import './TextField.css';
-var inputStyle = {
-  display: "block",
-  width: "100%",
-  boxSizing: "border-box",
-  padding: "7px 8px",
-  fontSize: "15px",
-  lineHeight: 1.5,
-  color: "#495057",
-  backgroundClip: "padding-box",
-  border: "1px solid #ced4da",
-  borderRadius: "4px",
-  transition: "border-color .15s ease-in-out,box-shadow .15s ease-in-out",
-  backgroundColor: "#fdfdfd" //backgroundColor: "#fefefe"
-
-};
+import { styled } from '@mui/material/styles';
+var StyledInput = styled('input')({
+  '&': {
+    display: "block",
+    width: "100%",
+    boxSizing: "border-box",
+    padding: "7px 8px",
+    fontSize: "15px",
+    lineHeight: 1.5,
+    color: "#495057",
+    backgroundClip: "padding-box",
+    border: "1px solid #ced4da",
+    borderRadius: "4px",
+    //transition: "border-color .15s ease-in-out,box-shadow .15s ease-in-out",
+    backgroundColor: "#fdfdfd"
+  },
+  '&:focus': {
+    //backgroundColor: "blue",
+    outline: "none",
+    backgroundColor: "#fff",
+    boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px"
+  }
+});
 var divInputStyle = {
   flex: "1 1 auto",
   position: "relative"
@@ -69,8 +77,7 @@ var TextField = function TextField(props) {
   }, /*#__PURE__*/React.createElement("div", {
     style: divInputStyle,
     ref: props.InputProps?.ref
-  }, /*#__PURE__*/React.createElement("input", _extends({
-    style: inputStyle,
+  }, /*#__PURE__*/React.createElement(StyledInput, _extends({
     type: "text",
     ref: inputRef
   }, inputProps)), !hideDescription && /*#__PURE__*/React.createElement(AutocompleteDescription, {

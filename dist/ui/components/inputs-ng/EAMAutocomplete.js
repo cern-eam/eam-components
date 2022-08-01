@@ -19,6 +19,7 @@ import { areEqual, getElementKey, renderOptionHandler, updateCodeDesc } from './
 import EAMBaseInput from './components/EAMBaseInput';
 import TextField from './components/TextField';
 import { saveHistory } from './tools/history-tools';
+import OptionsPaper from './components/OptionsPaper';
 var autocompleteDivStyle = {
   flex: "999 1 auto",
   display: "flex"
@@ -106,17 +107,10 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
     },
     id: id,
     freeSolo: true,
-    value: value ? value : '',
-    openOnFocus: true //blurOnSelect
-    // Visuals 
+    value: value ? value : '' // Visuals 
     ,
-    componentsProps: {
-      paper: {
-        sx: {
-          marginTop: "2px"
-        }
-      }
-    },
+    PaperComponent: OptionsPaper,
+    includeInputInList: true,
     loading: loading,
     size: "small",
     fullWidth: true,

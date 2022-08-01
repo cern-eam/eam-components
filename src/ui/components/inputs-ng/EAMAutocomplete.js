@@ -5,6 +5,7 @@ import {areEqual, getElementKey, renderOptionHandler, updateCodeDesc} from './to
 import EAMBaseInput from './components/EAMBaseInput';
 import TextField from './components/TextField';
 import { saveHistory } from './tools/history-tools';
+import OptionsPaper from './components/OptionsPaper';
 
 const autocompleteDivStyle = {
   flex: "999 1 auto",
@@ -76,16 +77,9 @@ const EAMAutocomplete = (props) => {
             id={id}
             freeSolo = {true}
             value={value ? value : ''}
-            openOnFocus
-            //blurOnSelect
             // Visuals 
-            componentsProps={{
-              paper: {
-                sx: {
-                  marginTop: "2px"
-                }
-              }
-            }}
+            PaperComponent={OptionsPaper}
+            includeInputInList
             loading = {loading}
             size="small"
             fullWidth

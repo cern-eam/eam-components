@@ -2,6 +2,7 @@ import isEqual from 'lodash/isEqual';
 import { Box } from '@mui/material';
 import HistoryIcon from '@mui/icons-material/History';
 import React from 'react';
+import { styled } from '@mui/material/styles';
 
 export const isRequired = (elementInfo) =>
         elementInfo &&
@@ -78,3 +79,18 @@ export const updateCodeDesc = (updateProperty, valueKey, value, descKey, desc, o
 
         onChangeValue?.(value)
 }
+
+
+// export const paperProps = {
+//         sx: {
+//           marginTop: "-2px",
+//           borderTopLeftRadius: 0,
+//           borderTopRightRadius: 0,
+//           borderBottomLeftRadius: 4,
+//           borderBottomRightRadius: 4,
+//           border: "1px solid #ced4da"
+//           //boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px"
+//           //transition: "border-color .15s ease-in-out,box-shadow .15s ease-in-out"
+//         },
+//         elevation: 0
+//       }
