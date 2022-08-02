@@ -101,6 +101,7 @@ const EAMSelect = (props) => {
             isOptionEqualToValue={isOptionEqualToValueHandler}
             onClose={onCloseHandler}
             // Visuals 
+            openOnFocus
             PaperComponent={OptionsPaper}
             loading = {loading}
             size="small"

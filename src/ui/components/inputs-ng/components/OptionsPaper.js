@@ -4,7 +4,7 @@ import Paper from '@mui/material/Paper';
 
 const StyledPaper = styled(Paper)({
     '&': {
-        marginTop: "-2px",
+        marginTop: "-3px",
         borderTopLeftRadius: 0,
         borderTopRightRadius: 0,
         borderBottomLeftRadius: 4,

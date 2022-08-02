@@ -109,6 +109,9 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
     freeSolo: true,
     value: value ? value : '' // Visuals 
     ,
+    openOnFocus: true // Very important, otherwise onCloseHandler won't be fired for example when we focus a field with a tab and delete its value.
+    // Funningly without this prop it still works correctly when we manually gain focus using the mouse.
+    ,
     PaperComponent: OptionsPaper,
     includeInputInList: true,
     loading: loading,

@@ -137,6 +137,7 @@ var EAMSelect = function EAMSelect(props) {
     isOptionEqualToValue: isOptionEqualToValueHandler,
     onClose: onCloseHandler // Visuals 
     ,
+    openOnFocus: true,
     PaperComponent: OptionsPaper,
     loading: loading,
     size: "small",
