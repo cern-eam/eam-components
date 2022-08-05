@@ -1,3 +1,5 @@
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -320,9 +322,10 @@ var DateFilterAdornment = function DateFilterAdornment(_ref4) {
   var localFilter = _ref4.localFilter,
       setLocalFilter = _ref4.setLocalFilter;
   return React.useMemo(function () {
-    return localFilter.fieldValue ? /*#__PURE__*/React.createElement(InputAdornment, {
+    return /*#__PURE__*/React.createElement(InputAdornment, {
       position: "end"
     }, /*#__PURE__*/React.createElement(IconButton, {
+      edge: "end",
       size: "small",
       onClick: function onClick(e) {
         setLocalFilter(_objectSpread({}, localFilter, {
@@ -331,11 +334,7 @@ var DateFilterAdornment = function DateFilterAdornment(_ref4) {
         }));
         e.stopPropagation();
       }
-    }, /*#__PURE__*/React.createElement(ClearIcon, null))) : /*#__PURE__*/React.createElement(InputAdornment, {
-      position: "end"
-    }, /*#__PURE__*/React.createElement(IconButton, {
-      size: "small"
-    }, /*#__PURE__*/React.createElement(CalendarIcon, null)));
+    }, /*#__PURE__*/React.createElement(ClearIcon, null)));
   }, [localFilter, setLocalFilter]);
 };
 
@@ -406,8 +405,8 @@ var EAMFilterField = function EAMFilterField(_ref6) {
     }));
   }, [localFilter, updateFilter]);
   var handleDatePickersChange = React.useCallback(function (value) {
-    return updateFilter(_objectSpread({}, localFilter, {
-      fieldValue: formatDate(value, "dd-MMM-yyyy"),
+    updateFilter(_objectSpread({}, localFilter, {
+      fieldValue: value ? formatDate(value, 'dd-MMM-yyyy') : '',
       _dateValue: value
     }));
   }, [localFilter, updateFilter]);
@@ -443,47 +442,49 @@ var EAMFilterField = function EAMFilterField(_ref6) {
 
     case "DATE":
       return /*#__PURE__*/React.createElement(DatePicker, {
-        autoOk: true,
-        clearable: 1,
-        variant: "inline",
-        ampm: false,
+        clearable: true,
         value: localFilter._dateValue || null,
         onChange: handleDatePickersChange,
-        format: "dd-MMM-yyyy",
-        TextFieldComponent: FilterTextField,
-        InputProps: {
-          startAdornment: /*#__PURE__*/React.createElement(QualifierMenuAdornment, {
-            column: column,
-            localFilter: localFilter,
-            setLocalFilter: updateFilter
-          }),
-          endAdornment: /*#__PURE__*/React.createElement(DateFilterAdornment, {
-            localFilter: localFilter,
-            setLocalFilter: updateFilter
-          })
+        inputFormat: "dd-MMM-yyyy",
+        disableOpenPicker: localFilter?._dateValue ? true : false,
+        renderInput: function renderInput(props) {
+          return /*#__PURE__*/React.createElement(FilterTextField, _extends({}, props, {
+            InputProps: _objectSpread({}, props.InputProps, {
+              startAdornment: /*#__PURE__*/React.createElement(QualifierMenuAdornment, {
+                column: column,
+                localFilter: localFilter,
+                setLocalFilter: updateFilter
+              }),
+              endAdornment: localFilter?._dateValue ? /*#__PURE__*/React.createElement(DateFilterAdornment, {
+                localFilter: localFilter,
+                setLocalFilter: updateFilter
+              }) : _objectSpread({}, props.InputProps.endAdornment)
+            })
+          }));
         }
       });
 
     case "DATETIME":
       return /*#__PURE__*/React.createElement(DateTimePicker, {
-        autoOk: true,
-        clearable: 1,
-        variant: "inline",
-        ampm: false,
+        clearable: true,
         value: localFilter._dateValue || null,
         onChange: handleDatePickersChange,
-        format: "dd-MMM-yyyy HH:mm",
-        TextFieldComponent: FilterTextField,
-        InputProps: {
-          startAdornment: /*#__PURE__*/React.createElement(QualifierMenuAdornment, {
-            column: column,
-            localFilter: localFilter,
-            setLocalFilter: updateFilter
-          }),
-          endAdornment: /*#__PURE__*/React.createElement(DateFilterAdornment, {
-            localFilter: localFilter,
-            setLocalFilter: updateFilter
-          })
+        inputFormat: "dd-MMM-yyyy HH:mm",
+        disableOpenPicker: localFilter?._dateValue ? true : false,
+        renderInput: function renderInput(props) {
+          return /*#__PURE__*/React.createElement(FilterTextField, _extends({}, props, {
+            InputProps: _objectSpread({}, props.InputProps, {
+              startAdornment: /*#__PURE__*/React.createElement(QualifierMenuAdornment, {
+                column: column,
+                localFilter: localFilter,
+                setLocalFilter: updateFilter
+              }),
+              endAdornment: localFilter?._dateValue ? /*#__PURE__*/React.createElement(DateFilterAdornment, {
+                localFilter: localFilter,
+                setLocalFilter: updateFilter
+              }) : _objectSpread({}, props.InputProps.endAdornment)
+            })
+          }));
         }
       });
 
