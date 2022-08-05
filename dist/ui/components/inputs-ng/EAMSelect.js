@@ -72,7 +72,7 @@ var EAMSelect = function EAMSelect(props) {
   };
 
   var getOptions = function getOptions() {
-    return options ?? fetchedOptions;
+    return options ?? fetchedOptions ?? [];
   };
 
   var onInputChangeHandler = function onInputChangeHandler(event, newInputValue) {

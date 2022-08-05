@@ -5,7 +5,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 import React from 'react';
-import { isRequired, isHidden } from '../tools/input-tools';
 var divLabelStyle = {
   flex: "1 1 140px",
   fontSize: 14,
@@ -23,7 +22,8 @@ var EAMBaseInput = function EAMBaseInput(props) {
   var hidden = props.hidden,
       disabled = props.disabled,
       required = props.required,
-      label = props.label; // Hide 
+      label = props.label;
+  console.log('render', label); // Hide 
 
   if (hidden) {
     return React.Fragment;

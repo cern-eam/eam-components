@@ -1,6 +1,4 @@
 import React from 'react';
-import {isRequired, isHidden} from '../tools/input-tools'
-
 
 const divLabelStyle = {
     flex: "1 1 140px",
@@ -19,6 +17,8 @@ const requiredStyle = {
 const EAMBaseInput = (props) => {
 
     const {hidden, disabled, required, label} = props;
+
+    console.log('render', label)
 
     // Hide 
     if (hidden) {

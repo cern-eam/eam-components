@@ -39,7 +39,7 @@ const EAMSelect = (props) => {
     }
 
     const getOptions = () => {
-      return options ?? fetchedOptions;
+      return options ?? fetchedOptions ?? [];
     }
 
     const onInputChangeHandler = (event, newInputValue) => {
