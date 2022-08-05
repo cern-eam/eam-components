@@ -235,26 +235,28 @@ const QualifierMenuAdornment = ({ column, localFilter, setLocalFilter }) => {
 }
 
 const DateFilterAdornment = ({ localFilter, setLocalFilter }) => {
-    return React.useMemo(() => localFilter.fieldValue ? (
+    return React.useMemo(
+        () => (
             <InputAdornment position="end">
                 <IconButton
+                    edge="end"
                     size="small"
-                    onClick={e => {
-                        setLocalFilter({ ...localFilter, fieldValue: null, _dateValue: null })
+                    onClick={(e) => {
+                        setLocalFilter({
+                            ...localFilter,
+                            fieldValue: null,
+                            _dateValue: null,
+                        });
                         e.stopPropagation();
-                    }}>
+                    }}
+                >
                     <ClearIcon />
                 </IconButton>
             </InputAdornment>
-        ) : (
-            <InputAdornment position="end">
-                <IconButton size="small">
-                    <CalendarIcon />
-                </IconButton>
-            </InputAdornment>
-        )
-    , [localFilter, setLocalFilter])
-}
+        ),
+        [localFilter, setLocalFilter]
+    );
+};
 
 const EAMCellField = ({ column, value }) => {
     switch (column.dataType) {
@@ -309,8 +311,15 @@ const EAMFilterField = ({ column, getDefaultValue = getEAMDefaultFilterValue }) 
     }, [localFilter, updateFilter]);
 
     const handleDatePickersChange = React.useCallback(
-        value => updateFilter({ ...localFilter, fieldValue: formatDate(value, "dd-MMM-yyyy"), _dateValue: value })
-    , [localFilter, updateFilter]);
+        (value) => {
+            updateFilter({
+                ...localFilter,
+                fieldValue: value ? formatDate(value, 'dd-MMM-yyyy') : '',
+                _dateValue: value,
+            });
+        },
+        [localFilter, updateFilter]
+    );
 
     switch (dataType) {
         case "VARCHAR":
@@ -347,53 +356,67 @@ const EAMFilterField = ({ column, getDefaultValue = getEAMDefaultFilterValue }) 
         case "DATE":
             return (
                 <DatePicker
-                    autoOk
-                    clearable={1}
-                    variant="inline"
-                    ampm={false}
+                    clearable
                     value={localFilter._dateValue || null}
                     onChange={handleDatePickersChange}
-                    format="dd-MMM-yyyy"
-                    TextFieldComponent={FilterTextField}
-                    InputProps={{
-                        startAdornment: (
-                            <QualifierMenuAdornment
-                                column={column}
-                                localFilter={localFilter}
-                                setLocalFilter={updateFilter} />
-                        ),
-                        endAdornment: (
-                            <DateFilterAdornment
-                                localFilter={localFilter}
-                                setLocalFilter={updateFilter} />
-                        )
-                    }}
+                    inputFormat="dd-MMM-yyyy"
+                    disableOpenPicker={localFilter?._dateValue ? true : false}
+                    renderInput={(props) => (
+                        <FilterTextField
+                            {...props}
+                            InputProps={{
+                                ...props.InputProps,
+                                startAdornment: (
+                                    <QualifierMenuAdornment
+                                        column={column}
+                                        localFilter={localFilter}
+                                        setLocalFilter={updateFilter}
+                                    />
+                                ),
+                                endAdornment: localFilter?._dateValue ? (
+                                    <DateFilterAdornment
+                                        localFilter={localFilter}
+                                        setLocalFilter={updateFilter}
+                                    />
+                                ) : (
+                                    { ...props.InputProps.endAdornment }
+                                ),
+                            }}
+                        />
+                    )}
                 />
             );
         case "DATETIME":
             return (
                 <DateTimePicker
-                    autoOk
-                    clearable={1}
-                    variant="inline"
-                    ampm={false}
+                    clearable
                     value={localFilter._dateValue || null}
                     onChange={handleDatePickersChange}
-                    format="dd-MMM-yyyy HH:mm"
-                    TextFieldComponent={FilterTextField}
-                    InputProps={{
-                        startAdornment: (
-                            <QualifierMenuAdornment
-                                column={column}
-                                localFilter={localFilter}
-                                setLocalFilter={updateFilter} />
-                        ),
-                        endAdornment: (
-                            <DateFilterAdornment
-                                localFilter={localFilter}
-                                setLocalFilter={updateFilter} />
-                        )
-                    }}
+                    inputFormat="dd-MMM-yyyy HH:mm"
+                    disableOpenPicker={localFilter?._dateValue ? true : false}
+                    renderInput={(props) => (
+                        <FilterTextField
+                            {...props}
+                            InputProps={{
+                                ...props.InputProps,
+                                startAdornment: (
+                                    <QualifierMenuAdornment
+                                        column={column}
+                                        localFilter={localFilter}
+                                        setLocalFilter={updateFilter}
+                                    />
+                                ),
+                                endAdornment: localFilter?._dateValue ? (
+                                    <DateFilterAdornment
+                                        localFilter={localFilter}
+                                        setLocalFilter={updateFilter}
+                                    />
+                                ) : (
+                                    { ...props.InputProps.endAdornment }
+                                ),
+                            }}
+                        />
+                    )}
                 />
             );
         case "__SELECT":
