@@ -1,8 +1,8 @@
 import TextField from "../components/TextField";
 import React from 'react';
 
-export const renderDatePickerInput = ({ inputRef, inputProps, InputProps }, isInvalidDate, style) => {
-    let errorText = '';
+export const renderDatePickerInput = ({ inputRef, inputProps, InputProps }, isInvalidDate, style, errorText) => {
+
     if (isInvalidDate) {
         errorText = "Wrong Date format";
     }
@@ -13,7 +13,8 @@ export const renderDatePickerInput = ({ inputRef, inputProps, InputProps }, isIn
       <TextField style = {style}
                  inputRef={inputRef} 
                  inputProps={inputProps} 
-                 endAdornment={endAdornment} errorText={errorText}/>
+                 endAdornment={endAdornment} 
+                 errorText={errorText}/>
     )
 }
 

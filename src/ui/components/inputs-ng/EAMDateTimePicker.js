@@ -9,14 +9,14 @@ import enLocale from 'date-fns/locale/en-GB';
 
 const EAMDateTimePicker = (props) => {
 
-    let {value, valueKey, updateProperty, style} = props;
+    let {value, valueKey, updateProperty, style, errorText} = props;
     let [isInvalidDate, setIsInvalidDate] = useState(false);
 
     return (
         <EAMBaseInput {...props}>
             <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enLocale}>
                 <DateTimePicker
-                    renderInput={(props) => renderDatePickerInput(props, isInvalidDate, style)}
+                    renderInput={(props) => renderDatePickerInput(props, isInvalidDate, style, errorText)}
                     value={value}
                     disableMaskedInput
                     inputFormat="dd-MMM-yyyy HH:mm" //TODO shouldn't be hardcoded 

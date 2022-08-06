@@ -1,10 +1,9 @@
 import TextField from "../components/TextField";
 import React from 'react';
-export var renderDatePickerInput = function renderDatePickerInput(_ref, isInvalidDate, style) {
+export var renderDatePickerInput = function renderDatePickerInput(_ref, isInvalidDate, style, errorText) {
   var inputRef = _ref.inputRef,
       inputProps = _ref.inputProps,
       InputProps = _ref.InputProps;
-  var errorText = '';
 
   if (isInvalidDate) {
     errorText = "Wrong Date format";

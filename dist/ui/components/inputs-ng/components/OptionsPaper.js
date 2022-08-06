@@ -11,7 +11,8 @@ var StyledPaper = styled(Paper)({
     borderBottomLeftRadius: 4,
     borderBottomRightRadius: 4,
     border: "1px solid #ced4da",
-    boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px"
+    boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px",
+    animation: "fadeIn 2s"
   },
   // Because of 'onOpen={() => setOpen(true)}' on Autocomplete and Select the Paper is also rendered when there are no options  
   '&:empty': {
