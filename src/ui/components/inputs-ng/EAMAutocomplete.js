@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import useFetchAutocompleteOptions from './hooks/useFetchAutocompleteOptions';
-import {areEqual, getElementKey, renderOptionHandler, updateCodeDesc} from './tools/input-tools'
+import {areEqual, renderOptionHandler, updateCodeDesc} from './tools/input-tools'
 import EAMBaseInput from './components/EAMBaseInput';
 import TextField from './components/TextField';
 import { saveHistory } from './tools/history-tools';

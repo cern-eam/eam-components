@@ -43,22 +43,23 @@ var useFetchAutocompleteOptions = function useFetchAutocompleteOptions(autocompl
 
   useEffect(function () {
     setOptions([]); // Cancel the old request in the case it was still active
+    //fetchOptionsDebounced?.cancel()
 
-    abortController.current?.abort(); // If there is a value and nothing new was typed do nothing 
+    abortController.current?.abort(); // Don't continue if not open
+
+    if (!open) {
+      return;
+    } // If there is a value and nothing new was typed do nothing 
+
 
     if (value && value === inputValue) {
       return;
     }
 
     if (!inputValue?.trim()) {
-      //fetchOptionsDebounced?.cancel()
-      if (!open) {
-        return; // Don't proceed if the input is empty or there is no popup
-      } else {
-        setOptions(fetchHistory(fieldId)); // By focus on empty input fetch the history
+      setOptions(fetchHistory(fieldId)); // By focus on empty input fetch the history
 
-        return;
-      }
+      return;
     }
 
     abortController.current = new AbortController();

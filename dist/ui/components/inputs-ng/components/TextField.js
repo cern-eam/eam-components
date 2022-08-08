@@ -69,7 +69,8 @@ var TextField = function TextField(props) {
       hideDescription = props.hideDescription,
       disabled = props.disabled,
       errorText = props.errorText,
-      style = props.style;
+      style = props.style,
+      type = props.type;
   return /*#__PURE__*/React.createElement("div", {
     style: _objectSpread({}, divRootContainerStyle, {}, style)
   }, /*#__PURE__*/React.createElement("div", {
@@ -78,7 +79,7 @@ var TextField = function TextField(props) {
     style: divInputStyle,
     ref: props.InputProps?.ref
   }, /*#__PURE__*/React.createElement(StyledInput, _extends({
-    type: "text",
+    type: type ?? 'text',
     ref: inputRef
   }, inputProps)), !hideDescription && /*#__PURE__*/React.createElement(AutocompleteDescription, {
     description: desc,

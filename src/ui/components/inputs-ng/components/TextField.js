@@ -61,13 +61,13 @@ const TextField = (props) => {
         inputProps, 
         inputRef,
         endTextAdornment, endAdornment,
-        hideDescription, disabled, errorText, style} = props;
+        hideDescription, disabled, errorText, style, type} = props;
 
     return (
         <div style={{...divRootContainerStyle, ...style}}>
             <div style={divInputContainerStyle}>
                 <div style={divInputStyle} ref={props.InputProps?.ref}>
-                    <StyledInput type="text" ref={inputRef} {...inputProps} />
+                    <StyledInput type={type ?? 'text'} ref={inputRef} {...inputProps} />
                     {!hideDescription &&<AutocompleteDescription
                         description = {desc}
                         value = {value}

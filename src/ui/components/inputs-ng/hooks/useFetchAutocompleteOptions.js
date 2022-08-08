@@ -12,7 +12,13 @@ const useFetchAutocompleteOptions = (autocompleteHandler, autocompleteHandlerPar
     useEffect( () => {
         setOptions([])
         // Cancel the old request in the case it was still active
+        //fetchOptionsDebounced?.cancel()
         abortController.current?.abort();
+
+        // Don't continue if not open
+        if (!open) {
+            return;
+        }
 
         // If there is a value and nothing new was typed do nothing 
         if (value && value === inputValue) {
@@ -20,16 +26,10 @@ const useFetchAutocompleteOptions = (autocompleteHandler, autocompleteHandlerPar
         }
 
         if (!inputValue?.trim()) {
-            //fetchOptionsDebounced?.cancel()
-            if (!open) {
-                return; // Don't proceed if the input is empty or there is no popup
-            } else {
-                setOptions(fetchHistory(fieldId)); // By focus on empty input fetch the history
-                return;
-            }
+            setOptions(fetchHistory(fieldId)); // By focus on empty input fetch the history
+            return;
         }
         abortController.current = new AbortController();
-
         fetchOptionsDebounced(autocompleteHandlerParams, inputValue)
     }, [inputValue, value, open]) 
 

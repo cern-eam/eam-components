@@ -27,7 +27,7 @@ export const areEqual = (prevProps, nextProps) => {
 
 export const processElementInfo = (elementInfo) => {
 
-        return {
+        let data = {
                 required: isRequired(elementInfo),
                 hidden: isHidden(elementInfo),
                 uppercase: isUpperCase(elementInfo),
@@ -35,6 +35,14 @@ export const processElementInfo = (elementInfo) => {
                 disabled: elementInfo.readonly,
                 id: getElementKey(elementInfo)
         }
+
+        if (elementInfo.fieldType === 'currency') {
+                data.type = 'number'
+        } else {
+                data.type = 'text'
+        }
+
+        return data;
 }
 
 export const getElementKey = (elementInfo) => {

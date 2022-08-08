@@ -17,7 +17,7 @@ export var areEqual = function areEqual(prevProps, nextProps) {
   return prevProps.value === nextProps.value && prevProps.desc === nextProps.desc && prevProps.disabled === nextProps.disabled && prevProps.readonly === nextProps.readonly && prevProps.required === nextProps.required && prevProps.uppercase === nextProps.uppercase && prevProps.label === nextProps.label && prevProps.errorText === nextProps.errorText && isEqual(prevProps.autocompleteHandlerParams, nextProps.autocompleteHandlerParams) && isEqual(prevProps.options, nextProps.options) && isEqual(prevProps.renderDependencies, nextProps.renderDependencies);
 };
 export var processElementInfo = function processElementInfo(elementInfo) {
-  return {
+  var data = {
     required: isRequired(elementInfo),
     hidden: isHidden(elementInfo),
     uppercase: isUpperCase(elementInfo),
@@ -25,6 +25,14 @@ export var processElementInfo = function processElementInfo(elementInfo) {
     disabled: elementInfo.readonly,
     id: getElementKey(elementInfo)
   };
+
+  if (elementInfo.fieldType === 'currency') {
+    data.type = 'number';
+  } else {
+    data.type = 'text';
+  }
+
+  return data;
 };
 export var getElementKey = function getElementKey(elementInfo) {
   if (!elementInfo) return null;
