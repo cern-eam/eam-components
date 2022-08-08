@@ -18,7 +18,7 @@ const EAMCheckbox = (props) => {
 
     const isChecked = (value) => {
         const checkedTextValue = value || '';
-        return checkedTextValue.toLowerCase() === true.toString();
+        return `${checkedTextValue}`.toLowerCase() === true.toString();
     };
 
     const handleChange = (event, checked) => {
