@@ -18,8 +18,6 @@ const EAMBaseInput = (props) => {
 
     const {hidden, disabled, required, label} = props;
 
-    console.log('render', label)
-
     // Hide 
     if (hidden) {
         return React.Fragment;

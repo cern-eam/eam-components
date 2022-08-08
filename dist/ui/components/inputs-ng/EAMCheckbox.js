@@ -17,7 +17,7 @@ var EAMCheckbox = function EAMCheckbox(props) {
 
   var isChecked = function isChecked(value) {
     var checkedTextValue = value || '';
-    return checkedTextValue.toLowerCase() === true.toString();
+    return "".concat(checkedTextValue).toLowerCase() === true.toString();
   };
 
   var handleChange = function handleChange(event, checked) {
