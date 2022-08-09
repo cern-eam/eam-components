@@ -5,7 +5,7 @@ import EAMLink from './EAMLink';
 import './TextField.css'
 import { styled } from '@mui/material/styles';
 
-const StyledInput = styled('input')({
+const StyledInput = styled('input')(({theme}) => ({
     '&': {
         display: "block",
         width: "100%",
@@ -17,16 +17,14 @@ const StyledInput = styled('input')({
         backgroundClip: "padding-box",
         border: "1px solid #ced4da",
         borderRadius: "4px",
-        //transition: "border-color .15s ease-in-out,box-shadow .15s ease-in-out",
         backgroundColor: "#fdfdfd"
     },
     '&:focus': {
-        //backgroundColor: "blue",
-        outline: "none",
-        backgroundColor: "#fff",
-        boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px"
+        outline: `2px solid ${theme.palette.primary.main}`,
+        backgroundColor: "#fff"
+        //boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px"
     }
-})
+}))
 
 const divInputStyle = {
     flex: "1 1 auto",

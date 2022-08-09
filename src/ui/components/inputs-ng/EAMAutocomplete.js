@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import useFetchAutocompleteOptions from './hooks/useFetchAutocompleteOptions';
-import {areEqual, renderOptionHandler, updateCodeDesc} from './tools/input-tools'
+import {areEqual, componentsProps, renderOptionHandler, updateCodeDesc} from './tools/input-tools'
 import EAMBaseInput from './components/EAMBaseInput';
 import TextField from './components/TextField';
 import { saveHistory } from './tools/history-tools';
-import OptionsPaper from './components/OptionsPaper';
 
 const autocompleteDivStyle = {
   flex: "999 1 auto",
@@ -80,7 +79,7 @@ const EAMAutocomplete = (props) => {
             // Visuals 
             openOnFocus // Very important, otherwise onCloseHandler won't be fired for example when we focus a field with a tab and delete its value.
                         // Funningly without this prop it still works correctly when we manually gain focus using the mouse.
-            PaperComponent={OptionsPaper}
+            componentsProps={componentsProps}
             includeInputInList
             loading = {loading}
             size="small"

@@ -75,3 +75,12 @@ export var updateCodeDesc = function updateCodeDesc(updateProperty, valueKey, va
 
   onChangeValue?.(value);
 };
+export var componentsProps = {
+  paper: {
+    sx: {
+      marginTop: "2px",
+      marginBottom: "4px"
+    },
+    elevation: 4
+  }
+};

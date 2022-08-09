@@ -12,27 +12,28 @@ import EAMBarcodeScanner from './EAMBarcodeScanner';
 import EAMLink from './EAMLink';
 import './TextField.css';
 import { styled } from '@mui/material/styles';
-var StyledInput = styled('input')({
-  '&': {
-    display: "block",
-    width: "100%",
-    boxSizing: "border-box",
-    padding: "7px 8px",
-    fontSize: "15px",
-    lineHeight: 1.5,
-    color: "#495057",
-    backgroundClip: "padding-box",
-    border: "1px solid #ced4da",
-    borderRadius: "4px",
-    //transition: "border-color .15s ease-in-out,box-shadow .15s ease-in-out",
-    backgroundColor: "#fdfdfd"
-  },
-  '&:focus': {
-    //backgroundColor: "blue",
-    outline: "none",
-    backgroundColor: "#fff",
-    boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px"
-  }
+var StyledInput = styled('input')(function (_ref) {
+  var theme = _ref.theme;
+  return {
+    '&': {
+      display: "block",
+      width: "100%",
+      boxSizing: "border-box",
+      padding: "7px 8px",
+      fontSize: "15px",
+      lineHeight: 1.5,
+      color: "#495057",
+      backgroundClip: "padding-box",
+      border: "1px solid #ced4da",
+      borderRadius: "4px",
+      backgroundColor: "#fdfdfd"
+    },
+    '&:focus': {
+      outline: "2px solid ".concat(theme.palette.primary.main),
+      backgroundColor: "#fff" //boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px"
+
+    }
+  };
 });
 var divInputStyle = {
   flex: "1 1 auto",

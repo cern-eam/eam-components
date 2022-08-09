@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
-import {areEqual, getElementKey, isRequired, renderOptionHandler, formatLabel, updateCodeDesc} from './tools/input-tools'
+import {areEqual, getElementKey, isRequired, renderOptionHandler, formatLabel, updateCodeDesc, componentsProps} from './tools/input-tools'
 import EAMBaseInput from './components/EAMBaseInput';
 import TextField from './components/TextField';
 import useFetchSelectOptions from './hooks/useFetchSelectOptions';
@@ -102,7 +102,7 @@ const EAMSelect = (props) => {
             onClose={onCloseHandler}
             // Visuals 
             openOnFocus
-            PaperComponent={OptionsPaper}
+            componentsProps={componentsProps}
             loading = {loading}
             size="small"
             fullWidth

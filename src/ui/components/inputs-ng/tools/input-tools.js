@@ -87,3 +87,13 @@ export const updateCodeDesc = (updateProperty, valueKey, value, descKey, desc, o
 
         onChangeValue?.(value)
 }
+
+export const componentsProps = {
+        paper: {
+                sx: {
+                marginTop: "2px",
+                marginBottom: "4px"
+                },
+                elevation: 4
+        }              
+}
