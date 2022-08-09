@@ -19,13 +19,15 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 import React, { useState } from "react";
 var textAreaStyle = {
   flex: "1 1 auto",
-  padding: "5px 10px",
-  fontSize: 16,
-  borderRadius: 4,
-  backgroundColor: "#fff",
-  resize: "vertical",
-  minHeight: "2.5em",
-  fontFamily: "Roboto, Helvetica, Arial, sans-serif"
+  padding: "7px 8px",
+  fontSize: "15px",
+  lineHeight: 1.5,
+  color: "#495057",
+  backgroundClip: "padding-box",
+  border: "1px solid #ced4da",
+  borderRadius: "4px",
+  backgroundColor: "#fdfdfd",
+  fontFamily: 'Roboto, sans-serif'
 };
 var outerStyle = {
   margin: 5,

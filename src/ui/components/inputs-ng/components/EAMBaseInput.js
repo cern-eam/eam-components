@@ -4,7 +4,6 @@ const divLabelStyle = {
     flex: "1 1 140px",
     fontSize: 14,
     margin: "5px 10px 5px 0px",
-    //color: "rgb(0, 101, 152)",
     color: "#1a237e"
     //fontWeight: "bold"
 }
@@ -51,7 +50,7 @@ const EAMBaseInput = (props) => {
             <span>{label}</span>
             {required && <span style={requiredStyle}>*</span>}
         </div>}
-        <div style={componentStyle}>
+        <div style={{...componentStyle, ...props.componentStyle}}>
             {props.children}
         </div>
     </div>);

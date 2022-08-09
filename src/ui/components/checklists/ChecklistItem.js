@@ -84,12 +84,9 @@ export default class ChecklistItem extends Component {
      * @returns {{marginLeft: number, marginTop: number, position: string, display: string}}
      */
     checklistDetailsStyle = {
-            marginLeft: -5,
-            marginTop: -5,
-            marginRight: -8,
-            paddingRight: 3,
+            margin: 5,
             display: "flex",
-            flexDirection: "row"
+            alignItems: "center"
     }
 
     checklistNotApplicableStyle = {

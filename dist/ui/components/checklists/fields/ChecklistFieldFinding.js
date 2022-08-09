@@ -14,6 +14,9 @@ var ChecklistFieldFinding = function ChecklistFieldFinding(props) {
     options: possibleFindings,
     updateProperty: function updateProperty(key, value) {
       return _handleChange(value);
+    },
+    componentStyle: {
+      flex: "0 0 177px"
     }
   });else return possibleFindings.map(function (findingElement) {
     return /*#__PURE__*/React.createElement(ChecklistFieldCheckbox, {

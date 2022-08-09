@@ -70,12 +70,9 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       color: "rgba(0, 0, 0, 0.87)"
     };
     _this.checklistDetailsStyle = {
-      marginLeft: -5,
-      marginTop: -5,
-      marginRight: -8,
-      paddingRight: 3,
+      margin: 5,
       display: "flex",
-      flexDirection: "row"
+      alignItems: "center"
     };
     _this.checklistNotApplicableStyle = {
       paddingTop: 5,

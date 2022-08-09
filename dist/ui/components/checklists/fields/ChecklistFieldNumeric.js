@@ -13,8 +13,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 import React, { useState, useEffect } from 'react';
 import TextField from '../../inputs-ng/components/TextField';
 var outerStyle = {
-  margin: 5,
-  marginLeft: 17,
   display: "flex"
 };
 
@@ -94,7 +92,7 @@ var ChecklistFieldNumeric = function ChecklistFieldNumeric(props) {
     endTextAdornment: UOM,
     style: {
       flex: "0 0 177px",
-      minWidth: "unset"
+      margin: 5
     }
   })), numericLimitError && /*#__PURE__*/React.createElement("p", {
     style: {

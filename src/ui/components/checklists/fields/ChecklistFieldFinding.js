@@ -11,6 +11,7 @@ const ChecklistFieldFinding = props => {
                        value={finding || ''}
                        options={possibleFindings}
                        updateProperty={(key, value) => handleChange(value)}
+                       componentStyle={{flex: "0 0 177px"}}
             />
     else
         return possibleFindings.map(findingElement => <ChecklistFieldCheckbox 

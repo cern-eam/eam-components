@@ -2,11 +2,8 @@ import React, {useState, useEffect} from 'react';
 import TextField from '../../inputs-ng/components/TextField';
 
 const outerStyle = {
-    margin: 5,
-    marginLeft: 17,
     display: "flex"
 };
-
 
 const ChecklistFieldNumeric = props => {
     const { value, UOM, handleChange, minimumValue, maximumValue, showError, disabled } = props;
@@ -62,9 +59,8 @@ const ChecklistFieldNumeric = props => {
             <TextField disabled={disabled}
                        inputProps={inputProps}
                        endTextAdornment={UOM}
-                       style={{flex: "0 0 177px", minWidth: "unset"}}
+                       style={{flex: "0 0 177px", margin: 5}}
                        />
-
         </div>
         {numericLimitError && <p style={{color: 'red', marginLeft: '20px'}}>{numericLimitError}</p>}
     </>;

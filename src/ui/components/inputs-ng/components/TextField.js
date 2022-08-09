@@ -39,7 +39,7 @@ const divInputContainerStyle = {
 }
 
 const divRootContainerStyle = {
-    flex: "999 1 auto",
+    flex: "1 1 auto",
     display: "flex",
     flexDirection: "column"
 }

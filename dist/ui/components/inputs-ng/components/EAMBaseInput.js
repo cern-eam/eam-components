@@ -9,7 +9,6 @@ var divLabelStyle = {
   flex: "1 1 140px",
   fontSize: 14,
   margin: "5px 10px 5px 0px",
-  //color: "rgb(0, 101, 152)",
   color: "#1a237e" //fontWeight: "bold"
 
 };
@@ -54,7 +53,7 @@ var EAMBaseInput = function EAMBaseInput(props) {
   }, /*#__PURE__*/React.createElement("span", null, label), required && /*#__PURE__*/React.createElement("span", {
     style: requiredStyle
   }, "*")), /*#__PURE__*/React.createElement("div", {
-    style: componentStyle
+    style: _objectSpread({}, componentStyle, {}, props.componentStyle)
   }, props.children));
 };
 

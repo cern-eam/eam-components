@@ -2,20 +2,22 @@ import React, { useState } from "react";
 
 const textAreaStyle = {
     flex: "1 1 auto",
-    padding: "5px 10px",
-    fontSize: 16,
-    borderRadius: 4,
-    backgroundColor: "#fff",
-    resize: "vertical",
-    minHeight: "2.5em",
-    fontFamily: "Roboto, Helvetica, Arial, sans-serif",
+    padding: "7px 8px",
+    fontSize: "15px",
+    lineHeight: 1.5,
+    color: "#495057",
+    backgroundClip: "padding-box",
+    border: "1px solid #ced4da",
+    borderRadius: "4px",
+    backgroundColor: "#fdfdfd",
+    fontFamily: 'Roboto, sans-serif'
 };
 
 const outerStyle = {
     margin: 5,
     marginLeft: 17,
     display: "flex",
-    flex: "1 1 auto",
+    flex: "1 1 auto"
 };
 
 const ChecklistFieldAlphaNumeric = (props) => {
