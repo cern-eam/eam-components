@@ -17,6 +17,10 @@ var requiredStyle = {
   color: "red",
   fontWeight: "bold"
 };
+var componentStyle = {
+  flex: "999 1 320px",
+  display: "flex"
+};
 
 var EAMBaseInput = function EAMBaseInput(props) {
   var hidden = props.hidden,
@@ -42,13 +46,16 @@ var EAMBaseInput = function EAMBaseInput(props) {
     rootStyle.pointerEvents = "none";
   }
 
+  console.log('render', label);
   return /*#__PURE__*/React.createElement("div", {
     style: _objectSpread({}, rootStyle, {}, props.rootStyle)
   }, label && /*#__PURE__*/React.createElement("div", {
     style: divLabelStyle
   }, /*#__PURE__*/React.createElement("span", null, label), required && /*#__PURE__*/React.createElement("span", {
     style: requiredStyle
-  }, "*")), props.children);
+  }, "*")), /*#__PURE__*/React.createElement("div", {
+    style: componentStyle
+  }, props.children));
 };
 
 export default EAMBaseInput;

@@ -41,8 +41,7 @@ const divInputContainerStyle = {
 const divRootContainerStyle = {
     flex: "999 1 auto",
     display: "flex",
-    flexDirection: "column",
-    minWidth: "320px"
+    flexDirection: "column"
 }
 
 const divErrorStyle = {

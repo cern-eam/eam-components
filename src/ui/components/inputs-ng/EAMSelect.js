@@ -5,12 +5,6 @@ import EAMBaseInput from './components/EAMBaseInput';
 import TextField from './components/TextField';
 import useFetchSelectOptions from './hooks/useFetchSelectOptions';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import OptionsPaper from './components/OptionsPaper';
-
-const autocompleteDivStyle = {
-  flex: "999 1 auto",
-  display: "flex"
-}
 
 const EAMSelect = (props) => {
    
@@ -86,7 +80,6 @@ const EAMSelect = (props) => {
 
     return (
       <EAMBaseInput {...props}>
-        <div style={autocompleteDivStyle}>
           <Autocomplete   
             // Options
             options={options || fetchedOptions} 
@@ -113,7 +106,6 @@ const EAMSelect = (props) => {
                                                                                              color: "#acacac",
                                                                                              pointerEvents: "none"}}/>}/>}
           />
-        </div>
       </EAMBaseInput>
       );
 };

@@ -801,9 +801,8 @@ var Checklists = /*#__PURE__*/function (_Component) {
           paddingRight: 25
         }
       }, activities.length > 1 && /*#__PURE__*/React.createElement(EAMSelect, {
-        children: null,
         label: "Activity",
-        values: [{
+        options: [{
           code: null,
           desc: "\u200B"
         }].concat(_toConsumableArray(filteredActivities.filter(function (activity) {
@@ -824,9 +823,8 @@ var Checklists = /*#__PURE__*/function (_Component) {
           'zIndex': 999
         }
       }), Object.keys(equipments).length > 1 && /*#__PURE__*/React.createElement(EAMSelect, {
-        children: null,
         label: "Equipment",
-        values: [{
+        options: [{
           code: null,
           desc: "\u200B"
         }].concat(_toConsumableArray(Object.keys(equipments).filter(function (key) {

@@ -14,6 +14,11 @@ const requiredStyle = {
     fontWeight: "bold"
 }
 
+const componentStyle = {
+    flex: "999 1 320px",
+    display: "flex"
+}
+
 const EAMBaseInput = (props) => {
 
     const {hidden, disabled, required, label} = props;
@@ -38,13 +43,17 @@ const EAMBaseInput = (props) => {
         rootStyle.pointerEvents = "none";
     }
 
+    console.log('render', label)
+
     return (<div style={{...rootStyle, ...props.rootStyle}}>
         {label &&
         <div style = {divLabelStyle}>
             <span>{label}</span>
             {required && <span style={requiredStyle}>*</span>}
         </div>}
-        {props.children}
+        <div style={componentStyle}>
+            {props.children}
+        </div>
     </div>);
 }
 

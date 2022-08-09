@@ -6,10 +6,12 @@ import TextField from './components/TextField';
 const EAMTextField = (props) => {
 
     let {value, valueKey, updateProperty} = props;
+    let [inputValue, setInputValue] = useState(value ?? '');
 
     let inputProps = {
-        onChange: (event) => updateProperty(valueKey, event.target.value),
-        value: value ? value : ''
+        onChange: event => setInputValue(event.target.value),
+        onBlur: () => updateProperty(valueKey, inputValue),
+        value: inputValue
     };
 
     return (

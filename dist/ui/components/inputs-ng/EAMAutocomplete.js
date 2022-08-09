@@ -19,10 +19,6 @@ import { areEqual, componentsProps, renderOptionHandler, updateCodeDesc } from '
 import EAMBaseInput from './components/EAMBaseInput';
 import TextField from './components/TextField';
 import { saveHistory } from './tools/history-tools';
-var autocompleteDivStyle = {
-  flex: "999 1 auto",
-  display: "flex"
-};
 
 var EAMAutocomplete = function EAMAutocomplete(props) {
   var autocompleteHandler = props.autocompleteHandler,
@@ -84,9 +80,7 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
     }
   };
 
-  return /*#__PURE__*/React.createElement(EAMBaseInput, props, /*#__PURE__*/React.createElement("div", {
-    style: autocompleteDivStyle
-  }, /*#__PURE__*/React.createElement(Autocomplete // Options
+  return /*#__PURE__*/React.createElement(EAMBaseInput, props, /*#__PURE__*/React.createElement(Autocomplete // Options
   , {
     options: fetchedOptions,
     getOptionLabel: getOptionLabelHandler,
@@ -119,7 +113,7 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
     renderInput: function renderInput(params) {
       return /*#__PURE__*/React.createElement(TextField, _extends({}, params, props));
     }
-  })));
+  }));
 };
 
 EAMAutocomplete.defaultProps = {};

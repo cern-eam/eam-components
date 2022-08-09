@@ -21,11 +21,6 @@ import EAMBaseInput from './components/EAMBaseInput';
 import TextField from './components/TextField';
 import useFetchSelectOptions from './hooks/useFetchSelectOptions';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import OptionsPaper from './components/OptionsPaper';
-var autocompleteDivStyle = {
-  flex: "999 1 auto",
-  display: "flex"
-};
 
 var EAMSelect = function EAMSelect(props) {
   var autocompleteHandler = props.autocompleteHandler,
@@ -121,9 +116,7 @@ var EAMSelect = function EAMSelect(props) {
     }
   };
 
-  return /*#__PURE__*/React.createElement(EAMBaseInput, props, /*#__PURE__*/React.createElement("div", {
-    style: autocompleteDivStyle
-  }, /*#__PURE__*/React.createElement(Autocomplete // Options
+  return /*#__PURE__*/React.createElement(EAMBaseInput, props, /*#__PURE__*/React.createElement(Autocomplete // Options
   , {
     options: options || fetchedOptions,
     getOptionLabel: getOptionLabelHandler,
@@ -157,7 +150,7 @@ var EAMSelect = function EAMSelect(props) {
         })
       }));
     }
-  })));
+  }));
 };
 
 EAMSelect.defaultProps = {};

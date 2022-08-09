@@ -6,11 +6,6 @@ import EAMBaseInput from './components/EAMBaseInput';
 import TextField from './components/TextField';
 import { saveHistory } from './tools/history-tools';
 
-const autocompleteDivStyle = {
-  flex: "999 1 auto",
-  display: "flex"
-}
-
 const EAMAutocomplete = (props) => {
    
   let {autocompleteHandler, autocompleteHandlerParams, 
@@ -58,7 +53,6 @@ const EAMAutocomplete = (props) => {
 
     return (
       <EAMBaseInput {...props}>
-        <div style={autocompleteDivStyle}>
           <Autocomplete   
             // Options
             options={fetchedOptions} 
@@ -87,7 +81,6 @@ const EAMAutocomplete = (props) => {
             renderInput={(params) => <TextField {...params}  {...props} />}
             
           />
-        </div>
       </EAMBaseInput>
       );
 };
