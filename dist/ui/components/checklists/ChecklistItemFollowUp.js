@@ -85,13 +85,13 @@ var ChecklistItemFollowUp = /*#__PURE__*/function (_Component) {
         }, /*#__PURE__*/React.createElement(Link, {
           to: getWoLink(checklistItem.followUpWorkOrder),
           target: "_blank"
-        }, checklistItem.followUpWorkOrder)) : /*#__PURE__*/React.createElement(Checkbox, _defineProperty({
+        }, checklistItem.followUpWorkOrder)) : /*#__PURE__*/React.createElement(Checkbox, {
           color: "primary",
           checked: checklistItem.followUp === '+' || checklistItem.followUp === true,
-          disabled: Boolean(checklistItem.followUpWorkOrder),
+          disabled: Boolean(checklistItem.followUpWorkOrder) || this.props.disabled,
           onMouseDown: this.handleChange,
           onTouchStart: this.handleChange
-        }, "disabled", this.props.disabled)),
+        }),
         labelPlacement: "start",
         label: "Follow-up"
       })));

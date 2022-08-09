@@ -24,7 +24,8 @@ var EAMDatePicker = function EAMDatePicker(props) {
       valueKey = props.valueKey,
       updateProperty = props.updateProperty,
       style = props.style,
-      errorText = props.errorText;
+      errorText = props.errorText,
+      disabled = props.disabled;
 
   var _useState = useState(false),
       _useState2 = _slicedToArray(_useState, 2),
@@ -36,7 +37,7 @@ var EAMDatePicker = function EAMDatePicker(props) {
     adapterLocale: enLocale
   }, /*#__PURE__*/React.createElement(DatePicker, {
     renderInput: function renderInput(props) {
-      return renderDatePickerInput(props, isInvalidDate, style, errorText);
+      return renderDatePickerInput(props, isInvalidDate, style, errorText, disabled);
     },
     value: value,
     disableMaskedInput: true,

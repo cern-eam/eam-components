@@ -41,10 +41,9 @@ export default class ChecklistItemFollowUp extends Component {
                             <Checkbox
                                 color="primary"
                                 checked={checklistItem.followUp === '+' || checklistItem.followUp === true}
-                                disabled={Boolean(checklistItem.followUpWorkOrder)}
+                                disabled={Boolean(checklistItem.followUpWorkOrder) || this.props.disabled}
                                 onMouseDown={this.handleChange}
-                                onTouchStart={this.handleChange}
-                                disabled={this.props.disabled} />
+                                onTouchStart={this.handleChange}/>
                         }
                         labelPlacement='start'
                         label={"Follow-up"}

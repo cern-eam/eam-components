@@ -1,6 +1,6 @@
 import TextField from "../components/TextField";
 import React from 'react';
-export var renderDatePickerInput = function renderDatePickerInput(_ref, isInvalidDate, style, errorText) {
+export var renderDatePickerInput = function renderDatePickerInput(_ref, isInvalidDate, style, errorText, disabled) {
   var inputRef = _ref.inputRef,
       inputProps = _ref.inputProps,
       InputProps = _ref.InputProps;
@@ -19,7 +19,7 @@ export var renderDatePickerInput = function renderDatePickerInput(_ref, isInvali
     style: style,
     inputRef: inputRef,
     inputProps: inputProps,
-    endAdornment: endAdornment,
+    endAdornment: disabled ? null : endAdornment,
     errorText: errorText
   });
 };
