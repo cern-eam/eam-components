@@ -70,7 +70,7 @@ const EAMSelect = (props) => {
 
 
     const onCloseHandler = (event, reason) => {
-      if (reason === 'blur' && inputValue) {
+      if ( (reason === 'blur' || reason === 'escape') && inputValue) {
         if (getOptions().some(o => o.code === inputValue)) {
             let option = getOptions().find(o => o.code === inputValue);
             updateCodeDesc(updateProperty, valueKey, option.code, descKey, option.desc, onChangeValue);

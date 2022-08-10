@@ -45,7 +45,6 @@ var EAMBaseInput = function EAMBaseInput(props) {
     rootStyle.pointerEvents = "none";
   }
 
-  console.log('render', label);
   return /*#__PURE__*/React.createElement("div", {
     style: _objectSpread({}, rootStyle, {}, props.rootStyle)
   }, label && /*#__PURE__*/React.createElement("div", {

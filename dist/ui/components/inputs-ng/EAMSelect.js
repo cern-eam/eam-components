@@ -104,7 +104,7 @@ var EAMSelect = function EAMSelect(props) {
   };
 
   var onCloseHandler = function onCloseHandler(event, reason) {
-    if (reason === 'blur' && inputValue) {
+    if ((reason === 'blur' || reason === 'escape') && inputValue) {
       if (getOptions().some(function (o) {
         return o.code === inputValue;
       })) {

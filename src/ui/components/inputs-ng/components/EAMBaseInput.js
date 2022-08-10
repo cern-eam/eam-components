@@ -42,8 +42,6 @@ const EAMBaseInput = (props) => {
         rootStyle.pointerEvents = "none";
     }
 
-    console.log('render', label)
-
     return (<div style={{...rootStyle, ...props.rootStyle}}>
         {label &&
         <div style = {divLabelStyle}>
