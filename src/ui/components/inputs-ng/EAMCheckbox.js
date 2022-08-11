@@ -26,7 +26,7 @@ const EAMCheckbox = (props) => {
     };
 
     return (
-        <EAMBaseInput  {...props} rootStyle={rootStyle}>
+        <EAMBaseInput  {...props} rootStyle={rootStyle} componentStyle={{flex: "unset"}}>
             <Checkbox
                 color="primary"
                 checked={isChecked(value)}

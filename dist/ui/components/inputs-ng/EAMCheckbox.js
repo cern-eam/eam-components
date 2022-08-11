@@ -25,7 +25,10 @@ var EAMCheckbox = function EAMCheckbox(props) {
   };
 
   return /*#__PURE__*/React.createElement(EAMBaseInput, _extends({}, props, {
-    rootStyle: rootStyle
+    rootStyle: rootStyle,
+    componentStyle: {
+      flex: "unset"
+    }
   }), /*#__PURE__*/React.createElement(Checkbox, {
     color: "primary",
     checked: isChecked(value),
