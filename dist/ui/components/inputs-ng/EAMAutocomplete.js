@@ -59,8 +59,6 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
   };
 
   var onChangeHandler = function onChangeHandler(event, newValue, reason) {
-    console.log('change', reason);
-
     if (reason === 'clear') {
       // Case handled by the onCloseHandler as we don't want to fire the change event before blurying 
       return;
