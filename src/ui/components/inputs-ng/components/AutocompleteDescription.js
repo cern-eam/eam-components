@@ -13,14 +13,16 @@ const AutocompleteDescription = ({description, value}) => {
     const rootStyle = {
         position: "absolute",
         width: `calc(100% - ${getTextWidth(value) + 30}px)`,
-        top: 12,
+        top: 1,
         left: 20 + getTextWidth(value),
         color: "#acacac",
         pointerEvents: "none",
-        fontSize: 14,
         textOverflow: "ellipsis",
         overflow: "hidden",
-        whiteSpace: "nowrap"
+        whiteSpace: "nowrap",
+        display: "flex",
+        alignItems: "center",
+        height: "100%"
     }
 
     if (!description) {
