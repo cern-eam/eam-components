@@ -22,7 +22,10 @@ const StyledInput = styled('input')(({theme}) => ({
     '&:focus': {
         outline: `2px solid ${theme.palette.primary.main}`,
         backgroundColor: "#fff"
-        //boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px"
+        //box,Shadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px"
+    },
+    '&:disabled': {
+        backgroundColor: "#fafafa"
     }
 }))
 
@@ -64,7 +67,7 @@ const TextField = (props) => {
         <div style={{...divRootContainerStyle, ...style}}>
             <div style={divInputContainerStyle}>
                 <div style={divInputStyle} ref={props.InputProps?.ref}>
-                    <StyledInput type={type ?? 'text'} ref={inputRef} {...inputProps} />
+                    <StyledInput type={type ?? 'text'} ref={inputRef} {...inputProps} disabled={disabled}/>
                     {!hideDescription &&<AutocompleteDescription
                         description = {desc}
                         value = {value}

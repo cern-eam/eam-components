@@ -30,8 +30,11 @@ var StyledInput = styled('input')(function (_ref) {
     },
     '&:focus': {
       outline: "2px solid ".concat(theme.palette.primary.main),
-      backgroundColor: "#fff" //boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px"
+      backgroundColor: "#fff" //box,Shadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px"
 
+    },
+    '&:disabled': {
+      backgroundColor: "#fafafa"
     }
   };
 });
@@ -81,7 +84,9 @@ var TextField = function TextField(props) {
   }, /*#__PURE__*/React.createElement(StyledInput, _extends({
     type: type ?? 'text',
     ref: inputRef
-  }, inputProps)), !hideDescription && /*#__PURE__*/React.createElement(AutocompleteDescription, {
+  }, inputProps, {
+    disabled: disabled
+  })), !hideDescription && /*#__PURE__*/React.createElement(AutocompleteDescription, {
     description: desc,
     value: value
   }), endTextAdornment && /*#__PURE__*/React.createElement("div", {

@@ -14,7 +14,8 @@ const EAMCheckbox = (props) => {
     const { 
         value, 
         valueKey,
-        updateProperty} = props;
+        updateProperty,
+        disabled} = props;
 
     const isChecked = (value) => {
         const checkedTextValue = value || '';
@@ -31,6 +32,7 @@ const EAMCheckbox = (props) => {
                 color="primary"
                 checked={isChecked(value)}
                 onChange={handleChange}
+                disabled={disabled}
             />
         </EAMBaseInput>
     );

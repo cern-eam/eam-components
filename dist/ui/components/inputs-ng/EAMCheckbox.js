@@ -13,7 +13,8 @@ var rootStyle = {
 var EAMCheckbox = function EAMCheckbox(props) {
   var value = props.value,
       valueKey = props.valueKey,
-      updateProperty = props.updateProperty;
+      updateProperty = props.updateProperty,
+      disabled = props.disabled;
 
   var isChecked = function isChecked(value) {
     var checkedTextValue = value || '';
@@ -32,7 +33,8 @@ var EAMCheckbox = function EAMCheckbox(props) {
   }), /*#__PURE__*/React.createElement(Checkbox, {
     color: "primary",
     checked: isChecked(value),
-    onChange: handleChange
+    onChange: handleChange,
+    disabled: disabled
   }));
 };
 

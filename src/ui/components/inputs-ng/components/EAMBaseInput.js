@@ -18,6 +18,15 @@ const componentStyle = {
     display: "flex"
 }
 
+const rootStyle = {
+    width: "100%",
+    margin: "5px",
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "center",
+}
+
 const EAMBaseInput = (props) => {
 
     const {hidden, disabled, required, label} = props;
@@ -25,21 +34,6 @@ const EAMBaseInput = (props) => {
     // Hide 
     if (hidden) {
         return React.Fragment;
-    }
-
-    const rootStyle = {
-        width: "100%",
-        margin: "5px",
-        display: "flex",
-        flexDirection: "row",
-        flexWrap: "wrap",
-        alignItems: "center",
-    }
-
-    // Disable
-    if (disabled) {
-        rootStyle.opacity = "0.8";
-        rootStyle.pointerEvents = "none";
     }
 
     return (<div style={{...rootStyle, ...props.rootStyle}}>

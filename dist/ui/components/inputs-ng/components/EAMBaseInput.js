@@ -20,6 +20,14 @@ var componentStyle = {
   flex: "999 1 320px",
   display: "flex"
 };
+var rootStyle = {
+  width: "100%",
+  margin: "5px",
+  display: "flex",
+  flexDirection: "row",
+  flexWrap: "wrap",
+  alignItems: "center"
+};
 
 var EAMBaseInput = function EAMBaseInput(props) {
   var hidden = props.hidden,
@@ -29,20 +37,6 @@ var EAMBaseInput = function EAMBaseInput(props) {
 
   if (hidden) {
     return React.Fragment;
-  }
-
-  var rootStyle = {
-    width: "100%",
-    margin: "5px",
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    alignItems: "center"
-  }; // Disable
-
-  if (disabled) {
-    rootStyle.opacity = "0.8";
-    rootStyle.pointerEvents = "none";
   }
 
   return /*#__PURE__*/React.createElement("div", {
