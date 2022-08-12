@@ -469,18 +469,8 @@ class Checklists extends Component {
     }
 
     setNewFilter(filters) {
-        const {activity, equipment} = filters;
+        const {activityCode, equipmentCode} = filters;
         
-        const activityCode = 
-            activity === "" ? null : 
-            activity === undefined ? undefined :
-            activity.code;
-
-        const equipmentCode =
-            equipment === "" ? null : 
-            equipment === undefined ? undefined :
-            equipment.code;
-
         this.setState((state, props) => {
             // the activity and equipment codes that will be effectively used for the filtering
             // if any parameterized filter is unspecified (undefined), the value used is in state
@@ -610,23 +600,24 @@ class Checklists extends Component {
                                 <div style={{paddingLeft: 25, paddingRight: 25}}>
                                     {activities.length > 1 && <EAMSelect
                                         label={"Activity"}
-                                        options={[{code: null, desc: "\u200B"}, ...filteredActivities
-                                        .filter(activity => filteredEquipment ? activity.equipments[filteredEquipment] !== undefined : true)
-                                        .map(activity => 
-                                        ({code: activity.activityCode, desc: activity.activityCode + " — " + activity.activityNote}))]}
-                                            value={filteredActivity ? filteredActivity : undefined}
-                                            onChange={obj => this.setNewFilter({activity: obj})}
-                                            menuContainerStyle={{'zIndex': 999}}/>}
+                                        options={filteredActivities
+                                                .filter(activity => filteredEquipment ? activity.equipments[filteredEquipment] !== undefined : true)
+                                                .map(activity => 
+                                                ({code: activity.activityCode, desc: activity.activityCode + " — " + activity.activityNote}))}
+                                        value={filteredActivity}
+                                        onChangeValue={activityCode => this.setNewFilter({activityCode: activityCode})}
+                                        menuContainerStyle={{'zIndex': 999}}/>}
+                                    
                                     {Object.keys(equipments).length > 1 && <EAMSelect
                                         label={"Equipment"}
-                                        options={[{code: null, desc: "\u200B"}, ...Object.keys(equipments)
-                                        .filter(key => filteredActivity ? filteredActivityObject.equipments[key] !== undefined : true)
-                                        .map(key => equipments[key])
-                                        .map(equipment => (
-                                            {...equipment, desc: equipment.code + " — " + equipment.desc}))]}
-                                            value={filteredEquipment ? filteredEquipment : undefined}
-                                            onChange={obj => this.setNewFilter({equipment: obj})}
-                                            menuContainerStyle={{'zIndex': 999}}/>}
+                                        options={Object.keys(equipments)
+                                                .filter(key => filteredActivity ? filteredActivityObject.equipments[key] !== undefined : true)
+                                                .map(key => equipments[key])
+                                                .map(equipment => (
+                                                {...equipment, desc: equipment.code + " — " + equipment.desc}))}
+                                        value={filteredEquipment ? filteredEquipment : undefined}
+                                        onChangeValue={equipmentCode => this.setNewFilter({equipmentCode: equipmentCode})}
+                                        menuContainerStyle={{'zIndex': 999}}/>}
                                 </div>
                                 {this.renderActivities(filteredActivity, filteredEquipment)}
                                 {this.props.bottomSlot}

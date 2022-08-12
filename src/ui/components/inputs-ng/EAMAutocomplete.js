@@ -23,7 +23,7 @@ const EAMAutocomplete = (props) => {
     const onInputChangeHandler = (event, newInputValue) => {
      setInputValue(newInputValue);
      if (newInputValue !== value && descKey) {
-      updateProperty(descKey, '');
+      updateProperty?.(descKey, '');
      }
     }
 

@@ -74,7 +74,7 @@ var EAMSelect = function EAMSelect(props) {
     setInputValue(newInputValue);
 
     if (newInputValue !== value && descKey) {
-      updateProperty(descKey, '');
+      updateProperty?.(descKey, '');
     }
   };
 

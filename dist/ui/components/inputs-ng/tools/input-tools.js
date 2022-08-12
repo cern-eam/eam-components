@@ -75,10 +75,10 @@ export var formatLabel = function formatLabel(renderValue, option) {
   return "".concat(option.code, " - ").concat(option.desc);
 };
 export var updateCodeDesc = function updateCodeDesc(updateProperty, valueKey, value, descKey, desc, onChangeValue) {
-  updateProperty(valueKey, value);
+  updateProperty?.(valueKey, value);
 
   if (descKey) {
-    updateProperty(descKey, desc);
+    updateProperty?.(descKey, desc);
   }
 
   onChangeValue?.(value);

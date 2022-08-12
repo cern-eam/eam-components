@@ -54,7 +54,7 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
     setInputValue(newInputValue);
 
     if (newInputValue !== value && descKey) {
-      updateProperty(descKey, '');
+      updateProperty?.(descKey, '');
     }
   };
 

@@ -649,10 +649,8 @@ var Checklists = /*#__PURE__*/function (_Component) {
     value: function setNewFilter(filters) {
       var _this7 = this;
 
-      var activity = filters.activity,
-          equipment = filters.equipment;
-      var activityCode = activity === "" ? null : activity === undefined ? undefined : activity.code;
-      var equipmentCode = equipment === "" ? null : equipment === undefined ? undefined : equipment.code;
+      var activityCode = filters.activityCode,
+          equipmentCode = filters.equipmentCode;
       this.setState(function (state, props) {
         // the activity and equipment codes that will be effectively used for the filtering
         // if any parameterized filter is unspecified (undefined), the value used is in state
@@ -802,21 +800,18 @@ var Checklists = /*#__PURE__*/function (_Component) {
         }
       }, activities.length > 1 && /*#__PURE__*/React.createElement(EAMSelect, {
         label: "Activity",
-        options: [{
-          code: null,
-          desc: "\u200B"
-        }].concat(_toConsumableArray(filteredActivities.filter(function (activity) {
+        options: filteredActivities.filter(function (activity) {
           return filteredEquipment ? activity.equipments[filteredEquipment] !== undefined : true;
         }).map(function (activity) {
           return {
             code: activity.activityCode,
             desc: activity.activityCode + " — " + activity.activityNote
           };
-        }))),
-        value: filteredActivity ? filteredActivity : undefined,
-        onChange: function onChange(obj) {
+        }),
+        value: filteredActivity,
+        onChangeValue: function onChangeValue(activityCode) {
           return _this8.setNewFilter({
-            activity: obj
+            activityCode: activityCode
           });
         },
         menuContainerStyle: {
@@ -824,10 +819,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
         }
       }), Object.keys(equipments).length > 1 && /*#__PURE__*/React.createElement(EAMSelect, {
         label: "Equipment",
-        options: [{
-          code: null,
-          desc: "\u200B"
-        }].concat(_toConsumableArray(Object.keys(equipments).filter(function (key) {
+        options: Object.keys(equipments).filter(function (key) {
           return filteredActivity ? filteredActivityObject.equipments[key] !== undefined : true;
         }).map(function (key) {
           return equipments[key];
@@ -835,11 +827,11 @@ var Checklists = /*#__PURE__*/function (_Component) {
           return _objectSpread({}, equipment, {
             desc: equipment.code + " — " + equipment.desc
           });
-        }))),
+        }),
         value: filteredEquipment ? filteredEquipment : undefined,
-        onChange: function onChange(obj) {
+        onChangeValue: function onChangeValue(equipmentCode) {
           return _this8.setNewFilter({
-            equipment: obj
+            equipmentCode: equipmentCode
           });
         },
         menuContainerStyle: {
