@@ -12,7 +12,7 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { areEqual } from './tools/input-tools';
 import EAMBaseInput from './components/EAMBaseInput';
 import TextField from './components/TextField';
@@ -22,11 +22,14 @@ var EAMTextField = function EAMTextField(props) {
       valueKey = props.valueKey,
       updateProperty = props.updateProperty;
 
-  var _useState = useState(value ?? ''),
+  var _useState = useState(value || ''),
       _useState2 = _slicedToArray(_useState, 2),
       inputValue = _useState2[0],
       setInputValue = _useState2[1];
 
+  useEffect(function () {
+    return setInputValue(value || '');
+  }, [value]);
   var inputProps = {
     onChange: function onChange(event) {
       return setInputValue(event.target.value);
