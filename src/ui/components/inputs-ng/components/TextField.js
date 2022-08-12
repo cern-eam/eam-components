@@ -55,7 +55,7 @@ const TextField = (props) => {
                                     {...inputProps} 
                                     disabled={disabled} 
                                     maxLength={maxLength}
-                                        //TODO this is not the best solution as we are overriding onInput handler that could be potentially passed from inputProps
+                                    //TODO this is not the best solution as we are overriding onInput handler that could be potentially passed from inputProps
                                     onInput={uppercase ? onInputUpperCaseHandler : undefined}/>
                     {!hideDescription &&<TextFieldDescription
                         description = {desc}

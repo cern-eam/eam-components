@@ -32,8 +32,7 @@ var EAMTextField = function EAMTextField(props) {
   }, [value]);
   var inputProps = {
     onChange: function onChange(event) {
-      console.log('on change fired');
-      setInputValue(event.target.value);
+      return setInputValue(event.target.value);
     },
     onBlur: function onBlur() {
       return updateProperty(valueKey, inputValue);
