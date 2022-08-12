@@ -21,7 +21,8 @@ var TextFieldInput = styled('input')(function (_ref) {
       backgroundColor: "#fff"
     },
     '&:disabled': {
-      backgroundColor: "#fafafa"
+      backgroundColor: "#f3f3f3",
+      border: "1px solid #fafafa"
     }
   };
 });

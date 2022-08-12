@@ -59,8 +59,8 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
   };
 
   var onChangeHandler = function onChangeHandler(event, newValue, reason) {
-    if (reason === 'clear') {
-      // Case handled by the onCloseHandler as we don't want to fire the change event before blurying 
+    if (reason === 'clear' || reason === 'createOption') {
+      // Cases handled by the onCloseHandler 
       return;
     }
 
@@ -72,9 +72,9 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
   };
 
   var onCloseHandler = function onCloseHandler(event, reason) {
-    setOpen(false); // Only to be fired when we blur or press ESC and the inputValue is different than the original value
+    setOpen(false); // Only to be fired when we blur, press ESC or hit enter and the inputValue is different than the original value
 
-    if ((reason === 'blur' || reason === 'escape') && inputValue !== value) {
+    if ((reason === 'blur' || reason === 'escape' || reason === 'createOption') && inputValue !== value) {
       // TODO: validation if inputValue is not empty 
       updateCodeDesc(updateProperty, valueKey, inputValue, descKey, '', onChangeValue);
     }

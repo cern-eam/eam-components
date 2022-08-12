@@ -35,6 +35,7 @@ var EAMSelect = function EAMSelect(props) {
       optionsTransformer = props.optionsTransformer,
       required = props.required,
       id = props.id,
+      disabled = props.disabled,
       renderValue = props.renderValue,
       endTextAdornment = props.endTextAdornment;
 
@@ -139,7 +140,7 @@ var EAMSelect = function EAMSelect(props) {
       return /*#__PURE__*/React.createElement(TextField, _extends({
         hideDescription: true
       }, params, props, {
-        endAdornment: /*#__PURE__*/React.createElement(KeyboardArrowDownIcon, {
+        endAdornment: !disabled && /*#__PURE__*/React.createElement(KeyboardArrowDownIcon, {
           style: {
             marginRight: endTextAdornment ? 76 : 6,
             marginLeft: endTextAdornment ? -100 : -30,

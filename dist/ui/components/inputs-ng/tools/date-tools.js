@@ -20,7 +20,8 @@ export var renderDatePickerInput = function renderDatePickerInput(_ref, isInvali
     inputRef: inputRef,
     inputProps: inputProps,
     endAdornment: disabled ? null : endAdornment,
-    errorText: errorText
+    errorText: errorText,
+    disabled: disabled
   });
 };
 export var onChangeHandler = function onChangeHandler(updateProperty, setIsInvalidDate, valueKey, newValue) {

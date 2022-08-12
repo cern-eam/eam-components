@@ -3,7 +3,7 @@ import React from 'react';
 const divLabelStyle = {
     flex: "1 1 140px",
     fontSize: 14,
-    margin: "5px 10px 5px 0px",
+    margin: "5px 10px 2px 0px",
     color: "#1a237e"
     //fontWeight: "bold"
 }
@@ -20,7 +20,7 @@ const componentStyle = {
 
 const rootStyle = {
     width: "100%",
-    margin: "5px",
+    margin: "3px",
     display: "flex",
     flexDirection: "row",
     flexWrap: "wrap",

@@ -12,7 +12,7 @@ const EAMSelect = (props) => {
     value, valueKey, descKey, desc,
     updateProperty, onChangeValue,
     options, optionsTransformer,
-    required, id,
+    required, id, disabled,
     renderValue, endTextAdornment} = props;
 
     let [inputValue, setInputValue] = useState("")
@@ -100,11 +100,11 @@ const EAMSelect = (props) => {
             size="small"
             fullWidth
             renderInput={(params) => <TextField hideDescription = {true} {...params} {...props} 
-                                                endAdornment={<KeyboardArrowDownIcon style={{marginRight: endTextAdornment? 76 : 6,
-                                                                                             marginLeft: endTextAdornment ? -100 : -30, 
-                                                                                             zIndex: 999,
-                                                                                             color: "#acacac",
-                                                                                             pointerEvents: "none"}}/>}/>}
+                                                endAdornment={!disabled && <KeyboardArrowDownIcon style={{marginRight: endTextAdornment? 76 : 6,
+                                                                                                 marginLeft: endTextAdornment ? -100 : -30, 
+                                                                                                 zIndex: 999,
+                                                                                                 color: "#acacac",
+                                                                                                 pointerEvents: "none"}}/>}/>}
           />
       </EAMBaseInput>
       );

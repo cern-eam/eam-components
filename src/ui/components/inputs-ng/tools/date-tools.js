@@ -14,7 +14,8 @@ export const renderDatePickerInput = ({ inputRef, inputProps, InputProps }, isIn
                  inputRef={inputRef} 
                  inputProps={inputProps} 
                  endAdornment={disabled ? null : endAdornment} 
-                 errorText={errorText}/>
+                 errorText={errorText}
+                 disabled={disabled}/>
     )
 }
 
