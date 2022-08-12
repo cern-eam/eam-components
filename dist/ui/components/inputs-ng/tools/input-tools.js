@@ -26,10 +26,18 @@ export var processElementInfo = function processElementInfo(elementInfo) {
     id: getElementKey(elementInfo)
   };
 
+  if (elementInfo.maxLength) {
+    data.maxLength = elementInfo.maxLength;
+  }
+
   if (elementInfo.fieldType === 'currency') {
     data.type = 'number';
   } else {
     data.type = 'text';
+  }
+
+  if (elementInfo.characterCase === 'uppercase') {
+    data.uppercase = true;
   }
 
   return data;

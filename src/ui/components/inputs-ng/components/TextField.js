@@ -1,34 +1,9 @@
 import React from 'react';
-import AutocompleteDescription from './AutocompleteDescription';
 import EAMBarcodeScanner from './EAMBarcodeScanner';
 import EAMLink from './EAMLink';
-import './TextField.css'
-import { styled } from '@mui/material/styles';
-
-const StyledInput = styled('input')(({theme}) => ({
-    '&': {
-        display: "block",
-        width: "100%",
-        boxSizing: "border-box",
-        paddingLeft: 7,
-        fontSize: "15px",
-        lineHeight: 1.5,
-        color: "#495057",
-        backgroundClip: "padding-box",
-        border: "1px solid #ced4da",
-        borderRadius: "4px",
-        backgroundColor: "#fdfdfd",
-        height: 38
-    },
-    '&:focus': {
-        outline: `2px solid ${theme.palette.primary.main}`,
-        backgroundColor: "#fff"
-        //box,Shadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px"
-    },
-    '&:disabled': {
-        backgroundColor: "#fafafa"
-    }
-}))
+import TextFieldInput from './TextFieldInput';
+import TextFieldTextAdornment from './TextFieldTextAdornment';
+import TextFieldDescription from './TextFieldDescription';
 
 const divInputStyle = {
     flex: "1 1 auto",
@@ -39,7 +14,6 @@ const divInputContainerStyle = {
     flex: "1 1 auto",
     display: "flex",
     alignItems: "center",
-    
 }
 
 const divRootContainerStyle = {
@@ -62,18 +36,32 @@ const TextField = (props) => {
         inputProps, 
         inputRef,
         endTextAdornment, endAdornment,
-        hideDescription, disabled, errorText, style, type} = props;
+        hideDescription, disabled, maxLength, uppercase, errorText, style, type} = props;
+
+    const onInputUpperCaseHandler = event => {
+        var input = event.target;
+        var start = input.selectionStart;
+        var end = input.selectionEnd;
+        input.value = input.value.toLocaleUpperCase();
+        input.setSelectionRange(start, end);
+    }
 
     return (
         <div style={{...divRootContainerStyle, ...style}}>
             <div style={divInputContainerStyle}>
                 <div style={divInputStyle} ref={props.InputProps?.ref}>
-                    <StyledInput type={type ?? 'text'} ref={inputRef} {...inputProps} disabled={disabled}/>
-                    {!hideDescription &&<AutocompleteDescription
+                    <TextFieldInput type={type ?? 'text'} 
+                                    ref={inputRef} 
+                                    {...inputProps} 
+                                    disabled={disabled} 
+                                    maxLength={maxLength}
+                                        //TODO this is not the best solution as we are overriding onInput handler that could be potentially passed from inputProps
+                                    onInput={uppercase ? onInputUpperCaseHandler : undefined}/>
+                    {!hideDescription &&<TextFieldDescription
                         description = {desc}
                         value = {value}
                     />}
-                    {endTextAdornment && <div className="divTextAdornmentStyle">{endTextAdornment}</div>}
+                    {endTextAdornment && <TextFieldTextAdornment>{endTextAdornment}</TextFieldTextAdornment>}
                 </div>
                 {endAdornment}
                 {barcodeScanner && !disabled && <EAMBarcodeScanner updateProperty={updateProperty} valueKey = {valueKey}/>}

@@ -7,38 +7,11 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 import React from 'react';
-import AutocompleteDescription from './AutocompleteDescription';
 import EAMBarcodeScanner from './EAMBarcodeScanner';
 import EAMLink from './EAMLink';
-import './TextField.css';
-import { styled } from '@mui/material/styles';
-var StyledInput = styled('input')(function (_ref) {
-  var theme = _ref.theme;
-  return {
-    '&': {
-      display: "block",
-      width: "100%",
-      boxSizing: "border-box",
-      paddingLeft: 7,
-      fontSize: "15px",
-      lineHeight: 1.5,
-      color: "#495057",
-      backgroundClip: "padding-box",
-      border: "1px solid #ced4da",
-      borderRadius: "4px",
-      backgroundColor: "#fdfdfd",
-      height: 38
-    },
-    '&:focus': {
-      outline: "2px solid ".concat(theme.palette.primary.main),
-      backgroundColor: "#fff" //box,Shadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px"
-
-    },
-    '&:disabled': {
-      backgroundColor: "#fafafa"
-    }
-  };
-});
+import TextFieldInput from './TextFieldInput';
+import TextFieldTextAdornment from './TextFieldTextAdornment';
+import TextFieldDescription from './TextFieldDescription';
 var divInputStyle = {
   flex: "1 1 auto",
   position: "relative"
@@ -72,9 +45,20 @@ var TextField = function TextField(props) {
       endAdornment = props.endAdornment,
       hideDescription = props.hideDescription,
       disabled = props.disabled,
+      maxLength = props.maxLength,
+      uppercase = props.uppercase,
       errorText = props.errorText,
       style = props.style,
       type = props.type;
+
+  var onInputUpperCaseHandler = function onInputUpperCaseHandler(event) {
+    var input = event.target;
+    var start = input.selectionStart;
+    var end = input.selectionEnd;
+    input.value = input.value.toLocaleUpperCase();
+    input.setSelectionRange(start, end);
+  };
+
   return /*#__PURE__*/React.createElement("div", {
     style: _objectSpread({}, divRootContainerStyle, {}, style)
   }, /*#__PURE__*/React.createElement("div", {
@@ -82,17 +66,18 @@ var TextField = function TextField(props) {
   }, /*#__PURE__*/React.createElement("div", {
     style: divInputStyle,
     ref: props.InputProps?.ref
-  }, /*#__PURE__*/React.createElement(StyledInput, _extends({
+  }, /*#__PURE__*/React.createElement(TextFieldInput, _extends({
     type: type ?? 'text',
     ref: inputRef
   }, inputProps, {
-    disabled: disabled
-  })), !hideDescription && /*#__PURE__*/React.createElement(AutocompleteDescription, {
+    disabled: disabled,
+    maxLength: maxLength //TODO this is not the best solution as we are overriding onInput handler that could be potentially passed from inputProps
+    ,
+    onInput: uppercase ? onInputUpperCaseHandler : undefined
+  })), !hideDescription && /*#__PURE__*/React.createElement(TextFieldDescription, {
     description: desc,
     value: value
-  }), endTextAdornment && /*#__PURE__*/React.createElement("div", {
-    className: "divTextAdornmentStyle"
-  }, endTextAdornment)), endAdornment, barcodeScanner && !disabled && /*#__PURE__*/React.createElement(EAMBarcodeScanner, {
+  }), endTextAdornment && /*#__PURE__*/React.createElement(TextFieldTextAdornment, null, endTextAdornment)), endAdornment, barcodeScanner && !disabled && /*#__PURE__*/React.createElement(EAMBarcodeScanner, {
     updateProperty: updateProperty,
     valueKey: valueKey
   }), link && /*#__PURE__*/React.createElement(EAMLink, {

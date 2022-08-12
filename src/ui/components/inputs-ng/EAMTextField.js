@@ -11,7 +11,7 @@ const EAMTextField = (props) => {
     useEffect(() => setInputValue(value || ''), [value])
 
     let inputProps = {
-        onChange: event => setInputValue(event.target.value),
+        onChange: event => {console.log('on change fired'); setInputValue(event.target.value)},
         onBlur: () => updateProperty(valueKey, inputValue),
         value: inputValue
     };
