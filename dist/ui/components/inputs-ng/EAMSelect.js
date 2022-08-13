@@ -74,7 +74,7 @@ var EAMSelect = function EAMSelect(props) {
   var onInputChangeHandler = function onInputChangeHandler(event, newInputValue) {
     setInputValue(newInputValue);
 
-    if (newInputValue !== value && descKey) {
+    if (newInputValue !== value && descKey && desc) {
       updateProperty?.(descKey, '');
     }
   };

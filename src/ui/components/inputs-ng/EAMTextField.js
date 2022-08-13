@@ -12,7 +12,7 @@ const EAMTextField = (props) => {
 
     let inputProps = {
         onChange: event => setInputValue(event.target.value),
-        onBlur: () => updateProperty(valueKey, inputValue),
+        onBlur: () => {if (inputValue !== value) updateProperty(valueKey, inputValue);},
         value: inputValue
     };
 

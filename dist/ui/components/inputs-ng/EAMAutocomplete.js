@@ -25,6 +25,7 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
       autocompleteHandlerParams = props.autocompleteHandlerParams,
       value = props.value,
       valueKey = props.valueKey,
+      desc = props.desc,
       descKey = props.descKey,
       updateProperty = props.updateProperty,
       id = props.id,
@@ -53,7 +54,7 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
   var onInputChangeHandler = function onInputChangeHandler(event, newInputValue) {
     setInputValue(newInputValue);
 
-    if (newInputValue !== value && descKey) {
+    if (newInputValue !== value && descKey && desc) {
       updateProperty?.(descKey, '');
     }
   };

@@ -9,7 +9,7 @@ import { saveHistory } from './tools/history-tools';
 const EAMAutocomplete = (props) => {
    
   let {autocompleteHandler, autocompleteHandlerParams, 
-       value, valueKey, descKey,
+       value, valueKey, desc, descKey,
        updateProperty, id, renderValue, onChangeValue} = props;
 
     let [inputValue, setInputValue] = useState("")
@@ -22,7 +22,7 @@ const EAMAutocomplete = (props) => {
 
     const onInputChangeHandler = (event, newInputValue) => {
      setInputValue(newInputValue);
-     if (newInputValue !== value && descKey) {
+     if (newInputValue !== value && descKey && desc) {
       updateProperty?.(descKey, '');
      }
     }

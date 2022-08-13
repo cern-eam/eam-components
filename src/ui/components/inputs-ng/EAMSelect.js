@@ -38,7 +38,7 @@ const EAMSelect = (props) => {
 
     const onInputChangeHandler = (event, newInputValue) => {
         setInputValue(newInputValue);
-        if (newInputValue !== value && descKey) {
+        if (newInputValue !== value && descKey && desc) {
          updateProperty?.(descKey, '');
         }
        }
