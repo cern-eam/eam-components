@@ -5,13 +5,13 @@ import { Box } from '@mui/material';
 import HistoryIcon from '@mui/icons-material/History';
 import React from 'react';
 export var isRequired = function isRequired(elementInfo) {
-  return elementInfo && (elementInfo.attribute === 'R' || elementInfo.attribute === 'S');
+  return elementInfo?.attribute === 'R' || elementInfo?.attribute === 'S';
 };
 export var isHidden = function isHidden(elementInfo) {
-  return elementInfo && elementInfo.attribute === 'H';
+  return elementInfo?.attribute === 'H';
 };
 export var isUpperCase = function isUpperCase(elementInfo) {
-  return elementInfo && elementInfo.characterCase === 'uppercase';
+  return elementInfo?.characterCase === 'uppercase';
 };
 export var areEqual = function areEqual(prevProps, nextProps) {
   return prevProps.value === nextProps.value && prevProps.desc === nextProps.desc && prevProps.disabled === nextProps.disabled && prevProps.readonly === nextProps.readonly && prevProps.required === nextProps.required && prevProps.uppercase === nextProps.uppercase && prevProps.label === nextProps.label && prevProps.errorText === nextProps.errorText && isEqual(prevProps.autocompleteHandlerParams, nextProps.autocompleteHandlerParams) && isEqual(prevProps.options, nextProps.options) && isEqual(prevProps.renderDependencies, nextProps.renderDependencies);
@@ -30,7 +30,7 @@ export var processElementInfo = function processElementInfo(elementInfo) {
     data.maxLength = elementInfo.maxLength;
   }
 
-  if (elementInfo.fieldType === 'currency') {
+  if (elementInfo.fieldType === 'currency' || elementInfo.fieldType === 'number') {
     data.type = 'number';
   } else {
     data.type = 'text';

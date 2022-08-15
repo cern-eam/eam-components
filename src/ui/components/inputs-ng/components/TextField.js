@@ -50,7 +50,7 @@ const TextField = (props) => {
         <div style={{...divRootContainerStyle, ...style}}>
             <div style={divInputContainerStyle}>
                 <div style={divInputStyle} ref={props.InputProps?.ref}>
-                    <TextFieldInput type={type ?? 'text'} 
+                    <TextFieldInput type={'text'} 
                                     ref={inputRef} 
                                     {...inputProps} 
                                     disabled={disabled} 

@@ -29,7 +29,7 @@ const rootStyle = {
 
 const EAMBaseInput = (props) => {
 
-    const {hidden, disabled, required, label} = props;
+    const {hidden, required, label} = props;
 
     // Hide 
     if (hidden) {

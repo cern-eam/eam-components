@@ -3,13 +3,11 @@ import { Box } from '@mui/material';
 import HistoryIcon from '@mui/icons-material/History';
 import React from 'react';
 
-export const isRequired = (elementInfo) =>
-        elementInfo &&
-        (elementInfo.attribute === 'R' || elementInfo.attribute === 'S');
+export const isRequired = elementInfo => elementInfo?.attribute === 'R' || elementInfo?.attribute === 'S';
 
-export const isHidden = (elementInfo) => elementInfo && elementInfo.attribute === 'H';
+export const isHidden = elementInfo => elementInfo?.attribute === 'H';
 
-export const isUpperCase = (elementInfo) => elementInfo && elementInfo.characterCase === 'uppercase';
+export const isUpperCase = elementInfo => elementInfo?.characterCase === 'uppercase';
 
 export const areEqual = (prevProps, nextProps) => {
     return prevProps.value === nextProps.value &&
@@ -40,7 +38,7 @@ export const processElementInfo = (elementInfo) => {
                 data.maxLength = elementInfo.maxLength;
         }
 
-        if (elementInfo.fieldType === 'currency') {
+        if (elementInfo.fieldType === 'currency' || elementInfo.fieldType === 'number') {
                 data.type = 'number';
         } else {
                 data.type = 'text';

@@ -67,7 +67,7 @@ var TextField = function TextField(props) {
     style: divInputStyle,
     ref: props.InputProps?.ref
   }, /*#__PURE__*/React.createElement(TextFieldInput, _extends({
-    type: type ?? 'text',
+    type: 'text',
     ref: inputRef
   }, inputProps, {
     disabled: disabled,
