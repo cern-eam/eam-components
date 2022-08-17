@@ -90,17 +90,17 @@ var EAMTable = function EAMTable(props) {
     computedColumnsMetadata = [].concat(extraColumnsMetadata, _toConsumableArray(columnsMetadata));
   }
 
-  return loading ? /*#__PURE__*/React.createElement("div", {
-    style: {
-      textAlign: "center",
-      padding: 14
-    }
-  }, /*#__PURE__*/React.createElement(Fade, {
+  return loading ? /*#__PURE__*/React.createElement(Fade, {
     "in": loading,
     style: {
       transitionDelay: loading ? "200ms" : "0ms"
     },
     unmountOnExit: true
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center",
+      padding: 14
+    }
   }, /*#__PURE__*/React.createElement(BlockUi, {
     blocking: loading
   }))) : /*#__PURE__*/React.createElement(DataGrid, {

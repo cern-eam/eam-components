@@ -62,16 +62,16 @@ const EAMTable = (props) => {
         computedColumnsMetadata = [...extraColumnsMetadata, ...columnsMetadata];
     }
 
-
     return loading ? (
-            <div style={{ textAlign: "center", padding: 14 }}>
-                <Fade
-                    in={loading}
-                    style={{ transitionDelay: loading ? "200ms" : "0ms" }}
-                    unmountOnExit>
-                    <BlockUi blocking={loading}/>
-                </Fade>
-            </div>
+            <Fade
+                in={loading}
+                style={{ transitionDelay: loading ? "200ms" : "0ms" }}
+                unmountOnExit
+            >
+                <div style={{ textAlign: "center", padding: 14 }}>
+                    <BlockUi blocking={loading} />
+                </div>
+            </Fade>
         ) : (
             <DataGrid
                 rows={rows}
