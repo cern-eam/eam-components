@@ -20,8 +20,8 @@ var EAMGridPagination = function EAMGridPagination(_ref) {
       rowsPerPage = _ref.rowsPerPage,
       totalRecords = _ref.totalRecords,
       hasUnkownTotalRecords = _ref.hasUnkownTotalRecords,
-      onChangePage = _ref.onChangePage,
-      onChangeRowsPerPage = _ref.onChangeRowsPerPage,
+      onPageChange = _ref.onPageChange,
+      onRowsPerPageChange = _ref.onRowsPerPageChange,
       rowsPerPageOptionsComputed = _ref.rowsPerPageOptionsComputed,
       labelRowsPerPage = _ref.labelRowsPerPage,
       _ref$rowsPerPageOptio = _ref.rowsPerPageOptions,
@@ -29,12 +29,12 @@ var EAMGridPagination = function EAMGridPagination(_ref) {
 
   var handleChangePage = function handleChangePage(event, newPage) {
     event.stopPropagation();
-    onChangePage(newPage);
+    onPageChange(newPage);
   };
 
   var handleChangeRowsPerPage = function handleChangeRowsPerPage(event) {
     event.stopPropagation();
-    onChangeRowsPerPage(Number(event.target.value));
+    onRowsPerPageChange(Number(event.target.value));
   };
 
   var label = function label(_ref2) {
@@ -52,8 +52,8 @@ var EAMGridPagination = function EAMGridPagination(_ref) {
     rowsPerPageOptions: rowsPerPageOptions,
     labelRowsPerPage: labelRowsPerPage,
     labelDisplayedRows: label,
-    onChangePage: handleChangePage,
-    onChangeRowsPerPage: handleChangeRowsPerPage
+    onPageChange: handleChangePage,
+    onRowsPerPageChange: handleChangeRowsPerPage
   });
 };
 

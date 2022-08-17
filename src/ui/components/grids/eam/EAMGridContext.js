@@ -88,8 +88,8 @@ export const EAMGridContextProvider = (props) => {
         onChangeSelectedRows,
         onChangeFilters,
         onChangeSortBy,
-        onChangePage,
-        onChangeRowsPerPage,
+        onPageChange,
+        onRowsPerPageChange,
         onChangeDataspy,
         searchOnMount,
         cellRenderer,
@@ -320,14 +320,14 @@ export const EAMGridContextProvider = (props) => {
             tableInstance.toggleAllRowsSelected(false);
             setGridRequest(newGridRequest);
             fetchDataDebounced(newGridRequest);
-            onChangePage && onChangePage(page);
+            onPageChange && onPageChange(page);
         },
         [
             fetchDataDebounced,
             gridRequest,
             rowsPerPage,
             tableInstance,
-            onChangePage,
+            onPageChange,
         ]
     );
 
@@ -343,9 +343,9 @@ export const EAMGridContextProvider = (props) => {
             tableInstance.toggleAllRowsSelected(false);
             setGridRequest(newGridRequest);
             fetchDataDebounced(newGridRequest);
-            onChangeRowsPerPage && onChangeRowsPerPage(perPage);
+            onRowsPerPageChange && onRowsPerPageChange(perPage);
         },
-        [fetchDataDebounced, gridRequest, tableInstance, onChangeRowsPerPage]
+        [fetchDataDebounced, gridRequest, tableInstance, onRowsPerPageChange]
     );
 
     const handleDataspyChange = useCallback(

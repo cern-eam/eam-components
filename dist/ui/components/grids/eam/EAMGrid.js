@@ -83,8 +83,8 @@ var EAMGrid = function EAMGrid(props) {
     onClick: handleExportToCSV
   }, "Export to CSV"))), /*#__PURE__*/React.createElement(EAMGridPagination, {
     labelRowsPerPage: "Per Page",
-    onChangePage: handleChangePage,
-    onChangeRowsPerPage: handleChangeRowsPerPage,
+    onPageChange: handleChangePage,
+    onRowsPerPageChange: handleChangeRowsPerPage,
     pageIndex: pageIndex,
     rowsPerPage: rowsPerPage,
     hasUnkownTotalRecords: hasUnkownTotalRecords,

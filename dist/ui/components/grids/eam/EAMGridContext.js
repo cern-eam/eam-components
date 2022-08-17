@@ -93,8 +93,8 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
       onChangeSelectedRows = props.onChangeSelectedRows,
       onChangeFilters = props.onChangeFilters,
       onChangeSortBy = props.onChangeSortBy,
-      onChangePage = props.onChangePage,
-      onChangeRowsPerPage = props.onChangeRowsPerPage,
+      onPageChange = props.onPageChange,
+      onRowsPerPageChange = props.onRowsPerPageChange,
       onChangeDataspy = props.onChangeDataspy,
       searchOnMount = props.searchOnMount,
       cellRenderer = props.cellRenderer,
@@ -337,8 +337,8 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
     tableInstance.toggleAllRowsSelected(false);
     setGridRequest(newGridRequest);
     fetchDataDebounced(newGridRequest);
-    onChangePage && onChangePage(page);
-  }, [fetchDataDebounced, gridRequest, rowsPerPage, tableInstance, onChangePage]);
+    onPageChange && onPageChange(page);
+  }, [fetchDataDebounced, gridRequest, rowsPerPage, tableInstance, onPageChange]);
   var handleChangeRowsPerPage = useCallback(function (perPage) {
     setPageIndex(0);
     setRowsPerPage(perPage);
@@ -351,8 +351,8 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
     tableInstance.toggleAllRowsSelected(false);
     setGridRequest(newGridRequest);
     fetchDataDebounced(newGridRequest);
-    onChangeRowsPerPage && onChangeRowsPerPage(perPage);
-  }, [fetchDataDebounced, gridRequest, tableInstance, onChangeRowsPerPage]);
+    onRowsPerPageChange && onRowsPerPageChange(perPage);
+  }, [fetchDataDebounced, gridRequest, tableInstance, onRowsPerPageChange]);
   var handleDataspyChange = useCallback(function (dataspy) {
     if (!dataspy) return;
     setSelectedDataspy(dataspy);

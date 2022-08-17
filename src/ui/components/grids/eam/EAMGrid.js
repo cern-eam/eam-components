@@ -83,8 +83,8 @@ const EAMGrid = (props) => {
                 </Box>
                 <EAMGridPagination
                     labelRowsPerPage={"Per Page"}
-                    onChangePage={handleChangePage}
-                    onChangeRowsPerPage={handleChangeRowsPerPage}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
                     pageIndex={pageIndex}
                     rowsPerPage={rowsPerPage}
                     hasUnkownTotalRecords={hasUnkownTotalRecords}

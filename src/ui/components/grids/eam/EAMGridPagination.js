@@ -15,20 +15,20 @@ const EAMGridPagination = ({
     rowsPerPage,
     totalRecords,
     hasUnkownTotalRecords,
-    onChangePage,
-    onChangeRowsPerPage,
+    onPageChange,
+    onRowsPerPageChange,
     rowsPerPageOptionsComputed,
     labelRowsPerPage,
     rowsPerPageOptions = rowsPerPageOptionsComputed ? rowsPerPageOptionsComputed(defaultOptions) : defaultOptions,
 }) => {
     const handleChangePage = (event, newPage) => {
         event.stopPropagation();
-        onChangePage(newPage);
+        onPageChange(newPage);
     };
 
     const handleChangeRowsPerPage = (event) => {
         event.stopPropagation();
-        onChangeRowsPerPage(Number(event.target.value));
+        onRowsPerPageChange(Number(event.target.value));
     };
 
     const label = ({ from, to, count }) =>
@@ -43,8 +43,8 @@ const EAMGridPagination = ({
             rowsPerPageOptions={rowsPerPageOptions}
             labelRowsPerPage={labelRowsPerPage}
             labelDisplayedRows={label}
-            onChangePage={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
         />
     );
 };
