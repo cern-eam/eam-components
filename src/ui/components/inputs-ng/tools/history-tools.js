@@ -1,7 +1,11 @@
+// The local storage key pointing to whether the history is enabled
+export const INPUT_HISTORY_SETTING_KEY = 'inputHistorySetting';
+
 /*
  * The history stores the most recent items chronologically.
  * 'MAX_LENGTH' defines the maximum number of stored entries in the history.
- * Type: 'H' is necessary as it draws the 'history' icon.
+ * Type 'H' is used to indicate that a history icon should be shown in
+ * each item of the rendered list.
  */
 export const saveHistory = (key, value, desc) => {
     const MAX_LENGTH = 5;
@@ -30,7 +34,7 @@ export const saveHistory = (key, value, desc) => {
     }
 
     // Add new entry to beginning of history structure
-    history.unshift({code: value, desc: desc, type: "H"});
+    history.unshift({code: value, desc: desc, type: 'H'});
 
     // Remove oldest entry from history 
     if (history.length > MAX_LENGTH) {
@@ -39,8 +43,13 @@ export const saveHistory = (key, value, desc) => {
 
     // Add to local storage
     localStorage.setItem(key, JSON.stringify(history));
-}
+};
+
+const isHistorySettingEnabled = () => {
+    return JSON.parse(localStorage.getItem(INPUT_HISTORY_SETTING_KEY)) === true;
+};
 
 export const fetchHistory = (key) => {
-    return JSON.parse(localStorage.getItem(key)) || [];
-}
+    const history = JSON.parse(localStorage.getItem(key));
+    return history && isHistorySettingEnabled() ? history : [];
+};
