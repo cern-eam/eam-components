@@ -20,7 +20,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 import { useState, useEffect, useMemo, useRef } from "react";
 import debounce from 'lodash/debounce';
-import { fetchHistory } from "../tools/history-tools";
+import { fetchHistory, HISTORY_ID_PREFIX } from "../tools/history-tools";
 
 var useFetchAutocompleteOptions = function useFetchAutocompleteOptions(autocompleteHandler) {
   var autocompleteHandlerParams = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
@@ -57,7 +57,7 @@ var useFetchAutocompleteOptions = function useFetchAutocompleteOptions(autocompl
     }
 
     if (!inputValue?.trim()) {
-      setOptions(fetchHistory(fieldId)); // By focus on empty input fetch the history
+      setOptions(fetchHistory(HISTORY_ID_PREFIX + fieldId)); // By focus on empty input fetch the history
 
       return;
     }

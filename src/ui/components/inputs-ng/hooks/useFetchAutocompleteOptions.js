@@ -1,6 +1,6 @@
 import {useState, useEffect, useMemo, useRef} from "react"
 import debounce from 'lodash/debounce';
-import { fetchHistory } from "../tools/history-tools";
+import { fetchHistory, HISTORY_ID_PREFIX } from "../tools/history-tools";
 
 const useFetchAutocompleteOptions = (autocompleteHandler, autocompleteHandlerParams = [], inputValue, value, open, fieldId) => {
   
@@ -26,7 +26,7 @@ const useFetchAutocompleteOptions = (autocompleteHandler, autocompleteHandlerPar
         }
 
         if (!inputValue?.trim()) {
-            setOptions(fetchHistory(fieldId)); // By focus on empty input fetch the history
+            setOptions(fetchHistory(HISTORY_ID_PREFIX + fieldId)); // By focus on empty input fetch the history
             return;
         }
         abortController.current = new AbortController();

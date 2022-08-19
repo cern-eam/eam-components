@@ -4,7 +4,7 @@ import useFetchAutocompleteOptions from './hooks/useFetchAutocompleteOptions';
 import {areEqual, componentsProps, renderOptionHandler, updateCodeDesc} from './tools/input-tools'
 import EAMBaseInput from './components/EAMBaseInput';
 import TextField from './components/TextField';
-import { saveHistory } from './tools/history-tools';
+import { saveHistory, HISTORY_ID_PREFIX } from './tools/history-tools';
 
 const EAMAutocomplete = (props) => {
    
@@ -33,7 +33,7 @@ const EAMAutocomplete = (props) => {
         return;
       }
       
-      saveHistory(id, newValue.code, newValue.desc)
+      saveHistory(HISTORY_ID_PREFIX + id, newValue.code, newValue.desc)
       updateCodeDesc(updateProperty, valueKey, newValue.code, descKey, newValue.desc, onChangeValue);
 
       // Don't bubble up any events (won't trigger a save when we select something by pressing enter)

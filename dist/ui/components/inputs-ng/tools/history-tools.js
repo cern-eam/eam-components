@@ -1,5 +1,7 @@
 // The local storage key pointing to whether the history is enabled
-export var INPUT_HISTORY_SETTING_KEY = 'inputHistorySetting';
+export var INPUT_HISTORY_SETTING_KEY = 'INPUT_HISTORY_ENABLED'; // The string that precedes each history item's ID (local storage key)
+
+export var HISTORY_ID_PREFIX = 'INPUT_HISTORY_';
 /*
  * The history stores the most recent items chronologically.
  * 'MAX_LENGTH' defines the maximum number of stored entries in the history.
