@@ -8,6 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import OpenInNewIcon from 'mdi-material-ui/OpenInNew';
 import Fullscreen from '@mui/icons-material/Fullscreen';
 import { FullscreenExit } from 'mdi-material-ui';
+import RegionAvatar from './RegionAvatar';
 
 class EISPanel extends Component {
     state = {
@@ -29,7 +30,7 @@ class EISPanel extends Component {
         backgroundColor: '#fafafa',
         borderBottom: '1px solid #EEEEEE',
         minHeight: '45px',
-        height: '45px',
+        height: '60px',
     };
 
     linkIconStyle = {
@@ -73,6 +74,14 @@ class EISPanel extends Component {
                 expanded={this.props.alwaysExpanded ? true : this.state.panelExpanded}
                 TransitionProps={{ timeout: 300 }}
                 onChange={this._onPanelChange}
+                sx={{
+                    '&:before': {
+                display: 'none'
+                },
+                '&.Mui-expanded': {
+                    margin: "8px 0px"
+                }
+                }}
                 {...this.props.ExpansionPanelProps}
             >
                 <AccordionSummary
@@ -82,6 +91,11 @@ class EISPanel extends Component {
                     <div style={this.headingStyle}>
                         {this.props.headingIcon && (
                             <FontIcon style={this.headingIconStyle} className={'fa ' + this.props.headingIcon} />
+                        )}
+                        {this.props.summaryIcon && (
+                            <RegionAvatar>
+                                {this.props.summaryIcon}
+                            </RegionAvatar>
                         )}
                         <div>{this.props.heading}</div>
                         {this.props.link && (

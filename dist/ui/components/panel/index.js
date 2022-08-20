@@ -38,6 +38,7 @@ import IconButton from '@mui/material/IconButton';
 import OpenInNewIcon from 'mdi-material-ui/OpenInNew';
 import Fullscreen from '@mui/icons-material/Fullscreen';
 import { FullscreenExit } from 'mdi-material-ui';
+import RegionAvatar from './RegionAvatar';
 
 var EISPanel = /*#__PURE__*/function (_Component) {
   _inherits(EISPanel, _Component);
@@ -70,7 +71,7 @@ var EISPanel = /*#__PURE__*/function (_Component) {
       backgroundColor: '#fafafa',
       borderBottom: '1px solid #EEEEEE',
       minHeight: '45px',
-      height: '45px'
+      height: '60px'
     };
     _this.linkIconStyle = {
       color: '#00aaff'
@@ -110,7 +111,15 @@ var EISPanel = /*#__PURE__*/function (_Component) {
         TransitionProps: {
           timeout: 300
         },
-        onChange: this._onPanelChange
+        onChange: this._onPanelChange,
+        sx: {
+          '&:before': {
+            display: 'none'
+          },
+          '&.Mui-expanded': {
+            margin: "8px 0px"
+          }
+        }
       }, this.props.ExpansionPanelProps), /*#__PURE__*/React.createElement(AccordionSummary, {
         expandIcon: this.props.alwaysExpanded ? undefined : /*#__PURE__*/React.createElement(ExpandMoreIcon, null),
         style: this.summaryStyle
@@ -119,7 +128,7 @@ var EISPanel = /*#__PURE__*/function (_Component) {
       }, this.props.headingIcon && /*#__PURE__*/React.createElement(FontIcon, {
         style: this.headingIconStyle,
         className: 'fa ' + this.props.headingIcon
-      }), /*#__PURE__*/React.createElement("div", null, this.props.heading), this.props.link && /*#__PURE__*/React.createElement(IconButton, {
+      }), this.props.summaryIcon && /*#__PURE__*/React.createElement(RegionAvatar, null, this.props.summaryIcon), /*#__PURE__*/React.createElement("div", null, this.props.heading), this.props.link && /*#__PURE__*/React.createElement(IconButton, {
         onClick: this.linkClickHandler.bind(this),
         style: {
           height: 'auto',

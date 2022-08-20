@@ -8,7 +8,7 @@ export var isRequired = function isRequired(elementInfo) {
   return elementInfo?.attribute === 'R' || elementInfo?.attribute === 'S';
 };
 export var isHidden = function isHidden(elementInfo) {
-  return elementInfo?.attribute === 'H';
+  return elementInfo?.attribute === 'H' || elementInfo?.presentInJSP === 'N';
 };
 export var isUpperCase = function isUpperCase(elementInfo) {
   return elementInfo?.characterCase === 'uppercase';

@@ -32,7 +32,7 @@ const SIGNATURE_ORDER = {
 const ActivityExpansionPanel = withStyles({
     root: {
         backgroundColor: '#fafafa',
-        border: '1px solid #eeeeee',
+        //border: '1px solid #eeeeee',
         boxShadow: 'none',
         '&:last-child:not(:only-child)': {
             borderBottom: 0,

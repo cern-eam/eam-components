@@ -145,7 +145,7 @@ var EAMSelect = function EAMSelect(props) {
             marginRight: endTextAdornment ? 76 : 6,
             marginLeft: endTextAdornment ? -100 : -30,
             zIndex: 999,
-            color: "#acacac",
+            color: "#cbcbcb",
             pointerEvents: "none"
           }
         })

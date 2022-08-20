@@ -10,7 +10,7 @@ const TextFieldInput = styled('input')(({theme}) => ({
         lineHeight: 1.5,
         color: "#495057",
         backgroundClip: "padding-box",
-        border: "1px solid #ced4da",
+        border: "1px solid #e5e6e7",
         borderRadius: "4px",
         backgroundColor: "#fdfdfd",
         height: 38

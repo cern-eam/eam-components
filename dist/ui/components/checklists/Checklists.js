@@ -67,7 +67,7 @@ var SIGNATURE_ORDER = (_SIGNATURE_ORDER = {}, _defineProperty(_SIGNATURE_ORDER, 
 var ActivityExpansionPanel = withStyles({
   root: {
     backgroundColor: '#fafafa',
-    border: '1px solid #eeeeee',
+    //border: '1px solid #eeeeee',
     boxShadow: 'none',
     '&:last-child:not(:only-child)': {
       borderBottom: 0

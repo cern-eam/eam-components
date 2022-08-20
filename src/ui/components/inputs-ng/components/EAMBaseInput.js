@@ -1,12 +1,5 @@
 import React from 'react';
-
-const divLabelStyle = {
-    flex: "1 1 140px",
-    fontSize: 14,
-    margin: "5px 10px 2px 0px",
-    color: "#1a237e"
-    //fontWeight: "bold"
-}
+import { styled } from '@mui/material/styles';
 
 const requiredStyle = {
     color: "red",
@@ -18,14 +11,22 @@ const componentStyle = {
     display: "flex"
 }
 
-const rootStyle = {
+const RootDiv = styled('div')({
     width: "100%",
     margin: "3px",
     display: "flex",
     flexDirection: "row",
     flexWrap: "wrap",
-    alignItems: "center",
-}
+    alignItems: "center"
+})
+
+const LabelDiv = styled('div')({
+    flex: "1 1 140px",
+    fontSize: 14,
+    margin: "5px 10px 2px 0px",
+    color: "#1a237e"
+    //fontWeight: "bold"
+})
 
 const EAMBaseInput = (props) => {
 
@@ -36,16 +37,16 @@ const EAMBaseInput = (props) => {
         return React.Fragment;
     }
 
-    return (<div style={{...rootStyle, ...props.rootStyle}}>
+    return (<RootDiv style={props.rootStyle}>
         {label &&
-        <div style = {divLabelStyle}>
+        <LabelDiv>
             <span>{label}</span>
             {required && <span style={requiredStyle}>*</span>}
-        </div>}
+        </LabelDiv>}
         <div style={{...componentStyle, ...props.componentStyle}}>
             {props.children}
         </div>
-    </div>);
+    </RootDiv>);
 }
 
 export default EAMBaseInput;

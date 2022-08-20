@@ -5,7 +5,7 @@ import React from 'react';
 
 export const isRequired = elementInfo => elementInfo?.attribute === 'R' || elementInfo?.attribute === 'S';
 
-export const isHidden = elementInfo => elementInfo?.attribute === 'H';
+export const isHidden = elementInfo => elementInfo?.attribute === 'H' || elementInfo?.presentInJSP === 'N';
 
 export const isUpperCase = elementInfo => elementInfo?.characterCase === 'uppercase';
 

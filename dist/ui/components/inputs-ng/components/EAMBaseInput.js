@@ -5,13 +5,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 import React from 'react';
-var divLabelStyle = {
-  flex: "1 1 140px",
-  fontSize: 14,
-  margin: "5px 10px 2px 0px",
-  color: "#1a237e" //fontWeight: "bold"
-
-};
+import { styled } from '@mui/material/styles';
 var requiredStyle = {
   color: "red",
   fontWeight: "bold"
@@ -20,14 +14,21 @@ var componentStyle = {
   flex: "999 1 320px",
   display: "flex"
 };
-var rootStyle = {
+var RootDiv = styled('div')({
   width: "100%",
   margin: "3px",
   display: "flex",
   flexDirection: "row",
   flexWrap: "wrap",
   alignItems: "center"
-};
+});
+var LabelDiv = styled('div')({
+  flex: "1 1 140px",
+  fontSize: 14,
+  margin: "5px 10px 2px 0px",
+  color: "#1a237e" //fontWeight: "bold"
+
+});
 
 var EAMBaseInput = function EAMBaseInput(props) {
   var hidden = props.hidden,
@@ -38,11 +39,9 @@ var EAMBaseInput = function EAMBaseInput(props) {
     return React.Fragment;
   }
 
-  return /*#__PURE__*/React.createElement("div", {
-    style: _objectSpread({}, rootStyle, {}, props.rootStyle)
-  }, label && /*#__PURE__*/React.createElement("div", {
-    style: divLabelStyle
-  }, /*#__PURE__*/React.createElement("span", null, label), required && /*#__PURE__*/React.createElement("span", {
+  return /*#__PURE__*/React.createElement(RootDiv, {
+    style: props.rootStyle
+  }, label && /*#__PURE__*/React.createElement(LabelDiv, null, /*#__PURE__*/React.createElement("span", null, label), required && /*#__PURE__*/React.createElement("span", {
     style: requiredStyle
   }, "*")), /*#__PURE__*/React.createElement("div", {
     style: _objectSpread({}, componentStyle, {}, props.componentStyle)

@@ -13,6 +13,6 @@ var TextFieldTextAdornment = styled('div')({
   alignItems: "center",
   justifyContent: "center",
   pointerEvents: "none",
-  color: '"#495057"'
+  color: "#495057"
 });
 export default TextFieldTextAdornment;
