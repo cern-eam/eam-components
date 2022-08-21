@@ -3,11 +3,13 @@ import { blue, green, red, lightBlue, lightGreen, deepOrange } from '@mui/materi
 
 var muiSettings = function muiSettings(_ref) {
   var primaryColor = _ref.primaryColor,
-      secondaryColor = _ref.secondaryColor;
+      secondaryColor = _ref.secondaryColor,
+      primaryExtraLight = _ref.primaryExtraLight;
   return {
     palette: {
       primary: {
-        main: primaryColor
+        main: primaryColor,
+        extraLight: primaryExtraLight
       },
       // EAMLight blue '#2196F3'
       secondary: {
@@ -32,15 +34,18 @@ var muiSettings = function muiSettings(_ref) {
 
 export var theme = createTheme(adaptV4Theme({
   primaryColor: blue[500],
-  secondaryColor: lightBlue[900]
+  secondaryColor: lightBlue[900],
+  primaryExtraLight: blue[50]
 }));
 var BLUE = createTheme(adaptV4Theme(muiSettings({
   primaryColor: blue[500],
-  secondaryColor: lightBlue[900]
+  secondaryColor: lightBlue[900],
+  primaryExtraLight: blue[50]
 })));
 var GREEN = createTheme(adaptV4Theme(muiSettings({
   primaryColor: green[600],
-  secondaryColor: lightGreen[900]
+  secondaryColor: lightGreen[900],
+  primaryExtraLight: green[50]
 })));
 var RED = createTheme(adaptV4Theme(muiSettings({
   primaryColor: red[500],

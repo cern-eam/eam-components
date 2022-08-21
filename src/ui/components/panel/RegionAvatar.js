@@ -8,7 +8,7 @@ const StyledRegionAvatar = styled(Avatar)(({theme}) => ({
         marginRight: 8, 
         marginLeft: 4,
         color: theme.palette.primary.main,
-        backgroundColor: green[50]
+        backgroundColor: theme.palette.primary.extraLight
     }
 }))
 
