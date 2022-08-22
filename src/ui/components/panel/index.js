@@ -8,7 +8,6 @@ import IconButton from '@mui/material/IconButton';
 import OpenInNewIcon from 'mdi-material-ui/OpenInNew';
 import Fullscreen from '@mui/icons-material/Fullscreen';
 import { FullscreenExit } from 'mdi-material-ui';
-import RegionAvatar from './RegionAvatar';
 
 class EISPanel extends Component {
     state = {
@@ -30,7 +29,7 @@ class EISPanel extends Component {
         backgroundColor: '#fafafa',
         borderBottom: '1px solid #EEEEEE',
         minHeight: '45px',
-        height: '60px',
+        height: '50px',
     };
 
     linkIconStyle = {
@@ -92,11 +91,7 @@ class EISPanel extends Component {
                         {this.props.headingIcon && (
                             <FontIcon style={this.headingIconStyle} className={'fa ' + this.props.headingIcon} />
                         )}
-                        {this.props.summaryIcon && (
-                            <RegionAvatar>
-                                {this.props.summaryIcon}
-                            </RegionAvatar>
-                        )}
+                        {this.props.summaryIcon && (<this.props.summaryIcon/>)}
                         <div>{this.props.heading}</div>
                         {this.props.link && (
                             <IconButton
