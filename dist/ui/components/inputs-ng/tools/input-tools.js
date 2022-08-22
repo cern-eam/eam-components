@@ -44,7 +44,7 @@ export var processElementInfo = function processElementInfo(elementInfo) {
 };
 export var getElementKey = function getElementKey(elementInfo) {
   if (!elementInfo) return null;
-  return typeof elementInfo.xpath === 'string' ? elementInfo.xpath : elementInfo.text + elementInfo.elementId;
+  return typeof elementInfo.xpath === 'string' ? elementInfo.xpath : "".concat(elementInfo.text, "_").concat(elementInfo.elementId).replace(/\s+/g, '_');
 };
 export var renderOptionHandler = function renderOptionHandler(renderValue, props, option) {
   return /*#__PURE__*/React.createElement(Box, _extends({

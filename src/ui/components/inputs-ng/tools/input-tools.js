@@ -53,7 +53,10 @@ export const processElementInfo = (elementInfo) => {
 
 export const getElementKey = (elementInfo) => {
         if (!elementInfo) return null;
-        return typeof elementInfo.xpath === 'string' ? elementInfo.xpath : elementInfo.text + elementInfo.elementId;
+
+        return typeof elementInfo.xpath === 'string'
+            ? elementInfo.xpath
+            : `${elementInfo.text}_${elementInfo.elementId}`.replace(/\s+/g, '_');
 }
 
 export const renderOptionHandler = (renderValue, props, option) => (
