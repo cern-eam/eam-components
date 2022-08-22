@@ -92,7 +92,7 @@ var EAMGridHead = function EAMGridHead(_ref) {
     value: selectedDataspy || {},
     options: [selectedDataspy || {}].concat(_toConsumableArray(dataspies)).filter(Boolean),
     disableClearable: true,
-    getOptionSelected: function getOptionSelected(option, value) {
+    isOptionEqualToValue: function isOptionEqualToValue(option, value) {
       return value.code === option.code;
     },
     getOptionLabel: function getOptionLabel(dataspy) {

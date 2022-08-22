@@ -74,7 +74,7 @@ const EAMGridHead = ({
                                     value={selectedDataspy || {}}
                                     options={[selectedDataspy || {}, ...dataspies].filter(Boolean)}
                                     disableClearable
-                                    getOptionSelected={(option, value) => value.code === option.code}
+                                    isOptionEqualToValue={(option, value) => value.code === option.code}
                                     getOptionLabel={(dataspy) => dataspy.label || ""}
                                     renderInput={(params) => DataspyAutocompleteInput(loading, params)}
                                     onChange={(e, newDataspy) => onDataspyChange(newDataspy)}
