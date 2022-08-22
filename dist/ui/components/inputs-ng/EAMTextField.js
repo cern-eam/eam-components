@@ -20,7 +20,8 @@ import TextField from './components/TextField';
 var EAMTextField = function EAMTextField(props) {
   var value = props.value,
       valueKey = props.valueKey,
-      updateProperty = props.updateProperty;
+      updateProperty = props.updateProperty,
+      onChangeValue = props.onChangeValue;
 
   var _useState = useState(value || ''),
       _useState2 = _slicedToArray(_useState, 2),
@@ -35,7 +36,10 @@ var EAMTextField = function EAMTextField(props) {
       return setInputValue(event.target.value);
     },
     onBlur: function onBlur() {
-      if (inputValue !== value) updateProperty(valueKey, inputValue);
+      if (inputValue !== value) {
+        updateProperty?.(valueKey, inputValue);
+        onChangeValue?.(inputValue);
+      }
     },
     value: inputValue
   };
