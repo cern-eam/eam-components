@@ -12,7 +12,7 @@ export const renderDatePickerInput = ({ inputRef, inputProps, InputProps }, isIn
     return (
       <TextField style = {style}
                  inputRef={inputRef} 
-                 inputProps={{...inputProps, placeholder: ""}}
+                 inputProps={disabled ? {...inputProps, placeholder: ""} : {...inputProps}}
                  endAdornment={disabled ? null : endAdornment} 
                  errorText={errorText}
                  disabled={disabled}/>

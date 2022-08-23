@@ -24,9 +24,9 @@ export var renderDatePickerInput = function renderDatePickerInput(_ref, isInvali
   return /*#__PURE__*/React.createElement(TextField, {
     style: style,
     inputRef: inputRef,
-    inputProps: _objectSpread({}, inputProps, {
+    inputProps: disabled ? _objectSpread({}, inputProps, {
       placeholder: ""
-    }),
+    }) : _objectSpread({}, inputProps),
     endAdornment: disabled ? null : endAdornment,
     errorText: errorText,
     disabled: disabled
