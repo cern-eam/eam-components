@@ -5,20 +5,24 @@ import TextField from './components/TextField';
 
 const EAMTextField = (props) => {
 
-    let {value, valueKey, updateProperty, onChangeValue} = props;
-    let [inputValue, setInputValue] = useState(value || '');
+    const {value, valueKey, updateProperty, onChangeValue, onChangeInput} = props;
+    const [inputValue, setInputValue] = useState(value || '');
 
-    useEffect(() => setInputValue(value || ''), [value])
+    useEffect(() => setInputValue(value || ''), [value]);
 
-    let inputProps = {
-        onChange: event => setInputValue(event.target.value),
+    // TODO: to be reviewed
+    const inputProps = {
+        onChange: (event) => {
+            setInputValue(event.target.value);
+            onChangeInput?.(event.target.value);
+        },
         onBlur: () => {
             if (inputValue !== value) {
                 updateProperty?.(valueKey, inputValue);
                 onChangeValue?.(inputValue);
             }
         },
-        value: inputValue
+        value: inputValue,
     };
 
     return (

@@ -21,7 +21,8 @@ var EAMTextField = function EAMTextField(props) {
   var value = props.value,
       valueKey = props.valueKey,
       updateProperty = props.updateProperty,
-      onChangeValue = props.onChangeValue;
+      onChangeValue = props.onChangeValue,
+      onChangeInput = props.onChangeInput;
 
   var _useState = useState(value || ''),
       _useState2 = _slicedToArray(_useState, 2),
@@ -30,10 +31,12 @@ var EAMTextField = function EAMTextField(props) {
 
   useEffect(function () {
     return setInputValue(value || '');
-  }, [value]);
+  }, [value]); // TODO: to be reviewed
+
   var inputProps = {
     onChange: function onChange(event) {
-      return setInputValue(event.target.value);
+      setInputValue(event.target.value);
+      onChangeInput?.(event.target.value);
     },
     onBlur: function onBlur() {
       if (inputValue !== value) {
