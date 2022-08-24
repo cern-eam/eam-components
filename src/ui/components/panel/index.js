@@ -18,6 +18,7 @@ class EISPanel extends Component {
         display: 'flex',
         alignItems: 'center',
         fontWeight: 500,
+        flexGrow: 1,
     };
 
     headingIconStyle = {

@@ -60,7 +60,8 @@ var EISPanel = /*#__PURE__*/function (_Component) {
     _this.headingStyle = {
       display: 'flex',
       alignItems: 'center',
-      fontWeight: 500
+      fontWeight: 500,
+      flexGrow: 1
     };
     _this.headingIconStyle = {
       fontSize: 20,
