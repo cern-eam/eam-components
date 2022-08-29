@@ -800,6 +800,12 @@ var Checklists = /*#__PURE__*/function (_Component) {
         }
       }, activities.length > 1 && /*#__PURE__*/React.createElement(EAMSelect, {
         label: "Activity",
+        renderSuggestion: function renderSuggestion(suggestion) {
+          return suggestion.desc;
+        },
+        renderValue: function renderValue(value) {
+          return value.desc || value.code;
+        },
         options: filteredActivities.filter(function (activity) {
           return filteredEquipment ? activity.equipments[filteredEquipment] !== undefined : true;
         }).map(function (activity) {

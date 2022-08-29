@@ -600,6 +600,8 @@ class Checklists extends Component {
                                 <div style={{paddingLeft: 25, paddingRight: 25}}>
                                     {activities.length > 1 && <EAMSelect
                                         label={"Activity"}
+                                        renderSuggestion={suggestion => suggestion.desc}
+                                        renderValue={value => value.desc || value.code}
                                         options={filteredActivities
                                                 .filter(activity => filteredEquipment ? activity.equipments[filteredEquipment] !== undefined : true)
                                                 .map(activity => 
