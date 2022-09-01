@@ -8,6 +8,7 @@ import EAMDateTimePicker from "../inputs-ng/EAMDateTimePicker";
 
 export default class ChecklistItemInput extends Component {
     handleChange(type, value, onFail) {
+        console.log('info', type, value)
         const {result, finding, numericValue, freeText, date, dateTime} = this.props.checklistItem;
 
         let newResult, newFinding, newNumericValue, newAlphaNumericValue, newDate, newDateTime;
@@ -46,7 +47,7 @@ export default class ChecklistItemInput extends Component {
         if(this.options.beforeOnChange && typeof this.options.beforeOnChange === 'function') {
             newProps = this.options.beforeOnChange(newProps, type, value);
         }
-
+        console.log('new change', newProps)
         this.props.onChange(newProps, onFail);
 
     }
@@ -105,7 +106,7 @@ export default class ChecklistItemInput extends Component {
             case ChecklistItemInput.FIELD.DATETIME:
                 return <EAMDateTimePicker
                     value={checklistItem.dateTime}
-                    updateProperty={(value, onFail) => this.handleChange(ChecklistItemInput.FIELD.DATETIME, value, onFail)}
+                    updateProperty={(valueKey, value) => this.handleChange(ChecklistItemInput.FIELD.DATETIME, value, null)}
                     key={key}
                     disabled={disabled}
                 />
