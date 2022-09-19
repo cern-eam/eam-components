@@ -19,6 +19,7 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 import { useState, useEffect, useRef } from "react";
+import { extractOptions } from "./tools";
 
 var useFetchSelectOptions = function useFetchSelectOptions(autocompleteHandler) {
   var autocompleteHandlerParams = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
@@ -50,7 +51,7 @@ var useFetchSelectOptions = function useFetchSelectOptions(autocompleteHandler) 
     autocompleteHandler.apply(void 0, _toConsumableArray(autocompleteHandlerParams).concat([{
       signal: abortController.current.signal
     }])).then(function (result) {
-      var fetchedOptionsTemp = optionsTransformer ? optionsTransformer(result.body.data) : result.body.data; // Add value to list of options if it's not there
+      var fetchedOptionsTemp = optionsTransformer ? optionsTransformer(extractOptions(result)) : extractOptions(result); // Add value to list of options if it's not there
 
       if (value && !fetchedOptionsTemp.some(function (o) {
         return o.code === value;

@@ -1,4 +1,5 @@
 import {useState, useEffect, useRef} from "react"
+import { extractOptions } from "./tools";
 
 const useFetchSelectOptions = (autocompleteHandler, autocompleteHandlerParams = [], value, desc, options, optionsTransformer) => {
   
@@ -18,7 +19,7 @@ const useFetchSelectOptions = (autocompleteHandler, autocompleteHandlerParams = 
 
         autocompleteHandler(...autocompleteHandlerParams, { signal: abortController.current.signal })
         .then(result => {
-            let fetchedOptionsTemp = optionsTransformer ? optionsTransformer(result.body.data) : result.body.data;
+            let fetchedOptionsTemp = optionsTransformer ? optionsTransformer(extractOptions(result)) : extractOptions(result);
             
             // Add value to list of options if it's not there
             if (value && !fetchedOptionsTemp.some(o => o.code === value)) {

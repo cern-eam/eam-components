@@ -21,6 +21,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 import { useState, useEffect, useMemo, useRef } from "react";
 import debounce from 'lodash/debounce';
 import { fetchHistory, HISTORY_ID_PREFIX } from "../tools/history-tools";
+import { extractOptions } from "./tools";
 
 var useFetchAutocompleteOptions = function useFetchAutocompleteOptions(autocompleteHandler) {
   var autocompleteHandlerParams = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
@@ -82,7 +83,7 @@ var useFetchAutocompleteOptions = function useFetchAutocompleteOptions(autocompl
 
   var callHandler = function callHandler() {
     autocompleteHandler.apply(void 0, arguments).then(function (result) {
-      setOptions(result.body.data);
+      setOptions(extractOptions(result));
       setLoading(false);
     })["catch"](function (error) {
       setLoading(false);

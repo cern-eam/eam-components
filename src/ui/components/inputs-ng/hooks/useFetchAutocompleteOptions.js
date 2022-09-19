@@ -1,6 +1,7 @@
 import {useState, useEffect, useMemo, useRef} from "react"
 import debounce from 'lodash/debounce';
 import { fetchHistory, HISTORY_ID_PREFIX } from "../tools/history-tools";
+import { extractOptions } from "./tools";
 
 const useFetchAutocompleteOptions = (autocompleteHandler, autocompleteHandlerParams = [], inputValue, value, open, fieldId) => {
   
@@ -47,7 +48,7 @@ const useFetchAutocompleteOptions = (autocompleteHandler, autocompleteHandlerPar
     const callHandler = (...args) => {
         autocompleteHandler(...args)
         .then(result => {
-            setOptions(result.body.data);
+            setOptions(extractOptions(result));
             setLoading(false);
         })
         .catch(error => {
