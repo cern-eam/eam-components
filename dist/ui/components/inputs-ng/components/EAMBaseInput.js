@@ -16,7 +16,7 @@ var componentStyle = {
 };
 var RootDiv = styled('div')({
   width: "100%",
-  margin: "3px",
+  margin: "5px",
   display: "flex",
   flexDirection: "row",
   flexWrap: "wrap",

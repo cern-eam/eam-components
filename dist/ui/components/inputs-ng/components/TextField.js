@@ -67,7 +67,7 @@ var TextField = function TextField(props) {
     style: divInputStyle,
     ref: props.InputProps?.ref
   }, /*#__PURE__*/React.createElement(TextFieldInput, _extends({
-    type: 'text',
+    type: type === 'password' ? 'password' : 'text',
     ref: inputRef
   }, inputProps, {
     disabled: disabled,
