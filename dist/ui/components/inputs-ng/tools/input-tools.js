@@ -85,7 +85,7 @@ export var componentsProps = {
     elevation: 4
   }
 };
-export var createOnChangeHandler = function createOnChangeHandler(valueKey, descKey, updateEntityProperty, onChange) {
+export var createOnChangeHandler = function createOnChangeHandler(valueKey, descKey, orgKey, updateEntityProperty, onChange) {
   return function (value) {
     if (_typeof(value) === 'object') {
       if (value.code !== undefined) {
@@ -95,6 +95,10 @@ export var createOnChangeHandler = function createOnChangeHandler(valueKey, desc
 
       if (descKey && value.desc !== undefined) {
         updateEntityProperty(descKey, value.desc);
+      }
+
+      if (orgKey && value.organization !== undefined) {
+        updateEntityProperty(orgKey, value.organization);
       }
     } else {
       updateEntityProperty?.(valueKey, value);

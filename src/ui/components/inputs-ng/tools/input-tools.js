@@ -97,7 +97,7 @@ export const componentsProps = {
         }              
 }
 
-export const createOnChangeHandler = (valueKey, descKey, updateEntityProperty, onChange) => value => {    
+export const createOnChangeHandler = (valueKey, descKey, orgKey, updateEntityProperty, onChange) => value => {    
         if (typeof value === 'object') {
                 if (value.code !== undefined) {
                         updateEntityProperty?.(valueKey, value.code);
@@ -106,6 +106,10 @@ export const createOnChangeHandler = (valueKey, descKey, updateEntityProperty, o
 
                 if (descKey && value.desc !== undefined) {
                         updateEntityProperty(descKey, value.desc)
+                }
+
+                if (orgKey && value.organization !== undefined) {
+                        updateEntityProperty(orgKey, value.organization)
                 }
         } else {
                 updateEntityProperty?.(valueKey, value)
