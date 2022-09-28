@@ -54,7 +54,6 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
   _createClass(ChecklistItemInput, [{
     key: "handleChange",
     value: function handleChange(type, value, onFail) {
-      console.log('info', type, value);
       var _this$props$checklist = this.props.checklistItem,
           result = _this$props$checklist.result,
           finding = _this$props$checklist.finding,
@@ -103,7 +102,6 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
         newProps = this.options.beforeOnChange(newProps, type, value);
       }
 
-      console.log('new change', newProps);
       this.props.onChange(newProps, onFail);
     }
   }, {
@@ -171,7 +169,7 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
         case ChecklistItemInput.FIELD.DATE:
           return /*#__PURE__*/React.createElement(EAMDatePicker, {
             value: checklistItem.date,
-            updateProperty: function updateProperty(valueKey, value) {
+            onChange: function onChange(value) {
               return _this.handleChange(ChecklistItemInput.FIELD.DATE, value, null);
             },
             key: key,
@@ -181,7 +179,7 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
         case ChecklistItemInput.FIELD.DATETIME:
           return /*#__PURE__*/React.createElement(EAMDateTimePicker, {
             value: checklistItem.dateTime,
-            updateProperty: function updateProperty(valueKey, value) {
+            onChange: function onChange(value) {
               return _this.handleChange(ChecklistItemInput.FIELD.DATETIME, value, null);
             },
             key: key,

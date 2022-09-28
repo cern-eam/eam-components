@@ -61,7 +61,6 @@ const EAMSelect = (props) => {
       }
 
       onChange(newValue);
-      //updateCodeDesc(onChange, newValue.code, newValue.desc);
 
       // Don't bubble up any events (won't trigger a save when we select something by pressing enter)
       event.stopPropagation();
@@ -74,7 +73,6 @@ const EAMSelect = (props) => {
         if (getOptions().some(o => o.code === inputValue)) {
             let option = getOptions().find(o => o.code === inputValue);
             onChange(option)
-            //updateCodeDesc(onChange, option.code, descKey, option.desc, onChange);
         }
       }
     }

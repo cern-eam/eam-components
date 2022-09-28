@@ -12,8 +12,8 @@ var ChecklistFieldFinding = function ChecklistFieldFinding(props) {
     disabled: disabled,
     value: finding || '',
     options: possibleFindings,
-    updateProperty: function updateProperty(key, value) {
-      return _handleChange(value);
+    onChange: function onChange(value) {
+      return _handleChange(value.code);
     },
     componentStyle: {
       flex: "0 0 177px"

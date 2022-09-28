@@ -815,9 +815,9 @@ var Checklists = /*#__PURE__*/function (_Component) {
           };
         }),
         value: filteredActivity,
-        onChangeValue: function onChangeValue(activityCode) {
+        onChange: function onChange(activity) {
           return _this8.setNewFilter({
-            activityCode: activityCode
+            activityCode: activity.code
           });
         },
         menuContainerStyle: {
@@ -835,9 +835,9 @@ var Checklists = /*#__PURE__*/function (_Component) {
           });
         }),
         value: filteredEquipment ? filteredEquipment : undefined,
-        onChangeValue: function onChangeValue(equipmentCode) {
+        onChange: function onChange(equipment) {
           return _this8.setNewFilter({
-            equipmentCode: equipmentCode
+            equipmentCode: equipment.code
           });
         },
         menuContainerStyle: {

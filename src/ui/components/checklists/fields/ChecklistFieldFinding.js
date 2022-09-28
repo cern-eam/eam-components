@@ -10,7 +10,7 @@ const ChecklistFieldFinding = props => {
         return  <EAMSelect disabled={disabled}
                        value={finding || ''}
                        options={possibleFindings}
-                       updateProperty={(key, value) => handleChange(value)}
+                       onChange={value => handleChange(value.code)}
                        componentStyle={{flex: "0 0 177px"}}
             />
     else

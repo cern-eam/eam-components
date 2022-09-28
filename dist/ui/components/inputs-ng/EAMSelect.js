@@ -100,8 +100,7 @@ var EAMSelect = function EAMSelect(props) {
       return;
     }
 
-    onChange(newValue); //updateCodeDesc(onChange, newValue.code, newValue.desc);
-    // Don't bubble up any events (won't trigger a save when we select something by pressing enter)
+    onChange(newValue); // Don't bubble up any events (won't trigger a save when we select something by pressing enter)
 
     event.stopPropagation();
     event.preventDefault();
@@ -115,7 +114,7 @@ var EAMSelect = function EAMSelect(props) {
         var option = getOptions().find(function (o) {
           return o.code === inputValue;
         });
-        onChange(option); //updateCodeDesc(onChange, option.code, descKey, option.desc, onChange);
+        onChange(option);
       }
     }
   };
