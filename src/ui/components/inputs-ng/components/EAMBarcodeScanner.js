@@ -8,7 +8,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 
 const EAMBarcodeScanner = (props) => {
-    let {updateProperty, valueKey} = props;
+    let {onChange} = props;
 
     let codeReader = useRef(null);
     let [open, setOpen] = useState(false);
@@ -52,7 +52,7 @@ const EAMBarcodeScanner = (props) => {
     };
 
     const onDetectedCallback = (result) => {
-        updateProperty(valueKey, result);
+        onChange(result);
         setOpen(false);
     }
 

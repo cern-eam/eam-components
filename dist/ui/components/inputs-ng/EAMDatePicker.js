@@ -21,8 +21,7 @@ import enLocale from 'date-fns/locale/en-GB';
 
 var EAMDatePicker = function EAMDatePicker(props) {
   var value = props.value,
-      valueKey = props.valueKey,
-      updateProperty = props.updateProperty,
+      onChange = props.onChange,
       style = props.style,
       errorText = props.errorText,
       disabled = props.disabled;
@@ -43,7 +42,7 @@ var EAMDatePicker = function EAMDatePicker(props) {
     disableMaskedInput: true,
     inputFormat: "dd-MMM-yyyy" //TODO shouldn't be hardcoded 
     ,
-    onChange: onChangeHandler.bind(null, updateProperty, setIsInvalidDate, valueKey)
+    onChange: onChangeHandler.bind(null, onChange, setIsInvalidDate)
   })));
 };
 

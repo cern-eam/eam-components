@@ -35,10 +35,9 @@ var divErrorStyle = {
 var TextField = function TextField(props) {
   var desc = props.desc,
       value = props.value,
-      valueKey = props.valueKey,
       barcodeScanner = props.barcodeScanner,
       link = props.link,
-      updateProperty = props.updateProperty,
+      onChange = props.onChange,
       inputProps = props.inputProps,
       inputRef = props.inputRef,
       endTextAdornment = props.endTextAdornment,
@@ -78,8 +77,7 @@ var TextField = function TextField(props) {
     description: desc,
     value: value
   }), endTextAdornment && /*#__PURE__*/React.createElement(TextFieldTextAdornment, null, endTextAdornment)), endAdornment, barcodeScanner && !disabled && /*#__PURE__*/React.createElement(EAMBarcodeScanner, {
-    updateProperty: updateProperty,
-    valueKey: valueKey
+    onChange: onChange
   }), link && /*#__PURE__*/React.createElement(EAMLink, {
     link: link,
     value: value

@@ -24,13 +24,10 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
   var autocompleteHandler = props.autocompleteHandler,
       autocompleteHandlerParams = props.autocompleteHandlerParams,
       value = props.value,
-      valueKey = props.valueKey,
       desc = props.desc,
-      descKey = props.descKey,
-      updateProperty = props.updateProperty,
       id = props.id,
       renderValue = props.renderValue,
-      onChangeValue = props.onChangeValue;
+      onChange = props.onChange;
 
   var _useState = useState(""),
       _useState2 = _slicedToArray(_useState, 2),
@@ -54,8 +51,10 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
   var onInputChangeHandler = function onInputChangeHandler(event, newInputValue) {
     setInputValue(newInputValue);
 
-    if (newInputValue !== value && descKey && desc) {
-      updateProperty?.(descKey, '');
+    if (newInputValue !== value && desc) {
+      onChange({
+        desc: ''
+      });
     }
   };
 
@@ -66,7 +65,7 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
     }
 
     saveHistory(HISTORY_ID_PREFIX + id, newValue.code, newValue.desc);
-    updateCodeDesc(updateProperty, valueKey, newValue.code, descKey, newValue.desc, onChangeValue); // Don't bubble up any events (won't trigger a save when we select something by pressing enter)
+    onChange(newValue); // Don't bubble up any events (won't trigger a save when we select something by pressing enter)
 
     event.stopPropagation();
     event.preventDefault();
@@ -77,7 +76,9 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
 
     if ((reason === 'blur' || reason === 'escape' || reason === 'createOption') && inputValue !== value) {
       // TODO: validation if inputValue is not empty 
-      updateCodeDesc(updateProperty, valueKey, inputValue, descKey, '', onChangeValue);
+      onChange({
+        code: inputValue
+      });
     }
   };
 

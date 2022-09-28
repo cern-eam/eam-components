@@ -9,8 +9,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 const EAMSelect = (props) => {
    
   let {autocompleteHandler, autocompleteHandlerParams, 
-    value, valueKey, descKey, desc,
-    updateProperty, onChangeValue,
+    value, desc, onChange,
     options, optionsTransformer,
     required, id, disabled,
     renderValue, endTextAdornment} = props;
@@ -38,8 +37,8 @@ const EAMSelect = (props) => {
 
     const onInputChangeHandler = (event, newInputValue) => {
         setInputValue(newInputValue);
-        if (newInputValue !== value && descKey && desc) {
-         updateProperty?.(descKey, '');
+        if (newInputValue !== value && desc) {
+         onChange({desc: ''})
         }
        }
 
@@ -57,11 +56,12 @@ const EAMSelect = (props) => {
         if (required) {
             return;
         }
-        updateCodeDesc(updateProperty, valueKey, '', descKey, '', onChangeValue);
+        onChange({code: '', desc: ''})
         return;
       }
 
-      updateCodeDesc(updateProperty, valueKey, newValue.code, descKey, newValue.desc, onChangeValue);
+      onChange(newValue);
+      //updateCodeDesc(onChange, newValue.code, newValue.desc);
 
       // Don't bubble up any events (won't trigger a save when we select something by pressing enter)
       event.stopPropagation();
@@ -73,7 +73,8 @@ const EAMSelect = (props) => {
       if ( (reason === 'blur' || reason === 'escape') && inputValue) {
         if (getOptions().some(o => o.code === inputValue)) {
             let option = getOptions().find(o => o.code === inputValue);
-            updateCodeDesc(updateProperty, valueKey, option.code, descKey, option.desc, onChangeValue);
+            onChange(option)
+            //updateCodeDesc(onChange, option.code, descKey, option.desc, onChange);
         }
       }
     }

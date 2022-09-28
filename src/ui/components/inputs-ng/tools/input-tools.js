@@ -87,16 +87,6 @@ export const formatLabel = (renderValue, option) => {
 }
 
 
-export const updateCodeDesc = (updateProperty, valueKey, value, descKey, desc, onChangeValue) => {
-        updateProperty?.(valueKey, value);
-
-        if (descKey) {
-                updateProperty?.(descKey, desc);
-        }
-
-        onChangeValue?.(value)
-}
-
 export const componentsProps = {
         paper: {
                 sx: {
@@ -105,4 +95,20 @@ export const componentsProps = {
                 },
                 elevation: 4
         }              
+}
+
+export const createOnChangeHandler = (valueKey, descKey, updateEntityProperty, onChange) => value => {    
+        if (typeof value === 'object') {
+                if (value.code !== undefined) {
+                        updateEntityProperty?.(valueKey, value.code);
+                        onChange?.(value.code);
+                }
+
+                if (descKey && value.desc !== undefined) {
+                        updateEntityProperty(descKey, value.desc)
+                }
+        } else {
+                updateEntityProperty?.(valueKey, value)
+                onChange?.(value)
+        }
 }

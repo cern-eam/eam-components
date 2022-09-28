@@ -13,9 +13,8 @@ const EAMCheckbox = (props) => {
     
     const { 
         value, 
-        valueKey,
-        updateProperty,
-        disabled} = props;
+        disabled,
+        onChange} = props;
 
     const isChecked = (value) => {
         const checkedTextValue = value || '';
@@ -23,7 +22,7 @@ const EAMCheckbox = (props) => {
     };
 
     const handleChange = (event, checked) => {
-        updateProperty(valueKey, checked.toString());
+        onChange(checked.toString());
     };
 
     return (

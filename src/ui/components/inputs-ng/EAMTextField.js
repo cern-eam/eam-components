@@ -5,7 +5,7 @@ import TextField from './components/TextField';
 
 const EAMTextField = (props) => {
 
-    const {value, valueKey, updateProperty, onChangeValue, onChangeInput} = props;
+    const {value, onChange, onChangeInput} = props;
     const [inputValue, setInputValue] = useState(value || '');
 
     useEffect(() => setInputValue(value || ''), [value]);
@@ -18,8 +18,7 @@ const EAMTextField = (props) => {
         },
         onBlur: () => {
             if (inputValue !== value) {
-                updateProperty?.(valueKey, inputValue);
-                onChangeValue?.(inputValue);
+                onChange(inputValue);
             }
         },
         value: inputValue,

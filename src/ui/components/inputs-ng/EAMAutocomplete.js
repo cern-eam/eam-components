@@ -9,8 +9,7 @@ import { saveHistory, HISTORY_ID_PREFIX } from './tools/history-tools';
 const EAMAutocomplete = (props) => {
    
   let {autocompleteHandler, autocompleteHandlerParams, 
-       value, valueKey, desc, descKey,
-       updateProperty, id, renderValue, onChangeValue} = props;
+       value, desc, id, renderValue, onChange} = props;
 
     let [inputValue, setInputValue] = useState("")
     let [open, setOpen] = useState(false)
@@ -22,8 +21,8 @@ const EAMAutocomplete = (props) => {
 
     const onInputChangeHandler = (event, newInputValue) => {
      setInputValue(newInputValue);
-     if (newInputValue !== value && descKey && desc) {
-      updateProperty?.(descKey, '');
+     if (newInputValue !== value && desc) {
+      onChange({desc: ''})
      }
     }
 
@@ -34,7 +33,8 @@ const EAMAutocomplete = (props) => {
       }
       
       saveHistory(HISTORY_ID_PREFIX + id, newValue.code, newValue.desc)
-      updateCodeDesc(updateProperty, valueKey, newValue.code, descKey, newValue.desc, onChangeValue);
+
+      onChange(newValue);
 
       // Don't bubble up any events (won't trigger a save when we select something by pressing enter)
       event.stopPropagation();
@@ -47,7 +47,7 @@ const EAMAutocomplete = (props) => {
       // Only to be fired when we blur, press ESC or hit enter and the inputValue is different than the original value
       if ( (reason === 'blur' || reason === 'escape' || reason === 'createOption') && inputValue !== value) {
           // TODO: validation if inputValue is not empty 
-          updateCodeDesc(updateProperty, valueKey, inputValue, descKey, '', onChangeValue); 
+          onChange({code: inputValue})
       } 
     }
 

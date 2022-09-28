@@ -20,8 +20,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 
 var EAMBarcodeScanner = function EAMBarcodeScanner(props) {
-  var updateProperty = props.updateProperty,
-      valueKey = props.valueKey;
+  var onChange = props.onChange;
   var codeReader = useRef(null);
 
   var _useState = useState(false),
@@ -71,7 +70,7 @@ var EAMBarcodeScanner = function EAMBarcodeScanner(props) {
   };
 
   var onDetectedCallback = function onDetectedCallback(result) {
-    updateProperty(valueKey, result);
+    onChange(result);
     setOpen(false);
   }; // Display just the children when no support for user media
 

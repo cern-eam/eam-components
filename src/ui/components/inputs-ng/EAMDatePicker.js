@@ -9,7 +9,7 @@ import enLocale from 'date-fns/locale/en-GB';
 
 const EAMDatePicker = (props) => {
 
-    let {value, valueKey, updateProperty, style, errorText, disabled} = props;
+    let {value, onChange, style, errorText, disabled} = props;
     let [isInvalidDate, setIsInvalidDate] = useState(false);
 
     return (
@@ -20,7 +20,7 @@ const EAMDatePicker = (props) => {
                     value={value}
                     disableMaskedInput
                     inputFormat="dd-MMM-yyyy" //TODO shouldn't be hardcoded 
-                    onChange={onChangeHandler.bind(null, updateProperty, setIsInvalidDate, valueKey)}
+                    onChange={onChangeHandler.bind(null, onChange, setIsInvalidDate)}
                 />
          </LocalizationProvider>
         </EAMBaseInput>

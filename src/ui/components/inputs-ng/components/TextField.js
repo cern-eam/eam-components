@@ -30,9 +30,9 @@ const divErrorStyle = {
 
 const TextField = (props) => {
 
-    let {desc, value, valueKey, 
+    let {desc, value,  
         barcodeScanner, link, 
-        updateProperty,       
+        onChange,       
         inputProps, 
         inputRef,
         endTextAdornment, endAdornment,
@@ -64,7 +64,7 @@ const TextField = (props) => {
                     {endTextAdornment && <TextFieldTextAdornment>{endTextAdornment}</TextFieldTextAdornment>}
                 </div>
                 {endAdornment}
-                {barcodeScanner && !disabled && <EAMBarcodeScanner updateProperty={updateProperty} valueKey = {valueKey}/>}
+                {barcodeScanner && !disabled && <EAMBarcodeScanner onChange={onChange} />}
                 {link && <EAMLink link = {link} value = {value}/>}
             </div>
             {errorText && <div style={divErrorStyle}>{errorText}</div>}

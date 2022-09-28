@@ -6,11 +6,9 @@ import EAMBaseInput from './components/EAMBaseInput';
 import { areEqual } from './tools/input-tools';
 
 var EAMRadio = function EAMRadio(props) {
-  var updateProperty = props.updateProperty,
-      values = props.values,
+  var values = props.values,
       value = props.value,
-      valueKey = props.valueKey,
-      onChangeValue = props.onChangeValue,
+      onChange = props.onChange,
       id = props.id;
 
   var generateRadioButtons = function generateRadioButtons(values) {
@@ -29,8 +27,7 @@ var EAMRadio = function EAMRadio(props) {
   };
 
   var onChangeHandler = function onChangeHandler(event) {
-    updateProperty(valueKey, event.target.value);
-    onChangeValue?.(event.target.value);
+    onChange(event.target.value);
   };
 
   return /*#__PURE__*/React.createElement(EAMBaseInput, props, /*#__PURE__*/React.createElement(RadioGroup, {

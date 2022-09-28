@@ -19,12 +19,12 @@ export const renderDatePickerInput = ({ inputRef, inputProps, InputProps }, isIn
     )
 }
 
-export const onChangeHandler = (updateProperty, setIsInvalidDate, valueKey, newValue) => {
+export const onChangeHandler = (onChange, setIsInvalidDate, newValue) => {
     try {
         if (newValue) {
-            updateProperty(valueKey, newValue.toISOString())   
+            onChange(newValue.toISOString())   
         } else {
-            updateProperty(valueKey, '');
+            onChange('');
         }
         setIsInvalidDate(false);
     } catch {

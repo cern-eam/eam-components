@@ -26,11 +26,8 @@ var EAMSelect = function EAMSelect(props) {
   var autocompleteHandler = props.autocompleteHandler,
       autocompleteHandlerParams = props.autocompleteHandlerParams,
       value = props.value,
-      valueKey = props.valueKey,
-      descKey = props.descKey,
       desc = props.desc,
-      updateProperty = props.updateProperty,
-      onChangeValue = props.onChangeValue,
+      onChange = props.onChange,
       options = props.options,
       optionsTransformer = props.optionsTransformer,
       required = props.required,
@@ -74,8 +71,10 @@ var EAMSelect = function EAMSelect(props) {
   var onInputChangeHandler = function onInputChangeHandler(event, newInputValue) {
     setInputValue(newInputValue);
 
-    if (newInputValue !== value && descKey && desc) {
-      updateProperty?.(descKey, '');
+    if (newInputValue !== value && desc) {
+      onChange({
+        desc: ''
+      });
     }
   };
 
@@ -94,11 +93,15 @@ var EAMSelect = function EAMSelect(props) {
         return;
       }
 
-      updateCodeDesc(updateProperty, valueKey, '', descKey, '', onChangeValue);
+      onChange({
+        code: '',
+        desc: ''
+      });
       return;
     }
 
-    updateCodeDesc(updateProperty, valueKey, newValue.code, descKey, newValue.desc, onChangeValue); // Don't bubble up any events (won't trigger a save when we select something by pressing enter)
+    onChange(newValue); //updateCodeDesc(onChange, newValue.code, newValue.desc);
+    // Don't bubble up any events (won't trigger a save when we select something by pressing enter)
 
     event.stopPropagation();
     event.preventDefault();
@@ -112,7 +115,7 @@ var EAMSelect = function EAMSelect(props) {
         var option = getOptions().find(function (o) {
           return o.code === inputValue;
         });
-        updateCodeDesc(updateProperty, valueKey, option.code, descKey, option.desc, onChangeValue);
+        onChange(option); //updateCodeDesc(onChange, option.code, descKey, option.desc, onChange);
       }
     }
   };

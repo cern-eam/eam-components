@@ -12,9 +12,8 @@ var rootStyle = {
 
 var EAMCheckbox = function EAMCheckbox(props) {
   var value = props.value,
-      valueKey = props.valueKey,
-      updateProperty = props.updateProperty,
-      disabled = props.disabled;
+      disabled = props.disabled,
+      onChange = props.onChange;
 
   var isChecked = function isChecked(value) {
     var checkedTextValue = value || '';
@@ -22,7 +21,7 @@ var EAMCheckbox = function EAMCheckbox(props) {
   };
 
   var handleChange = function handleChange(event, checked) {
-    updateProperty(valueKey, checked.toString());
+    onChange(checked.toString());
   };
 
   return /*#__PURE__*/React.createElement(EAMBaseInput, _extends({}, props, {

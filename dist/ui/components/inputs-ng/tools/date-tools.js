@@ -32,12 +32,12 @@ export var renderDatePickerInput = function renderDatePickerInput(_ref, isInvali
     disabled: disabled
   });
 };
-export var onChangeHandler = function onChangeHandler(updateProperty, setIsInvalidDate, valueKey, newValue) {
+export var onChangeHandler = function onChangeHandler(onChange, setIsInvalidDate, newValue) {
   try {
     if (newValue) {
-      updateProperty(valueKey, newValue.toISOString());
+      onChange(newValue.toISOString());
     } else {
-      updateProperty(valueKey, '');
+      onChange('');
     }
 
     setIsInvalidDate(false);

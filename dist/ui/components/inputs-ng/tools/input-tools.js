@@ -1,3 +1,5 @@
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 import isEqual from 'lodash/isEqual';
@@ -74,15 +76,6 @@ export var formatLabel = function formatLabel(renderValue, option) {
 
   return "".concat(option.code, " - ").concat(option.desc);
 };
-export var updateCodeDesc = function updateCodeDesc(updateProperty, valueKey, value, descKey, desc, onChangeValue) {
-  updateProperty?.(valueKey, value);
-
-  if (descKey) {
-    updateProperty?.(descKey, desc);
-  }
-
-  onChangeValue?.(value);
-};
 export var componentsProps = {
   paper: {
     sx: {
@@ -91,4 +84,21 @@ export var componentsProps = {
     },
     elevation: 4
   }
+};
+export var createOnChangeHandler = function createOnChangeHandler(valueKey, descKey, updateEntityProperty, onChange) {
+  return function (value) {
+    if (_typeof(value) === 'object') {
+      if (value.code !== undefined) {
+        updateEntityProperty?.(valueKey, value.code);
+        onChange?.(value.code);
+      }
+
+      if (descKey && value.desc !== undefined) {
+        updateEntityProperty(descKey, value.desc);
+      }
+    } else {
+      updateEntityProperty?.(valueKey, value);
+      onChange?.(value);
+    }
+  };
 };

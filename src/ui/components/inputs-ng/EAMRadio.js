@@ -7,7 +7,7 @@ import { areEqual } from './tools/input-tools';
 
 const EAMRadio = (props) => {
 
-    const { updateProperty, values, value, valueKey, onChangeValue, id } = props;
+    const { values, value, onChange, id } = props;
 
     const generateRadioButtons = (values) => {
         if (values) {
@@ -19,8 +19,7 @@ const EAMRadio = (props) => {
     };
 
     const onChangeHandler = (event) => {
-        updateProperty(valueKey, event.target.value);
-        onChangeValue?.(event.target.value)
+        onChange(event.target.value)
     }
 
     return (
