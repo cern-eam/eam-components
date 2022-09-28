@@ -17,7 +17,7 @@ class EISPanel extends Component {
     headingStyle = {
         display: 'flex',
         alignItems: 'center',
-        fontWeight: 500,
+        fontWeight: 900,
         flexGrow: 1,
     };
 
