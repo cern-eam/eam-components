@@ -34,8 +34,8 @@ var EAMBarcodeScanner = function EAMBarcodeScanner(props) {
       setShowBarcodeButton = _useState4[1];
 
   useEffect(function () {
-    navigator.mediaDevices.enumerateDevices().then(function (deviceCount) {
-      if (deviceCount.length > 0 && navigator && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    navigator.mediaDevices?.enumerateDevices().then(function (deviceCount) {
+      if (deviceCount.length > 0 && navigator.mediaDevices.getUserMedia) {
         setShowBarcodeButton(true);
       }
     });

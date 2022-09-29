@@ -15,8 +15,8 @@ const EAMBarcodeScanner = (props) => {
     let [showBarcodeButton, setShowBarcodeButton] = useState(false);
 
     useEffect( () => {
-        navigator.mediaDevices.enumerateDevices().then( deviceCount => {
-            if (deviceCount.length > 0 && navigator && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices?.enumerateDevices().then( deviceCount => {
+            if (deviceCount.length > 0 && navigator.mediaDevices.getUserMedia) {
                 setShowBarcodeButton(true)
             }
         });
