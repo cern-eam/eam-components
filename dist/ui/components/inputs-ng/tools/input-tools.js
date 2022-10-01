@@ -16,7 +16,7 @@ export var isUpperCase = function isUpperCase(elementInfo) {
   return elementInfo?.characterCase === 'uppercase';
 };
 export var areEqual = function areEqual(prevProps, nextProps) {
-  return prevProps.value === nextProps.value && prevProps.desc === nextProps.desc && prevProps.disabled === nextProps.disabled && prevProps.readonly === nextProps.readonly && prevProps.required === nextProps.required && prevProps.uppercase === nextProps.uppercase && prevProps.label === nextProps.label && prevProps.errorText === nextProps.errorText && isEqual(prevProps.autocompleteHandlerParams, nextProps.autocompleteHandlerParams) && isEqual(prevProps.options, nextProps.options) && isEqual(prevProps.renderDependencies, nextProps.renderDependencies);
+  return prevProps.value === nextProps.value && prevProps.desc === nextProps.desc && prevProps.disabled === nextProps.disabled && prevProps.readonly === nextProps.readonly && prevProps.required === nextProps.required && prevProps.uppercase === nextProps.uppercase && prevProps.label === nextProps.label && prevProps.hidden === nextProps.hidden && prevProps.errorText === nextProps.errorText && isEqual(prevProps.autocompleteHandlerParams, nextProps.autocompleteHandlerParams) && isEqual(prevProps.options, nextProps.options) && isEqual(prevProps.renderDependencies, nextProps.renderDependencies);
 };
 export var processElementInfo = function processElementInfo(elementInfo) {
   var data = {

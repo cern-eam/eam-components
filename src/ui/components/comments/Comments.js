@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import WSComments from "../../../tools/WSComments";
 import Comment from "./Comment";
 import CommentNew from "./CommentNew";
-import EISPanel from '../panel';
 import List from '@mui/material/List';
 import PropTypes from "prop-types";
 
@@ -20,7 +19,6 @@ class Comments extends Component {
     };
 
     componentWillMount() {
-        //Just read for existing object
         if (this.props.entityKeyCode)
             this.readComments(this.props.entityCode, this.props.entityKeyCode);
     }
@@ -37,56 +35,42 @@ class Comments extends Component {
     }
 
     readComments = (entityCode, entityKeyCode) => {
-        this.props.readComments(entityCode, entityKeyCode).then(response => {
+        this.props.readComments(entityCode, entityKeyCode + (this.props.entityOrganization ? '#' + this.props.entityOrganization : ''))
+        .then(response => {
             this.setState(() =>
                 ({comments: response.body.data, newCommentText: ''})
             )
         }).catch(reason => {
             this.props.handleError(reason);
-            //No comments...
             this.setState(() => ({comments: []}));
-        });
+        })
     };
 
     createComment = (comment) => {
-        //Remove pk property
-        delete comment.pk;
-        //Create the comment and set the new list
+        delete comment.pk; //Remove pk property to avoid unmarshalling error
+        if (this.props.entityOrganization) {
+            comment.organization = this.props.entityOrganization;
+        }
         this.props.createComment(comment).then(response => {
-            this.setState(() =>
-                ({
-                    comments: response.body.data,
-                    newCommentText: ''
-                })
-            )
             if (this.props.onCommentAdded) {
                 this.props.onCommentAdded(comment);
             }
+            this.readComments(this.props.entityCode, this.props.entityKeyCode)
         }).catch(reason => {
             this.props.handleError(reason);
-            //Try to read comments again
-            this.readComments(this.props.entityCode, this.props.entityKeyCode);
-        });
+        })
     };
 
     updateComment = (comment) => {
-        //Remove pk property
-        delete comment.pk;
-        delete comment.updateCount;
-        //Update the comment and set the new list
+        delete comment.pk; //Remove pk property to avoid unmarshalling error
         this.props.updateComment(comment).then(response => {
-            this.setState(() =>
-                ({comments: response.body.data})
-            )
-
             if (this.props.onCommentUpdated) {
                 this.props.onCommentUpdated(comment);
             }
+            this.readComments(this.props.entityCode, this.props.entityKeyCode);
         }).catch(reason => {
             this.props.handleError(reason);
-            //Try to read comments again
-            this.readComments(this.props.entityCode, this.props.entityKeyCode);
-        });
+        })
     };
 
     updateNewCommentText = (text) => {

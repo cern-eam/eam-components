@@ -24,7 +24,6 @@ import React, { Component } from 'react';
 import WSComments from "../../../tools/WSComments";
 import Comment from "./Comment";
 import CommentNew from "./CommentNew";
-import EISPanel from '../panel';
 import List from '@mui/material/List';
 import PropTypes from "prop-types";
 var datatablePanelStyle = {
@@ -54,7 +53,7 @@ var Comments = /*#__PURE__*/function (_Component) {
     };
 
     _this.readComments = function (entityCode, entityKeyCode) {
-      _this.props.readComments(entityCode, entityKeyCode).then(function (response) {
+      _this.props.readComments(entityCode, entityKeyCode + (_this.props.entityOrganization ? '#' + _this.props.entityOrganization : '')).then(function (response) {
         _this.setState(function () {
           return {
             comments: response.body.data,
@@ -62,8 +61,7 @@ var Comments = /*#__PURE__*/function (_Component) {
           };
         });
       })["catch"](function (reason) {
-        _this.props.handleError(reason); //No comments...
-
+        _this.props.handleError(reason);
 
         _this.setState(function () {
           return {
@@ -74,48 +72,34 @@ var Comments = /*#__PURE__*/function (_Component) {
     };
 
     _this.createComment = function (comment) {
-      //Remove pk property
-      delete comment.pk; //Create the comment and set the new list
+      delete comment.pk; //Remove pk property to avoid unmarshalling error
+
+      if (_this.props.entityOrganization) {
+        comment.organization = _this.props.entityOrganization;
+      }
 
       _this.props.createComment(comment).then(function (response) {
-        _this.setState(function () {
-          return {
-            comments: response.body.data,
-            newCommentText: ''
-          };
-        });
-
         if (_this.props.onCommentAdded) {
           _this.props.onCommentAdded(comment);
         }
-      })["catch"](function (reason) {
-        _this.props.handleError(reason); //Try to read comments again
-
 
         _this.readComments(_this.props.entityCode, _this.props.entityKeyCode);
+      })["catch"](function (reason) {
+        _this.props.handleError(reason);
       });
     };
 
     _this.updateComment = function (comment) {
-      //Remove pk property
-      delete comment.pk;
-      delete comment.updateCount; //Update the comment and set the new list
+      delete comment.pk; //Remove pk property to avoid unmarshalling error
 
       _this.props.updateComment(comment).then(function (response) {
-        _this.setState(function () {
-          return {
-            comments: response.body.data
-          };
-        });
-
         if (_this.props.onCommentUpdated) {
           _this.props.onCommentUpdated(comment);
         }
-      })["catch"](function (reason) {
-        _this.props.handleError(reason); //Try to read comments again
-
 
         _this.readComments(_this.props.entityCode, _this.props.entityKeyCode);
+      })["catch"](function (reason) {
+        _this.props.handleError(reason);
       });
     };
 
@@ -143,7 +127,6 @@ var Comments = /*#__PURE__*/function (_Component) {
   _createClass(Comments, [{
     key: "componentWillMount",
     value: function componentWillMount() {
-      //Just read for existing object
       if (this.props.entityKeyCode) this.readComments(this.props.entityCode, this.props.entityKeyCode);
     }
   }, {

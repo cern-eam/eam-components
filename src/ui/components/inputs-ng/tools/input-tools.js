@@ -17,6 +17,7 @@ export const areEqual = (prevProps, nextProps) => {
            prevProps.required === nextProps.required &&
            prevProps.uppercase === nextProps.uppercase &&
            prevProps.label === nextProps.label &&
+           prevProps.hidden === nextProps.hidden &&
            prevProps.errorText === nextProps.errorText &&
            isEqual(prevProps.autocompleteHandlerParams, nextProps.autocompleteHandlerParams) &&
            isEqual(prevProps.options, nextProps.options) &&
