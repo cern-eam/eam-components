@@ -1,16 +1,14 @@
 import React from 'react';
 
 const EAMTableDataAdapter = (props) => {
-    const { fetchData, convertRowData, convertColumnMetadata } = props;
+    const { equipmentCode, fetchData, convertRowData, convertColumnMetadata } = props;
     const [loading, setLoading] = React.useState(true);
-    const [mounted, setMounted] = React.useState(true);
     const [requestError, setRequestError] = React.useState(false);
     const [rows, setRows] = React.useState([]);
     const [columnsMetadata, setColumnsMetadata] = React.useState([]);
 
     React.useEffect(() => {
         (async () => {
-            if (mounted) {
                 setLoading(true);
                 const response = await fetchData().catch(() => {
                     setLoading(false);
@@ -22,11 +20,8 @@ const EAMTableDataAdapter = (props) => {
                 setRows(convertRowData(responseBody));
                 setColumnsMetadata(convertColumnMetadata(responseBody));
                 setLoading(false);
-            }
         })();
-
-        return () => setMounted(false);
-    }, []);
+    }, [equipmentCode]);
 
     const context = {
         loading,
