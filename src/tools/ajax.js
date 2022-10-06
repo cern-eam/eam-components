@@ -5,7 +5,7 @@ import ErrorTypes from "../enums/ErrorTypes";
  * Default timeout is 20s.
  * This can be overidden with the config object
  */
-const DEFAULT_TIMEOUT = 20000;
+const DEFAULT_TIMEOUT = 40000;
 
 class Ajax {
 
