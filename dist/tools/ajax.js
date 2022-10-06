@@ -17,7 +17,7 @@ import ErrorTypes from "../enums/ErrorTypes";
  * This can be overidden with the config object
  */
 
-var DEFAULT_TIMEOUT = 20000;
+var DEFAULT_TIMEOUT = 40000;
 
 var Ajax = /*#__PURE__*/function () {
   function Ajax() {
