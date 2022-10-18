@@ -321,6 +321,35 @@ const EAMFilterField = ({ column, getDefaultValue = getEAMDefaultFilterValue }) 
         [localFilter, updateFilter]
     );
 
+    const renderDatePickerInput = props => {
+        let {InputProps} = props;
+        return (
+            (
+                <FilterTextField
+                    {...props}
+                    InputProps={{
+                        ...InputProps,
+                        startAdornment: (
+                            <QualifierMenuAdornment
+                                column={column}
+                                localFilter={localFilter}
+                                setLocalFilter={updateFilter}
+                            />
+                        ),
+                        endAdornment: localFilter?._dateValue ? (
+                            <DateFilterAdornment
+                                localFilter={localFilter}
+                                setLocalFilter={updateFilter}
+                            />
+                        ) : (
+                            InputProps?.endAdornment
+                        ),
+                    }}
+                />
+            )
+        )
+    }
+
     switch (dataType) {
         case "VARCHAR":
         case "MIXVARCHAR":
@@ -361,29 +390,7 @@ const EAMFilterField = ({ column, getDefaultValue = getEAMDefaultFilterValue }) 
                     onChange={handleDatePickersChange}
                     inputFormat="dd-MMM-yyyy"
                     disableOpenPicker={localFilter?._dateValue ? true : false}
-                    renderInput={(props) => (
-                        <FilterTextField
-                            {...props}
-                            InputProps={{
-                                ...props.InputProps,
-                                startAdornment: (
-                                    <QualifierMenuAdornment
-                                        column={column}
-                                        localFilter={localFilter}
-                                        setLocalFilter={updateFilter}
-                                    />
-                                ),
-                                endAdornment: localFilter?._dateValue ? (
-                                    <DateFilterAdornment
-                                        localFilter={localFilter}
-                                        setLocalFilter={updateFilter}
-                                    />
-                                ) : (
-                                    { ...props.InputProps.endAdornment }
-                                ),
-                            }}
-                        />
-                    )}
+                    renderInput={renderDatePickerInput}
                 />
             );
         case "DATETIME":
@@ -394,29 +401,7 @@ const EAMFilterField = ({ column, getDefaultValue = getEAMDefaultFilterValue }) 
                     onChange={handleDatePickersChange}
                     inputFormat="dd-MMM-yyyy HH:mm"
                     disableOpenPicker={localFilter?._dateValue ? true : false}
-                    renderInput={(props) => (
-                        <FilterTextField
-                            {...props}
-                            InputProps={{
-                                ...props.InputProps,
-                                startAdornment: (
-                                    <QualifierMenuAdornment
-                                        column={column}
-                                        localFilter={localFilter}
-                                        setLocalFilter={updateFilter}
-                                    />
-                                ),
-                                endAdornment: localFilter?._dateValue ? (
-                                    <DateFilterAdornment
-                                        localFilter={localFilter}
-                                        setLocalFilter={updateFilter}
-                                    />
-                                ) : (
-                                    { ...props.InputProps.endAdornment }
-                                ),
-                            }}
-                        />
-                    )}
+                    renderInput={renderDatePickerInput}
                 />
             );
         case "__SELECT":

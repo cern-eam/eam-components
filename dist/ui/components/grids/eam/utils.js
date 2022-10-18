@@ -411,6 +411,23 @@ var EAMFilterField = function EAMFilterField(_ref6) {
     }));
   }, [localFilter, updateFilter]);
 
+  var renderDatePickerInput = function renderDatePickerInput(props) {
+    var InputProps = props.InputProps;
+    return /*#__PURE__*/React.createElement(FilterTextField, _extends({}, props, {
+      InputProps: _objectSpread({}, InputProps, {
+        startAdornment: /*#__PURE__*/React.createElement(QualifierMenuAdornment, {
+          column: column,
+          localFilter: localFilter,
+          setLocalFilter: updateFilter
+        }),
+        endAdornment: localFilter?._dateValue ? /*#__PURE__*/React.createElement(DateFilterAdornment, {
+          localFilter: localFilter,
+          setLocalFilter: updateFilter
+        }) : InputProps?.endAdornment
+      })
+    }));
+  };
+
   switch (dataType) {
     case "VARCHAR":
     case "MIXVARCHAR":
@@ -447,21 +464,7 @@ var EAMFilterField = function EAMFilterField(_ref6) {
         onChange: handleDatePickersChange,
         inputFormat: "dd-MMM-yyyy",
         disableOpenPicker: localFilter?._dateValue ? true : false,
-        renderInput: function renderInput(props) {
-          return /*#__PURE__*/React.createElement(FilterTextField, _extends({}, props, {
-            InputProps: _objectSpread({}, props.InputProps, {
-              startAdornment: /*#__PURE__*/React.createElement(QualifierMenuAdornment, {
-                column: column,
-                localFilter: localFilter,
-                setLocalFilter: updateFilter
-              }),
-              endAdornment: localFilter?._dateValue ? /*#__PURE__*/React.createElement(DateFilterAdornment, {
-                localFilter: localFilter,
-                setLocalFilter: updateFilter
-              }) : _objectSpread({}, props.InputProps.endAdornment)
-            })
-          }));
-        }
+        renderInput: renderDatePickerInput
       });
 
     case "DATETIME":
@@ -471,21 +474,7 @@ var EAMFilterField = function EAMFilterField(_ref6) {
         onChange: handleDatePickersChange,
         inputFormat: "dd-MMM-yyyy HH:mm",
         disableOpenPicker: localFilter?._dateValue ? true : false,
-        renderInput: function renderInput(props) {
-          return /*#__PURE__*/React.createElement(FilterTextField, _extends({}, props, {
-            InputProps: _objectSpread({}, props.InputProps, {
-              startAdornment: /*#__PURE__*/React.createElement(QualifierMenuAdornment, {
-                column: column,
-                localFilter: localFilter,
-                setLocalFilter: updateFilter
-              }),
-              endAdornment: localFilter?._dateValue ? /*#__PURE__*/React.createElement(DateFilterAdornment, {
-                localFilter: localFilter,
-                setLocalFilter: updateFilter
-              }) : _objectSpread({}, props.InputProps.endAdornment)
-            })
-          }));
-        }
+        renderInput: renderDatePickerInput
       });
 
     case "__SELECT":
