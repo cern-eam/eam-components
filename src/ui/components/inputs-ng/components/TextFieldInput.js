@@ -5,14 +5,14 @@ const TextFieldInput = styled('input')(({theme}) => ({
         display: "block",
         width: "100%",
         boxSizing: "border-box",
-        paddingLeft: 7,
+        paddingLeft: 10,
         fontSize: "15px",
         lineHeight: 1.5,
         color: "#495057",
         backgroundClip: "padding-box",
-        border: "1px solid #e5e6e7",
+        border: "1px solid #e0e0e0",
         borderRadius: "4px",
-        backgroundColor: "#fafafa", // was #fdfdfd
+        backgroundColor: "#fafafa", 
         height: 38,
         fontWeight: 300,
         fontFamily: "'Roboto', sans-serif"
@@ -22,8 +22,8 @@ const TextFieldInput = styled('input')(({theme}) => ({
         backgroundColor: "#fff"
     },
     '&:disabled': {
-        backgroundColor: "#f3f3f3",
-        border: "1px solid #fafafa"
+        backgroundColor: "#f5f5f5",
+        border: "1px dashed #eee"
     }
 }))
 

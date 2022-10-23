@@ -13,7 +13,7 @@ const componentStyle = {
 
 const RootDiv = styled('div')({
     width: "100%",
-    margin: "5px",
+    margin: "5px 1px",
     display: "flex",
     flexDirection: "row",
     flexWrap: "wrap",
@@ -41,7 +41,7 @@ const EAMBaseInput = (props) => {
         {label &&
         <LabelDiv>
             <span>{label}</span>
-            {required && <span style={requiredStyle}>*</span>}
+            {required && <span style={requiredStyle}> *</span>}
         </LabelDiv>}
         <div style={{...componentStyle, ...props.componentStyle}}>
             {props.children}

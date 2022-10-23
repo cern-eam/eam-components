@@ -16,7 +16,7 @@ var componentStyle = {
 };
 var RootDiv = styled('div')({
   width: "100%",
-  margin: "5px",
+  margin: "5px 1px",
   display: "flex",
   flexDirection: "row",
   flexWrap: "wrap",
@@ -43,7 +43,7 @@ var EAMBaseInput = function EAMBaseInput(props) {
     style: props.rootStyle
   }, label && /*#__PURE__*/React.createElement(LabelDiv, null, /*#__PURE__*/React.createElement("span", null, label), required && /*#__PURE__*/React.createElement("span", {
     style: requiredStyle
-  }, "*")), /*#__PURE__*/React.createElement("div", {
+  }, " *")), /*#__PURE__*/React.createElement("div", {
     style: _objectSpread({}, componentStyle, {}, props.componentStyle)
   }, props.children));
 };
