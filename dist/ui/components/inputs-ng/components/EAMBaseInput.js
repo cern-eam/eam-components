@@ -24,7 +24,7 @@ var RootDiv = styled('div')({
 });
 var LabelDiv = styled('div')({
   flex: "1 1 140px",
-  fontSize: 14,
+  fontSize: 15,
   margin: "5px 10px 2px 0px",
   color: "#1a237e" //fontWeight: "bold"
 
