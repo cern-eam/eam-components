@@ -4,14 +4,14 @@ import { styled } from '@mui/material/styles';
 function getTextWidth(text) {
   var canvas = document.createElement('canvas');
   var context = canvas.getContext('2d');
-  context.font = '15px Roboto';
+  context.font = '300 15px Roboto';
   var metrics = context.measureText(text);
   return metrics.width;
 }
 
 var StyledDiv = styled('div')({
   position: "absolute",
-  top: 1,
+  top: 0,
   color: "#acacac",
   pointerEvents: "none",
   textOverflow: "ellipsis",
@@ -19,7 +19,8 @@ var StyledDiv = styled('div')({
   whiteSpace: "nowrap",
   display: "flex",
   alignItems: "center",
-  height: "100%"
+  height: "100%",
+  fontSize: "15px"
 });
 
 var TextFieldDescription = function TextFieldDescription(_ref) {
@@ -27,7 +28,7 @@ var TextFieldDescription = function TextFieldDescription(_ref) {
       value = _ref.value;
   var rootStyle = {
     width: "calc(100% - ".concat(getTextWidth(value) + 30, "px)"),
-    left: 20 + getTextWidth(value)
+    left: 15 + getTextWidth(value)
   };
 
   if (!description) {

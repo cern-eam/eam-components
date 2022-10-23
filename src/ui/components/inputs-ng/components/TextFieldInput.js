@@ -13,7 +13,9 @@ const TextFieldInput = styled('input')(({theme}) => ({
         border: "1px solid #e5e6e7",
         borderRadius: "4px",
         backgroundColor: "#fdfdfd",
-        height: 38
+        height: 38,
+        fontWeight: 300,
+        fontFamily: "'Roboto', sans-serif"
     },
     '&:focus': {
         outline: `2px solid ${theme.palette.primary.main}`,
