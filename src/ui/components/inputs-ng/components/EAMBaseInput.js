@@ -41,7 +41,7 @@ const EAMBaseInput = (props) => {
         {label &&
         <LabelDiv>
             <span>{label}</span>
-            {required && <span style={requiredStyle}> *</span>}
+            {required && <span style={requiredStyle}>*</span>}
         </LabelDiv>}
         <div style={{...componentStyle, ...props.componentStyle}}>
             {props.children}
