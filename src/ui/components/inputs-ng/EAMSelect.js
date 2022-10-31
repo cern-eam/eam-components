@@ -12,7 +12,7 @@ const EAMSelect = (props) => {
     value, desc, onChange,
     options, optionsTransformer,
     required, id, disabled,
-    renderValue, endTextAdornment} = props;
+    renderValue, endTextAdornment, selectOnlyMode} = props;
 
     let [inputValue, setInputValue] = useState("")
     let [fetchedOptions, loading] = useFetchSelectOptions(autocompleteHandler, autocompleteHandlerParams, value, desc, options, optionsTransformer)
@@ -32,7 +32,11 @@ const EAMSelect = (props) => {
     }
 
     const getOptions = () => {
-      return options ?? fetchedOptions ?? [];
+      let optionsTemp = options ?? fetchedOptions ?? [];
+      if (selectOnlyMode) {
+        return [{code: "", desc: ""}].concat(optionsTemp);
+      }
+      return optionsTemp;
     }
 
     const onInputChangeHandler = (event, newInputValue) => {
@@ -81,7 +85,7 @@ const EAMSelect = (props) => {
       <EAMBaseInput {...props}>
           <Autocomplete   
             // Options
-            options={options || fetchedOptions} 
+            options={getOptions()} 
             getOptionLabel = {getOptionLabelHandler}
             renderOption = {renderOptionHandler.bind(null, renderValue)}
             // On change 

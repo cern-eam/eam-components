@@ -34,7 +34,8 @@ var EAMSelect = function EAMSelect(props) {
       id = props.id,
       disabled = props.disabled,
       renderValue = props.renderValue,
-      endTextAdornment = props.endTextAdornment;
+      endTextAdornment = props.endTextAdornment,
+      selectOnlyMode = props.selectOnlyMode;
 
   var _useState = useState(""),
       _useState2 = _slicedToArray(_useState, 2),
@@ -65,7 +66,16 @@ var EAMSelect = function EAMSelect(props) {
   };
 
   var getOptions = function getOptions() {
-    return options ?? fetchedOptions ?? [];
+    var optionsTemp = options ?? fetchedOptions ?? [];
+
+    if (selectOnlyMode) {
+      return [{
+        code: "",
+        desc: ""
+      }].concat(optionsTemp);
+    }
+
+    return optionsTemp;
   };
 
   var onInputChangeHandler = function onInputChangeHandler(event, newInputValue) {
@@ -121,7 +131,7 @@ var EAMSelect = function EAMSelect(props) {
 
   return /*#__PURE__*/React.createElement(EAMBaseInput, props, /*#__PURE__*/React.createElement(Autocomplete // Options
   , {
-    options: options || fetchedOptions,
+    options: getOptions(),
     getOptionLabel: getOptionLabelHandler,
     renderOption: renderOptionHandler.bind(null, renderValue) // On change 
     ,

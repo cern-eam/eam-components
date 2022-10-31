@@ -799,6 +799,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
           paddingRight: 25
         }
       }, activities.length > 1 && /*#__PURE__*/React.createElement(EAMSelect, {
+        selectOnlyMode: true,
         label: "Activity",
         renderSuggestion: function renderSuggestion(suggestion) {
           return suggestion.desc;
@@ -824,6 +825,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
           'zIndex': 999
         }
       }), Object.keys(equipments).length > 1 && /*#__PURE__*/React.createElement(EAMSelect, {
+        selectOnlyMode: true,
         label: "Equipment",
         options: Object.keys(equipments).filter(function (key) {
           return filteredActivity ? filteredActivityObject.equipments[key] !== undefined : true;

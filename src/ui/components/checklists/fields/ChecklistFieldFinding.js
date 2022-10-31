@@ -9,6 +9,7 @@ const ChecklistFieldFinding = props => {
     if(dropdown)
         return  <EAMSelect disabled={disabled}
                        value={finding || ''}
+                       selectOnlyMode={true}
                        options={possibleFindings}
                        onChange={value => handleChange(value.code)}
                        componentStyle={{flex: "0 0 177px"}}

@@ -59,7 +59,7 @@ const ChecklistFieldNumeric = props => {
             <TextField disabled={disabled}
                        inputProps={inputProps}
                        endTextAdornment={UOM}
-                       style={{flex: "0 0 177px", margin: 5}}
+                       style={{flex: "0 0 177px", marginTop: 5, marginBottom: 5}}
                        />
         </div>
         {numericLimitError && <p style={{color: 'red', marginLeft: '20px'}}>{numericLimitError}</p>}

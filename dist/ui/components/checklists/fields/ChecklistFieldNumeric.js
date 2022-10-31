@@ -92,7 +92,8 @@ var ChecklistFieldNumeric = function ChecklistFieldNumeric(props) {
     endTextAdornment: UOM,
     style: {
       flex: "0 0 177px",
-      margin: 5
+      marginTop: 5,
+      marginBottom: 5
     }
   })), numericLimitError && /*#__PURE__*/React.createElement("p", {
     style: {

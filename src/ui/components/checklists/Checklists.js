@@ -599,6 +599,7 @@ class Checklists extends Component {
                                 </div>
                                 <div style={{paddingLeft: 25, paddingRight: 25}}>
                                     {activities.length > 1 && <EAMSelect
+                                        selectOnlyMode
                                         label={"Activity"}
                                         renderSuggestion={suggestion => suggestion.desc}
                                         renderValue={value => value.desc || value.code}
@@ -611,6 +612,7 @@ class Checklists extends Component {
                                         menuContainerStyle={{'zIndex': 999}}/>}
                                     
                                     {Object.keys(equipments).length > 1 && <EAMSelect
+                                        selectOnlyMode
                                         label={"Equipment"}
                                         options={Object.keys(equipments)
                                                 .filter(key => filteredActivity ? filteredActivityObject.equipments[key] !== undefined : true)

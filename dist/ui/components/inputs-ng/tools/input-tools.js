@@ -80,7 +80,10 @@ export var componentsProps = {
   paper: {
     sx: {
       marginTop: "2px",
-      marginBottom: "4px"
+      marginBottom: "4px",
+      '& .MuiAutocomplete-listbox .MuiAutocomplete-option': {
+        minHeight: 30
+      }
     },
     elevation: 4
   }

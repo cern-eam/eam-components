@@ -11,6 +11,7 @@ var ChecklistFieldFinding = function ChecklistFieldFinding(props) {
   if (dropdown) return /*#__PURE__*/React.createElement(EAMSelect, {
     disabled: disabled,
     value: finding || '',
+    selectOnlyMode: true,
     options: possibleFindings,
     onChange: function onChange(value) {
       return _handleChange(value.code);

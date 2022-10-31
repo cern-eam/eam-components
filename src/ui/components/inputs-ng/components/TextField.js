@@ -53,6 +53,7 @@ const TextField = (props) => {
                     <TextFieldInput type={type === 'password' ? 'password' : 'text'} 
                                     ref={inputRef} 
                                     {...inputProps} 
+                                    readOnly={props.selectOnlyMode}
                                     disabled={disabled} 
                                     maxLength={maxLength}
                                     //TODO this is not the best solution as we are overriding onInput handler that could be potentially passed from inputProps
