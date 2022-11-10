@@ -450,7 +450,7 @@ class Checklists extends Component {
                         <div style={{width: "100%"}}>{this.renderChecklistsForActivity(activity, filteredEquipment)}
                         </div>
                     </AccordionDetails>
-                    {activity.signatures && renderedSignatures.length &&
+                    {activity.signatures && renderedSignatures.length ? (
                         <ActivityExpansionPanel style={{backgroundColor: 'white', border: '0px'}}
                                                 expanded={!this.state.signaturesCollapsed[activity.activityCode]}
                                                 onChange={(_, expanded) => this.expandSignature(activity, expanded)}>
@@ -463,7 +463,7 @@ class Checklists extends Component {
                                 </div>
                             </AccordionDetails>               
                         </ActivityExpansionPanel>
-                    }
+                    ) : null}
                 </ActivityExpansionPanel>
             });
     }

@@ -615,7 +615,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
           style: {
             width: "100%"
           }
-        }, _this6.renderChecklistsForActivity(activity, filteredEquipment))), activity.signatures && renderedSignatures.length && /*#__PURE__*/React.createElement(ActivityExpansionPanel, {
+        }, _this6.renderChecklistsForActivity(activity, filteredEquipment))), activity.signatures && renderedSignatures.length ? /*#__PURE__*/React.createElement(ActivityExpansionPanel, {
           style: {
             backgroundColor: 'white',
             border: '0px'
@@ -641,7 +641,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
           style: {
             width: "100%"
           }
-        }, renderedSignatures))));
+        }, renderedSignatures))) : null);
       });
     }
   }, {
