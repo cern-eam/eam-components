@@ -649,8 +649,9 @@ var Checklists = /*#__PURE__*/function (_Component) {
     value: function setNewFilter(filters) {
       var _this7 = this;
 
-      var activityCode = filters.activityCode,
+      var activity = filters.activity,
           equipmentCode = filters.equipmentCode;
+      var activityCode = activity?.code;
       this.setState(function (state, props) {
         // the activity and equipment codes that will be effectively used for the filtering
         // if any parameterized filter is unspecified (undefined), the value used is in state
@@ -818,7 +819,9 @@ var Checklists = /*#__PURE__*/function (_Component) {
         value: filteredActivity,
         onChange: function onChange(activity) {
           return _this8.setNewFilter({
-            activityCode: activity.code
+            activity: {
+              code: activity.code
+            }
           });
         },
         menuContainerStyle: {

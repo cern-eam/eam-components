@@ -469,7 +469,8 @@ class Checklists extends Component {
     }
 
     setNewFilter(filters) {
-        const {activityCode, equipmentCode} = filters;
+        const {activity, equipmentCode} = filters;
+        const activityCode = activity?.code;
         
         this.setState((state, props) => {
             // the activity and equipment codes that will be effectively used for the filtering
@@ -608,7 +609,7 @@ class Checklists extends Component {
                                                 .map(activity => 
                                                 ({code: activity.activityCode, desc: activity.activityCode + " — " + activity.activityNote}))}
                                         value={filteredActivity}
-                                        onChange={activity => this.setNewFilter({activityCode: activity.code})}
+                                        onChange={activity => this.setNewFilter({ activity: { code: activity.code } })}
                                         menuContainerStyle={{'zIndex': 999}}/>}
                                     
                                     {Object.keys(equipments).length > 1 && <EAMSelect
