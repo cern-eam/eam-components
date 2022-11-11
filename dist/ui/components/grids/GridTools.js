@@ -35,7 +35,7 @@ var parseGridFilters = function parseGridFilters(gridFiltersString) {
   };
 
   try {
-    return gridFiltersString ? gridFiltersString.split(FILTER_SEPARATOR).map(function (gridFilter) {
+    return gridFiltersString ? gridFiltersString.split(FILTER_SEPARATOR).filter(Boolean).map(function (gridFilter) {
       return gridFilter.split(VALUE_SEPARATOR);
     }).map(adaptGridFilters) : [];
   } catch (err) {

@@ -18,6 +18,7 @@ const parseGridFilters = (gridFiltersString) => {
     try {
         return gridFiltersString ?
             gridFiltersString.split(FILTER_SEPARATOR)
+                .filter(Boolean)
                 .map(gridFilter => gridFilter.split(VALUE_SEPARATOR))
                 .map(adaptGridFilters)
             : [];
