@@ -414,6 +414,7 @@ var EAMFilterField = function EAMFilterField(_ref6) {
   var renderDatePickerInput = function renderDatePickerInput(props) {
     var InputProps = props.InputProps;
     return /*#__PURE__*/React.createElement(FilterTextField, _extends({}, props, {
+      size: "small",
       InputProps: _objectSpread({}, InputProps, {
         startAdornment: /*#__PURE__*/React.createElement(QualifierMenuAdornment, {
           column: column,
@@ -437,6 +438,7 @@ var EAMFilterField = function EAMFilterField(_ref6) {
         value: localFilter.fieldValue || '',
         onChange: handleFilterTextFieldChange,
         disabled: [OPERATORS.IS_EMPTY, OPERATORS.NOT_EMPTY].includes(localFilter.operator),
+        size: "small",
         InputProps: {
           startAdornment: /*#__PURE__*/React.createElement(QualifierMenuAdornment, {
             column: column,

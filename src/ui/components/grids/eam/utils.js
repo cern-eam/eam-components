@@ -327,6 +327,7 @@ const EAMFilterField = ({ column, getDefaultValue = getEAMDefaultFilterValue }) 
             (
                 <FilterTextField
                     {...props}
+                    size="small"
                     InputProps={{
                         ...InputProps,
                         startAdornment: (
@@ -360,6 +361,7 @@ const EAMFilterField = ({ column, getDefaultValue = getEAMDefaultFilterValue }) 
                     value={localFilter.fieldValue || ''}
                     onChange={handleFilterTextFieldChange}
                     disabled={[OPERATORS.IS_EMPTY, OPERATORS.NOT_EMPTY].includes(localFilter.operator)}
+                    size="small"
                     InputProps={{
                         startAdornment: (
                             <QualifierMenuAdornment
