@@ -63,6 +63,8 @@ var _cache;
 
 var _list;
 
+var MIN_CELL_WIDTH = 130;
+
 var EAMGridMain = function EAMGridMain(props) {
   var loading = props.loading,
       tableInstance = props.tableInstance,
@@ -131,6 +133,7 @@ var EAMGridMain = function EAMGridMain(props) {
         var cellProps = [{
           style: {
             maxWidth: cell.column.maxWidth,
+            minWidth: MIN_CELL_WIDTH,
             width: cell.column.width
           }
         }, getCellProps(cell)].filter(Boolean);
@@ -173,6 +176,7 @@ var EAMGridMain = function EAMGridMain(props) {
       var headerProps = [{
         style: {
           maxWidth: column.maxWidth,
+          minWidth: MIN_CELL_WIDTH,
           width: column.width
         }
       }, getColumnProps(column)].filter(Boolean);
@@ -231,7 +235,7 @@ var EAMGridMain = function EAMGridMain(props) {
       deferredMeasurementCache: _cache,
       overscanRowCount: 10,
       rowCount: rows.length,
-      rowHeight: _cache.rowHeight,
+      rowHeight: _cache?.rowHeight,
       rowRenderer: RenderRow,
       width: width,
       height: height

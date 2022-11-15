@@ -56,7 +56,7 @@ var EAMGridHead = function EAMGridHead(_ref) {
     return dataspies.length < 4;
   }, [dataspies]);
   return /*#__PURE__*/React.createElement(Box, {
-    padding: "0.5rem"
+    component: ContainerGrid
   }, /*#__PURE__*/React.createElement(Grid, {
     container: true,
     spacing: 1,
@@ -113,7 +113,7 @@ var EAMGridHead = function EAMGridHead(_ref) {
     container: true,
     spacing: 1,
     direction: "row",
-    justify: "flex-end",
+    justifyContent: "flex-end",
     alignItems: "center",
     wrap: "nowrap"
   }, /*#__PURE__*/React.createElement(Grid, {

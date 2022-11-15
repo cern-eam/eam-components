@@ -57,6 +57,8 @@ const defaultPropsGetter = () => ({});
 let _cache;
 let _list;
 
+const MIN_CELL_WIDTH = 130;
+
 const EAMGridMain = (props) => {
     const {
         loading,
@@ -120,7 +122,7 @@ const EAMGridMain = (props) => {
                 <TableRow className="tr" component="div" {...tableRowProps} >
                     {row.cells.map((cell) => {
                         const cellProps = [
-                            { style: { maxWidth: cell.column.maxWidth, width: cell.column.width }},
+                            { style: { maxWidth: cell.column.maxWidth, minWidth: MIN_CELL_WIDTH, width: cell.column.width }},
                             getCellProps(cell),
                         ].filter(Boolean);
                         return (
@@ -150,7 +152,7 @@ const EAMGridMain = (props) => {
                                 <TableRow {...headerGroup.getHeaderGroupProps()} component="div">
                                     {headerGroup.headers.map((column) => {
                                         const headerProps = [
-                                            { style: { maxWidth: column.maxWidth, width: column.width }},
+                                            { style: { maxWidth: column.maxWidth, minWidth: MIN_CELL_WIDTH, width: column.width } },
                                             getColumnProps(column),
                                         ].filter(Boolean)
                                         return (
@@ -196,7 +198,7 @@ const EAMGridMain = (props) => {
                                             deferredMeasurementCache={_cache}
                                             overscanRowCount={10}
                                             rowCount={rows.length}
-                                            rowHeight={_cache.rowHeight}
+                                            rowHeight={_cache?.rowHeight}
                                             rowRenderer={RenderRow}
                                             width={width}
                                             height={height}
