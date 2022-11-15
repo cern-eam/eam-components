@@ -43,7 +43,7 @@ const EAMGridHead = ({
     const showDataspyChips = useMemo(() => dataspies.length < 4, [dataspies]);
 
     return (
-        <Box padding="0.5rem">
+        <Box component={ContainerGrid}>
             <Grid
                 container
                 spacing={1}
@@ -87,7 +87,7 @@ const EAMGridHead = ({
                         container
                         spacing={1}
                         direction="row"
-                        justify="flex-end"
+                        justifyContent="flex-end"
                         alignItems="center"
                         wrap="nowrap"
                         >
