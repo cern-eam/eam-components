@@ -113,6 +113,7 @@ var EISPanel = /*#__PURE__*/function (_Component) {
         },
         onChange: this._onPanelChange,
         sx: {
+          boxShadow: "rgb(0 0 0 / 10%) 0px 1px 2px 0px",
           '&:before': {
             display: 'none'
           },
@@ -122,7 +123,7 @@ var EISPanel = /*#__PURE__*/function (_Component) {
         }
       }, this.props.ExpansionPanelProps), /*#__PURE__*/React.createElement(AccordionSummary, {
         expandIcon: this.props.alwaysExpanded ? undefined : /*#__PURE__*/React.createElement(ExpandMoreIcon, null),
-        style: this.summaryStyle
+        style: _objectSpread({}, this.summaryStyle, {}, this.props.summaryStyle)
       }, /*#__PURE__*/React.createElement("div", {
         style: this.headingStyle
       }, this.props.headingIcon && /*#__PURE__*/React.createElement(FontIcon, {

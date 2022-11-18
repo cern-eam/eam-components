@@ -75,6 +75,7 @@ class EISPanel extends Component {
                 TransitionProps={{ timeout: 300 }}
                 onChange={this._onPanelChange}
                 sx={{
+                    boxShadow: "rgb(0 0 0 / 10%) 0px 1px 2px 0px",
                     '&:before': {
                 display: 'none'
                 },
@@ -86,7 +87,7 @@ class EISPanel extends Component {
             >
                 <AccordionSummary
                     expandIcon={this.props.alwaysExpanded ? undefined : <ExpandMoreIcon />}
-                    style={this.summaryStyle}
+                    style={{...this.summaryStyle, ...this.props.summaryStyle}}
                 >
                     <div style={this.headingStyle}>
                         {this.props.headingIcon && (
