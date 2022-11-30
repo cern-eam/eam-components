@@ -329,7 +329,7 @@ export default class ChecklistItem extends Component {
     })
 
     render() {
-        const { checklistItem } = this.props;
+        const { checklistItem, hideFollowUpProp } = this.props;
         const { notApplicableOptions } = this.state;
         return (
             <div style={this.containerStyle(this.state.blocked)}>
@@ -351,7 +351,7 @@ export default class ChecklistItem extends Component {
                                 onChange={value => this.onChange(value)}
                                 disabled={this.props.disabled}
                             />
-                            {!checklistItem.hideFollowUp && <ChecklistItemFollowUp
+                            {!hideFollowUpProp && !checklistItem.hideFollowUp && <ChecklistItemFollowUp
                                     checklistItem={checklistItem}
                                     onChange={value => this.onChange(value)}
                                     getWoLink={this.props.getWoLink}

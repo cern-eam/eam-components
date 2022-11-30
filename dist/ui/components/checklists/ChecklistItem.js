@@ -427,7 +427,9 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
     value: function render() {
       var _this5 = this;
 
-      var checklistItem = this.props.checklistItem;
+      var _this$props3 = this.props,
+          checklistItem = _this$props3.checklistItem,
+          hideFollowUpProp = _this$props3.hideFollowUpProp;
       var notApplicableOptions = this.state.notApplicableOptions;
       return /*#__PURE__*/React.createElement("div", {
         style: this.containerStyle(this.state.blocked)
@@ -455,7 +457,7 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
           return _this5.onChange(value);
         },
         disabled: this.props.disabled
-      }), !checklistItem.hideFollowUp && /*#__PURE__*/React.createElement(ChecklistItemFollowUp, {
+      }), !hideFollowUpProp && !checklistItem.hideFollowUp && /*#__PURE__*/React.createElement(ChecklistItemFollowUp, {
         checklistItem: checklistItem,
         onChange: function onChange(value) {
           return _this5.onChange(value);
