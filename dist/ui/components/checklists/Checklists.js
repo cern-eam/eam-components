@@ -457,7 +457,8 @@ var Checklists = /*#__PURE__*/function (_Component) {
           minFindingsDropdown: minFindingsDropdown,
           getWoLink: getWoLink,
           resetSignatures: _this3.resetSignatures,
-          disabled: isDisabled
+          disabled: isDisabled,
+          hideFollowUpProp: _this3.props.hideFollowUpProp
         });
       }))));
     }
@@ -590,7 +591,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
           style: {
             fontWeight: 500
           }
-        }, activity.activityCode, " \u2014 ", activity.activityNote), activity.checklists.some(function (checklist) {
+        }, activity.activityCode, " \u2014 ", activity.activityNote), !_this6.props.hideFollowUpProp && activity.checklists.some(function (checklist) {
           return !checklist.hideFollowUp;
         }) && /*#__PURE__*/React.createElement(Button, {
           key: activity.activityCode + '$createfuwo',

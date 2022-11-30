@@ -269,6 +269,7 @@ class Checklists extends Component {
                         getWoLink={getWoLink}
                         resetSignatures={this.resetSignatures}
                         disabled={isDisabled}
+                        hideFollowUpProp={this.props.hideFollowUpProp}
                     />)}
                 </div>
             </AccordionDetails>
@@ -428,7 +429,7 @@ class Checklists extends Component {
                             alignItems: "center"
                         }}>
                             <span style={{fontWeight: 500}}>{activity.activityCode} — {activity.activityNote}</span>
-                            {activity.checklists.some(checklist => !checklist.hideFollowUp) && <Button 
+                            {!this.props.hideFollowUpProp && activity.checklists.some(checklist => !checklist.hideFollowUp) && <Button 
                                 key={activity.activityCode + '$createfuwo'}
                                 onClick={evt => {
                                     evt.stopPropagation();
