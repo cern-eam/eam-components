@@ -257,7 +257,10 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
     var newFetchDataCancelToken = Axios.CancelToken.source();
     setFetchDataCancelToken(newFetchDataCancelToken);
     GridWS.getGridData(gr, {
-      cancelToken: newFetchDataCancelToken.token
+      cancelToken: newFetchDataCancelToken.token,
+      headers: {
+        INFOR_LOCALIZE_RESULTS: true
+      }
     }).then(function (response) {
       var newGridResult = response.body.data;
 
@@ -290,7 +293,11 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
   }, [tableInstance, fetchDataDebounced, gridRequest]);
   var handleExportToCSV = useCallback(function () {
     setLoadingExportToCSV(true);
-    return GridWS.exportDataToCSV(gridRequest).then(function (result) {
+    return GridWS.exportDataToCSV(gridRequest, {
+      headers: {
+        INFOR_LOCALIZE_RESULTS: true
+      }
+    }).then(function (result) {
       var hiddenElement = document.createElement("a"); // utf8BOM used to enable detection of utf-8 encoding by excel when opening the CSV file
 
       var utf8BOM = "\uFEFF";
