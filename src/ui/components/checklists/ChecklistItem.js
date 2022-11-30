@@ -351,7 +351,7 @@ export default class ChecklistItem extends Component {
                                 onChange={value => this.onChange(value)}
                                 disabled={this.props.disabled}
                             />
-                            {!hideFollowUpProp && !checklistItem.hideFollowUp && <ChecklistItemFollowUp
+                            {!checklistItem.hideFollowUp && <ChecklistItemFollowUp
                                     checklistItem={checklistItem}
                                     onChange={value => this.onChange(value)}
                                     getWoLink={this.props.getWoLink}

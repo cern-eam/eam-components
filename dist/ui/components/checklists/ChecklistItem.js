@@ -457,7 +457,7 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
           return _this5.onChange(value);
         },
         disabled: this.props.disabled
-      }), !hideFollowUpProp && !checklistItem.hideFollowUp && /*#__PURE__*/React.createElement(ChecklistItemFollowUp, {
+      }), !checklistItem.hideFollowUp && /*#__PURE__*/React.createElement(ChecklistItemFollowUp, {
         checklistItem: checklistItem,
         onChange: function onChange(value) {
           return _this5.onChange(value);
