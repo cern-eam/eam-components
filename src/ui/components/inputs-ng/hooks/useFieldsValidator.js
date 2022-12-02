@@ -1,13 +1,14 @@
 import { useState } from 'react';
+import { isRequired } from '../tools/input-tools';
 
 const BLANK_ERROR = ' cannot be blank';
 
 /**
  * Validates fields and generates the error messages to be shown (typically through the an errorText prop).
- * @param  {Object} requiredFieldsData Contains `<K,V>` pairs of `<valueKey,fieldLabel>`
+ * @param  {Object} fieldsData Contains `<K,V>` pairs of `<valueKey,fieldLayout>`
  * where `valueKey` is the same key used to store the corresponding value in the parameter
- * `formValues` and `fieldLabel` is the label describing the field (used in generating the
- * error message).
+ * `formValues` and `fieldLayout` contains metadata describing the field (used in generating the
+ * error message and validating the field).
  * @param  {Object} formValues Where all the values for the form fields are being kept.
  * It contains `<K,V>` pairs where `V` is the current field value (usually passed as prop to the field)
  * and `K` is the same key as the one passed to the corresponding entry in `requiredFieldsData`.
@@ -17,7 +18,7 @@ const BLANK_ERROR = ' cannot be blank';
  * `validateFields` is the validation function to be used before submitting the form.
  */
 const useFieldsValidator = (
-    requiredFieldsData,
+    fieldsData,
     formValues,
     errorString = BLANK_ERROR
 ) => {
@@ -29,10 +30,10 @@ const useFieldsValidator = (
         let allFieldsAreValid = true;
 
         const generatedErrorMessages = Object.entries(
-            requiredFieldsData
-        ).reduce((errorMessagesAcc, [fieldKey, fieldLabel]) => {
-            if (!formValues[fieldKey]) {
-                errorMessagesAcc[fieldKey] = fieldLabel + errorString;
+            fieldsData
+        ).reduce((errorMessagesAcc, [fieldKey, fieldLayout]) => {
+            if (isRequired(fieldLayout) && !formValues[fieldKey]) {
+                errorMessagesAcc[fieldKey] = fieldLayout.text + errorString;
                 allFieldsAreValid = false;
             }
 

@@ -11,13 +11,14 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 import { useState } from 'react';
+import { isRequired } from '../tools/input-tools';
 var BLANK_ERROR = ' cannot be blank';
 /**
  * Validates fields and generates the error messages to be shown (typically through the an errorText prop).
- * @param  {Object} requiredFieldsData Contains `<K,V>` pairs of `<valueKey,fieldLabel>`
+ * @param  {Object} fieldsData Contains `<K,V>` pairs of `<valueKey,fieldLayout>`
  * where `valueKey` is the same key used to store the corresponding value in the parameter
- * `formValues` and `fieldLabel` is the label describing the field (used in generating the
- * error message).
+ * `formValues` and `fieldLayout` contains metadata describing the field (used in generating the
+ * error message and validating the field).
  * @param  {Object} formValues Where all the values for the form fields are being kept.
  * It contains `<K,V>` pairs where `V` is the current field value (usually passed as prop to the field)
  * and `K` is the same key as the one passed to the corresponding entry in `requiredFieldsData`.
@@ -27,7 +28,7 @@ var BLANK_ERROR = ' cannot be blank';
  * `validateFields` is the validation function to be used before submitting the form.
  */
 
-var useFieldsValidator = function useFieldsValidator(requiredFieldsData, formValues) {
+var useFieldsValidator = function useFieldsValidator(fieldsData, formValues) {
   var errorString = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : BLANK_ERROR;
 
   var _useState = useState(),
@@ -39,13 +40,13 @@ var useFieldsValidator = function useFieldsValidator(requiredFieldsData, formVal
 
   var validateFields = function validateFields() {
     var allFieldsAreValid = true;
-    var generatedErrorMessages = Object.entries(requiredFieldsData).reduce(function (errorMessagesAcc, _ref) {
+    var generatedErrorMessages = Object.entries(fieldsData).reduce(function (errorMessagesAcc, _ref) {
       var _ref2 = _slicedToArray(_ref, 2),
           fieldKey = _ref2[0],
-          fieldLabel = _ref2[1];
+          fieldLayout = _ref2[1];
 
-      if (!formValues[fieldKey]) {
-        errorMessagesAcc[fieldKey] = fieldLabel + errorString;
+      if (isRequired(fieldLayout) && !formValues[fieldKey]) {
+        errorMessagesAcc[fieldKey] = fieldLayout.text + errorString;
         allFieldsAreValid = false;
       }
 
