@@ -1,0 +1,50 @@
+import { useState } from 'react';
+
+const BLANK_ERROR = ' cannot be blank';
+
+/**
+ * Validates fields and generates the error messages to be shown (typically through the an errorText prop).
+ * @param  {Object} requiredFieldsData Contains `<K,V>` pairs of `<valueKey,fieldLabel>`
+ * where `valueKey` is the same key used to store the corresponding value in the parameter
+ * `formValues` and `fieldLabel` is the label describing the field (used in generating the
+ * error message).
+ * @param  {Object} formValues Where all the values for the form fields are being kept.
+ * It contains `<K,V>` pairs where `V` is the current field value (usually passed as prop to the field)
+ * and `K` is the same key as the one passed to the corresponding entry in `requiredFieldsData`.
+ * @param  {String} errorString The text to show, in the generated error message, following the field label.
+ * @return {Object} Returns `errorMessages` and `validateFields`. `errorMessages` contains the error
+ * messages using keys that match the ones passed in `requiredFieldsData` and `formValues`.
+ * `validateFields` is the validation function to be used before submitting the form.
+ */
+const useFieldsValidator = (
+    requiredFieldsData,
+    formValues,
+    errorString = BLANK_ERROR
+) => {
+    const [errorMessages, setErrorMessages] = useState();
+
+    // Returns false if validation for at least one field fails
+    // and sets generated error messages
+    const validateFields = () => {
+        let allFieldsAreValid = true;
+
+        const generatedErrorMessages = Object.entries(
+            requiredFieldsData
+        ).reduce((errorMessagesAcc, [fieldKey, fieldLabel]) => {
+            if (!formValues[fieldKey]) {
+                errorMessagesAcc[fieldKey] = fieldLabel + errorString;
+                allFieldsAreValid = false;
+            }
+
+            return errorMessagesAcc;
+        }, {});
+
+        setErrorMessages(generatedErrorMessages);
+
+        return allFieldsAreValid;
+    };
+
+    return { errorMessages, validateFields };
+};
+
+export default useFieldsValidator;
