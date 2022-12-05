@@ -45,7 +45,11 @@ const useFieldsValidator = (
         return allFieldsAreValid;
     };
 
-    return { errorMessages, validateFields };
+    const resetErrorMessages = () => {
+        setErrorMessages(null);
+    };
+
+    return { errorMessages, validateFields, resetErrorMessages };
 };
 
 export default useFieldsValidator;
