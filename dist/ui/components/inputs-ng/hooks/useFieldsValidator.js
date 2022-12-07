@@ -56,9 +56,14 @@ var useFieldsValidator = function useFieldsValidator(fieldsData, formValues) {
     return allFieldsAreValid;
   };
 
+  var resetErrorMessages = function resetErrorMessages() {
+    setErrorMessages(null);
+  };
+
   return {
     errorMessages: errorMessages,
-    validateFields: validateFields
+    validateFields: validateFields,
+    resetErrorMessages: resetErrorMessages
   };
 };
 
