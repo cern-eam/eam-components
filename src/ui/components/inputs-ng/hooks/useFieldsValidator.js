@@ -13,9 +13,10 @@ const BLANK_ERROR = ' cannot be blank';
  * It contains `<K,V>` pairs where `V` is the current field value (usually passed as prop to the field)
  * and `K` is the same key as the one passed to the corresponding entry in `fieldsData`.
  * @param  {String} errorString The text to show, in the generated error message, following the field label.
- * @return {Object} Returns `errorMessages` and `validateFields`. `errorMessages` contains the error
- * messages using keys that match the ones passed in `fieldsData` and `formValues`.
+ * @return {Object} Returns `errorMessages`, `validateFields` and `resetErrorMessages`.
+ * `errorMessages` contains the error messages using keys that match the ones passed in `fieldsData` and `formValues`.
  * `validateFields` is the validation function to be used before submitting the form.
+ * `resetErrorMessages` is a function that clears the generated error messages.
  */
 const useFieldsValidator = (
     fieldsData,
