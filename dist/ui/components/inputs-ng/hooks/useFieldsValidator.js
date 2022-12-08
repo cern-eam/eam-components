@@ -11,8 +11,10 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 import { useState } from 'react';
-import { isRequired } from '../tools/input-tools';
+import { isHidden, isRequired } from '../tools/input-tools';
+import { get } from "lodash";
 var BLANK_ERROR = ' cannot be blank';
+var NAN_ERROR = ' must be a valid number';
 /**
  * Validates fields and generates the error messages to be shown (typically through an 'errorText' prop).
  * @param  {Object} fieldsData Contains `<K,V>` pairs of `<valueKey,fieldLayout>`
@@ -30,9 +32,10 @@ var BLANK_ERROR = ' cannot be blank';
  */
 
 var useFieldsValidator = function useFieldsValidator(fieldsData, formValues) {
-  var errorString = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : BLANK_ERROR;
+  var emptyValueError = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : BLANK_ERROR;
+  var nanError = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : NAN_ERROR;
 
-  var _useState = useState(),
+  var _useState = useState({}),
       _useState2 = _slicedToArray(_useState, 2),
       errorMessages = _useState2[0],
       setErrorMessages = _useState2[1]; // Returns false if validation for at least one field fails
@@ -46,10 +49,23 @@ var useFieldsValidator = function useFieldsValidator(fieldsData, formValues) {
           fieldKey = _ref2[0],
           fieldLayout = _ref2[1];
 
-      if (isRequired(fieldLayout) && !formValues[fieldKey]) {
-        errorMessagesAcc[fieldKey] = fieldLayout.text + errorString;
+      if (isHidden(fieldLayout)) {
+        return errorMessagesAcc;
+      }
+
+      var value = get(formValues, fieldKey);
+
+      if (isRequired(fieldLayout) && !value) {
+        errorMessagesAcc[fieldKey] = fieldLayout.text + emptyValueError;
         allFieldsAreValid = false;
       }
+
+      if ((fieldLayout.fieldType === 'number' || fieldLayout.fieldType === 'currency') && isNaN(value ?? 0)) {
+        errorMessagesAcc[fieldKey] = fieldLayout.text + nanError;
+        allFieldsAreValid = false;
+      } // console.log('errors', errors, fieldLayout)
+      // errorMessagesAcc[fieldKey] = errors?.find?.(e => e.location === fieldLayout.xpath);
+
 
       return errorMessagesAcc;
     }, {});
@@ -58,7 +74,7 @@ var useFieldsValidator = function useFieldsValidator(fieldsData, formValues) {
   };
 
   var resetErrorMessages = function resetErrorMessages() {
-    setErrorMessages(null);
+    setErrorMessages({});
   };
 
   return {

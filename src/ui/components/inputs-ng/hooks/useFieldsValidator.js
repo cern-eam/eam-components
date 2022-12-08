@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import { isRequired } from '../tools/input-tools';
+import { isHidden, isRequired } from '../tools/input-tools';
+import { get } from "lodash";
 
 const BLANK_ERROR = ' cannot be blank';
+const NAN_ERROR = ' must be a valid number'
 
 /**
  * Validates fields and generates the error messages to be shown (typically through an 'errorText' prop).
@@ -21,9 +23,10 @@ const BLANK_ERROR = ' cannot be blank';
 const useFieldsValidator = (
     fieldsData,
     formValues,
-    errorString = BLANK_ERROR
+    emptyValueError = BLANK_ERROR,
+    nanError = NAN_ERROR
 ) => {
-    const [errorMessages, setErrorMessages] = useState();
+    const [errorMessages, setErrorMessages] = useState({});
 
     // Returns false if validation for at least one field fails
     // and sets generated error messages
@@ -33,10 +36,24 @@ const useFieldsValidator = (
         const generatedErrorMessages = Object.entries(
             fieldsData
         ).reduce((errorMessagesAcc, [fieldKey, fieldLayout]) => {
-            if (isRequired(fieldLayout) && !formValues[fieldKey]) {
-                errorMessagesAcc[fieldKey] = fieldLayout.text + errorString;
+            if (isHidden(fieldLayout)) {
+                return errorMessagesAcc;
+            }
+
+            let value = get(formValues, fieldKey);
+
+            if (isRequired(fieldLayout) && !value) {
+                errorMessagesAcc[fieldKey] = fieldLayout.text + emptyValueError;
                 allFieldsAreValid = false;
             }
+
+            if ((fieldLayout.fieldType === 'number' || fieldLayout.fieldType === 'currency') && isNaN(value ?? 0)) {
+                errorMessagesAcc[fieldKey] = fieldLayout.text + nanError;
+                allFieldsAreValid = false;
+            }
+
+            // console.log('errors', errors, fieldLayout)
+            // errorMessagesAcc[fieldKey] = errors?.find?.(e => e.location === fieldLayout.xpath);
 
             return errorMessagesAcc;
         }, {});
@@ -47,7 +64,7 @@ const useFieldsValidator = (
     };
 
     const resetErrorMessages = () => {
-        setErrorMessages(null);
+        setErrorMessages({});
     };
 
     return { errorMessages, validateFields, resetErrorMessages };
