@@ -33,9 +33,8 @@ const useFieldsValidator = (
     const validateFields = () => {
         let allFieldsAreValid = true;
 
-        const generatedErrorMessages = Object.entries(
-            fieldsData
-        ).reduce((errorMessagesAcc, [fieldKey, fieldLayout]) => {
+        const generatedErrorMessages = Object.entries(fieldsData)
+        .reduce((errorMessagesAcc, [fieldKey, fieldLayout]) => {
             if (isHidden(fieldLayout)) {
                 return errorMessagesAcc;
             }
@@ -52,9 +51,6 @@ const useFieldsValidator = (
                 allFieldsAreValid = false;
             }
 
-            // console.log('errors', errors, fieldLayout)
-            // errorMessagesAcc[fieldKey] = errors?.find?.(e => e.location === fieldLayout.xpath);
-
             return errorMessagesAcc;
         }, {});
 
@@ -63,11 +59,28 @@ const useFieldsValidator = (
         return allFieldsAreValid;
     };
 
+
+    const generateErrorMessagesFromException = (errors) => {
+        
+        const generatedErrorMessages = Object.entries(fieldsData)
+        .reduce((errorMessagesAcc, [fieldKey, fieldLayout]) => {
+            
+            let errorText = errors?.find?.(e => e.location === fieldLayout.xpath);
+            if (errorText) {
+                errorMessagesAcc[fieldKey] = errorText.message;
+            }
+            
+            return errorMessagesAcc;
+        }, {});
+
+        setErrorMessages(generatedErrorMessages);
+    }
+
     const resetErrorMessages = () => {
         setErrorMessages({});
     };
 
-    return { errorMessages, validateFields, resetErrorMessages };
+    return { errorMessages, validateFields, generateErrorMessagesFromException, resetErrorMessages };
 };
 
 export default useFieldsValidator;

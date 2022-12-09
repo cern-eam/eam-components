@@ -63,14 +63,31 @@ var useFieldsValidator = function useFieldsValidator(fieldsData, formValues) {
       if ((fieldLayout.fieldType === 'number' || fieldLayout.fieldType === 'currency') && isNaN(value ?? 0)) {
         errorMessagesAcc[fieldKey] = fieldLayout.text + nanError;
         allFieldsAreValid = false;
-      } // console.log('errors', errors, fieldLayout)
-      // errorMessagesAcc[fieldKey] = errors?.find?.(e => e.location === fieldLayout.xpath);
-
+      }
 
       return errorMessagesAcc;
     }, {});
     setErrorMessages(generatedErrorMessages);
     return allFieldsAreValid;
+  };
+
+  var generateErrorMessagesFromException = function generateErrorMessagesFromException(errors) {
+    var generatedErrorMessages = Object.entries(fieldsData).reduce(function (errorMessagesAcc, _ref3) {
+      var _ref4 = _slicedToArray(_ref3, 2),
+          fieldKey = _ref4[0],
+          fieldLayout = _ref4[1];
+
+      var errorText = errors?.find?.(function (e) {
+        return e.location === fieldLayout.xpath;
+      });
+
+      if (errorText) {
+        errorMessagesAcc[fieldKey] = errorText.message;
+      }
+
+      return errorMessagesAcc;
+    }, {});
+    setErrorMessages(generatedErrorMessages);
   };
 
   var resetErrorMessages = function resetErrorMessages() {
@@ -80,6 +97,7 @@ var useFieldsValidator = function useFieldsValidator(fieldsData, formValues) {
   return {
     errorMessages: errorMessages,
     validateFields: validateFields,
+    generateErrorMessagesFromException: generateErrorMessagesFromException,
     resetErrorMessages: resetErrorMessages
   };
 };
