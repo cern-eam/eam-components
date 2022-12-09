@@ -23,7 +23,8 @@ import {
     Equal,
     NotEqualVariant,
     Rhombus,
-    RhombusOutline
+    RhombusOutline,
+    MinusCircleOffOutline,
 } from 'mdi-material-ui';
 import { DatePicker, DateTimePicker } from "@mui/x-date-pickers";
 import {
@@ -91,6 +92,7 @@ const OPERATORS = {
     LESS_THAN: 'LESS_THAN',
     LESS_THAN_EQUALS: 'LESS_THAN_EQUALS',
     NOT_EMPTY: 'NOT EMPTY',
+    NOT_CONTAINS: 'NOTCONTAINS',
 }
 
 const CHECKBOX_FILTERS = {
@@ -138,6 +140,7 @@ const getEAMFilterOperators = ({ column }) => {
                 {'value': OPERATORS.BEGINS, 'label': 'Starts with', 'icon': <ContainStart/>},
                 {'value': OPERATORS.CONTAINS, 'label': 'Contains', 'icon': <Contain/>},
                 {'value': OPERATORS.ENDS, 'label': 'Ends with', 'icon': <ContainEnd/>},
+                {'value': OPERATORS.NOT_CONTAINS, 'label': 'Does Not Contain', 'icon': <MinusCircleOffOutline/>},
                 {'value': OPERATORS.EQUAL, 'label': 'Equals', 'icon': <Equal/>},
                 {'value': OPERATORS.NOT_EQUAL, 'label': 'Does not equal', 'icon': <NotEqualVariant/>},
                 {'value': OPERATORS.IS_EMPTY, 'label': 'Is empty', 'icon': <RhombusOutline/>},

@@ -29,7 +29,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 import React, { useState } from "react";
 import { TextField, Checkbox, MenuItem, ListItemIcon, ListItemText, Menu, IconButton, InputAdornment, Select, InputBase } from "@mui/material";
 import withStyles from '@mui/styles/withStyles';
-import { ContainStart, ContainEnd, Contain, GreaterThan, GreaterThanOrEqual, LessThan, LessThanOrEqual, Equal, NotEqualVariant, Rhombus, RhombusOutline } from 'mdi-material-ui';
+import { ContainStart, ContainEnd, Contain, GreaterThan, GreaterThanOrEqual, LessThan, LessThanOrEqual, Equal, NotEqualVariant, Rhombus, RhombusOutline, MinusCircleOffOutline } from 'mdi-material-ui';
 import { DatePicker, DateTimePicker } from "@mui/x-date-pickers";
 import { Clear as ClearIcon, InsertInvitation as CalendarIcon } from "@mui/icons-material";
 import { useAsyncDebounce, useMountedLayoutEffect } from "react-table";
@@ -89,7 +89,8 @@ var OPERATORS = {
   IS_EMPTY: 'IS EMPTY',
   LESS_THAN: 'LESS_THAN',
   LESS_THAN_EQUALS: 'LESS_THAN_EQUALS',
-  NOT_EMPTY: 'NOT EMPTY'
+  NOT_EMPTY: 'NOT EMPTY',
+  NOT_CONTAINS: 'NOTCONTAINS'
 };
 var CHECKBOX_FILTERS = {
   CHECKED: -1,
@@ -152,6 +153,10 @@ var getEAMFilterOperators = function getEAMFilterOperators(_ref) {
         'value': OPERATORS.ENDS,
         'label': 'Ends with',
         'icon': /*#__PURE__*/React.createElement(ContainEnd, null)
+      }, {
+        'value': OPERATORS.NOT_CONTAINS,
+        'label': 'Does Not Contain',
+        'icon': /*#__PURE__*/React.createElement(MinusCircleOffOutline, null)
       }, {
         'value': OPERATORS.EQUAL,
         'label': 'Equals',
