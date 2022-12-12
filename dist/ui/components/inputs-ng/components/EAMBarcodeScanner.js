@@ -13,19 +13,17 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 import React, { useEffect, useState, useRef } from "react";
 import { BrowserMultiFormatReader } from "@zxing/library";
 import IconButton from "@mui/material/IconButton";
-import { BarcodeScan } from "mdi-material-ui";
+import { BarcodeScan, Devices } from "mdi-material-ui";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import MenuItem from "@mui/material/MenuItem";
-import TextField from "@mui/material/TextField";
-import CircularProgress from "@mui/material/CircularProgress";
+import EAMSelect from '../EAMSelect';
 
 var EAMBarcodeScanner = function EAMBarcodeScanner(props) {
   var onChange = props.onChange;
-  var codeReader = useRef(null);
+  var codeReader = useRef(new BrowserMultiFormatReader());
 
   var _useState = useState(false),
       _useState2 = _slicedToArray(_useState, 2),
@@ -65,19 +63,29 @@ var EAMBarcodeScanner = function EAMBarcodeScanner(props) {
   };
 
   var startScanner = function startScanner() {
-    codeReader.current = new BrowserMultiFormatReader();
-    codeReader.current.listVideoInputDevices().then(function (devices) {
-      if (devices.length > 0) {
-        var device = localStorage.getItem("videoInputDevice");
-        var selectedDevice = devices.find(function (d) {
-          return d?.deviceId === device;
-        })?.deviceId ?? devices[0].deviceId;
-        setVideoInputDevices(devices);
-        setCurrentDevice(selectedDevice);
-        startDecoding(selectedDevice);
-      }
-    })["catch"](function (err) {
-      return console.error(err);
+    navigator.mediaDevices.getUserMedia({
+      video: true
+    }).then(function (data) {
+      navigator.mediaDevices.enumerateDevices().then(function (devices) {
+        if (devices.length > 0) {
+          var videoDevices = devices.filter(function (d) {
+            return d.kind === 'videoinput';
+          });
+          var device = localStorage.getItem("videoInputDevice");
+          var selectedDevice = videoDevices.find(function (d) {
+            return d?.deviceId === device;
+          })?.deviceId ?? videoDevices[0].deviceId;
+          setVideoInputDevices(videoDevices);
+          setCurrentDevice(selectedDevice);
+          startDecoding(selectedDevice);
+        }
+      })["catch"](function (error) {
+        console.error(error);
+        handleClose();
+      });
+    })["catch"](function (error) {
+      console.error(error);
+      handleClose();
     });
   };
 
@@ -122,22 +130,24 @@ var EAMBarcodeScanner = function EAMBarcodeScanner(props) {
     onClose: handleClose,
     "aria-labelledby": "alert-dialog-title",
     "aria-describedby": "alert-dialog-description"
-  }, videoInputDevices?.length > 1 ? /*#__PURE__*/React.createElement(DialogTitle, null, /*#__PURE__*/React.createElement(TextField, {
-    value: currentDevice,
-    onChange: function onChange(e) {
-      return handleDeviceChange(e.target.value);
-    },
-    select: true,
+  }, videoInputDevices?.length > 1 ? /*#__PURE__*/React.createElement(DialogTitle, null, /*#__PURE__*/React.createElement(EAMSelect, {
     label: "Choose the camera",
-    style: {
-      minWidth: 250
-    }
-  }, videoInputDevices.map(function (videoInputDevice) {
-    return /*#__PURE__*/React.createElement(MenuItem, {
-      key: videoInputDevice.deviceId,
-      value: videoInputDevice.deviceId
-    }, videoInputDevice.label);
-  })), " ") : null, /*#__PURE__*/React.createElement(DialogContent, {
+    value: currentDevice,
+    required: true,
+    onChange: function onChange(value) {
+      return handleDeviceChange(value.code);
+    },
+    renderValue: function renderValue(value) {
+      return value.desc || value.code;
+    },
+    selectOnlyMode: true,
+    options: videoInputDevices.map(function (videoInputDevice) {
+      return {
+        code: videoInputDevice.deviceId,
+        desc: videoInputDevice.label
+      };
+    })
+  })) : null, /*#__PURE__*/React.createElement(DialogContent, {
     sx: {
       display: "flex",
       padding: 0

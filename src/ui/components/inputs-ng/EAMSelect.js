@@ -33,7 +33,7 @@ const EAMSelect = (props) => {
 
     const getOptions = () => {
       let optionsTemp = options ?? fetchedOptions ?? [];
-      if (selectOnlyMode) {
+      if (selectOnlyMode && !required) {
         return [{code: "", desc: ""}].concat(optionsTemp);
       }
       return optionsTemp;
@@ -104,10 +104,10 @@ const EAMSelect = (props) => {
             fullWidth
             renderInput={(params) => <TextField hideDescription = {true} {...params} {...props} 
                                                 endAdornment={!disabled && <KeyboardArrowDownIcon style={{marginRight: endTextAdornment? 76 : 6,
-                                                                                                 marginLeft: endTextAdornment ? -100 : -30, 
-                                                                                                 zIndex: 999,
-                                                                                                 color: "#cbcbcb",
-                                                                                                 pointerEvents: "none"}}/>}/>}
+                                                                                                  marginLeft: endTextAdornment ? -100 : -30, 
+                                                                                                  zIndex: 999,
+                                                                                                  color: "#cbcbcb",
+                                                                                                  pointerEvents: "none"}}/>}/>}
           />
       </EAMBaseInput>
       );

@@ -68,7 +68,7 @@ var EAMSelect = function EAMSelect(props) {
   var getOptions = function getOptions() {
     var optionsTemp = options ?? fetchedOptions ?? [];
 
-    if (selectOnlyMode) {
+    if (selectOnlyMode && !required) {
       return [{
         code: "",
         desc: ""

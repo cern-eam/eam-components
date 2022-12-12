@@ -1,20 +1,19 @@
 import React, { useEffect, useState, useRef } from "react";
 import { BrowserMultiFormatReader } from "@zxing/library";
 import IconButton from "@mui/material/IconButton";
-import { BarcodeScan } from "mdi-material-ui";
+import { BarcodeScan, Devices } from "mdi-material-ui";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import MenuItem from "@mui/material/MenuItem";
-import TextField from "@mui/material/TextField";
-import CircularProgress from "@mui/material/CircularProgress";
+import EAMSelect from '../EAMSelect'
+
 
 const EAMBarcodeScanner = (props) => {
     let { onChange } = props;
 
-    let codeReader = useRef(null);
+    let codeReader = useRef(new BrowserMultiFormatReader());
     let [open, setOpen] = useState(false);
     let [showBarcodeButton, setShowBarcodeButton] = useState(false);
     const [videoInputDevices, setVideoInputDevices] = useState([]);
@@ -38,21 +37,20 @@ const EAMBarcodeScanner = (props) => {
     };
 
     const startScanner = () => {
-        codeReader.current = new BrowserMultiFormatReader();
-        codeReader.current
-            .listVideoInputDevices()
-            .then((devices) => {
+        navigator.mediaDevices.getUserMedia({video: true})
+        .then(data => {
+            navigator.mediaDevices.enumerateDevices().then(devices => {
                 if (devices.length > 0) {
+                    let videoDevices = devices.filter(d => d.kind === 'videoinput')
                     const device = localStorage.getItem("videoInputDevice");
-                    const selectedDevice =
-                        devices.find((d) => d?.deviceId === device)?.deviceId ??
-                        devices[0].deviceId;
-                    setVideoInputDevices(devices);
+                    const selectedDevice = videoDevices.find((d) => d?.deviceId === device)?.deviceId ?? videoDevices[0].deviceId;
+                    setVideoInputDevices(videoDevices);
                     setCurrentDevice(selectedDevice);
                     startDecoding(selectedDevice);
                 }
-            })
-            .catch((err) => console.error(err));
+            }).catch(error => {console.error(error); handleClose();})
+        }).catch(error => {console.error(error); handleClose();})
+
     };
 
     const startDecoding = (device) => {
@@ -103,22 +101,22 @@ const EAMBarcodeScanner = (props) => {
             >
                 {videoInputDevices?.length > 1 ? (
                     <DialogTitle>
-                        <TextField
-                            value={currentDevice}
-                            onChange={(e) => handleDeviceChange(e.target.value)}
-                            select
+                        <EAMSelect 
                             label="Choose the camera"
-                            style={{ minWidth: 250 }}
-                        >
-                            {videoInputDevices.map((videoInputDevice) => (
-                                <MenuItem
-                                    key={videoInputDevice.deviceId}
-                                    value={videoInputDevice.deviceId}
-                                >
-                                    {videoInputDevice.label}
-                                </MenuItem>
-                            ))}
-                        </TextField>{" "}
+                            value={currentDevice}
+                            required
+                            onChange={value => handleDeviceChange(value.code)}
+                            renderValue={value => value.desc || value.code}
+                            selectOnlyMode={true}
+                            options={
+                                videoInputDevices.map(videoInputDevice => (
+                                    {
+                                        code: videoInputDevice.deviceId,
+                                        desc: videoInputDevice.label
+                                    }
+                                ))
+                            }
+                        />
                     </DialogTitle>
                 ) : null}
                 <DialogContent sx={{ display: "flex", padding: 0 }}>
