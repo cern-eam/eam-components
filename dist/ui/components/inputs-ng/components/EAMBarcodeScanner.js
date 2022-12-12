@@ -10,14 +10,18 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-import React, { useEffect, useState, useRef } from 'react';
-import { BrowserMultiFormatReader } from '@zxing/library';
-import IconButton from '@mui/material/IconButton';
-import { BarcodeScan } from 'mdi-material-ui';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
+import React, { useEffect, useState, useRef } from "react";
+import { BrowserMultiFormatReader } from "@zxing/library";
+import IconButton from "@mui/material/IconButton";
+import { BarcodeScan } from "mdi-material-ui";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import MenuItem from "@mui/material/MenuItem";
+import TextField from "@mui/material/TextField";
+import CircularProgress from "@mui/material/CircularProgress";
 
 var EAMBarcodeScanner = function EAMBarcodeScanner(props) {
   var onChange = props.onChange;
@@ -32,6 +36,16 @@ var EAMBarcodeScanner = function EAMBarcodeScanner(props) {
       _useState4 = _slicedToArray(_useState3, 2),
       showBarcodeButton = _useState4[0],
       setShowBarcodeButton = _useState4[1];
+
+  var _useState5 = useState([]),
+      _useState6 = _slicedToArray(_useState5, 2),
+      videoInputDevices = _useState6[0],
+      setVideoInputDevices = _useState6[1];
+
+  var _useState7 = useState(""),
+      _useState8 = _slicedToArray(_useState7, 2),
+      currentDevice = _useState8[0],
+      setCurrentDevice = _useState8[1];
 
   useEffect(function () {
     navigator.mediaDevices?.enumerateDevices().then(function (deviceCount) {
@@ -52,21 +66,36 @@ var EAMBarcodeScanner = function EAMBarcodeScanner(props) {
 
   var startScanner = function startScanner() {
     codeReader.current = new BrowserMultiFormatReader();
-    codeReader.current.listVideoInputDevices().then(function (videoInputDevices) {
-      return startDecoding(videoInputDevices[0].deviceId);
+    codeReader.current.listVideoInputDevices().then(function (devices) {
+      if (devices.length > 0) {
+        var device = localStorage.getItem("videoInputDevice");
+        var selectedDevice = devices.find(function (d) {
+          return d?.deviceId === device;
+        })?.deviceId ?? devices[0].deviceId;
+        setVideoInputDevices(devices);
+        setCurrentDevice(selectedDevice);
+        startDecoding(selectedDevice);
+      }
     })["catch"](function (err) {
       return console.error(err);
     });
   };
 
-  var startDecoding = function startDecoding() {
-    codeReader.current.decodeFromInputVideoDevice(undefined, 'video').then(function (result) {
+  var startDecoding = function startDecoding(device) {
+    codeReader.current.decodeFromInputVideoDevice(device, "video").then(function (result) {
       onDetectedCallback(result.text);
       codeReader.current.reset();
       handleClose();
     })["catch"](function (err) {
       return console.error(err);
     });
+  };
+
+  var handleDeviceChange = function handleDeviceChange(device) {
+    codeReader.current.reset();
+    setCurrentDevice(device);
+    startDecoding(device);
+    localStorage.setItem("videoInputDevice", device);
   };
 
   var onDetectedCallback = function onDetectedCallback(result) {
@@ -88,19 +117,42 @@ var EAMBarcodeScanner = function EAMBarcodeScanner(props) {
         return startScanner(onDetectedCallback, handleClose);
       }
     },
+    fullScreen: true,
     open: open,
     onClose: handleClose,
     "aria-labelledby": "alert-dialog-title",
     "aria-describedby": "alert-dialog-description"
-  }, /*#__PURE__*/React.createElement(DialogContent, {
+  }, videoInputDevices?.length > 1 ? /*#__PURE__*/React.createElement(DialogTitle, null, /*#__PURE__*/React.createElement(TextField, {
+    value: currentDevice,
+    onChange: function onChange(e) {
+      return handleDeviceChange(e.target.value);
+    },
+    select: true,
+    label: "Choose the camera",
     style: {
-      maxWidth: 320,
-      maxHeight: 320
+      minWidth: 250
+    }
+  }, videoInputDevices.map(function (videoInputDevice) {
+    return /*#__PURE__*/React.createElement(MenuItem, {
+      key: videoInputDevice.deviceId,
+      value: videoInputDevice.deviceId
+    }, videoInputDevice.label);
+  })), " ") : null, /*#__PURE__*/React.createElement(DialogContent, {
+    sx: {
+      display: "flex",
+      padding: 0
     }
   }, /*#__PURE__*/React.createElement("video", {
+    autoPlay: true,
+    muted: true,
+    playsInline: true,
     id: "video",
-    width: "200",
-    height: "200"
+    style: {
+      maxWidth: "100%",
+      maxHeight: "100%",
+      width: "100%",
+      flex: 1
+    }
   })), /*#__PURE__*/React.createElement(DialogActions, null, /*#__PURE__*/React.createElement(Button, {
     onClick: handleClose,
     color: "primary",
