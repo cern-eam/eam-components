@@ -60,7 +60,7 @@ var useSelectionCheckboxHook = function useSelectionCheckboxHook(selectable) {
         filter: null,
         disableSortBy: true,
         width: '',
-        minWidth: 0,
+        minWidth: 42,
         maxWidth: 150
       }].concat(_toConsumableArray(columns)) : columns;
     });

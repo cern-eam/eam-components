@@ -38,7 +38,7 @@ const useSelectionCheckboxHook = (selectable) => (hooks) => hooks.visibleColumns
             filter: null,
             disableSortBy: true,
             width: '',
-            minWidth: 0,
+            minWidth: 42,
             maxWidth: 150,
         },
         ...columns
