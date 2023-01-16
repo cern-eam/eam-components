@@ -109,7 +109,11 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
       _props$filterProcesso = props.filterProcessor,
       filterProcessor = _props$filterProcesso === void 0 ? function (e) {
     return e;
-  } : _props$filterProcesso;
+  } : _props$filterProcesso,
+      _props$gridRequestAda = props.gridRequestAdapter,
+      gridRequestAdapter = _props$gridRequestAda === void 0 ? function (e) {
+    return e;
+  } : _props$gridRequestAda;
 
   var _useState = useState(0),
       _useState2 = _slicedToArray(_useState, 2),
@@ -247,7 +251,8 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
       }
     };
   }, []);
-  var fetchData = useCallback(function (gr) {
+  var fetchData = useCallback(function (gridRequest) {
+    var gr = gridRequestAdapter(gridRequest);
     setLoading(true);
 
     if (fetchDataCancelToken) {

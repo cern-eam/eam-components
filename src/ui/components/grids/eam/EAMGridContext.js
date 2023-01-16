@@ -99,6 +99,7 @@ export const EAMGridContextProvider = (props) => {
         processData,
         sortByProcessor = (e) => e,
         filterProcessor = (e) => e,
+        gridRequestAdapter = (e) => e,
     } = props;
     const [pageIndex, setPageIndex] = useState(0);
     const [selectedDataspy, setSelectedDataspy] = useState(undefined);
@@ -199,7 +200,8 @@ export const EAMGridContextProvider = (props) => {
     }, []);
 
     const fetchData = useCallback(
-        (gr) => {
+        (gridRequest) => {
+            const gr = gridRequestAdapter(gridRequest);
             setLoading(true);
             if (fetchDataCancelToken) {
                 fetchDataCancelToken.cancel();
