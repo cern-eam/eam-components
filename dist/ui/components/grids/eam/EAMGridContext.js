@@ -258,7 +258,7 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
   var handleOnSearch = useCallback(function () {
     setPageIndex(0);
     var newGridRequest = _objectSpread({}, gridRequest, {
-      cursorPosition: 0
+      cursorPosition: 1
     });
     setGridRequest(newGridRequest);
     tableInstance.toggleAllRowsSelected(false);
@@ -287,7 +287,7 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
     if (JSON.stringify(newGridFilters) === JSON.stringify(gridRequest.gridFilter)) return;
     setGridRequest(_objectSpread({}, gridRequest, {
       gridFilter: newGridFilters,
-      cursorPosition: 0
+      cursorPosition: 1
     }));
     onChangeFilters && onChangeFilters(newGridFilters);
   }, [filters, gridRequest, onChangeFilters, tableInstance]);
@@ -296,7 +296,7 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
     if (JSON.stringify(newGridSort) === JSON.stringify(gridRequest.gridSort) || !newGridSort.length && !gridRequest.gridSort) return;
     var newGridRequest = _objectSpread({}, gridRequest, {
       gridSort: newGridSort,
-      cursorPosition: 0
+      cursorPosition: 1
     });
     setPageIndex(0);
     setGridRequest(newGridRequest);
@@ -319,7 +319,7 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
     setPageIndex(0);
     setRowsPerPage(perPage);
     var newGridRequest = _objectSpread({}, gridRequest, {
-      cursorPosition: 0,
+      cursorPosition: 1,
       rowCount: perPage
     });
     tableInstance.toggleAllRowsSelected(false);

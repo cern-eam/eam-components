@@ -238,7 +238,7 @@ export const EAMGridContextProvider = (props) => {
         setPageIndex(0);
         const newGridRequest = {
             ...gridRequest,
-            cursorPosition: 0,
+            cursorPosition: 1,
         };
         setGridRequest(newGridRequest);
         tableInstance.toggleAllRowsSelected(false);
@@ -277,7 +277,7 @@ export const EAMGridContextProvider = (props) => {
         setGridRequest({
             ...gridRequest,
             gridFilter: newGridFilters,
-            cursorPosition: 0,
+            cursorPosition: 1,
         });
         onChangeFilters && onChangeFilters(newGridFilters);
     }, [filters, gridRequest, onChangeFilters, tableInstance]);
@@ -293,7 +293,7 @@ export const EAMGridContextProvider = (props) => {
         const newGridRequest = {
             ...gridRequest,
             gridSort: newGridSort,
-            cursorPosition: 0,
+            cursorPosition: 1,
         };
         setPageIndex(0);
         setGridRequest(newGridRequest);
@@ -340,7 +340,7 @@ export const EAMGridContextProvider = (props) => {
             setRowsPerPage(perPage);
             const newGridRequest = {
                 ...gridRequest,
-                cursorPosition: 0,
+                cursorPosition: 1,
                 rowCount: perPage,
             };
             tableInstance.toggleAllRowsSelected(false);
