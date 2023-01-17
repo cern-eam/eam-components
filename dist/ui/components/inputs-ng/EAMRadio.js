@@ -4,13 +4,11 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import EAMBaseInput from './components/EAMBaseInput';
 import { areEqual } from './tools/input-tools';
-
 var EAMRadio = function EAMRadio(props) {
   var values = props.values,
-      value = props.value,
-      onChange = props.onChange,
-      id = props.id;
-
+    value = props.value,
+    onChange = props.onChange,
+    id = props.id;
   var generateRadioButtons = function generateRadioButtons(values) {
     if (values) {
       return values.map(function (value) {
@@ -25,11 +23,9 @@ var EAMRadio = function EAMRadio(props) {
       });
     }
   };
-
   var onChangeHandler = function onChangeHandler(event) {
     onChange(event.target.value);
   };
-
   return /*#__PURE__*/React.createElement(EAMBaseInput, props, /*#__PURE__*/React.createElement(RadioGroup, {
     "aria-label": id,
     name: id,
@@ -40,5 +36,4 @@ var EAMRadio = function EAMRadio(props) {
     }
   }, generateRadioButtons(values)));
 };
-
 export default React.memo(EAMRadio, areEqual);

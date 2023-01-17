@@ -12,6 +12,7 @@ import {
 import withStyles from '@mui/styles/withStyles';
 import { CellMeasurer, CellMeasurerCache, List, AutoSizer } from "react-virtualized";
 import { ScrollSync, ScrollSyncPane } from "react-scroll-sync";
+import './grid.css';
 
 const DefaultBodyCellComponent = withStyles((theme) => ({
     root: {
@@ -122,7 +123,7 @@ const EAMGridMain = (props) => {
                 <TableRow className="tr" component="div" {...tableRowProps} >
                     {row.cells.map((cell) => {
                         const cellProps = [
-                            { style: { maxWidth: cell.column.maxWidth, minWidth: MIN_CELL_WIDTH, width: cell.column.width }},
+                            { style: { maxWidth: cell.column.maxWidth, minWidth: cell.column.minWidth ?? MIN_CELL_WIDTH, width: cell.column.width }},
                             getCellProps(cell),
                         ].filter(Boolean);
                         return (
@@ -152,7 +153,7 @@ const EAMGridMain = (props) => {
                                 <TableRow {...headerGroup.getHeaderGroupProps()} component="div">
                                     {headerGroup.headers.map((column) => {
                                         const headerProps = [
-                                            { style: { maxWidth: column.maxWidth, minWidth: MIN_CELL_WIDTH, width: column.width } },
+                                            { style: { maxWidth: column.maxWidth, minWidth: column.minWidth ?? MIN_CELL_WIDTH, width: column.width } },
                                             getColumnProps(column),
                                         ].filter(Boolean)
                                         return (
@@ -169,7 +170,7 @@ const EAMGridMain = (props) => {
                                                 {column.id !== 'selection' &&
                                                     <div style={{
                                                         display: 'flex',
-                                                        justifyContent: 'center',
+                                                        justifyContent: 'center'
                                                     }}>{column.canFilter ? column.render('Filter') : null}</div>
                                                 }
                                             </HeadCellComponent>
@@ -181,7 +182,7 @@ const EAMGridMain = (props) => {
                         </TableHead>
                     </ScrollSyncPane>
                     <TableBody {...getTableBodyProps()} style={{ height: '100%', display: 'table-row' }} component="div">
-                    {!rows.length && !loading ? 
+                    {!rows.length && !loading ?
                         <div style={{ width: "100%", position: "absolute", display: "flex", flexDirection: "column", padding: "1rem" }}>
                             <Typography variant="body2" color="textSecondary">No records to show</Typography>
                         </div>

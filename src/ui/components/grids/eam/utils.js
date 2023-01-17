@@ -70,8 +70,23 @@ const FilterTextField = withStyles({
         },
         '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
             borderBottom: '2px solid #c5c5c5',
+        },
+        '& .MuiInputBase-adornedStart': {
+            paddingRight: '2px',
+            paddingLeft: '2px',
+        },
+        '& .MuiIconButton-root': {
+            padding: '6px 0 6px 0',
+            borderRadius: '10%',
+        },
+        '& .MuiInputBase-inputAdornedStart': {
+            paddingRight: '4px',
+        },
+        '& .MuiInputAdornment-positionEnd': {
+            paddingRight: '12px',
         }
     },
+
   })(TextField);
 
 const CustomStartAdornment = withStyles({
@@ -412,7 +427,7 @@ const EAMFilterField = ({ column, getDefaultValue = getEAMDefaultFilterValue }) 
         case "__SELECT":
             return (
                 <Select
-                native
+                    native
                     value={localFilter.fieldValue || ''}
                     onChange={handleFilterTextFieldChange}
                     input={<BootstrapInput />}

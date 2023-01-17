@@ -1,7 +1,5 @@
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 import isEqual from 'lodash/isEqual';
 import { Box } from '@mui/material';
 import HistoryIcon from '@mui/icons-material/History';
@@ -27,21 +25,17 @@ export var processElementInfo = function processElementInfo(elementInfo) {
     disabled: elementInfo.readonly,
     id: getElementKey(elementInfo)
   };
-
   if (elementInfo.maxLength) {
     data.maxLength = elementInfo.maxLength;
   }
-
   if (elementInfo.fieldType === 'currency' || elementInfo.fieldType === 'number') {
     data.type = 'number';
   } else {
     data.type = 'text';
   }
-
   if (elementInfo.characterCase === 'uppercase') {
     data.uppercase = true;
   }
-
   return data;
 };
 export var getElementKey = function getElementKey(elementInfo) {
@@ -64,16 +58,14 @@ export var formatLabel = function formatLabel(renderValue, option) {
   if (renderValue) {
     return renderValue(option);
   }
-
   if (option.code === option.desc) {
-    return option.code;
-  } // { code: "Long Shutdown", desc: null }
-
-
-  if (!option.desc) {
     return option.code;
   }
 
+  // { code: "Long Shutdown", desc: null }
+  if (!option.desc) {
+    return option.code;
+  }
   return "".concat(option.code, " - ").concat(option.desc);
 };
 export var componentsProps = {
@@ -95,11 +87,9 @@ export var createOnChangeHandler = function createOnChangeHandler(valueKey, desc
         updateEntityProperty?.(valueKey, value.code);
         onChange?.(value.code);
       }
-
       if (descKey && value.desc !== undefined) {
         updateEntityProperty(descKey, value.desc);
       }
-
       if (orgKey && value.organization !== undefined) {
         updateEntityProperty(orgKey, value.organization);
       }

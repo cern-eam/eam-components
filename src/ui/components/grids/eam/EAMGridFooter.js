@@ -16,7 +16,7 @@ const EAMGridFooter = (props) => {
                     border: `1px solid ${theme.palette.grey[200]}`,
                     borderTop: "none",
                     borderRadius: "0 0 4px 4px",
-                    padding: "0.5rem",
+                    padding: "0.2rem 0.5rem 0.2rem 0.5rem",
                     flexWrap: "wrap",
                 }}
             >

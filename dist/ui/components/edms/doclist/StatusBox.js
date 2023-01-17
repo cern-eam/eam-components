@@ -1,5 +1,4 @@
 import React from 'react';
-
 var StatusBox = function StatusBox(_ref) {
   var color = _ref.color;
   var style = {
@@ -15,5 +14,4 @@ var StatusBox = function StatusBox(_ref) {
     style: style
   });
 };
-
 export default StatusBox;

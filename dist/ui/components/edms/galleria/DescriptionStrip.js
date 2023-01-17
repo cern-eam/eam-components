@@ -1,6 +1,5 @@
 import React from 'react';
 import getEDMSFileUrl from "./EDMSUtils";
-
 var DescriptionStrip = function DescriptionStrip(file) {
   return /*#__PURE__*/React.createElement("div", {
     className: "filmStripContainer"
@@ -22,5 +21,4 @@ var DescriptionStrip = function DescriptionStrip(file) {
     className: "edmsLink"
   }, file.description)));
 };
-
 export default DescriptionStrip;

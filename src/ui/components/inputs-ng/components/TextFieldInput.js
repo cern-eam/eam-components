@@ -12,7 +12,7 @@ const TextFieldInput = styled('input')(({theme}) => ({
         backgroundClip: "padding-box",
         border: "1px solid #e0e0e0",
         borderRadius: "4px",
-        backgroundColor: "#fafafa", 
+        backgroundColor: "#fafafa",
         height: 38,
         fontWeight: 300,
         fontFamily: "'Roboto', sans-serif"

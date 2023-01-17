@@ -23,15 +23,14 @@ var styles = {
     "-webkit-box-sizing": "border-box"
   }
 };
-
 var EAMGridHeaderCell = function EAMGridHeaderCell(props) {
   var classes = props.classes,
-      children = props.children,
-      _props$style = props.style,
-      style = _props$style === void 0 ? {
-    'width': '80px',
-    'minWidth': '80px'
-  } : _props$style;
+    children = props.children,
+    _props$style = props.style,
+    style = _props$style === void 0 ? {
+      'width': '80px',
+      'minWidth': '80px'
+    } : _props$style;
   return /*#__PURE__*/React.createElement("div", {
     className: classes.headerCellContainer,
     style: style
@@ -39,5 +38,4 @@ var EAMGridHeaderCell = function EAMGridHeaderCell(props) {
     className: classes.headerCell
   }, children));
 };
-
 export default withStyles(styles)(EAMGridHeaderCell);

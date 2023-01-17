@@ -3,6 +3,5 @@ export var extractOptions = function extractOptions(result) {
   if (result.status === 204) {
     return [];
   }
-
   return result.body.data;
 };

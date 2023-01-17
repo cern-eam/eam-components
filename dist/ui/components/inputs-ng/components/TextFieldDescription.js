@@ -1,6 +1,5 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
-
 function getTextWidth(text) {
   var canvas = document.createElement('canvas');
   var context = canvas.getContext('2d');
@@ -8,7 +7,6 @@ function getTextWidth(text) {
   var metrics = context.measureText(text);
   return metrics.width;
 }
-
 var StyledDiv = styled('div')({
   position: "absolute",
   top: 0,
@@ -22,22 +20,18 @@ var StyledDiv = styled('div')({
   height: "100%",
   fontSize: "15px"
 });
-
 var TextFieldDescription = function TextFieldDescription(_ref) {
   var description = _ref.description,
-      value = _ref.value;
+    value = _ref.value;
   var rootStyle = {
     width: "calc(100% - ".concat(getTextWidth(value) + 30, "px)"),
     left: 15 + getTextWidth(value)
   };
-
   if (!description) {
     return React.Fragment;
   }
-
   return /*#__PURE__*/React.createElement(StyledDiv, {
     style: rootStyle
   }, /*#__PURE__*/React.createElement("span", null, description));
 };
-
 export default TextFieldDescription;

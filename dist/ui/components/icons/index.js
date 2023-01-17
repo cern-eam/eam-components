@@ -1,16 +1,12 @@
 var _excluded = ["className"],
-    _excluded2 = ["color"],
-    _excluded3 = ["color"],
-    _excluded4 = ["color"],
-    _excluded5 = ["size", "color", "fontWeight"],
-    _excluded6 = ["style", "color"];
-
+  _excluded2 = ["color"],
+  _excluded3 = ["color"],
+  _excluded4 = ["color"],
+  _excluded5 = ["size", "color", "fontWeight"],
+  _excluded6 = ["style", "color"];
 function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
-
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
-
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
+function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 import React from 'react';
 import SvgIcon from '@mui/material/SvgIcon';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
@@ -95,14 +91,12 @@ export var AssetIcon = function AssetIcon(props) {
 };
 export var TRECIcon = function TRECIcon(props) {
   var className = props.className,
-      other = _objectWithoutProperties(props, _excluded);
-
+    other = _objectWithoutProperties(props, _excluded);
   if (other.icon && other.icon.startsWith("fa ")) {
     return /*#__PURE__*/React.createElement("i", _extends({
       className: props.icon + " " + className
     }, other));
   }
-
   switch (other.icon) {
     case 'vacuum-cleaner':
       {
@@ -116,7 +110,6 @@ export var TRECIcon = function TRECIcon(props) {
           d: "m426.679,466.75l-10.795-22.664c-4.227-8.875-13.31-14.609-23.14-14.609h-16.69v-332.097c0-53.696-43.689-97.38-97.39-97.38-53.701,0-97.39,43.685-97.39,97.38v137.181c-59.327,10.861-104.434,62.937-104.434,125.354v27.781h-19.273c-4.142,0-7.5,3.358-7.5,7.5v49.498c0,4.142 3.358,7.5 7.5,7.5h20.492c3.981,14.552 17.313,25.282 33.111,25.282h92.67c46.318,0 84-37.682 84-84 0-25.769-11.674-48.854-30-64.276v-67.394c0-16.173-13.157-29.33-29.33-29.33h-1.235v-135.096c0-28.331 23.054-51.38 51.39-51.38s51.39,23.049 51.39,51.38v332.097h-16.695c-9.83,0-18.913,5.734-23.139,14.609l-10.795,22.664c-1.107,2.323-0.945,5.052 0.429,7.229 1.374,2.176 3.768,3.496 6.342,3.496h133.712c2.574,0 4.968-1.32 6.342-3.496 1.373-2.176 1.535-4.905 0.428-7.229zm-361.612-64.054h11.773v34.498h-11.773v-34.498zm207.773-9.22c0,38.047-30.953,69-69,69s-69-30.953-69-69 30.953-69 69-69 69,30.953 69,69zm-30-131.67v57.307c-11.663-6.142-24.928-9.637-39-9.637-46.318,0-84,37.682-84,84 0,28.557 14.335,53.816 36.176,69h-44.846c-10.659,0-19.33-8.671-19.33-19.33v-83.231c0-61.999 50.44-112.439 112.439-112.439h24.23c7.903-2.84217e-14 14.331,6.428 14.331,14.33zm-30.565-164.426v135.095h-7.996c-2.689,0-5.356,0.094-8.004,0.259v-135.354c0-42.895 32.964-78.221 74.89-82.024v16.079c-33.087,3.739-58.89,31.879-58.89,65.945zm73.89-65.945v-16.078c41.926,3.803 74.89,39.128 74.89,82.024v8.113h-16v-8.114c0-34.066-25.802-62.206-58.89-65.945zm58.89,89.058h16v308.984h-16v-308.984zm-46.979,341.983l5.687-11.939c1.753-3.681 5.521-6.059 9.597-6.059h79.385c4.077,0 7.844,2.378 9.598,6.059l5.687,11.939h-109.954z"
         })));
       }
-
     case 'eamlight':
       {
         return /*#__PURE__*/React.createElement(SvgIcon, _extends({
@@ -133,7 +126,6 @@ export var TRECIcon = function TRECIcon(props) {
           d: "M203.7,342.95c0-32.4-26.4-58.8-58.8-58.8s-58.7,26.4-58.7,58.8s26.4,58.8,58.8,58.8 S203.7,375.35,203.7,342.95z M106,342.95c0-21.5,17.5-39,39-39s39,17.5,39,39s-17.5,39-39,39S106,364.35,106,342.95z"
         }))));
       }
-
     case 'rwchecks':
       {
         return /*#__PURE__*/React.createElement(SvgIcon, _extends({
@@ -152,7 +144,6 @@ export var TRECIcon = function TRECIcon(props) {
           d: "M379.077,0c-58.609,0-106.144,47.532-106.144,106.141c0,58.606,47.534,106.141,106.144,106.141 c58.604,0,106.135-47.534,106.135-106.141C485.212,47.532,437.682,0,379.077,0z M362.995,159.742l-21.445-21.438l-32.161-32.163 L330.834,84.7l32.161,32.161l64.326-64.321l21.436,21.44L362.995,159.742z"
         })));
       }
-
     case 'standard-menu':
       {
         return /*#__PURE__*/React.createElement(SvgIcon, _extends({
@@ -163,7 +154,6 @@ export var TRECIcon = function TRECIcon(props) {
           d: "M219.056,344.702v-25.434h90.117c-0.271,14.219,1.483,31.256,18.402,31.404c9.532,0.081,21.658-4.849,29.209-10.402 c5.626-4.132,6.83-7.853,14.441-10.463c5.238-1.783,10.725-1.434,16.122-0.115v36.055v10.08v12.624h22.701v-12.624h45.407v12.624 h22.703v-12.624v-10.08V89.708h-90.816v233.753c-10.813-2.217-21.637-1.117-30.563,7.737c-7.425,7.375-21.596,14.325-32.666,12.793 c-8.53-1.171-9.08-14.688-8.642-24.723h37.592V93.764H0v225.504h134.014v25.434 M23.193,299.943v-188.78h306.682v188.767H23.193 V299.943z M432.747,114.583c10.747,0,19.459,8.706,19.459,19.458c0,10.741-8.712,19.461-19.459,19.461 c-10.745,0-19.462-8.714-19.462-19.461C413.289,123.289,422.002,114.583,432.747,114.583z M463.292,290.333h-61.088v-11.896h61.088 V290.333z M463.292,264.921h-61.088v-11.885h61.088V264.921z M463.292,241.145h-61.088v-11.89h61.088V241.145z M463.292,215.738 h-61.088v-11.896h61.088V215.738z M264.056,335.27c0,4.251-35.12,7.704-78.445,7.704c-43.325,0-78.447-3.453-78.447-7.704 c0-4.253,35.122-7.703,78.447-7.703C228.936,327.566,264.056,331.017,264.056,335.27z"
         })));
       }
-
     default:
       {
         return /*#__PURE__*/React.createElement("i", _extends({
@@ -194,9 +184,8 @@ export var RadioactiveWarningIcon = function RadioactiveWarningIcon(props) {
 };
 export var FluidWarningIcon = function FluidWarningIcon(_ref) {
   var _ref$color = _ref.color,
-      color = _ref$color === void 0 ? "#81D4FA" : _ref$color,
-      otherProps = _objectWithoutProperties(_ref, _excluded2);
-
+    color = _ref$color === void 0 ? "#81D4FA" : _ref$color,
+    otherProps = _objectWithoutProperties(_ref, _excluded2);
   return /*#__PURE__*/React.createElement(SvgIcon, _extends({}, otherProps, {
     viewBox: "0 0 31 27"
   }), /*#__PURE__*/React.createElement("g", null, /*#__PURE__*/React.createElement("path", {
@@ -224,9 +213,8 @@ export var FluidWarningIcon = function FluidWarningIcon(_ref) {
 };
 export var ChemicalWarningIcon = function ChemicalWarningIcon(_ref2) {
   var _ref2$color = _ref2.color,
-      color = _ref2$color === void 0 ? "#FB8C00" : _ref2$color,
-      otherProps = _objectWithoutProperties(_ref2, _excluded3);
-
+    color = _ref2$color === void 0 ? "#FB8C00" : _ref2$color,
+    otherProps = _objectWithoutProperties(_ref2, _excluded3);
   return /*#__PURE__*/React.createElement(SvgIcon, _extends({}, otherProps, {
     viewBox: "0 0 31 27"
   }), /*#__PURE__*/React.createElement("g", null, /*#__PURE__*/React.createElement("path", {
@@ -254,9 +242,8 @@ export var ChemicalWarningIcon = function ChemicalWarningIcon(_ref2) {
 };
 export var ContaminationWarningIcon = function ContaminationWarningIcon(_ref3) {
   var _ref3$color = _ref3.color,
-      color = _ref3$color === void 0 ? "#FFF176" : _ref3$color,
-      otherProps = _objectWithoutProperties(_ref3, _excluded4);
-
+    color = _ref3$color === void 0 ? "#FFF176" : _ref3$color,
+    otherProps = _objectWithoutProperties(_ref3, _excluded4);
   return /*#__PURE__*/React.createElement(SvgIcon, _extends({}, otherProps, {
     viewBox: "0 0 31 27"
   }), /*#__PURE__*/React.createElement("g", null, /*#__PURE__*/React.createElement("path", {
@@ -294,13 +281,12 @@ export var QuestionMarkCircleIcon = function QuestionMarkCircleIcon(props) {
 };
 export var TRECLogo = function TRECLogo(props) {
   var _props$size = props.size,
-      size = _props$size === void 0 ? "20" : _props$size,
-      _props$color = props.color,
-      color = _props$color === void 0 ? "#2196F3" : _props$color,
-      _props$fontWeight = props.fontWeight,
-      fontWeight = _props$fontWeight === void 0 ? "900" : _props$fontWeight,
-      otherProps = _objectWithoutProperties(props, _excluded5);
-
+    size = _props$size === void 0 ? "20" : _props$size,
+    _props$color = props.color,
+    color = _props$color === void 0 ? "#2196F3" : _props$color,
+    _props$fontWeight = props.fontWeight,
+    fontWeight = _props$fontWeight === void 0 ? "900" : _props$fontWeight,
+    otherProps = _objectWithoutProperties(props, _excluded5);
   return /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
@@ -327,9 +313,8 @@ export var TRECLogo = function TRECLogo(props) {
 };
 export var RadiationIcon = function RadiationIcon(props) {
   var style = props.style,
-      color = props.color,
-      otherProps = _objectWithoutProperties(props, _excluded6);
-
+    color = props.color,
+    otherProps = _objectWithoutProperties(props, _excluded6);
   return /*#__PURE__*/React.createElement(SvgIcon, _extends({}, otherProps, {
     viewBox: "0 0 310 310",
     style: style

@@ -18,6 +18,8 @@ const useSelectionCheckboxHook = (selectable) => (hooks) => hooks.visibleColumns
                 <div style={{
                     display: 'flex',
                     alignItems: 'center',
+                    minWidth: 42,
+                    maxWidth: 42,
                 }}>
                     <DefaultCheckbox
                         color="primary"
@@ -39,7 +41,7 @@ const useSelectionCheckboxHook = (selectable) => (hooks) => hooks.visibleColumns
             disableSortBy: true,
             width: '',
             minWidth: 42,
-            maxWidth: 150,
+            maxWidth: 42,
         },
         ...columns
     ] : columns;

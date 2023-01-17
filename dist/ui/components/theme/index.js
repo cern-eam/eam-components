@@ -1,10 +1,9 @@
 import { createTheme, adaptV4Theme } from '@mui/material/styles';
 import { blue, green, red, lightBlue, lightGreen, deepOrange } from '@mui/material/colors';
-
 var muiSettings = function muiSettings(_ref) {
   var primaryColor = _ref.primaryColor,
-      secondaryColor = _ref.secondaryColor,
-      primaryExtraLight = _ref.primaryExtraLight;
+    secondaryColor = _ref.secondaryColor,
+    primaryExtraLight = _ref.primaryExtraLight;
   return {
     palette: {
       primary: {
@@ -15,8 +14,8 @@ var muiSettings = function muiSettings(_ref) {
       secondary: {
         main: secondaryColor
       } // Darker blue '#01579b'
-
     },
+
     typography: {
       body1: {
         fontSize: '14px'
@@ -31,7 +30,6 @@ var muiSettings = function muiSettings(_ref) {
     }
   };
 };
-
 export var theme = createTheme(adaptV4Theme({
   primaryColor: blue[500],
   secondaryColor: lightBlue[900],

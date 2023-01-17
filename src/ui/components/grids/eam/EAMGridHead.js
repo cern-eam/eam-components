@@ -54,7 +54,7 @@ const EAMGridHead = ({
                             <Box display="flex" alignItems="center">
                                 {dataspies.length ? <Typography variant="body2" color="textSecondary">Dataspy:</Typography> : null}
                                 <Box className={classes.dataspyChip}>
-                                    {dataspies.filter(Boolean).map((dataspy, i) => 
+                                    {dataspies.filter(Boolean).map((dataspy, i) =>
                                         <Chip
                                         key={dataspy.code}
                                         size="small"
@@ -65,7 +65,7 @@ const EAMGridHead = ({
                                     )}
                                 </Box>
                             </Box>
-                        : 
+                        :
                             <Box>
                                 <Autocomplete
                                     autoHighlight

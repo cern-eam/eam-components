@@ -2,7 +2,6 @@ import React from 'react';
 import InfoIcon from '@mui/icons-material/Info';
 import { Typography } from '@mui/material';
 import withStyles from '@mui/styles/withStyles';
-
 var styles = function styles(theme) {
   return {
     root: {
@@ -17,12 +16,11 @@ var styles = function styles(theme) {
     }
   };
 };
-
 var SimpleEmptyState = function SimpleEmptyState(props) {
   var message = props.message,
-      style = props.style,
-      iconStyle = props.iconStyle,
-      classes = props.classes;
+    style = props.style,
+    iconStyle = props.iconStyle,
+    classes = props.classes;
   return /*#__PURE__*/React.createElement("div", {
     className: classes.root,
     style: style
@@ -33,5 +31,4 @@ var SimpleEmptyState = function SimpleEmptyState(props) {
     variant: "caption"
   }, message));
 };
-
 export default withStyles(styles)(SimpleEmptyState);
