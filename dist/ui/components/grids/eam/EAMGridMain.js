@@ -180,15 +180,15 @@ var EAMGridMain = function EAMGridMain(props) {
         component: "div"
       }), /*#__PURE__*/React.createElement("div", column.getSortByToggleProps({
         title: 'Toggle Sort By'
-      }), column.render("Header"), column.id !== 'selection' ? /*#__PURE__*/React.createElement(DefaultTableSortLabel, {
+      }), column.render("Header"), column._canSort ? /*#__PURE__*/React.createElement(DefaultTableSortLabel, {
         active: column.isSorted,
         direction: column.isSortedDesc ? 'desc' : 'asc'
-      }) : null), column.id !== 'selection' && /*#__PURE__*/React.createElement("div", {
+      }) : null), /*#__PURE__*/React.createElement("div", {
         style: {
           display: 'flex',
           justifyContent: 'center'
         }
-      }, column.canFilter ? column.render('Filter') : null));
+      }, column._canFilter ? column.render('Filter') : null));
     }));
   }))), /*#__PURE__*/React.createElement(TableBody, _extends({}, getTableBodyProps(), {
     style: {

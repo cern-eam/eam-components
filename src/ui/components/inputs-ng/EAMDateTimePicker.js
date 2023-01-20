@@ -6,11 +6,12 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import enLocale from 'date-fns/locale/en-GB';
+import Constants from '../../../enums/Constants';
 
 const EAMDateTimePicker = (props) => {
 
-    let {value, onChange, style, errorText, disabled} = props;
-    let [isInvalidDate, setIsInvalidDate] = useState(false);
+    const { value, onChange, style, errorText, disabled, minDate, maxDate, displayFormat } = props;
+    const [ isInvalidDate, setIsInvalidDate ] = useState(false);
 
     return (
         <EAMBaseInput {...props}>
@@ -19,9 +20,11 @@ const EAMDateTimePicker = (props) => {
                     renderInput={(props) => renderDatePickerInput(props, isInvalidDate, style, errorText, disabled)}
                     value={value}
                     disableMaskedInput
-                    inputFormat="dd-MMM-yyyy HH:mm" //TODO shouldn't be hardcoded 
+                    inputFormat={displayFormat || Constants.DATETIME_FORMAT_DISPLAY}
                     onChange={onChangeHandler.bind(null, onChange, setIsInvalidDate)}
                     ampm={false}
+                    minDate={minDate}
+                    maxDate={maxDate}
                 />
          </LocalizationProvider>
         </EAMBaseInput>

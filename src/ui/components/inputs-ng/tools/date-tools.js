@@ -8,12 +8,12 @@ export const renderDatePickerInput = ({ inputRef, inputProps, InputProps }, isIn
     }
 
     let endAdornment = (<div style={{marginRight: 12, marginLeft: -8}}>{InputProps?.endAdornment}</div>)
-    
+
     return (
       <TextField style = {style}
-                 inputRef={inputRef} 
+                 inputRef={inputRef}
                  inputProps={disabled ? {...inputProps, placeholder: ""} : {...inputProps}}
-                 endAdornment={disabled ? null : endAdornment} 
+                 endAdornment={disabled ? null : endAdornment}
                  errorText={errorText}
                  disabled={disabled}/>
     )
@@ -22,7 +22,7 @@ export const renderDatePickerInput = ({ inputRef, inputProps, InputProps }, isIn
 export const onChangeHandler = (onChange, setIsInvalidDate, newValue) => {
     try {
         if (newValue) {
-            onChange(newValue.toISOString())   
+            onChange(newValue.toISOString())
         } else {
             onChange('');
         }

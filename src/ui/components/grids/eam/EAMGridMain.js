@@ -160,19 +160,17 @@ const EAMGridMain = (props) => {
                                             <HeadCellComponent key={column.id} {...column.getHeaderProps(headerProps)} component="div">
                                                 <div {...column.getSortByToggleProps({ title: 'Toggle Sort By' })}>
                                                     {column.render("Header")}
-                                                    {column.id !== 'selection' ? (
+                                                    {column._canSort ? (
                                                         <DefaultTableSortLabel
                                                             active={column.isSorted}
                                                             direction={column.isSortedDesc ? 'desc' : 'asc'}
                                                         />
                                                         ) : null}
                                                 </div>
-                                                {column.id !== 'selection' &&
-                                                    <div style={{
-                                                        display: 'flex',
-                                                        justifyContent: 'center'
-                                                    }}>{column.canFilter ? column.render('Filter') : null}</div>
-                                                }
+                                                <div style={{
+                                                    display: 'flex',
+                                                    justifyContent: 'center'
+                                                }}>{column._canFilter ? column.render('Filter') : null}</div>
                                             </HeadCellComponent>
                                         )
                                     }

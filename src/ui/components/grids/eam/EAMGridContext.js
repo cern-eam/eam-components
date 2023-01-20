@@ -11,20 +11,30 @@ import { EAMCellField, EAMFilterField, getRowAsAnObject } from "./utils";
 import useEAMGridTableInstance from "./useEAMGridTableInstance";
 import { useAsyncDebounce } from "react-table";
 
-const defaultCreateColumns = ({ gridField, cellRenderer }) =>
-    (gridField || [])
-        .sort((a, b) => a.order - b.order)
-        .map((field) => ({
-            id: field.name,
-            Header: field.label,
-            accessor: field.name,
-            width: Number(field.width),
-            minWidth: 0,
-            maxWidth: 99999,
-            dataType: field.dataType,
-            Filter: EAMFilterField,
-            Cell: cellRenderer ? cellRenderer : EAMCellField,
-        }));
+const defaultCreateColumns = ({ gridField, cellRenderer, modifyEAMGridColumns }) =>
+    modifyEAMGridColumns(
+        (gridField || []).sort((a, b) => a.order - b.order)
+    )
+    .map(({ canSort, canFilter, ...field }) =>
+        {
+            const isGridField = gridField?.findIndex(({ name }) => name === field.name) > -1;
+
+            return ({
+                id: field.name,
+                Header: field.label,
+                accessor: field.name,
+                width: Number(field.width),
+                minWidth: 0,
+                maxWidth: 99999,
+                dataType: field.dataType,
+                Filter: EAMFilterField,
+                Cell: cellRenderer ? cellRenderer : EAMCellField,
+                _canSort: canSort ?? isGridField,
+                _canFilter: canFilter ?? isGridField,
+            })
+        }
+    );
+
 
 const processFilters = (filters, filterProcessor) => {
     return filters
@@ -100,6 +110,9 @@ export const EAMGridContextProvider = (props) => {
         sortByProcessor = (e) => e,
         filterProcessor = (e) => e,
         gridRequestAdapter = (e) => e,
+        modifyEAMGridColumns = (e) => e,
+        isRowSelectable = (e) => true,
+        modifyColumns = (e) => e,
     } = props;
     const [pageIndex, setPageIndex] = useState(0);
     const [selectedDataspy, setSelectedDataspy] = useState(undefined);
@@ -136,7 +149,7 @@ export const EAMGridContextProvider = (props) => {
     const dataCreator = processData ?? (({ data: d }) => d);
 
     const columns = useMemo(
-        () => columnCreator({ gridField, cellRenderer }),
+        () => columnCreator({ gridField, cellRenderer, modifyEAMGridColumns }),
         [gridField, cellRenderer, columnCreator]
     );
     const data = useMemo(
@@ -169,6 +182,8 @@ export const EAMGridContextProvider = (props) => {
         autoResetSortBy: false,
         autoResetFilters: false,
         autoResetSelectedRows: false,
+        isRowSelectable,
+        modifyColumns,
         ...tableInstanceProps,
     });
 

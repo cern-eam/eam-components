@@ -9,11 +9,14 @@ const DefaultCheckbox = withStyles(() => ({
     }
 }))(Checkbox);
 
-const useSelectionCheckboxHook = (selectable) => (hooks) => hooks.visibleColumns.push(columns => {
+
+const useModifyColumns = (modifyColumns) => (hooks) => hooks.visibleColumns.push(columns => modifyColumns?.(columns) ?? columns);
+
+const useSelectionCheckboxHook = (selectable, isRowSelectable = () => true) => (hooks) => hooks.visibleColumns.push(columns => {
     if (!selectable) return columns;
     return  columns.length ? [
         {
-            id: "selection",
+            id: "__selection",
             Header: ({ getToggleAllRowsSelectedProps }) => (
                 <div style={{
                     display: 'flex',
@@ -29,33 +32,35 @@ const useSelectionCheckboxHook = (selectable) => (hooks) => hooks.visibleColumns
                 </div>
             ),
             Cell: ({ row }) => (
-                <div>
+                isRowSelectable(row?.values) ? <div>
                     <DefaultCheckbox
                         color="primary"
                         {...row.getToggleRowSelectedProps()}
                         />
-                </div>
+                </div> : null
             ),
             Filter: null,
             filter: null,
-            disableSortBy: true,
             width: '',
             minWidth: 42,
             maxWidth: 42,
+            _canSort: false,
+            _canFilter: false,
         },
         ...columns
     ] : columns;
 });
 
 const useEAMGridTableInstance = (settings) => {
-    const { selectable = false, ...useTableSettings } = settings;
+    const { selectable = false, modifyColumns, isRowSelectable, ...useTableSettings } = settings;
     const tableInstance = useTable(
         useTableSettings,
         useFilters,
         useSortBy,
         useRowSelect,
         useFlexLayout,
-        useSelectionCheckboxHook(selectable),
+        useSelectionCheckboxHook(selectable, isRowSelectable),
+        useModifyColumns(modifyColumns),
     );
 
     return tableInstance;

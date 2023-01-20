@@ -12,12 +12,16 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import enLocale from 'date-fns/locale/en-GB';
+import Constants from '../../../enums/Constants';
 var EAMDatePicker = function EAMDatePicker(props) {
   var value = props.value,
     onChange = props.onChange,
     style = props.style,
     errorText = props.errorText,
-    disabled = props.disabled;
+    disabled = props.disabled,
+    minDate = props.minDate,
+    maxDate = props.maxDate,
+    displayFormat = props.displayFormat;
   var _useState = useState(false),
     _useState2 = _slicedToArray(_useState, 2),
     isInvalidDate = _useState2[0],
@@ -31,9 +35,10 @@ var EAMDatePicker = function EAMDatePicker(props) {
     },
     value: value,
     disableMaskedInput: true,
-    inputFormat: "dd-MMM-yyyy" //TODO shouldn't be hardcoded 
-    ,
-    onChange: onChangeHandler.bind(null, onChange, setIsInvalidDate)
+    inputFormat: displayFormat || Constants.DATE_FORMAT_DISPLAY,
+    onChange: onChangeHandler.bind(null, onChange, setIsInvalidDate),
+    minDate: minDate,
+    maxDate: maxDate
   })));
 };
 export default React.memo(EAMDatePicker, areEqual);
