@@ -101,22 +101,101 @@ export const componentsProps = {
         }              
 }
 
-export const createOnChangeHandler = (valueKey, descKey, orgKey, updateEntityProperty, onChange) => value => {    
+/**
+ * Use this function when the passed updating function expects a key and a
+ * value as the first two arguments.
+ * @param additionalFunctionArgs is an array of arguments that will be spread
+ * and passed to the end of the updating function's arguments. This enables
+ * passing more arguments to the updating function than just the key and value.
+ */
+export const createOnChangeHandler =
+    (
+        valueKey,
+        descKey,
+        orgKey,
+        updatingFunction,
+        onChange,
+        additionalArgs = []
+    ) =>
+    (value) => {
+        // When receiving an object value, we run the updating function for each
+        // key that was passed.
         if (typeof value === 'object') {
-                if (value.code !== undefined) {
-                        updateEntityProperty?.(valueKey, value.code);
-                        onChange?.(value.code);
-                }
+            if (value.code !== undefined) {
+                updatingFunction?.(valueKey, value.code, ...additionalArgs);
+                onChange?.(value.code);
+            }
 
-                if (descKey && value.desc !== undefined) {
-                        updateEntityProperty(descKey, value.desc)
-                }
+            if (descKey && value.desc !== undefined) {
+                updatingFunction(descKey, value.desc, ...additionalArgs);
+            }
 
-                if (orgKey && value.organization !== undefined) {
-                        updateEntityProperty(orgKey, value.organization)
-                }
+            if (orgKey && value.organization !== undefined) {
+                updatingFunction(orgKey, value.organization, ...additionalArgs);
+            }
         } else {
-                updateEntityProperty?.(valueKey, value)
-                onChange?.(value)
+            // When receiving a non-object value, we assume it corresponds to
+            // the value key.
+            updatingFunction?.(valueKey, value, ...additionalArgs);
+            onChange?.(value);
+
+            // Reset the description and org if the respective key was passed to
+            // the function, thus clearing the field of previous values that do
+            // not match the value picked.
+            if (descKey) {
+                updatingFunction(descKey, '', ...additionalArgs);
+            }
+            if (orgKey) {
+                updatingFunction(orgKey, '', ...additionalArgs);
+            }
         }
-}
+    };
+
+/**
+ * Use this function when the passed updating function expects an object as its
+ * first argument (as opposed to a key and a value arguments). Note that, in
+ * this function we check the values against undefined so that empty string
+ * values are not ignored, thus allowing for fields to be cleared.
+ * @param additionalFunctionArgs is an array of arguments that will be spread
+ * and passed to the end of the updating function's arguments. This enables
+ * passing more arguments to the updating function than just the object
+ * containing all key-value pairs.
+ * */
+export const createOnChangeHandlerObjectUpdate =
+    (
+        valueKey,
+        descKey,
+        orgKey,
+        updatingFunction,
+        onChange,
+        additionalArgs = []
+    ) =>
+    (value) => {
+        if (typeof value === 'object') {
+            const updateObject = {
+                ...(value.code !== undefined && { [valueKey]: value.code }),
+                ...(value.desc !== undefined && { [descKey]: value.desc }),
+                ...(value.organization !== undefined && {
+                    [orgKey]: value.organization,
+                }),
+            };
+
+            updatingFunction?.(updateObject, ...additionalArgs);
+            onChange?.(updateObject);
+        } else {
+            // If we are expecting an object update, but we get a non-object
+            // value (can happen on a barcode scan), we set the value key to the
+            // value received since that is expected to be the selected option.
+            // Additionally, we reset the description and org if the respective
+            // key was passed to the function, thus clearing the field of
+            // previous values that do not match the value selected.
+            const updateObject = {
+                [valueKey]: value,
+                ...(descKey && { [descKey]: '' }),
+                ...(orgKey && { [orgKey]: '' }),
+            };
+
+            updatingFunction?.(updateObject, ...additionalArgs);
+            onChange?.(updateObject);
+        }
+    };
