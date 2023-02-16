@@ -28,7 +28,7 @@ const defaultCreateColumns = ({ gridField, cellRenderer, modifyEAMGridColumns })
                 maxWidth: 99999,
                 dataType: field.dataType,
                 Filter: EAMFilterField,
-                Cell: cellRenderer ? cellRenderer : EAMCellField,
+                Cell: (...props) => cellRenderer?.(...props) ?? EAMCellField(...props),
                 _canSort: canSort ?? isGridField,
                 _canFilter: canFilter ?? isGridField,
             })

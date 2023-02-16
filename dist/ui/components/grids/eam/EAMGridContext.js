@@ -42,7 +42,12 @@ var defaultCreateColumns = function defaultCreateColumns(_ref) {
       maxWidth: 99999,
       dataType: field.dataType,
       Filter: EAMFilterField,
-      Cell: cellRenderer ? cellRenderer : EAMCellField,
+      Cell: function Cell() {
+        for (var _len = arguments.length, props = new Array(_len), _key = 0; _key < _len; _key++) {
+          props[_key] = arguments[_key];
+        }
+        return cellRenderer?.(...props) ?? EAMCellField.apply(void 0, props);
+      },
       _canSort: canSort ?? isGridField,
       _canFilter: canFilter ?? isGridField
     };

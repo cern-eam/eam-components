@@ -17,8 +17,8 @@ import './grid.css';
 const DefaultBodyCellComponent = withStyles((theme) => ({
     root: {
         overflow: 'hidden',
-        borderRight: `1px solid ${theme.palette.grey[200]}`,
-        borderTop:`1px solid ${theme.palette.grey[200]}`,
+        borderRight: `1px solid ${theme.palette.grey[300]}`,
+        borderTop:`1px solid ${theme.palette.grey[300]}`,
         borderBottom: 'none',
         padding: theme.spacing(1),
         wordBreak: 'break-word',
@@ -32,8 +32,8 @@ const DefaultHeadCellComponent = withStyles((theme) => ({
         textOverflow: 'ellipsis',
         background: theme.palette.grey[100],
         overflow: 'hidden',
-        borderRight: `1px solid ${theme.palette.grey[200]}`,
-        borderTop:`1px solid ${theme.palette.grey[200]}`,
+        borderRight: `1px solid ${theme.palette.grey[300]}`,
+        borderTop:`1px solid ${theme.palette.grey[300]}`,
         borderBottom: 'none',
         padding: theme.spacing(1),
         wordBreak: 'break-word',
@@ -132,12 +132,14 @@ const EAMGridMain = (props) => {
                 <TableRow className="tr" component="div" {...tableRowProps} >
                     {row.cells.map((cell) => {
                         const cellProps = [
-                            { style: { maxWidth: cell.column.maxWidth, minWidth: cell.column.minWidth ?? MIN_CELL_WIDTH, width: cell.column.width }},
+                            { style: { maxWidth: cell.column.maxWidth, minWidth: cell.column.minWidth ?? MIN_CELL_WIDTH, width: cell.column.width, display: 'flex', alignItems: 'center'}},
                             getCellProps(cell),
                         ].filter(Boolean);
                         return (
                             <BodyCellComponent {...cell.getCellProps(cellProps)} className="td" component="div">
-                                {cell.render("Cell")}
+                                <div style={{width: '100%', maxHeight: '100%', display: 'flex', alignItems: 'flex-start', justifyContent: 'flex-start'}}>
+                                    {cell.render("Cell")}
+                                </div>
                             </BodyCellComponent>
                         )
                     }

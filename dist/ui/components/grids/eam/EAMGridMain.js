@@ -15,8 +15,8 @@ var DefaultBodyCellComponent = withStyles(function (theme) {
   return {
     root: {
       overflow: 'hidden',
-      borderRight: "1px solid ".concat(theme.palette.grey[200]),
-      borderTop: "1px solid ".concat(theme.palette.grey[200]),
+      borderRight: "1px solid ".concat(theme.palette.grey[300]),
+      borderTop: "1px solid ".concat(theme.palette.grey[300]),
       borderBottom: 'none',
       padding: theme.spacing(1),
       wordBreak: 'break-word',
@@ -31,8 +31,8 @@ var DefaultHeadCellComponent = withStyles(function (theme) {
       textOverflow: 'ellipsis',
       background: theme.palette.grey[100],
       overflow: 'hidden',
-      borderRight: "1px solid ".concat(theme.palette.grey[200]),
-      borderTop: "1px solid ".concat(theme.palette.grey[200]),
+      borderRight: "1px solid ".concat(theme.palette.grey[300]),
+      borderTop: "1px solid ".concat(theme.palette.grey[300]),
       borderBottom: 'none',
       padding: theme.spacing(1),
       wordBreak: 'break-word',
@@ -137,13 +137,23 @@ var EAMGridMain = function EAMGridMain(props) {
           style: {
             maxWidth: cell.column.maxWidth,
             minWidth: cell.column.minWidth ?? MIN_CELL_WIDTH,
-            width: cell.column.width
+            width: cell.column.width,
+            display: 'flex',
+            alignItems: 'center'
           }
         }, getCellProps(cell)].filter(Boolean);
         return /*#__PURE__*/React.createElement(BodyCellComponent, _extends({}, cell.getCellProps(cellProps), {
           className: "td",
           component: "div"
-        }), cell.render("Cell"));
+        }), /*#__PURE__*/React.createElement("div", {
+          style: {
+            width: '100%',
+            maxHeight: '100%',
+            display: 'flex',
+            alignItems: 'flex-start',
+            justifyContent: 'flex-start'
+          }
+        }, cell.render("Cell")));
       }));
     });
   },
