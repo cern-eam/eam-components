@@ -22,6 +22,7 @@ const DefaultBodyCellComponent = withStyles((theme) => ({
         borderBottom: 'none',
         padding: theme.spacing(1),
         wordBreak: 'break-word',
+        color: 'unset',
     }
 }))(TableCell);
 
@@ -30,8 +31,15 @@ const DefaultHeadCellComponent = withStyles((theme) => ({
         whiteSpace: 'nowrap',
         textOverflow: 'ellipsis',
         background: theme.palette.grey[100],
-    }
-}))(DefaultBodyCellComponent);
+        overflow: 'hidden',
+        borderRight: `1px solid ${theme.palette.grey[200]}`,
+        borderTop:`1px solid ${theme.palette.grey[200]}`,
+        borderBottom: 'none',
+        padding: theme.spacing(1),
+        wordBreak: 'break-word',
+        color: theme.palette.grey[500],
+    },
+}))(TableCell);
 
 const DefaultTableComponent = withStyles((theme) => ({
     root: {
@@ -107,6 +115,7 @@ const EAMGridMain = (props) => {
             ...customRowProps,
             style: {
                 ...style,
+                width: 'unset',
                 ...customRowProps.style
             }
         })
@@ -170,7 +179,7 @@ const EAMGridMain = (props) => {
                                                 <div style={{
                                                     display: 'flex',
                                                     justifyContent: 'center'
-                                                }}>{column._canFilter ? column.render('Filter') : null}</div>
+                                                }}>{column.canFilter && column._canFilter ? column.render('Filter') : null}</div>
                                             </HeadCellComponent>
                                         )
                                     }

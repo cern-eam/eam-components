@@ -19,7 +19,8 @@ var DefaultBodyCellComponent = withStyles(function (theme) {
       borderTop: "1px solid ".concat(theme.palette.grey[200]),
       borderBottom: 'none',
       padding: theme.spacing(1),
-      wordBreak: 'break-word'
+      wordBreak: 'break-word',
+      color: 'unset'
     }
   };
 })(TableCell);
@@ -28,10 +29,17 @@ var DefaultHeadCellComponent = withStyles(function (theme) {
     root: {
       whiteSpace: 'nowrap',
       textOverflow: 'ellipsis',
-      background: theme.palette.grey[100]
+      background: theme.palette.grey[100],
+      overflow: 'hidden',
+      borderRight: "1px solid ".concat(theme.palette.grey[200]),
+      borderTop: "1px solid ".concat(theme.palette.grey[200]),
+      borderBottom: 'none',
+      padding: theme.spacing(1),
+      wordBreak: 'break-word',
+      color: theme.palette.grey[500]
     }
   };
-})(DefaultBodyCellComponent);
+})(TableCell);
 var DefaultTableComponent = withStyles(function (theme) {
   return {
     root: {
@@ -109,7 +117,9 @@ var EAMGridMain = function EAMGridMain(props) {
     prepareRow(row);
     var customRowProps = getRowProps(row);
     var tableRowProps = row.getRowProps(_objectSpread({}, customRowProps, {
-      style: _objectSpread({}, style, {}, customRowProps.style)
+      style: _objectSpread({}, style, {
+        width: 'unset'
+      }, customRowProps.style)
     }));
     return /*#__PURE__*/React.createElement(CellMeasurer, {
       cache: _cache,
@@ -188,7 +198,7 @@ var EAMGridMain = function EAMGridMain(props) {
           display: 'flex',
           justifyContent: 'center'
         }
-      }, column._canFilter ? column.render('Filter') : null));
+      }, column.canFilter && column._canFilter ? column.render('Filter') : null));
     }));
   }))), /*#__PURE__*/React.createElement(TableBody, _extends({}, getTableBodyProps(), {
     style: {
