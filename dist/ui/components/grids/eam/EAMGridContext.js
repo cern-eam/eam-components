@@ -132,7 +132,9 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
     _props$modifyColumns = props.modifyColumns,
     modifyColumns = _props$modifyColumns === void 0 ? function (e) {
       return e;
-    } : _props$modifyColumns;
+    } : _props$modifyColumns,
+    _props$initialShowFil = props.initialShowFilters,
+    initialShowFilters = _props$initialShowFil === void 0 ? true : _props$initialShowFil;
   var _useState = useState(0),
     _useState2 = _slicedToArray(_useState, 2),
     pageIndex = _useState2[0],
@@ -141,7 +143,7 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
     _useState4 = _slicedToArray(_useState3, 2),
     selectedDataspy = _useState4[0],
     setSelectedDataspy = _useState4[1];
-  var _useState5 = useState(false),
+  var _useState5 = useState(!initialShowFilters),
     _useState6 = _slicedToArray(_useState5, 2),
     disableFilters = _useState6[0],
     setDisableFilters = _useState6[1];

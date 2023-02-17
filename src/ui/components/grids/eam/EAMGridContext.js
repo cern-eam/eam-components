@@ -113,10 +113,11 @@ export const EAMGridContextProvider = (props) => {
         modifyEAMGridColumns = (e) => e,
         isRowSelectable = (e) => true,
         modifyColumns = (e) => e,
+        initialShowFilters = true,
     } = props;
     const [pageIndex, setPageIndex] = useState(0);
     const [selectedDataspy, setSelectedDataspy] = useState(undefined);
-    const [disableFilters, setDisableFilters] = useState(false);
+    const [disableFilters, setDisableFilters] = useState(!initialShowFilters);
     const [dataspies, setDataspies] = useState([]);
     const [rowsPerPage, setRowsPerPage] = useState(initialRowsPerPage || 50);
     const [loading, setLoading] = useState(false);
