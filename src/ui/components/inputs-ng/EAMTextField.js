@@ -18,7 +18,7 @@ const EAMTextField = (props) => {
         },
         onBlur: () => {
             if (inputValue !== value) {
-                onChange(inputValue);
+                onChange?.(inputValue);
             }
         },
         value: inputValue,

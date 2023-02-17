@@ -29,7 +29,7 @@ var EAMTextField = function EAMTextField(props) {
     },
     onBlur: function onBlur() {
       if (inputValue !== value) {
-        onChange(inputValue);
+        onChange?.(inputValue);
       }
     },
     value: inputValue

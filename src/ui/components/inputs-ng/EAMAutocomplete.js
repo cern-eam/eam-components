@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import useFetchAutocompleteOptions from './hooks/useFetchAutocompleteOptions';
 import {areEqual, componentsProps, renderOptionHandler, updateCodeDesc} from './tools/input-tools'
@@ -8,13 +8,14 @@ import { saveHistory, HISTORY_ID_PREFIX } from './tools/history-tools';
 
 const EAMAutocomplete = (props) => {
    
-  let {autocompleteHandler, autocompleteHandlerParams, 
-       value, desc, id, renderValue, onChange} = props;
+  let {autocompleteHandler, autocompleteHandlerParams = [], 
+       value, desc, id, renderValue, onChange, validate} = props;
 
     let [inputValue, setInputValue] = useState("")
     let [open, setOpen] = useState(false)
     let [fetchedOptions, loading] = useFetchAutocompleteOptions(autocompleteHandler, autocompleteHandlerParams, inputValue, value, open, id)
-  
+    let [valid, setValid] = useState(true)
+
     const getOptionLabelHandler = option => {
         return option.code ?? option;
     }
@@ -33,8 +34,8 @@ const EAMAutocomplete = (props) => {
       }
       
       saveHistory(HISTORY_ID_PREFIX + id, newValue.code, newValue.desc)
-
-      onChange(newValue);
+      setValid(true)
+      onChange(newValue, newValue);
 
       // Don't bubble up any events (won't trigger a save when we select something by pressing enter)
       event.stopPropagation();
@@ -46,8 +47,20 @@ const EAMAutocomplete = (props) => {
       setOpen(false)
       // Only to be fired when we blur, press ESC or hit enter and the inputValue is different than the original value
       if ( (reason === 'blur' || reason === 'escape' || reason === 'createOption') && inputValue !== value) {
-          // TODO: validation if inputValue is not empty 
-          onChange({code: inputValue})
+        onChange({code: inputValue, desc: ''})
+        setValid(true)
+          
+          autocompleteHandler(...autocompleteHandlerParams, inputValue)
+          .then(result => {
+              let option = result.body.data.find(o => o.code === inputValue);
+              if (option) {
+                onChange({desc: option.desc})
+              } else {
+                setValid(!validate || false)
+              }
+          })
+          .catch(console.error) 
+
       } 
     }
 
@@ -78,7 +91,9 @@ const EAMAutocomplete = (props) => {
             loading = {loading}
             size="small"
             fullWidth
-            renderInput={(params) => <TextField {...params}  {...props} />}
+            renderInput={(params) => <TextField {...params}  
+                                                {...props} 
+                                                errorText={valid ? props.errorText : "Wrong entry"} />}
             
           />
       </EAMBaseInput>
