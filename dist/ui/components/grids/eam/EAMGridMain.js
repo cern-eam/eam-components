@@ -118,7 +118,8 @@ var EAMGridMain = function EAMGridMain(props) {
     var customRowProps = getRowProps(row);
     var tableRowProps = row.getRowProps(_objectSpread({}, customRowProps, {
       style: _objectSpread({}, style, {
-        width: 'unset'
+        width: 'unset',
+        minWidth: '100%'
       }, customRowProps.style)
     }));
     return /*#__PURE__*/React.createElement(CellMeasurer, {

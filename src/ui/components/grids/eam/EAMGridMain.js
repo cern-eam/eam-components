@@ -116,6 +116,7 @@ const EAMGridMain = (props) => {
             style: {
                 ...style,
                 width: 'unset',
+                minWidth: '100%',
                 ...customRowProps.style
             }
         })
