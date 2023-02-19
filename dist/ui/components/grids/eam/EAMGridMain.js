@@ -149,7 +149,6 @@ var EAMGridMain = function EAMGridMain(props) {
         }), /*#__PURE__*/React.createElement("div", {
           style: {
             width: '100%',
-            maxHeight: '100%',
             display: 'flex',
             alignItems: 'flex-start',
             justifyContent: 'flex-start'

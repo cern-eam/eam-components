@@ -138,7 +138,7 @@ const EAMGridMain = (props) => {
                         ].filter(Boolean);
                         return (
                             <BodyCellComponent {...cell.getCellProps(cellProps)} className="td" component="div">
-                                <div style={{width: '100%', maxHeight: '100%', display: 'flex', alignItems: 'flex-start', justifyContent: 'flex-start'}}>
+                                <div style={{width: '100%', display: 'flex', alignItems: 'flex-start', justifyContent: 'flex-start'}}>
                                     {cell.render("Cell")}
                                 </div>
                             </BodyCellComponent>
