@@ -9,7 +9,7 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import useFetchAutocompleteOptions from './hooks/useFetchAutocompleteOptions';
 import { areEqual, componentsProps, renderOptionHandler, updateCodeDesc } from './tools/input-tools';
@@ -42,6 +42,9 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
     _useState6 = _slicedToArray(_useState5, 2),
     valid = _useState6[0],
     setValid = _useState6[1];
+  useEffect(function () {
+    setValid(true);
+  }, [value]);
   var getOptionLabelHandler = function getOptionLabelHandler(option) {
     return option.code ?? option;
   };
@@ -59,7 +62,6 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
       return;
     }
     saveHistory(HISTORY_ID_PREFIX + id, newValue.code, newValue.desc);
-    setValid(true);
     onChange(newValue, newValue);
 
     // Don't bubble up any events (won't trigger a save when we select something by pressing enter)
@@ -74,7 +76,6 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
         code: inputValue,
         desc: ''
       });
-      setValid(true);
       autocompleteHandler.apply(void 0, _toConsumableArray(autocompleteHandlerParams).concat([inputValue])).then(function (result) {
         var option = result.body.data.find(function (o) {
           return o.code === inputValue;

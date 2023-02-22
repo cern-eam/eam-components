@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import useFetchAutocompleteOptions from './hooks/useFetchAutocompleteOptions';
 import {areEqual, componentsProps, renderOptionHandler, updateCodeDesc} from './tools/input-tools'
@@ -15,6 +15,10 @@ const EAMAutocomplete = (props) => {
     let [open, setOpen] = useState(false)
     let [fetchedOptions, loading] = useFetchAutocompleteOptions(autocompleteHandler, autocompleteHandlerParams, inputValue, value, open, id)
     let [valid, setValid] = useState(true)
+
+    useEffect(() => {
+      setValid(true)
+    }, [value])
 
     const getOptionLabelHandler = option => {
         return option.code ?? option;
@@ -34,7 +38,6 @@ const EAMAutocomplete = (props) => {
       }
       
       saveHistory(HISTORY_ID_PREFIX + id, newValue.code, newValue.desc)
-      setValid(true)
       onChange(newValue, newValue);
 
       // Don't bubble up any events (won't trigger a save when we select something by pressing enter)
@@ -48,7 +51,6 @@ const EAMAutocomplete = (props) => {
       // Only to be fired when we blur, press ESC or hit enter and the inputValue is different than the original value
       if ( (reason === 'blur' || reason === 'escape' || reason === 'createOption') && inputValue !== value) {
         onChange({code: inputValue, desc: ''})
-        setValid(true)
           
           autocompleteHandler(...autocompleteHandlerParams, inputValue)
           .then(result => {
