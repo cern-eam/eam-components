@@ -22,7 +22,7 @@ var DefaultCheckbox = withStyles(function () {
 var useModifyColumns = function useModifyColumns(modifyColumns) {
   return function (hooks) {
     return hooks.visibleColumns.push(function (columns) {
-      return modifyColumns?.(columns) ?? columns;
+      return columns.length ? modifyColumns?.(columns) ?? columns : columns;
     });
   };
 };

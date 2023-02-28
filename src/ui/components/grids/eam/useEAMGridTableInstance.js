@@ -10,7 +10,7 @@ const DefaultCheckbox = withStyles(() => ({
 }))(Checkbox);
 
 
-const useModifyColumns = (modifyColumns) => (hooks) => hooks.visibleColumns.push(columns => modifyColumns?.(columns) ?? columns);
+const useModifyColumns = (modifyColumns) => (hooks) => hooks.visibleColumns.push(columns => columns.length ? (modifyColumns?.(columns) ?? columns) : columns);
 
 const useSelectionCheckboxHook = (selectable, isRowSelectable = () => true) => (hooks) => hooks.visibleColumns.push(columns => {
     if (!selectable) return columns;

@@ -61,15 +61,15 @@ const useFieldsValidator = (
 
 
     const generateErrorMessagesFromException = (errors) => {
-        
+
         const generatedErrorMessages = Object.entries(fieldsData)
         .reduce((errorMessagesAcc, [fieldKey, fieldLayout]) => {
-            
+
             let errorText = errors?.find?.(e => e.location === fieldLayout.xpath);
             if (errorText) {
                 errorMessagesAcc[fieldKey] = errorText.message;
             }
-            
+
             return errorMessagesAcc;
         }, {});
 

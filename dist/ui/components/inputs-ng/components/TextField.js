@@ -30,6 +30,10 @@ var divErrorStyle = {
   color: "red",
   fontSize: 12
 };
+var fieldInvalid = {
+  border: '1px solid #f03369',
+  borderRadius: '5px'
+};
 var TextField = function TextField(props) {
   var desc = props.desc,
     value = props.value,
@@ -59,7 +63,7 @@ var TextField = function TextField(props) {
   }, /*#__PURE__*/React.createElement("div", {
     style: divInputContainerStyle
   }, /*#__PURE__*/React.createElement("div", {
-    style: divInputStyle,
+    style: _objectSpread({}, divInputStyle, {}, errorText ? fieldInvalid : {}),
     ref: props.InputProps?.ref
   }, /*#__PURE__*/React.createElement(TextFieldInput, _extends({
     type: type === 'password' ? 'password' : 'text',

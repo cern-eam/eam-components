@@ -23,17 +23,22 @@ const divRootContainerStyle = {
 }
 
 const divErrorStyle = {
-    margin: 3, 
+    margin: 3,
     color: "red",
     fontSize: 12
 }
 
+const fieldInvalid = {
+    border: '1px solid #f03369',
+    borderRadius: '5px',
+}
+
 const TextField = (props) => {
 
-    let {desc, value,  
-        barcodeScanner, link, 
-        onChange,       
-        inputProps, 
+    let {desc, value,
+        barcodeScanner, link,
+        onChange,
+        inputProps,
         inputRef,
         endTextAdornment, endAdornment,
         hideDescription, disabled, maxLength, uppercase, errorText, style, type} = props;
@@ -49,12 +54,12 @@ const TextField = (props) => {
     return (
         <div style={{...divRootContainerStyle, ...style}}>
             <div style={divInputContainerStyle}>
-                <div style={divInputStyle} ref={props.InputProps?.ref}>
-                    <TextFieldInput type={type === 'password' ? 'password' : 'text'} 
-                                    ref={inputRef} 
-                                    {...inputProps} 
+                <div style={{...divInputStyle, ...(errorText ? fieldInvalid : {})}} ref={props.InputProps?.ref}>
+                    <TextFieldInput type={type === 'password' ? 'password' : 'text'}
+                                    ref={inputRef}
+                                    {...inputProps}
                                     readOnly={props.selectOnlyMode}
-                                    disabled={disabled} 
+                                    disabled={disabled}
                                     maxLength={maxLength}
                                     //TODO this is not the best solution as we are overriding onInput handler that could be potentially passed from inputProps
                                     onInput={uppercase ? onInputUpperCaseHandler : undefined}/>

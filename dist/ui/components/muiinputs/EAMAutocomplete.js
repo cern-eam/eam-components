@@ -61,9 +61,6 @@ function renderDefaultInput(inputProps) {
     required: required,
     error: error,
     helperText: helperText,
-    style: {
-      overflow: 'hidden'
-    },
     disabled: disabled,
     label: label,
     autoFocus: autoFocus,
