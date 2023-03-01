@@ -51,7 +51,8 @@ var NCRCreation = /*#__PURE__*/function (_Component) {
     };
     _this.mainDivStyle = {
       borderBottom: "1px solid rgb(238, 238, 238)",
-      margin: 5
+      margin: 5,
+      minHeight: '300px'
     };
     _this.newDocStyle = {
       display: "flex",

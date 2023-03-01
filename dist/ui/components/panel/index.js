@@ -36,7 +36,7 @@ var EISPanel = /*#__PURE__*/function (_Component) {
     }
     _this = _super.call.apply(_super, [this].concat(args));
     _this.state = {
-      panelExpanded: true
+      panelExpanded: _this.props.defaultExpanded ?? true
     };
     _this.headingStyle = {
       display: 'flex',

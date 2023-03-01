@@ -11,7 +11,7 @@ import { FullscreenExit } from 'mdi-material-ui';
 
 class EISPanel extends Component {
     state = {
-        panelExpanded: true,
+        panelExpanded: this.props.defaultExpanded ?? true,
     };
 
     headingStyle = {
