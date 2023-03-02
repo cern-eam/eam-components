@@ -19,8 +19,10 @@ const EAMTextField = (props) => {
         onBlur: () => {
             if (inputValue !== value) {
                 if (!validator || validator(inputValue)) {
+                    // If there is no validator defined or if the validation passes
                     onChange?.(inputValue)
                 } else {
+                    // Revert to original value if validation fails
                     setInputValue(value)
                 }
             }
