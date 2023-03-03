@@ -13,7 +13,8 @@ var EAMTextField = function EAMTextField(props) {
   var value = props.value,
     onChange = props.onChange,
     onChangeInput = props.onChangeInput,
-    validator = props.validator;
+    validator = props.validator,
+    _onBlur = props.onBlur;
   var _useState = useState(value || ''),
     _useState2 = _slicedToArray(_useState, 2),
     inputValue = _useState2[0],
@@ -28,7 +29,7 @@ var EAMTextField = function EAMTextField(props) {
       setInputValue(event.target.value);
       onChangeInput?.(event.target.value);
     },
-    onBlur: function onBlur() {
+    onBlur: function onBlur(event) {
       if (inputValue !== value) {
         if (!validator || validator(inputValue)) {
           // If there is no validator defined or if the validation passes
@@ -38,6 +39,7 @@ var EAMTextField = function EAMTextField(props) {
           setInputValue(value);
         }
       }
+      _onBlur?.(event);
     },
     value: inputValue
   };
