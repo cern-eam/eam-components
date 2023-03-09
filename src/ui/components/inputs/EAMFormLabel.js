@@ -19,7 +19,7 @@ export default class EAMFormLabel extends Component {
         return (
             <div className={this.props.required ? 'fieldRequired' : ''}
                  style={labelStyle}>
-                {this.props.label}
+                {this.props.label}{this.props.required ? <span style={{color: '#f03369' }}>*</span> : null}
             </div>
         );
     }

@@ -67,7 +67,7 @@ var EAMBaseInput = /*#__PURE__*/function (_Component) {
     };
 
     _this.isRequired = function () {
-      return _this.props.elementInfo && (_this.props.elementInfo.attribute === 'R' || _this.props.elementInfo.attribute === 'S');
+      return _this.props.required || _this.props.elementInfo && (_this.props.elementInfo.attribute === 'R' || _this.props.elementInfo.attribute === 'S');
     };
 
     _this.isHidden = function () {

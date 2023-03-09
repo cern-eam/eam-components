@@ -60,7 +60,11 @@ var EAMFormLabel = /*#__PURE__*/function (_Component) {
       return /*#__PURE__*/React.createElement("div", {
         className: this.props.required ? 'fieldRequired' : '',
         style: labelStyle
-      }, this.props.label);
+      }, this.props.label, this.props.required ? /*#__PURE__*/React.createElement("span", {
+        style: {
+          color: '#f03369'
+        }
+      }, "*") : null);
     }
   }]);
 

@@ -32,7 +32,7 @@ class EAMBaseInput extends Component {
 
     disable = () => this.setState({disabled: true})
 
-    isRequired = () => this.props.elementInfo && (this.props.elementInfo.attribute === 'R' || this.props.elementInfo.attribute === 'S')
+    isRequired = () => this.props.required || this.props.elementInfo && (this.props.elementInfo.attribute === 'R' || this.props.elementInfo.attribute === 'S')
 
     isHidden = () => this.props.elementInfo && this.props.elementInfo.attribute === 'H'
 
