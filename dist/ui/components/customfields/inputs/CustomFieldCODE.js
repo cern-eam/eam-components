@@ -8,12 +8,13 @@ function CustomFieldCODE(_ref) {
     lookupValues = _ref.lookupValues,
     register = _ref.register,
     index = _ref.index;
+  var extraProps = register(customField.code, "customField.".concat(index, ".value"));
   if (tools.isLookupCustomField(customField)) {
-    return /*#__PURE__*/React.createElement(EAMSelect, _extends({}, register(customField.code, "customField.".concat(index, ".value")), {
+    return /*#__PURE__*/React.createElement(EAMSelect, _extends({}, extraProps, {
       options: lookupValues && lookupValues[customField.code]
     }));
   } else {
-    return /*#__PURE__*/React.createElement(EAMTextField, register(customField.code, "customField.".concat(index, ".value")));
+    return /*#__PURE__*/React.createElement(EAMTextField, extraProps);
   }
 }
 export default CustomFieldCODE;

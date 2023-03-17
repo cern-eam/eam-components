@@ -7,11 +7,28 @@ function CustomFields(props) {
     let [lookupValues, setLookupValues] = useState(null);
     let {customFields, classCode, entityCode, register} = props;
 
+    const [cfs, setCfs] = useState();
+
     useEffect(() => {
-        if (customFields) {
+        const loadCFList = async () => {
+            try {
+                const customfs = (await WSCustomFields.getCustomFields(entityCode, classCode)).body.data ;
+                setCfs(customfs);
+            } catch (err) {
+                props.handleError?.(err)
+            }
+        }
+        if (!customFields) {
+            loadCFList();
+        }
+    }, [entityCode, classCode])
+
+
+    useEffect(() => {
+        if (customFields || cfs) {
             fetchLookupValues(entityCode, classCode)
         }
-    },[entityCode, classCode])
+    }, [entityCode, classCode, cfs])
 
     let fetchLookupValues = (entityCode, classCode) => {
         WSCustomFields.getCustomFieldsLookupValues(entityCode, classCode)
@@ -19,21 +36,29 @@ function CustomFields(props) {
             .catch(console.error)
     }
 
-    const isEmptyState = !customFields || customFields.length === 0;
+    const isEmptyState = customFields && customFields.length === 0;
+
+    const fetchedCustomFields = customFields || cfs;
     return (
         isEmptyState
         ? <SimpleEmptyState message="No Custom Fields to show." />
+        : !customFields && !cfs ? <SimpleEmptyState message="Loading..." />
         : (
             <React.Fragment>
-                {customFields.map((customField, index) => {
+                {fetchedCustomFields.map((customField, index) => {
                     {/* The custom fields starting with MTFX were temporarily used to have a similar functionality to
-                        the Line Title in the Associate Custom Fields screen of Infor EAM. They may now be hidden. 
-                        TODO: return null also when 'isCernMode' 
+                        the Line Title in the Associate Custom Fields screen of Infor EAM. They may now be hidden.
+                        TODO: return null also when 'isCernMode'
                     */}
                     if (customField.code.startsWith('MTFX')) return null;
                     return (
                         <CustomFieldInput
-                            register={register}
+                            register={(...props) => ({
+                                label: customField?.label,
+                                xpath: 'EAMID_' + customField?.code,
+                                fieldType: customField?.type === 'NUM' ? 'number' : 'text',
+                                ...register?.(...props) ?? {}
+                            })}
                             customField={customField}
                             index={index}
                             key={index}

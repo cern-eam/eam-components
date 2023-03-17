@@ -4,13 +4,14 @@ import EAMSelect from 'eam-components/dist/ui/components/inputs-ng/EAMSelect';
 import EAMTextField from 'eam-components/dist/ui/components/inputs-ng/EAMTextField';
 
 function CustomFieldCODE({customField, lookupValues, register, index}) {
+    const extraProps = register(customField.code, `customField.${index}.value`);
 
     if (tools.isLookupCustomField(customField)) {
-        return <EAMSelect {...register(customField.code, `customField.${index}.value`)}
+        return <EAMSelect {...extraProps}
                           options={lookupValues && lookupValues[customField.code]}/>
     } else {
         return (
-            <EAMTextField {...register(customField.code, `customField.${index}.value`)}/>
+            <EAMTextField {...extraProps}/>
         )
     }
 
