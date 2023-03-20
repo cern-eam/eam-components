@@ -36,7 +36,7 @@ function CustomFields(props) {
             .catch(console.error)
     }
 
-    const isEmptyState = customFields && customFields.length === 0;
+    const isEmptyState = customFields && customFields.length === 0 || cfs && cfs.length === 0;
 
     const fetchedCustomFields = customFields || cfs;
     return (

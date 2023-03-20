@@ -66,7 +66,7 @@ function CustomFields(props) {
       return setLookupValues(response.body.data);
     })["catch"](console.error);
   };
-  var isEmptyState = customFields && customFields.length === 0;
+  var isEmptyState = customFields && customFields.length === 0 || cfs && cfs.length === 0;
   var fetchedCustomFields = customFields || cfs;
   return isEmptyState ? /*#__PURE__*/React.createElement(SimpleEmptyState, {
     message: "No Custom Fields to show."
