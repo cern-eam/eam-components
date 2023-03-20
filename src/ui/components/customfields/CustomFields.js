@@ -5,10 +5,9 @@ import SimpleEmptyState from 'eam-components/dist/ui/components/emptystates/Simp
 
 function CustomFields(props) {
     let [lookupValues, setLookupValues] = useState(null);
-    let {customFields, classCode, entityCode, register} = props;
+    let {customFields, classCode, entityCode, register, fetchCustomFields = false} = props;
 
     const [cfs, setCfs] = useState();
-
     useEffect(() => {
         const loadCFList = async () => {
             try {
@@ -18,7 +17,7 @@ function CustomFields(props) {
                 props.handleError?.(err)
             }
         }
-        if (!customFields) {
+        if (fetchCustomFields) {
             loadCFList();
         }
     }, [entityCode, classCode])
@@ -42,7 +41,7 @@ function CustomFields(props) {
     return (
         isEmptyState
         ? <SimpleEmptyState message="No Custom Fields to show." />
-        : !customFields && !cfs ? <SimpleEmptyState message="Loading..." />
+        : !fetchedCustomFields ? <SimpleEmptyState message="Loading..." />
         : (
             <React.Fragment>
                 {fetchedCustomFields.map((customField, index) => {

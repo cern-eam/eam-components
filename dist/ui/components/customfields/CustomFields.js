@@ -23,7 +23,9 @@ function CustomFields(props) {
   var customFields = props.customFields,
     classCode = props.classCode,
     entityCode = props.entityCode,
-    _register = props.register;
+    _register = props.register,
+    _props$fetchCustomFie = props.fetchCustomFields,
+    fetchCustomFields = _props$fetchCustomFie === void 0 ? false : _props$fetchCustomFie;
   var _useState3 = useState(),
     _useState4 = _slicedToArray(_useState3, 2),
     cfs = _useState4[0],
@@ -52,7 +54,7 @@ function CustomFields(props) {
         }
       }, null, null, [[0, 7]], Promise);
     };
-    if (!customFields) {
+    if (fetchCustomFields) {
       loadCFList();
     }
   }, [entityCode, classCode]);
@@ -70,7 +72,7 @@ function CustomFields(props) {
   var fetchedCustomFields = customFields || cfs;
   return isEmptyState ? /*#__PURE__*/React.createElement(SimpleEmptyState, {
     message: "No Custom Fields to show."
-  }) : !customFields && !cfs ? /*#__PURE__*/React.createElement(SimpleEmptyState, {
+  }) : !fetchedCustomFields ? /*#__PURE__*/React.createElement(SimpleEmptyState, {
     message: "Loading..."
   }) : /*#__PURE__*/React.createElement(React.Fragment, null, fetchedCustomFields.map(function (customField, index) {
     {/* The custom fields starting with MTFX were temporarily used to have a similar functionality to
