@@ -174,10 +174,12 @@ export const createOnChangeHandlerObjectUpdate =
         if (typeof value === 'object') {
             const updateObject = {
                 ...(value.code !== undefined && { [valueKey]: value.code }),
-                ...(value.desc !== undefined && { [descKey]: value.desc }),
-                ...(value.organization !== undefined && {
-                    [orgKey]: value.organization,
-                }),
+                ...(descKey &&
+                    value.desc !== undefined && { [descKey]: value.desc }),
+                ...(orgKey &&
+                    value.organization !== undefined && {
+                        [orgKey]: value.organization,
+                    }),
             };
 
             updatingFunction?.(updateObject, ...additionalArgs);

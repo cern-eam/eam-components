@@ -148,7 +148,7 @@ export var createOnChangeHandlerObjectUpdate = function createOnChangeHandlerObj
   var additionalArgs = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : [];
   return function (value) {
     if (_typeof(value) === 'object') {
-      var updateObject = _objectSpread({}, value.code !== undefined && _defineProperty({}, valueKey, value.code), {}, value.desc !== undefined && _defineProperty({}, descKey, value.desc), {}, value.organization !== undefined && _defineProperty({}, orgKey, value.organization));
+      var updateObject = _objectSpread({}, value.code !== undefined && _defineProperty({}, valueKey, value.code), {}, descKey && value.desc !== undefined && _defineProperty({}, descKey, value.desc), {}, orgKey && value.organization !== undefined && _defineProperty({}, orgKey, value.organization));
       updatingFunction?.(updateObject, ...additionalArgs);
       onChange?.(updateObject);
     } else {
