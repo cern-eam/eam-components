@@ -6,9 +6,10 @@ import TextField from './components/TextField';
 const EAMTextField = (props) => {
 
     const { value, onChange, onChangeInput, validator, onBlur } = props;
-    const [inputValue, setInputValue] = useState(value || '');
+    const valueOrEmptyString = value || '';
+    const [inputValue, setInputValue] = useState(valueOrEmptyString);
 
-    useEffect(() => setInputValue(value || ''), [value]);
+    useEffect(() => setInputValue(valueOrEmptyString), [value]);
 
     // TODO: to be reviewed
     const inputProps = {
@@ -23,7 +24,7 @@ const EAMTextField = (props) => {
                     onChange?.(inputValue)
                 } else {
                     // Revert to original value if validation fails
-                    setInputValue(value)
+                    setInputValue(valueOrEmptyString)
                 }
             }
             onBlur?.(event);

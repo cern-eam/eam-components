@@ -15,12 +15,13 @@ var EAMTextField = function EAMTextField(props) {
     onChangeInput = props.onChangeInput,
     validator = props.validator,
     _onBlur = props.onBlur;
-  var _useState = useState(value || ''),
+  var valueOrEmptyString = value || '';
+  var _useState = useState(valueOrEmptyString),
     _useState2 = _slicedToArray(_useState, 2),
     inputValue = _useState2[0],
     setInputValue = _useState2[1];
   useEffect(function () {
-    return setInputValue(value || '');
+    return setInputValue(valueOrEmptyString);
   }, [value]);
 
   // TODO: to be reviewed
@@ -36,7 +37,7 @@ var EAMTextField = function EAMTextField(props) {
           onChange?.(inputValue);
         } else {
           // Revert to original value if validation fails
-          setInputValue(value);
+          setInputValue(valueOrEmptyString);
         }
       }
       _onBlur?.(event);
