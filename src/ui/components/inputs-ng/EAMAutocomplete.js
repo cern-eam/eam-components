@@ -47,8 +47,9 @@ const EAMAutocomplete = (props) => {
 
     const onInputChangeHandler = (event, newInputValue) => {
      setInputValue(newInputValue);
-     if (newInputValue !== value && desc) {
-      updateDesc && onChange({desc: ''})
+     if (newInputValue !== value) {
+      desc && updateDesc && onChange({desc: ''})
+      setDescription('');
      }
     }
 
@@ -60,6 +61,7 @@ const EAMAutocomplete = (props) => {
 
       saveHistory(HISTORY_ID_PREFIX + id, newValue.code, newValue.desc)
       onChange(newValue, newValue);
+      setDescription(newValue.desc)
 
       // Don't bubble up any events (won't trigger a save when we select something by pressing enter)
       event.stopPropagation();
