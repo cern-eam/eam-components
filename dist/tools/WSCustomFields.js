@@ -32,7 +32,7 @@ var WSCustomFields = /*#__PURE__*/function () {
     key: "getCustomFields",
     value: function getCustomFields(entity, classCode) {
       var config = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-      return WS._get("/customfields/data?entity=".concat(entity, "&inforClass=").concat(classCode), config);
+      return WS._get("/customfields/data?entity=".concat(entity, "&inforClass=").concat(classCode ? encodeURIComponent(classCode) : ""), config);
     }
   }]);
   return WSCustomFields;

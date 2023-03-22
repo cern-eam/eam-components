@@ -18,7 +18,7 @@ class WSCustomFields {
     };
 
     getCustomFields(entity, classCode, config = {}) {
-        return WS._get(`/customfields/data?entity=${entity}&inforClass=${classCode}`, config);
+        return WS._get(`/customfields/data?entity=${entity}&inforClass=${classCode ? encodeURIComponent(classCode) : ""}`, config);
     }
 }
 

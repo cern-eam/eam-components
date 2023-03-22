@@ -7,11 +7,12 @@ import TextField from './components/TextField';
 import { saveHistory, HISTORY_ID_PREFIX } from './tools/history-tools';
 
 const EAMAutocomplete = (props) => {
-   
-  let {autocompleteHandler, autocompleteHandlerParams = [], 
-       value, desc, id, renderValue, onChange, validate} = props;
+
+  let {autocompleteHandler, autocompleteHandlerParams = [],
+       value, desc, id, renderValue, onChange, validate, updateDesc = true} = props;
 
     let [inputValue, setInputValue] = useState("")
+    let [description, setDesc] = useState(desc)
     let [open, setOpen] = useState(false)
     let [fetchedOptions, loading] = useFetchAutocompleteOptions(autocompleteHandler, autocompleteHandlerParams, inputValue, value, open, id)
     let [valid, setValid] = useState(true)
@@ -20,6 +21,27 @@ const EAMAutocomplete = (props) => {
       setValid(true)
     }, [value])
 
+    useEffect(() => {
+      console.log(desc, value);
+      if (!desc && value) {
+        fetchDesc(value);
+      }
+    }, [])
+
+    const fetchDesc = async (hint) => {
+      autocompleteHandler(...autocompleteHandlerParams, hint)
+        .then(result => {
+            let option = result.body.data.find(o => o.code === hint);
+            if (option) {
+              updateDesc && onChange({desc: option.desc})
+              setDesc(option.desc)
+            } else {
+              setValid(!validate || false)
+            }
+        })
+        .catch(console.error)
+    }
+
     const getOptionLabelHandler = option => {
         return option.code ?? option;
     }
@@ -27,16 +49,16 @@ const EAMAutocomplete = (props) => {
     const onInputChangeHandler = (event, newInputValue) => {
      setInputValue(newInputValue);
      if (newInputValue !== value && desc) {
-      onChange({desc: ''})
+      updateDesc && onChange({desc: ''})
      }
     }
 
     const onChangeHandler = (event, newValue, reason) => {
       if (reason === 'clear' || reason === 'createOption') {
-        // Cases handled by the onCloseHandler 
+        // Cases handled by the onCloseHandler
         return;
       }
-      
+
       saveHistory(HISTORY_ID_PREFIX + id, newValue.code, newValue.desc)
       onChange(newValue, newValue);
 
@@ -51,41 +73,30 @@ const EAMAutocomplete = (props) => {
       // Only to be fired when we blur, press ESC or hit enter and the inputValue is different than the original value
       if ( (reason === 'blur' || reason === 'escape' || reason === 'createOption') && inputValue !== value) {
         onChange({code: inputValue, desc: ''})
-          
-          autocompleteHandler(...autocompleteHandlerParams, inputValue)
-          .then(result => {
-              let option = result.body.data.find(o => o.code === inputValue);
-              if (option) {
-                onChange({desc: option.desc})
-              } else {
-                setValid(!validate || false)
-              }
-          })
-          .catch(console.error) 
-
-      } 
+        fetchDesc(inputValue);
+      }
     }
 
     return (
       <EAMBaseInput {...props}>
-          <Autocomplete   
+          <Autocomplete
             // Options
-            options={fetchedOptions} 
+            options={fetchedOptions}
             getOptionLabel = {getOptionLabelHandler}
             renderOption = {renderOptionHandler.bind(null, renderValue)}
             // Open props
-            open={open} 
-            onOpen={() => setOpen(true)} 
+            open={open}
+            onOpen={() => setOpen(true)}
             onClose={onCloseHandler}
-            // On change 
-            onChange={onChangeHandler} 
+            // On change
+            onChange={onChangeHandler}
             onInputChange={onInputChangeHandler}
             // Misc
             filterOptions={x => x}
             id={id}
             freeSolo = {true}
             value={value ? value : ''}
-            // Visuals 
+            // Visuals
             openOnFocus // Very important, otherwise onCloseHandler won't be fired for example when we focus a field with a tab and delete its value.
                         // Funningly without this prop it still works correctly when we manually gain focus using the mouse.
             componentsProps={componentsProps}
@@ -93,17 +104,18 @@ const EAMAutocomplete = (props) => {
             loading = {loading}
             size="small"
             fullWidth
-            renderInput={(params) => <TextField {...params}  
-                                                {...props} 
+            renderInput={(params) => <TextField {...params}
+                                                {...props}
+                                                desc={description}
                                                 errorText={valid ? props.errorText : "Wrong entry"} />}
-            
+
           />
       </EAMBaseInput>
       );
 };
 
 EAMAutocomplete.defaultProps = {
-  
+
 }
 
 export default React.memo(EAMAutocomplete, areEqual);
