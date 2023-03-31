@@ -301,7 +301,7 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
   }, [tableInstance, fetchDataDebounced, gridRequest]);
   var handleExportToCSV = useCallback(function () {
     setLoadingExportToCSV(true);
-    return GridWS.exportDataToCSV(gridRequest, {
+    return GridWS.exportDataToCSV(gridRequestAdapter(gridRequest), {
       headers: {
         INFOR_LOCALIZE_RESULTS: true
       }

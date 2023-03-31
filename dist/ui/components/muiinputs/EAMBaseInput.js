@@ -35,6 +35,10 @@ var EAMBaseInput = /*#__PURE__*/function (_Component) {
       args[_key] = arguments[_key];
     }
     _this = _super.call.apply(_super, [this].concat(args));
+    //PROPS
+    // VALIDATORS (list not required) default([])
+    // DEFAULT HELPER TEXT (string not required)
+    // SHOW HELPER TEXT (function not required)
     _this.linkButtonStyle = {
       position: 'absolute',
       top: 20,
@@ -96,6 +100,7 @@ var EAMBaseInput = /*#__PURE__*/function (_Component) {
         if (_this.init) _this.init(props);
       });
     };
+    // TODO apply modifiers e.g. uppercasing, number
     _this.setValue = function (value) {
       var applyTransformers = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
       return _this.setState({
@@ -132,6 +137,7 @@ var EAMBaseInput = /*#__PURE__*/function (_Component) {
         errorText: "*Number expected"
       };
     };
+    // getValues({code: , codeDesc})
     _this.enable = function () {
       return _this.setState({
         disabled: false

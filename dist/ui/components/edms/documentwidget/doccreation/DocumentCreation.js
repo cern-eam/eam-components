@@ -38,6 +38,9 @@ var DocumentCreation = /*#__PURE__*/function (_Component) {
       type: "",
       description: ""
     };
+    //
+    // STYLES
+    //
     _this.mainDivStyle = {
       borderBottom: "3px solid rgb(238, 238, 238)",
       borderTop: "2px solid rgb(238, 238, 238)"
@@ -73,6 +76,9 @@ var DocumentCreation = /*#__PURE__*/function (_Component) {
       borderRadius: 4,
       backgroundColor: "#fff"
     };
+    //
+    // HANDLERS
+    //
     _this.optionsClickerHandler = function (event) {
       event.stopPropagation();
       _this.setState({
@@ -104,10 +110,6 @@ var DocumentCreation = /*#__PURE__*/function (_Component) {
         color: this.state.optionsVisible ? 'rgb(0, 170, 255)' : 'rgba(0, 0, 0, 0.54)'
       };
     }
-
-    //
-    // HANDLERS
-    //
   }, {
     key: "render",
     value:
