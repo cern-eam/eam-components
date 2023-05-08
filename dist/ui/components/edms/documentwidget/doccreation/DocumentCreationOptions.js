@@ -23,9 +23,6 @@ var DocumentCreationOptions = /*#__PURE__*/function (_Component) {
       args[_key] = arguments[_key];
     }
     _this = _super.call.apply(_super, [this].concat(args));
-    //
-    // STYLES
-    //
     _this.inputStyle = {
       flex: "1 1 auto",
       border: "1px solid #ced4da",

@@ -50,11 +50,6 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       pointerEvents: "initial",
       color: "rgba(0, 0, 0, 0.87)"
     };
-    /**
-     * Compute the style for notes div container
-     *
-     * @returns {{marginLeft: number, marginTop: number, position: string, display: string}}
-     */
     _this.checklistDetailsStyle = {
       margin: 5,
       display: "flex",

@@ -42,11 +42,9 @@ var EAMDatePicker = /*#__PURE__*/function (_EAMBaseInput) {
     _this.init = function (props) {
       _this.setValue(_this.convert(props.value));
     };
-    /** Always returns a Date from the value provided */
     _this.readValue = function (value) {
       return value instanceof Date ? value : typeof value === "string" && value.length ? parse(value.substring(0, _this.props.dateFormatValue.length), _this.props.dateFormatValue, new Date()) : typeof value === "number" ? new Date(value) : null;
     };
-    /* Reads the Date it receives to the format wanted (TIMESTAMP or FORMATTED STRING) */
     _this.readDate = function (date) {
       return !date ? _this.props.timestamp ? null : '' : _this.props.timestamp ? date.getTime() : format(date, _this.props.dateFormatValue);
     };

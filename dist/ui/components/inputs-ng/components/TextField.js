@@ -78,12 +78,19 @@ var TextField = function TextField(props) {
   })), !hideDescription && /*#__PURE__*/React.createElement(TextFieldDescription, {
     description: desc,
     value: value
-  }), endTextAdornment && /*#__PURE__*/React.createElement(TextFieldTextAdornment, null, endTextAdornment)), endAdornment, barcodeScanner && !disabled && /*#__PURE__*/React.createElement(EAMBarcodeScanner, {
+  }), endTextAdornment && /*#__PURE__*/React.createElement(TextFieldTextAdornment, null, endTextAdornment)), /*#__PURE__*/React.createElement("div", {
+    onClick: function onClick(event) {
+      return event.stopPropagation();
+    } /* If we don't stop the propagation the input focuses on clicking in this area */,
+    style: {
+      display: "flex"
+    }
+  }, endAdornment, barcodeScanner && !disabled && /*#__PURE__*/React.createElement(EAMBarcodeScanner, {
     onChange: onChange
   }), link && /*#__PURE__*/React.createElement(EAMLink, {
     link: link,
     value: value
-  })), errorText && /*#__PURE__*/React.createElement("div", {
+  }))), errorText && /*#__PURE__*/React.createElement("div", {
     style: divErrorStyle
   }, errorText));
 };

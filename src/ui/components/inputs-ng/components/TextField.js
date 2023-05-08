@@ -69,9 +69,11 @@ const TextField = (props) => {
                     />}
                     {endTextAdornment && <TextFieldTextAdornment>{endTextAdornment}</TextFieldTextAdornment>}
                 </div>
-                {endAdornment}
-                {barcodeScanner && !disabled && <EAMBarcodeScanner onChange={onChange} />}
-                {link && <EAMLink link = {link} value = {value}/>}
+                <div onClick={event => event.stopPropagation() /* If we don't stop the propagation the input focuses on clicking in this area */ } style={{display: "flex"}}> 
+                    {endAdornment}
+                    {barcodeScanner && !disabled && <EAMBarcodeScanner onChange={onChange} />}
+                    {link && <EAMLink link = {link} value = {value}/>}
+                </div>
             </div>
             {errorText && <div style={divErrorStyle}>{errorText}</div>}
         </div>

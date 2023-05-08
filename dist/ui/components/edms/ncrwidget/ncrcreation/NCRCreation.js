@@ -49,9 +49,6 @@ var NCRCreation = /*#__PURE__*/function (_Component) {
       NCRKeyWord: "",
       currentEquipmentWorkOrder: null
     };
-    //
-    // STYLES
-    //
     _this.mainDivStyle = {
       borderBottom: "1px solid rgb(238, 238, 238)",
       margin: 5,
@@ -93,9 +90,6 @@ var NCRCreation = /*#__PURE__*/function (_Component) {
         color: _this.state.showNCRProperties ? 'rgb(0, 170, 255)' : 'rgba(0, 0, 0, 0.54)'
       };
     };
-    //
-    // HANDLERS
-    //
     _this.createDocumentHandler = function (event) {
       var document = {
         title: _this.state.title + _this.state.NCRKeyWord,
@@ -208,6 +202,10 @@ var NCRCreation = /*#__PURE__*/function (_Component) {
       this.getEquipmentWorkOrders();
       this.getNCRKeyWords();
     }
+
+    //
+    // STYLES
+    //
   }, {
     key: "render",
     value:

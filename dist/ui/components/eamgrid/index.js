@@ -53,10 +53,6 @@ var EAMGrid = /*#__PURE__*/function (_Component) {
       args[_key] = arguments[_key];
     }
     _this = _super.call.apply(_super, [this].concat(args));
-    /*
-    Map containing all filters
-    filterMap is updated on every keystroke. Filters are applied when the user actually executes the search.
-    */
     _this.state = {
       hasMore: true,
       totalRecords: 0,
@@ -87,9 +83,6 @@ var EAMGrid = /*#__PURE__*/function (_Component) {
         } : {}));
       }
     };
-    /**
-     * To be called only when the Grid changes (GRID ID)
-     */
     _this._initGrid = function (gridRequest) {
       // clean filter by removing filters without value
       var request = _this.props.gridRequestAdapter(gridRequest);

@@ -204,7 +204,6 @@ var EAMAutocomplete = /*#__PURE__*/function (_EAMBaseInput) {
     var _this3;
     _classCallCheck(this, EAMAutocomplete);
     _this3 = _super4.call(this, props);
-    //To know if we are fetching desc
     _this3.fetchingDesc = false;
     _this3.fetchAutocompleteDescription = function () {
       var _this3$props = _this3.props,
@@ -332,6 +331,8 @@ var EAMAutocomplete = /*#__PURE__*/function (_EAMBaseInput) {
     };
     return _this3;
   }
+
+  //To know if we are fetching desc
   _createClass(EAMAutocomplete, [{
     key: "componentDidMount",
     value: function componentDidMount() {
