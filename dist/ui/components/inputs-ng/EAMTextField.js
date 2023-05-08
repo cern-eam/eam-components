@@ -5,17 +5,19 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-import React, { useState, useEffect } from 'react';
-import { areEqual } from './tools/input-tools';
-import EAMBaseInput from './components/EAMBaseInput';
-import TextField from './components/TextField';
+import React, { useState, useEffect } from "react";
+import { areEqual } from "./tools/input-tools";
+import EAMBaseInput from "./components/EAMBaseInput";
+import TextField from "./components/TextField";
 var EAMTextField = function EAMTextField(props) {
   var value = props.value,
     onChange = props.onChange,
     onChangeInput = props.onChangeInput,
     validator = props.validator,
-    _onBlur = props.onBlur;
-  var valueOrEmptyString = value || '';
+    _onBlur = props.onBlur,
+    autoFocus = props.autoFocus,
+    onKeyUp = props.onKeyUp;
+  var valueOrEmptyString = value || "";
   var _useState = useState(valueOrEmptyString),
     _useState2 = _slicedToArray(_useState, 2),
     inputValue = _useState2[0],
@@ -42,7 +44,9 @@ var EAMTextField = function EAMTextField(props) {
       }
       _onBlur?.(event);
     },
-    value: inputValue
+    value: inputValue,
+    onKeyUp: onKeyUp,
+    autoFocus: autoFocus
   };
   return /*#__PURE__*/React.createElement(EAMBaseInput, props, /*#__PURE__*/React.createElement(TextField, _extends({}, props, {
     inputProps: inputProps
