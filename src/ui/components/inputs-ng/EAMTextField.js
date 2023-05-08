@@ -1,12 +1,19 @@
-import React, {useState, useEffect} from 'react';
-import {areEqual} from './tools/input-tools'
-import EAMBaseInput from './components/EAMBaseInput';
-import TextField from './components/TextField';
+import React, { useState, useEffect } from "react";
+import { areEqual } from "./tools/input-tools";
+import EAMBaseInput from "./components/EAMBaseInput";
+import TextField from "./components/TextField";
 
 const EAMTextField = (props) => {
-
-    const { value, onChange, onChangeInput, validator, onBlur } = props;
-    const valueOrEmptyString = value || '';
+    const {
+        value,
+        onChange,
+        onChangeInput,
+        validator,
+        onBlur,
+        autoFocus,
+        onKeyUp,
+    } = props;
+    const valueOrEmptyString = value || "";
     const [inputValue, setInputValue] = useState(valueOrEmptyString);
 
     useEffect(() => setInputValue(valueOrEmptyString), [value]);
@@ -21,23 +28,24 @@ const EAMTextField = (props) => {
             if (inputValue !== value) {
                 if (!validator || validator(inputValue)) {
                     // If there is no validator defined or if the validation passes
-                    onChange?.(inputValue)
+                    onChange?.(inputValue);
                 } else {
                     // Revert to original value if validation fails
-                    setInputValue(valueOrEmptyString)
+                    setInputValue(valueOrEmptyString);
                 }
             }
             onBlur?.(event);
         },
         value: inputValue,
+        onKeyUp,
+        autoFocus,
     };
 
     return (
         <EAMBaseInput {...props}>
-            <TextField {...props} inputProps = {inputProps} />
+            <TextField {...props} inputProps={inputProps} />
         </EAMBaseInput>
-    )
-
-}
+    );
+};
 
 export default React.memo(EAMTextField, areEqual);
