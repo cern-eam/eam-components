@@ -94,8 +94,11 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
     }
   };
   var onChangeHandler = function onChangeHandler(event, newValue, reason) {
-    if (reason === 'clear' || reason === 'createOption') {
-      // Cases handled by the onCloseHandler
+    if (reason === 'clear') {
+      onChange({
+        code: '',
+        desc: ''
+      });
       return;
     }
     saveHistory(HISTORY_ID_PREFIX + id, newValue.code, newValue.desc);
@@ -109,7 +112,7 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
   var onCloseHandler = function onCloseHandler(event, reason) {
     setOpen(false);
     // Only to be fired when we blur, press ESC or hit enter and the inputValue is different than the original value
-    if ((reason === 'blur' || reason === 'escape' || reason === 'createOption') && inputValue !== value) {
+    if (reason === 'blur' && inputValue !== value) {
       onChange({
         code: inputValue,
         desc: ''
@@ -141,7 +144,8 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
     },
     id: id,
     freeSolo: true,
-    value: value ? value : ''
+    value: value ? value : '',
+    clearOnEscape: true
     // Visuals
     ,
     openOnFocus: true // Very important, otherwise onCloseHandler won't be fired for example when we focus a field with a tab and delete its value.

@@ -54,8 +54,8 @@ const EAMAutocomplete = (props) => {
     }
 
     const onChangeHandler = (event, newValue, reason) => {
-      if (reason === 'clear' || reason === 'createOption') {
-        // Cases handled by the onCloseHandler
+      if (reason === 'clear') {
+        onChange({code: '', desc: ''})
         return;
       }
 
@@ -72,7 +72,7 @@ const EAMAutocomplete = (props) => {
     const onCloseHandler = (event, reason) => {
       setOpen(false)
       // Only to be fired when we blur, press ESC or hit enter and the inputValue is different than the original value
-      if ( (reason === 'blur' || reason === 'escape' || reason === 'createOption') && inputValue !== value) {
+      if ( reason === 'blur' && inputValue !== value) {
         onChange({code: inputValue, desc: ''})
         fetchDesc(inputValue);
       }
@@ -97,6 +97,7 @@ const EAMAutocomplete = (props) => {
             id={id}
             freeSolo = {true}
             value={value ? value : ''}
+            clearOnEscape
             // Visuals
             openOnFocus // Very important, otherwise onCloseHandler won't be fired for example when we focus a field with a tab and delete its value.
                         // Funningly without this prop it still works correctly when we manually gain focus using the mouse.
