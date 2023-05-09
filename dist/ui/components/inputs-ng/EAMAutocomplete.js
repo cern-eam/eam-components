@@ -34,7 +34,7 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
     _useState2 = _slicedToArray(_useState, 2),
     inputValue = _useState2[0],
     setInputValue = _useState2[1];
-  var _useState3 = useState(desc),
+  var _useState3 = useState(""),
     _useState4 = _slicedToArray(_useState3, 2),
     description = _useState4[0],
     setDescription = _useState4[1];
@@ -53,6 +53,9 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
   useEffect(function () {
     setValid(true);
   }, [value]);
+  useEffect(function () {
+    setDescription(desc);
+  }, [desc]);
   useEffect(function () {
     if (!desc && value) {
       fetchDesc(value);

@@ -12,7 +12,7 @@ const EAMAutocomplete = (props) => {
        value, desc, id, renderValue, onChange, validate, updateDesc = true} = props;
 
     let [inputValue, setInputValue] = useState("")
-    let [description, setDescription] = useState(desc)
+    let [description, setDescription] = useState("")
     let [open, setOpen] = useState(false)
     let [fetchedOptions, loading] = useFetchAutocompleteOptions(autocompleteHandler, autocompleteHandlerParams, inputValue, value, open, id)
     let [valid, setValid] = useState(true)
@@ -20,6 +20,10 @@ const EAMAutocomplete = (props) => {
     useEffect(() => {
       setValid(true)
     }, [value])
+
+    useEffect(() => {
+      setDescription(desc)
+    }, [desc])
 
     useEffect(() => {
       if (!desc && value) {
