@@ -109,7 +109,8 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
       _props$filterProcesso = props.filterProcessor,
       filterProcessor = _props$filterProcesso === void 0 ? function (e) {
     return e;
-  } : _props$filterProcesso;
+  } : _props$filterProcesso,
+      blockGrid = props.blockGrid;
 
   var _useState = useState(0),
       _useState2 = _slicedToArray(_useState, 2),
@@ -413,7 +414,8 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
     initialFilters: initialFilters,
     handleResetFilters: handleResetFilters,
     handleExportToCSV: handleExportToCSV,
-    loadingExportToCSV: loadingExportToCSV
+    loadingExportToCSV: loadingExportToCSV,
+    blockGrid: blockGrid
   };
   return /*#__PURE__*/React.createElement(EAMGridContext.Provider, {
     value: context

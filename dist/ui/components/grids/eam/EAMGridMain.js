@@ -76,7 +76,8 @@ var EAMGridMain = function EAMGridMain(props) {
       _props$BodyCellCompon = props.BodyCellComponent,
       BodyCellComponent = _props$BodyCellCompon === void 0 ? DefaultBodyCellComponent : _props$BodyCellCompon,
       _props$HeadCellCompon = props.HeadCellComponent,
-      HeadCellComponent = _props$HeadCellCompon === void 0 ? DefaultHeadCellComponent : _props$HeadCellCompon;
+      HeadCellComponent = _props$HeadCellCompon === void 0 ? DefaultHeadCellComponent : _props$HeadCellCompon,
+      disableScrollUp = props.disableScrollUp;
   var getTableProps = tableInstance.getTableProps,
       getTableBodyProps = tableInstance.getTableBodyProps,
       headerGroups = tableInstance.headerGroups,
@@ -97,7 +98,7 @@ var EAMGridMain = function EAMGridMain(props) {
       return _cache.clear(i);
     });
 
-    if (_list) {
+    if (_list && !disableScrollUp) {
       _list && _list.recomputeRowHeights();
 
       _list.scrollToRow(0);
@@ -230,7 +231,7 @@ var EAMGridMain = function EAMGridMain(props) {
       deferredMeasurementCache: _cache,
       overscanRowCount: 10,
       rowCount: rows.length,
-      rowHeight: _cache.rowHeight,
+      rowHeight: _cache?.rowHeight,
       rowRenderer: RenderRow,
       width: width,
       height: height

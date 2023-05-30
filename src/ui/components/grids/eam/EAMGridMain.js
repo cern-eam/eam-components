@@ -67,6 +67,7 @@ const EAMGridMain = (props) => {
         TableComponent = DefaultTableComponent,
         BodyCellComponent = DefaultBodyCellComponent,
         HeadCellComponent = DefaultHeadCellComponent,
+        disableScrollUp,
     } = props;
 
     const {
@@ -88,7 +89,7 @@ const EAMGridMain = (props) => {
 
     useEffect(() => {
         rows.forEach((_, i) => _cache.clear(i));
-        if (_list) {
+        if (_list && !disableScrollUp) {
             _list && _list.recomputeRowHeights();
             _list.scrollToRow(0);
         }
@@ -196,7 +197,7 @@ const EAMGridMain = (props) => {
                                             deferredMeasurementCache={_cache}
                                             overscanRowCount={10}
                                             rowCount={rows.length}
-                                            rowHeight={_cache.rowHeight}
+                                            rowHeight={_cache?.rowHeight}
                                             rowRenderer={RenderRow}
                                             width={width}
                                             height={height}
