@@ -16,6 +16,7 @@ const EAMGrid = (props) => {
         getCellProps,
         rowsPerPageOptionsComputed,
         customFooterOptions,
+        disableScrollUp,
     } = props;
     const {
         dataspies,
@@ -35,6 +36,7 @@ const EAMGrid = (props) => {
         tableInstance,
         loading,
         loadingExportToCSV,
+        blockGrid,
     } = useContext(EAMGridContext);
 
     return (
@@ -53,12 +55,13 @@ const EAMGrid = (props) => {
                 onDataspyChange={handleDataspyChange}
                 onResetFilters={handleResetFilters}
             />
-            <BlockUi tag="div" blocking={loading} style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <BlockUi tag="div" blocking={loading || blockGrid} style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <EAMGridMain
                     loading={loading}
                     tableInstance={tableInstance}
                     getRowProps={getRowProps}
                     getCellProps={getCellProps}
+                    disableScrollUp={disableScrollUp}
                 />
             </BlockUi>
             <EAMGridFooter>

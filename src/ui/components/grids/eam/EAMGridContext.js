@@ -99,6 +99,7 @@ export const EAMGridContextProvider = (props) => {
         processData,
         sortByProcessor = (e) => e,
         filterProcessor = (e) => e,
+        blockGrid,
     } = props;
     const [pageIndex, setPageIndex] = useState(0);
     const [selectedDataspy, setSelectedDataspy] = useState(undefined);
@@ -422,6 +423,7 @@ export const EAMGridContextProvider = (props) => {
         handleResetFilters,
         handleExportToCSV,
         loadingExportToCSV,
+        blockGrid,
     };
 
     return (
