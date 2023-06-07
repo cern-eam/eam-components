@@ -90,7 +90,7 @@ const EAMGridMain = (props) => {
     useEffect(() => {
         rows.forEach((_, i) => _cache.clear(i));
         if (_list && !disableScrollUp) {
-            _list && _list.recomputeRowHeights();
+            _list.recomputeRowHeights();
             _list.scrollToRow(0);
         }
     }, [rows]);

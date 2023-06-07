@@ -99,7 +99,7 @@ var EAMGridMain = function EAMGridMain(props) {
     });
 
     if (_list && !disableScrollUp) {
-      _list && _list.recomputeRowHeights();
+      _list.recomputeRowHeights();
 
       _list.scrollToRow(0);
     }
