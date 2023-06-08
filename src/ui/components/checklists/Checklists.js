@@ -98,7 +98,8 @@ class Checklists extends Component {
             filteredActivity: null,
             filteredEquipment: null,
             signaturesCollapsed: {},
-            checklistsHidden: {}
+            checklistsHidden: {},
+            sortChecklist: false,
         }
     }
 
@@ -245,6 +246,12 @@ class Checklists extends Component {
             `${equipmentCode} — ${firstChecklist.equipmentDesc}` +
             (eqpToOtherId?.[equipmentCode] ? ` — ${eqpToOtherId[equipmentCode]}` : '')
 
+        // console.log('checklists', checklists);
+
+        const sortedChecklist = this.state.sortChecklist
+            ? checklists.sort((a, b) => a.desc.localeCompare(b.desc))
+            : checklists;
+
         return <EquipmentExpansionPanel
                 key={key}
                 expanded={!collapsed}
@@ -257,19 +264,20 @@ class Checklists extends Component {
             </AccordionSummary>
             <AccordionDetails style={{marginTop: -18}}>
                 <div style={{width: "100%"}}>
-                    {checklists.map(checklist => <ChecklistItem 
-                        key={'checklistItem$' + checklist.checkListCode}
-                        updateChecklistItem={updateChecklistItem}
-                        onUpdateChecklistItem={this.onUpdateChecklistItem}
-                        checklistItem={checklist}
-                        taskCode={activity.taskCode}
-                        handleError={handleError}
-                        showError={showError}
-                        minFindingsDropdown={minFindingsDropdown}
-                        getWoLink={getWoLink}
-                        resetSignatures={this.resetSignatures}
-                        disabled={isDisabled}
-                        hideFollowUpProp={this.props.hideFollowUpProp}
+                    {sortedChecklist
+                        .map(checklist => <ChecklistItem
+                            key={'checklistItem$' + checklist.checkListCode}
+                            updateChecklistItem={updateChecklistItem}
+                            onUpdateChecklistItem={this.onUpdateChecklistItem}
+                            checklistItem={checklist}
+                            taskCode={activity.taskCode}
+                            handleError={handleError}
+                            showError={showError}
+                            minFindingsDropdown={minFindingsDropdown}
+                            getWoLink={getWoLink}
+                            resetSignatures={this.resetSignatures}
+                            disabled={isDisabled}
+                            hideFollowUpProp={this.props.hideFollowUpProp}
                     />)}
                 </div>
             </AccordionDetails>
@@ -598,6 +606,9 @@ class Checklists extends Component {
                                         onMouseDown={this.toggleFilledFilter}
                                         onTouchStart={this.toggleFilledFilter}
                                     />}
+                                    {<Button onClick={() => this.setState((prevState) => ({ sortChecklist: !prevState.sortChecklist}))}>
+                                        Sort Equipment Items Alphabetically
+                                    </Button>}
                                 </div>
                                 <div style={{paddingLeft: 25, paddingRight: 25}}>
                                     {activities.length > 1 && <EAMSelect

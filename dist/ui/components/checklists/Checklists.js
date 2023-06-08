@@ -265,7 +265,8 @@ var Checklists = /*#__PURE__*/function (_Component) {
       filteredActivity: null,
       filteredEquipment: null,
       signaturesCollapsed: {},
-      checklistsHidden: {}
+      checklistsHidden: {},
+      sortChecklist: false
     };
     return _this;
   }
@@ -350,6 +351,12 @@ var Checklists = /*#__PURE__*/function (_Component) {
         return null;
       }
       var equipmentChecklistDesc = "".concat(equipmentCode, " \u2014 ").concat(firstChecklist.equipmentDesc) + (eqpToOtherId?.[equipmentCode] ? " \u2014 ".concat(eqpToOtherId[equipmentCode]) : '');
+
+      // console.log('checklists', checklists);
+
+      var sortedChecklist = this.state.sortChecklist ? checklists.sort(function (a, b) {
+        return a.desc.localeCompare(b.desc);
+      }) : checklists;
       return /*#__PURE__*/React.createElement(EquipmentExpansionPanel, {
         key: key,
         expanded: !collapsed,
@@ -373,7 +380,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
         style: {
           width: "100%"
         }
-      }, checklists.map(function (checklist) {
+      }, sortedChecklist.map(function (checklist) {
         return /*#__PURE__*/React.createElement(ChecklistItem, {
           key: 'checklistItem$' + checklist.checkListCode,
           updateChecklistItem: updateChecklistItem,
@@ -703,7 +710,15 @@ var Checklists = /*#__PURE__*/function (_Component) {
         label: 'Hide filled items',
         onMouseDown: this.toggleFilledFilter,
         onTouchStart: this.toggleFilledFilter
-      })), /*#__PURE__*/React.createElement("div", {
+      }), /*#__PURE__*/React.createElement(Button, {
+        onClick: function onClick() {
+          return _this8.setState(function (prevState) {
+            return {
+              sortChecklist: !prevState.sortChecklist
+            };
+          });
+        }
+      }, "Sort Equipment Items Alphabetically")), /*#__PURE__*/React.createElement("div", {
         style: {
           paddingLeft: 25,
           paddingRight: 25
