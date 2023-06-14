@@ -258,6 +258,13 @@ var Checklists = /*#__PURE__*/function (_Component) {
         });
       });
     };
+    _this.toggleExpandChecklistOptions = function () {
+      _this.setState(function (prevState) {
+        return {
+          expandChecklistOptions: !prevState.expandChecklistOptions
+        };
+      });
+    };
     _this.state = {
       activities: [],
       blocking: true,
@@ -265,7 +272,8 @@ var Checklists = /*#__PURE__*/function (_Component) {
       filteredActivity: null,
       filteredEquipment: null,
       signaturesCollapsed: {},
-      checklistsHidden: {}
+      checklistsHidden: {},
+      expandChecklistOptions: false
     };
     return _this;
   }
@@ -342,6 +350,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
         getWoLink = _this$props2.getWoLink,
         showError = _this$props2.showError,
         eqpToOtherId = _this$props2.eqpToOtherId;
+      var expandChecklistOptions = this.state.expandChecklistOptions;
       var firstChecklist = checklists[0];
       var equipmentCode = firstChecklist.equipmentCode;
       var collapsed = activity.equipments[equipmentCode].collapsed;
@@ -386,7 +395,8 @@ var Checklists = /*#__PURE__*/function (_Component) {
           getWoLink: getWoLink,
           resetSignatures: _this3.resetSignatures,
           disabled: isDisabled,
-          hideFollowUpProp: _this3.props.hideFollowUpProp
+          hideFollowUpProp: _this3.props.hideFollowUpProp,
+          expandChecklistOptions: expandChecklistOptions
         });
       }))));
     }
@@ -703,6 +713,14 @@ var Checklists = /*#__PURE__*/function (_Component) {
         label: 'Hide filled items',
         onMouseDown: this.toggleFilledFilter,
         onTouchStart: this.toggleFilledFilter
+      }), !blocking && /*#__PURE__*/React.createElement(FormControlLabel, {
+        control: /*#__PURE__*/React.createElement(Checkbox, {
+          color: "primary",
+          checked: this.state.expandChecklistOptions
+        }),
+        label: 'Expand Checklist Options',
+        onMouseDown: this.toggleExpandChecklistOptions,
+        onTouchStart: this.toggleExpandChecklistOptions
       })), /*#__PURE__*/React.createElement("div", {
         style: {
           paddingLeft: 25,

@@ -98,7 +98,8 @@ class Checklists extends Component {
             filteredActivity: null,
             filteredEquipment: null,
             signaturesCollapsed: {},
-            checklistsHidden: {}
+            checklistsHidden: {},
+            expandChecklistOptions: false,
         }
     }
 
@@ -232,6 +233,8 @@ class Checklists extends Component {
             eqpToOtherId
         } = this.props;
 
+        const { expandChecklistOptions } = this.state;
+
         const firstChecklist = checklists[0];
         const equipmentCode = firstChecklist.equipmentCode;
         const collapsed = activity.equipments[equipmentCode].collapsed;
@@ -270,6 +273,7 @@ class Checklists extends Component {
                         resetSignatures={this.resetSignatures}
                         disabled={isDisabled}
                         hideFollowUpProp={this.props.hideFollowUpProp}
+                        expandChecklistOptions={expandChecklistOptions}
                     />)}
                 </div>
             </AccordionDetails>
@@ -535,6 +539,12 @@ class Checklists extends Component {
         }));
     }
 
+    toggleExpandChecklistOptions = () => {
+        this.setState((prevState) => ({
+            expandChecklistOptions: !prevState.expandChecklistOptions
+        }));
+    }
+
     /**s
      * Render the main checklists panel (only when there is at least one activity with checklist)
      *
@@ -597,6 +607,15 @@ class Checklists extends Component {
                                         label={'Hide filled items'}
                                         onMouseDown={this.toggleFilledFilter}
                                         onTouchStart={this.toggleFilledFilter}
+                                    />}
+                                    {!blocking && <FormControlLabel
+                                        control={<Checkbox
+                                            color="primary"
+                                            checked={this.state.expandChecklistOptions}
+                                            />}
+                                        label={'Expand Checklist Options'}
+                                        onMouseDown={this.toggleExpandChecklistOptions}
+                                        onTouchStart={this.toggleExpandChecklistOptions}
                                     />}
                                 </div>
                                 <div style={{paddingLeft: 25, paddingRight: 25}}>
