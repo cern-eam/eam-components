@@ -1,6 +1,6 @@
 {
   "name": "eam-components",
-  "version": "1.12.5",
+  "version": "1.12.6",
   "description": "EAM Components",
   "scripts": {
     "build": "./node_modules/.bin/babel --copy-files src/ -d dist/",
