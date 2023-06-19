@@ -5,10 +5,9 @@ import red from '@material-ui/core/colors/red';
 import lightBlue from '@material-ui/core/colors/lightBlue';
 import lightGreen from '@material-ui/core/colors/lightGreen';
 import deepOrange from '@material-ui/core/colors/deepOrange';
-
 var muiSettings = function muiSettings(_ref) {
   var primaryColor = _ref.primaryColor,
-      secondaryColor = _ref.secondaryColor;
+    secondaryColor = _ref.secondaryColor;
   return {
     palette: {
       primary: {
@@ -18,8 +17,8 @@ var muiSettings = function muiSettings(_ref) {
       secondary: {
         main: secondaryColor
       } //Darker blue '#01579b'
-
     },
+
     typography: {
       body1: {
         fontSize: '14px'
@@ -34,7 +33,6 @@ var muiSettings = function muiSettings(_ref) {
     }
   };
 };
-
 export var theme = createMuiTheme({
   primaryColor: blue[500],
   secondaryColor: lightBlue[900]

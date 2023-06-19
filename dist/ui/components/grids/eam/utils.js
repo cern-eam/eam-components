@@ -1,29 +1,19 @@
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
 function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 import React, { useState } from "react";
 import { TextField, Checkbox, MenuItem, ListItemIcon, ListItemText, Menu, IconButton, InputAdornment, withStyles, Select, InputBase } from "@material-ui/core";
 import { ContainStart, ContainEnd, Contain, GreaterThan, GreaterThanOrEqual, LessThan, LessThanOrEqual, Equal, NotEqualVariant, Rhombus, RhombusOutline } from 'mdi-material-ui';
@@ -93,15 +83,12 @@ var CHECKBOX_FILTERS = {
   UNCHECKED: 0,
   INDETERMINATE: undefined
 };
-
 var getCheckedValue = function getCheckedValue(valueType) {
   return Number(valueType) === CHECKBOX_FILTERS.CHECKED;
 };
-
 var isIndeterminate = function isIndeterminate(valueType) {
   return valueType === null || valueType === CHECKBOX_FILTERS.INDETERMINATE;
 };
-
 var getEAMDefaultFilterValue = function getEAMDefaultFilterValue(column) {
   var baseFitler = {
     fieldName: column.id,
@@ -109,7 +96,6 @@ var getEAMDefaultFilterValue = function getEAMDefaultFilterValue(column) {
     joiner: 'AND',
     operator: OPERATORS.BEGINS
   };
-
   switch (column.dataType) {
     case 'DATE':
     case 'DATETIME':
@@ -118,22 +104,18 @@ var getEAMDefaultFilterValue = function getEAMDefaultFilterValue(column) {
       return _objectSpread({}, baseFitler, {
         operator: 'GREATER_THAN'
       });
-
     case 'CHKBOOLEAN':
       return _objectSpread({}, baseFitler, {
         operator: '=',
         fieldValue: CHECKBOX_FILTERS.INDETERMINATE
       });
-
     default:
       return baseFitler;
   }
 };
-
 var getEAMFilterOperators = function getEAMFilterOperators(_ref) {
   var column = _ref.column;
   var dataType = column.dataType;
-
   switch (dataType) {
     case "VARCHAR":
     case "MIXVARCHAR":
@@ -166,7 +148,6 @@ var getEAMFilterOperators = function getEAMFilterOperators(_ref) {
         'label': 'Is not empty',
         'icon': /*#__PURE__*/React.createElement(Rhombus, null)
       }];
-
     case "DATE":
     case "DATETIME":
       return [{
@@ -202,7 +183,6 @@ var getEAMFilterOperators = function getEAMFilterOperators(_ref) {
         'label': 'Does not equal',
         'icon': /*#__PURE__*/React.createElement(NotEqualVariant, null)
       }];
-
     case "DECIMAL":
     case "NUMBER":
       return [{
@@ -238,12 +218,10 @@ var getEAMFilterOperators = function getEAMFilterOperators(_ref) {
         'label': 'Does not equal',
         'icon': /*#__PURE__*/React.createElement(NotEqualVariant, null)
       }];
-
     default:
       return [];
   }
 };
-
 var getEAMInitialState = function getEAMInitialState(_ref2) {
   var columns = _ref2.columns;
   var initialFilters = columns.reduce(function (acc, column) {
@@ -256,17 +234,14 @@ var getEAMInitialState = function getEAMInitialState(_ref2) {
     filters: initialFilters
   };
 };
-
 var QualifierMenuAdornment = function QualifierMenuAdornment(_ref3) {
   var column = _ref3.column,
-      localFilter = _ref3.localFilter,
-      setLocalFilter = _ref3.setLocalFilter;
-
+    localFilter = _ref3.localFilter,
+    setLocalFilter = _ref3.setLocalFilter;
   var _useState = useState(),
-      _useState2 = _slicedToArray(_useState, 2),
-      anchorEl = _useState2[0],
-      setAnchorEl = _useState2[1];
-
+    _useState2 = _slicedToArray(_useState, 2),
+    anchorEl = _useState2[0],
+    setAnchorEl = _useState2[1];
   var operators = React.useMemo(function () {
     return getEAMFilterOperators({
       column: column
@@ -314,10 +289,9 @@ var QualifierMenuAdornment = function QualifierMenuAdornment(_ref3) {
     })));
   }, [anchorEl, currentQualiferIcon, localFilter.operator, onMenuClose, onMenuOpen, onMenuOptionClick, operators]);
 };
-
 var DateFilterAdornment = function DateFilterAdornment(_ref4) {
   var localFilter = _ref4.localFilter,
-      setLocalFilter = _ref4.setLocalFilter;
+    setLocalFilter = _ref4.setLocalFilter;
   return React.useMemo(function () {
     return localFilter.fieldValue ? /*#__PURE__*/React.createElement(InputAdornment, {
       position: "end"
@@ -337,11 +311,9 @@ var DateFilterAdornment = function DateFilterAdornment(_ref4) {
     }, /*#__PURE__*/React.createElement(CalendarIcon, null)));
   }, [localFilter, setLocalFilter]);
 };
-
 var EAMCellField = function EAMCellField(_ref5) {
   var column = _ref5.column,
-      value = _ref5.value;
-
+    value = _ref5.value;
   switch (column.dataType) {
     case "CHKBOOLEAN":
       return /*#__PURE__*/React.createElement("div", {
@@ -360,25 +332,21 @@ var EAMCellField = function EAMCellField(_ref5) {
         },
         color: "primary"
       }));
-
     default:
       return String(value);
   }
 };
-
 var EAMFilterField = function EAMFilterField(_ref6) {
   var column = _ref6.column,
-      _ref6$getDefaultValue = _ref6.getDefaultValue,
-      getDefaultValue = _ref6$getDefaultValue === void 0 ? getEAMDefaultFilterValue : _ref6$getDefaultValue;
+    _ref6$getDefaultValue = _ref6.getDefaultValue,
+    getDefaultValue = _ref6$getDefaultValue === void 0 ? getEAMDefaultFilterValue : _ref6$getDefaultValue;
   var dataType = column.dataType,
-      filter = column.filterValue,
-      setFilter = column.setFilter;
-
+    filter = column.filterValue,
+    setFilter = column.setFilter;
   var _useState3 = useState(filter || getDefaultValue(column)),
-      _useState4 = _slicedToArray(_useState3, 2),
-      localFilter = _useState4[0],
-      setLocalFilter = _useState4[1];
-
+    _useState4 = _slicedToArray(_useState3, 2),
+    localFilter = _useState4[0],
+    setLocalFilter = _useState4[1];
   useMountedLayoutEffect(function () {
     return setLocalFilter(filter || getDefaultValue(column));
   }, [filter]);
@@ -410,7 +378,6 @@ var EAMFilterField = function EAMFilterField(_ref6) {
       _dateValue: value
     }));
   }, [localFilter, updateFilter]);
-
   switch (dataType) {
     case "VARCHAR":
     case "MIXVARCHAR":
@@ -428,7 +395,6 @@ var EAMFilterField = function EAMFilterField(_ref6) {
           })
         }
       });
-
     case "CHKBOOLEAN":
       return /*#__PURE__*/React.createElement(Checkbox, {
         checked: getCheckedValue(localFilter.fieldValue),
@@ -439,7 +405,6 @@ var EAMFilterField = function EAMFilterField(_ref6) {
         },
         color: "primary"
       });
-
     case "DATE":
       return /*#__PURE__*/React.createElement(DatePicker, {
         autoOk: true,
@@ -462,7 +427,6 @@ var EAMFilterField = function EAMFilterField(_ref6) {
           })
         }
       });
-
     case "DATETIME":
       return /*#__PURE__*/React.createElement(DateTimePicker, {
         autoOk: true,
@@ -485,7 +449,6 @@ var EAMFilterField = function EAMFilterField(_ref6) {
           })
         }
       });
-
     case "__SELECT":
       return /*#__PURE__*/React.createElement(Select, {
         "native": true,
@@ -500,18 +463,15 @@ var EAMFilterField = function EAMFilterField(_ref6) {
           key: column.getOptionValue(e)
         }, column.getOptionLabel(e));
       }));
-
     default:
       return null;
   }
 };
-
 var getRowAsAnObject = function getRowAsAnObject(row) {
   return row.cell.reduce(function (acc, cell) {
     return _objectSpread({}, acc, _defineProperty({}, cell.t, cell.value || ""));
   }, {});
 };
-
 export { EAMFilterField, EAMCellField, getRowAsAnObject, OPERATORS, getEAMDefaultFilterValue };
 export default {
   getEAMFilterOperators: getEAMFilterOperators,

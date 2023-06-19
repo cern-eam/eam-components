@@ -8,34 +8,31 @@ import BlockUi from "react-block-ui";
 import "react-block-ui/style.css";
 import EAMGridKeyboardHandler from "./EAMGridKeyboardHandler";
 import { Box, Button } from "@material-ui/core";
-
 var EAMGrid = function EAMGrid(props) {
   var getRowProps = props.getRowProps,
-      getCellProps = props.getCellProps,
-      rowsPerPageOptionsComputed = props.rowsPerPageOptionsComputed,
-      customFooterOptions = props.customFooterOptions,
-      disableScrollUp = props.disableScrollUp;
-
+    getCellProps = props.getCellProps,
+    rowsPerPageOptionsComputed = props.rowsPerPageOptionsComputed,
+    customFooterOptions = props.customFooterOptions,
+    disableScrollUp = props.disableScrollUp;
   var _useContext = useContext(EAMGridContext),
-      dataspies = _useContext.dataspies,
-      selectedDataspy = _useContext.selectedDataspy,
-      disableFilters = _useContext.disableFilters,
-      pageIndex = _useContext.pageIndex,
-      rowsPerPage = _useContext.rowsPerPage,
-      toggleFilters = _useContext.toggleFilters,
-      handleOnSearch = _useContext.handleOnSearch,
-      handleChangePage = _useContext.handleChangePage,
-      handleChangeRowsPerPage = _useContext.handleChangeRowsPerPage,
-      handleDataspyChange = _useContext.handleDataspyChange,
-      handleResetFilters = _useContext.handleResetFilters,
-      handleExportToCSV = _useContext.handleExportToCSV,
-      hasUnkownTotalRecords = _useContext.hasUnkownTotalRecords,
-      totalRecords = _useContext.totalRecords,
-      tableInstance = _useContext.tableInstance,
-      loading = _useContext.loading,
-      loadingExportToCSV = _useContext.loadingExportToCSV,
-      blockGrid = _useContext.blockGrid;
-
+    dataspies = _useContext.dataspies,
+    selectedDataspy = _useContext.selectedDataspy,
+    disableFilters = _useContext.disableFilters,
+    pageIndex = _useContext.pageIndex,
+    rowsPerPage = _useContext.rowsPerPage,
+    toggleFilters = _useContext.toggleFilters,
+    handleOnSearch = _useContext.handleOnSearch,
+    handleChangePage = _useContext.handleChangePage,
+    handleChangeRowsPerPage = _useContext.handleChangeRowsPerPage,
+    handleDataspyChange = _useContext.handleDataspyChange,
+    handleResetFilters = _useContext.handleResetFilters,
+    handleExportToCSV = _useContext.handleExportToCSV,
+    hasUnkownTotalRecords = _useContext.hasUnkownTotalRecords,
+    totalRecords = _useContext.totalRecords,
+    tableInstance = _useContext.tableInstance,
+    loading = _useContext.loading,
+    loadingExportToCSV = _useContext.loadingExportToCSV,
+    blockGrid = _useContext.blockGrid;
   return /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
@@ -95,5 +92,4 @@ var EAMGrid = function EAMGrid(props) {
     rowsPerPageOptionsComputed: rowsPerPageOptionsComputed
   })));
 };
-
 export default EAMGrid;

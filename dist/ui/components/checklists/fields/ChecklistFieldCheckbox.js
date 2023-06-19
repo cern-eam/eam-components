@@ -10,14 +10,13 @@ var labelStyle = {
     fontSize: "0.95rem"
   }
 };
-
 var ChecklistFieldCheckbox = function ChecklistFieldCheckbox(props) {
   var code = props.code,
-      desc = props.desc,
-      checked = props.checked,
-      handleChange = props.handleChange,
-      classes = props.classes,
-      disabled = props.disabled;
+    desc = props.desc,
+    checked = props.checked,
+    handleChange = props.handleChange,
+    classes = props.classes,
+    disabled = props.disabled;
   return /*#__PURE__*/React.createElement(FormControlLabel, {
     classes: {
       root: classes.root,
@@ -37,5 +36,4 @@ var ChecklistFieldCheckbox = function ChecklistFieldCheckbox(props) {
     label: desc
   });
 };
-
 export default withStyles(labelStyle)(ChecklistFieldCheckbox);

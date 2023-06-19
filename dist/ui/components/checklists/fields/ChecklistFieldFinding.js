@@ -24,13 +24,12 @@ var style = {
     paddingRight: 3
   }
 };
-
 var ChecklistFieldFinding = function ChecklistFieldFinding(props) {
   var finding = props.finding,
-      _handleChange = props.handleChange,
-      possibleFindings = props.possibleFindings,
-      classes = props.classes,
-      disabled = props.disabled;
+    _handleChange = props.handleChange,
+    possibleFindings = props.possibleFindings,
+    classes = props.classes,
+    disabled = props.disabled;
   var dropdown = props.dropdown === undefined ? true : props.dropdown;
   if (dropdown) return /*#__PURE__*/React.createElement(FormControl, {
     disabled: disabled,
@@ -69,5 +68,4 @@ var ChecklistFieldFinding = function ChecklistFieldFinding(props) {
     });
   });
 };
-
 export default withStyles(style)(ChecklistFieldFinding);

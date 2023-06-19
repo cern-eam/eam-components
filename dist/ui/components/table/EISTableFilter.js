@@ -5,16 +5,13 @@ import MenuItem from '@material-ui/core/MenuItem';
 var filterSelectStyle = {
   fontSize: '0.8125rem'
 };
-
 var EISTableFilter = function EISTableFilter(props) {
   var filters = props.filters,
-      handleFilterChange = props.handleFilterChange,
-      activeFilter = props.activeFilter;
-
+    handleFilterChange = props.handleFilterChange,
+    activeFilter = props.activeFilter;
   var propagateFilterChange = function propagateFilterChange(e) {
     handleFilterChange(e.target.value);
   };
-
   return filters && Object.keys(filters).length && /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
@@ -38,5 +35,4 @@ var EISTableFilter = function EISTableFilter(props) {
     }, filters[key].text);
   })));
 };
-
 export default EISTableFilter;
