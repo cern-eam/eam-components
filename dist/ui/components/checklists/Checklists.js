@@ -520,7 +520,8 @@ var Checklists = /*#__PURE__*/function (_Component) {
           }
         }, /*#__PURE__*/React.createElement("span", {
           style: {
-            fontWeight: 500
+            fontWeight: 500,
+            flexBasis: "60%"
           }
         }, activity.activityCode, " \u2014 ", activity.activityNote), !_this6.props.hideFollowUpProp && activity.checklists.some(function (checklist) {
           return !checklist.hideFollowUp;
@@ -531,6 +532,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
             _this6.showCreateFollowUpWODialog(activity);
           },
           color: "primary",
+          variant: "outlined",
           style: {
             marginLeft: 'auto'
           },
