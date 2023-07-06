@@ -432,7 +432,7 @@ class Checklists extends Component {
                             display: "flex",
                             alignItems: "center"
                         }}>
-                            <span style={{fontWeight: 500, flexBasis: "75%"}}>{activity.activityCode} — {activity.activityNote}</span>
+                            <span style={{fontWeight: 500, flexBasis: "60%"}}>{activity.activityCode} — {activity.activityNote}</span>
                             {!this.props.hideFollowUpProp && activity.checklists.some(checklist => !checklist.hideFollowUp) && <Button 
                                 key={activity.activityCode + '$createfuwo'}
                                 onClick={evt => {
