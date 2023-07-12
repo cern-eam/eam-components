@@ -1,4 +1,3 @@
-function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 import React from 'react';
 import CustomFieldRENT from './inputs/CustomFieldRENT';
 import CustomFieldCHAR from './inputs/CustomFieldCHAR';
@@ -19,20 +18,20 @@ function CustomFieldInput(props) {
   var customField = props.customField,
     index = props.index,
     lookupValues = props.lookupValues,
-    register = props.register;
+    register = props.register,
+    validate = props.validate;
   var renderCustomFieldSpecificInput = function renderCustomFieldSpecificInput() {
     var props = {
       register: register,
       customField: customField,
       index: index,
-      lookupValues: lookupValues
+      lookupValues: lookupValues,
+      validate: validate
     };
     var customFieldRender;
     switch (customField.type) {
       case "RENT":
-        customFieldRender = /*#__PURE__*/React.createElement(CustomFieldRENT, _extends({}, props, {
-          register: register
-        }));
+        customFieldRender = /*#__PURE__*/React.createElement(CustomFieldRENT, props);
         break;
       case "CHAR":
         customFieldRender = /*#__PURE__*/React.createElement(CustomFieldCHAR, props);

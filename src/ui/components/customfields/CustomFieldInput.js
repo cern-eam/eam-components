@@ -17,20 +17,21 @@ const groupLabelStyle = {
 }
 function CustomFieldInput(props) {
 
-    let {customField, index, lookupValues, register} = props
+    let {customField, index, lookupValues, register, validate} = props
 
     let renderCustomFieldSpecificInput = () => {
         let props = {
-            register: register,
-            customField: customField,
-            index: index,
-            lookupValues: lookupValues
+            register,
+            customField,
+            index,
+            lookupValues,
+            validate
         };
 
         let customFieldRender;
         switch (customField.type) {
             case "RENT":
-                 customFieldRender = <CustomFieldRENT {...props} register={register}/>;
+                 customFieldRender = <CustomFieldRENT {...props}/>;
                  break;
             case "CHAR":
                 customFieldRender = <CustomFieldCHAR {...props}/>;

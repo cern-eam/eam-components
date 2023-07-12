@@ -3,12 +3,13 @@ import tools from '../CustomFieldTools'
 import EAMSelect from 'eam-components/dist/ui/components/inputs-ng/EAMSelect';
 import EAMTextField from 'eam-components/dist/ui/components/inputs-ng/EAMTextField';
 
-function CustomFieldNUM({customField, lookupValues, register, index}) {
+function CustomFieldNUM({customField, lookupValues, register, index, validate}) {
 
     if (tools.isLookupCustomField(customField)) {
         return <EAMSelect {...register(customField.code, `customField.${index}.value`)}
                           options={lookupValues && lookupValues[customField.code]}
-                          endTextAdornment={customField.uom}/>
+                          endTextAdornment={customField.uom}
+                          validate={validate}/>
     } else {
         return (
             <EAMTextField {...register(customField.code, `customField.${index}.value`)}

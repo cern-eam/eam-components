@@ -62,6 +62,7 @@ function CustomFields(props) {
                             index={index}
                             key={index}
                             lookupValues={lookupValues}
+                            validate={customField.lovValidate === '+'}
                         />
                     )
                 })}

@@ -94,7 +94,8 @@ function CustomFields(props) {
       customField: customField,
       index: index,
       key: index,
-      lookupValues: lookupValues
+      lookupValues: lookupValues,
+      validate: customField.lovValidate === '+'
     });
   }));
 }
