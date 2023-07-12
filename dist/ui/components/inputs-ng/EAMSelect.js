@@ -8,7 +8,7 @@ function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefine
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 import React, { useState, useEffect } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
-import { areEqual, getElementKey, isRequired, renderOptionHandler, formatLabel, updateCodeDesc, componentsProps } from './tools/input-tools';
+import { areEqual, getElementKey, isRequired, renderOptionHandler, formatLabel, componentsProps } from './tools/input-tools';
 import EAMBaseInput from './components/EAMBaseInput';
 import TextField from './components/TextField';
 import useFetchSelectOptions from './hooks/useFetchSelectOptions';
@@ -26,6 +26,8 @@ var EAMSelect = function EAMSelect(props) {
     disabled = props.disabled,
     renderValue = props.renderValue,
     endTextAdornment = props.endTextAdornment,
+    _props$validate = props.validate,
+    validate = _props$validate === void 0 ? true : _props$validate,
     selectOnlyMode = props.selectOnlyMode;
   var _useState = useState(""),
     _useState2 = _slicedToArray(_useState, 2),
@@ -99,10 +101,14 @@ var EAMSelect = function EAMSelect(props) {
       if (getOptions().some(function (o) {
         return o.code === inputValue;
       })) {
-        var option = getOptions().find(function (o) {
+        onChange(getOptions().find(function (o) {
           return o.code === inputValue;
+        }));
+      } else {
+        !validate && onChange({
+          code: inputValue,
+          desc: ''
         });
-        onChange(option);
       }
     }
   };

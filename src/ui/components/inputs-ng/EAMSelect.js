@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
-import {areEqual, getElementKey, isRequired, renderOptionHandler, formatLabel, updateCodeDesc, componentsProps} from './tools/input-tools'
+import {areEqual, getElementKey, isRequired, renderOptionHandler, formatLabel, componentsProps} from './tools/input-tools'
 import EAMBaseInput from './components/EAMBaseInput';
 import TextField from './components/TextField';
 import useFetchSelectOptions from './hooks/useFetchSelectOptions';
@@ -12,7 +12,7 @@ const EAMSelect = (props) => {
     value, desc, onChange,
     options, optionsTransformer,
     required, id, disabled,
-    renderValue, endTextAdornment, selectOnlyMode} = props;
+    renderValue, endTextAdornment, validate = true, selectOnlyMode} = props;
 
     let [inputValue, setInputValue] = useState("")
     let [fetchedOptions, loading] = useFetchSelectOptions(autocompleteHandler, autocompleteHandlerParams, value, desc, options, optionsTransformer)
@@ -75,8 +75,9 @@ const EAMSelect = (props) => {
     const onCloseHandler = (event, reason) => {
       if ( (reason === 'blur' || reason === 'escape') && inputValue) {
         if (getOptions().some(o => o.code === inputValue)) {
-            let option = getOptions().find(o => o.code === inputValue);
-            onChange(option)
+            onChange(getOptions().find(o => o.code === inputValue))
+        } else {
+            !validate && onChange({code: inputValue, desc: ''})
         }
       }
     }
