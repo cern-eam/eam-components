@@ -131,6 +131,7 @@ const getEAMDefaultFilterValue = (column) => {
         case 'DATETIME':
         case 'DECIMAL':
         case 'NUMBER':
+        case 'CURRENCY':
             return {
                 ...baseFitler,
                 operator: OPERATORS.EQUAL
@@ -175,6 +176,7 @@ const getEAMFilterOperators = ({ column }) => {
             ];
         case "DECIMAL":
         case "NUMBER":
+        case "CURRENCY":
             return [
                 {'value': OPERATORS.EQUAL, 'label': 'Equals', 'icon': <Equal/>},
                 {'value': OPERATORS.LESS_THAN, 'label': 'Less than', 'icon': <LessThan/>},
@@ -374,6 +376,7 @@ const EAMFilterField = ({ column, getDefaultValue = getEAMDefaultFilterValue }) 
         case "MIXVARCHAR":
         case "DECIMAL":
         case "NUMBER":
+        case "CURRENCY":
             return (
                 <FilterTextField
                     value={localFilter.fieldValue || ''}
