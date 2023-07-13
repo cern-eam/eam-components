@@ -119,7 +119,7 @@ var getEAMDefaultFilterValue = function getEAMDefaultFilterValue(column) {
     case 'DECIMAL':
     case 'NUMBER':
       return _objectSpread({}, baseFitler, {
-        operator: 'GREATER_THAN'
+        operator: OPERATORS.EQUAL
       });
     case 'CHKBOOLEAN':
       return _objectSpread({}, baseFitler, {
