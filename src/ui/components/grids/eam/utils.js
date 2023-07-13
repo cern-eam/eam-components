@@ -133,7 +133,7 @@ const getEAMDefaultFilterValue = (column) => {
         case 'NUMBER':
             return {
                 ...baseFitler,
-                operator: 'GREATER_THAN'
+                operator: OPERATORS.EQUAL
             }
         case 'CHKBOOLEAN':
             return {
