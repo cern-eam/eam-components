@@ -8,7 +8,7 @@ function CustomFieldRENT(_ref) {
     index = _ref.index;
   return /*#__PURE__*/React.createElement(EAMAutocomplete, _extends({}, register(customField.code, "customField.".concat(index, ".value"), "customField.".concat(index, ".valueDesc")), {
     autocompleteHandler: WSCustomFields.autocompleteCustomFieldRENT,
-    autocompleteHandlerParams: [customField.rentCodeValue, customField.code]
+    autocompleteHandlerParams: [customField.entityCode, customField.rentCodeValue, customField.code]
   }));
 }
 export default CustomFieldRENT;

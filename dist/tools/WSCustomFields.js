@@ -12,9 +12,10 @@ import WS from './WS';
 var WSCustomFields = /*#__PURE__*/function () {
   function WSCustomFields() {
     _classCallCheck(this, WSCustomFields);
-    this.autocompleteCustomFieldRENT = function (rentity, cfcode, filter) {
-      var config = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
-      return WS._get('/customfields/autocomplete/' + rentity + '/' + cfcode + '/' + filter, config);
+    this.autocompleteCustomFieldRENT = function (entityCode, rentCodeValue, cfcode, filter) {
+      var config = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : {};
+      console.log('kura', entityCode, rentCodeValue, cfcode);
+      return WS._get("/customfields/autocomplete/".concat(entityCode, "/").concat(rentCodeValue, "/").concat(cfcode, "/").concat(filter), config);
     };
   }
   _createClass(WSCustomFields, [{

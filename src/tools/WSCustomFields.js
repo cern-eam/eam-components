@@ -13,8 +13,9 @@ class WSCustomFields {
         return WS._get('/customfields/lookupvalues?entity=' + entity + '&inforClass=' + inforClass, config);
     }
 
-    autocompleteCustomFieldRENT = (rentity, cfcode, filter, config = {}) => {
-        return WS._get('/customfields/autocomplete/' + rentity + '/' + cfcode + '/' + filter, config);
+    autocompleteCustomFieldRENT = (entityCode, rentCodeValue, cfcode, filter, config = {}) => {
+        console.log('kura', entityCode, rentCodeValue, cfcode)
+        return WS._get(`/customfields/autocomplete/${entityCode}/${rentCodeValue}/${cfcode}/${filter}`, config);
     };
 
     getCustomFields(entity, classCode, config = {}) {
