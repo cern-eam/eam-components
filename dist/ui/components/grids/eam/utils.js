@@ -118,8 +118,9 @@ var getEAMDefaultFilterValue = function getEAMDefaultFilterValue(column) {
     case 'DATETIME':
     case 'DECIMAL':
     case 'NUMBER':
+    case 'CURRENCY':
       return _objectSpread({}, baseFitler, {
-        operator: 'GREATER_THAN'
+        operator: OPERATORS.EQUAL
       });
     case 'CHKBOOLEAN':
       return _objectSpread({}, baseFitler, {
@@ -206,6 +207,7 @@ var getEAMFilterOperators = function getEAMFilterOperators(_ref) {
       }];
     case "DECIMAL":
     case "NUMBER":
+    case "CURRENCY":
       return [{
         'value': OPERATORS.EQUAL,
         'label': 'Equals',
@@ -418,6 +420,7 @@ var EAMFilterField = function EAMFilterField(_ref6) {
     case "MIXVARCHAR":
     case "DECIMAL":
     case "NUMBER":
+    case "CURRENCY":
       return /*#__PURE__*/React.createElement(FilterTextField, {
         value: localFilter.fieldValue || '',
         onChange: handleFilterTextFieldChange,
