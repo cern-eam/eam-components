@@ -82,7 +82,8 @@ var EAMGridMain = function EAMGridMain(props) {
     _props$BodyCellCompon = props.BodyCellComponent,
     BodyCellComponent = _props$BodyCellCompon === void 0 ? DefaultBodyCellComponent : _props$BodyCellCompon,
     _props$HeadCellCompon = props.HeadCellComponent,
-    HeadCellComponent = _props$HeadCellCompon === void 0 ? DefaultHeadCellComponent : _props$HeadCellCompon;
+    HeadCellComponent = _props$HeadCellCompon === void 0 ? DefaultHeadCellComponent : _props$HeadCellCompon,
+    isEmptySearch = props.isEmptySearch;
   var getTableProps = tableInstance.getTableProps,
     getTableBodyProps = tableInstance.getTableBodyProps,
     headerGroups = tableInstance.headerGroups,
@@ -216,7 +217,7 @@ var EAMGridMain = function EAMGridMain(props) {
       display: 'table-row'
     },
     component: "div"
-  }), !rows.length && !loading ? /*#__PURE__*/React.createElement("div", {
+  }), noResults ? /*#__PURE__*/React.createElement("div", {
     style: {
       width: "100%",
       position: "absolute",
@@ -227,7 +228,7 @@ var EAMGridMain = function EAMGridMain(props) {
   }, /*#__PURE__*/React.createElement(Typography, {
     variant: "body2",
     color: "textSecondary"
-  }, "No records to show")) : /*#__PURE__*/React.createElement("div", {
+  }, isEmptySearch ? 'Perform a search to display values' : 'No records to show')) : /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'block',
       height: '100%'

@@ -78,6 +78,7 @@ const EAMGridMain = (props) => {
         TableComponent = DefaultTableComponent,
         BodyCellComponent = DefaultBodyCellComponent,
         HeadCellComponent = DefaultHeadCellComponent,
+        isEmptySearch,
     } = props;
 
     const {
@@ -192,9 +193,13 @@ const EAMGridMain = (props) => {
                         </TableHead>
                     </ScrollSyncPane>
                     <TableBody {...getTableBodyProps()} style={{ height: '100%', display: 'table-row' }} component="div">
-                    {!rows.length && !loading ?
+                    {noResults ?
                         <div style={{ width: "100%", position: "absolute", display: "flex", flexDirection: "column", padding: "1rem" }}>
-                            <Typography variant="body2" color="textSecondary">No records to show</Typography>
+                            <Typography variant="body2" color="textSecondary">
+                                {isEmptySearch
+                                    ? 'Perform a search to display values'
+                                    : 'No records to show'}
+                            </Typography>
                         </div>
                     :
                         <div style={{ display: 'block', height: '100%' }}>
