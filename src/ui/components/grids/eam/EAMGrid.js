@@ -35,6 +35,7 @@ const EAMGrid = (props) => {
         tableInstance,
         loading,
         loadingExportToCSV,
+        isEmptySearch,
     } = useContext(EAMGridContext);
 
     return (
@@ -59,6 +60,7 @@ const EAMGrid = (props) => {
                     tableInstance={tableInstance}
                     getRowProps={getRowProps}
                     getCellProps={getCellProps}
+                    isEmptySearch={isEmptySearch}
                 />
             </BlockUi>
             <EAMGridFooter>

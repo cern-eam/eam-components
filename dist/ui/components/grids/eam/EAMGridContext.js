@@ -167,6 +167,10 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
     _useState16 = _slicedToArray(_useState15, 2),
     gridField = _useState16[0],
     setGridField = _useState16[1];
+  var _useState17 = useState(!searchOnMount),
+    _useState18 = _slicedToArray(_useState17, 2),
+    isEmptySearch = _useState18[0],
+    setIsEmptySearch = _useState18[1];
   var resetFilters = useMemo(function () {
     return (initialFilters || []).map(function (filter) {
       return {
@@ -175,7 +179,7 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
       };
     });
   }, [initialFilters]);
-  var _useState17 = useState({
+  var _useState19 = useState({
       gridName: gridName,
       userFunctionName: userFunctionName ?? gridName,
       gridID: gridID,
@@ -187,17 +191,17 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
       gridSort: processSortBy(initialSortBy, sortByProcessor),
       gridFilter: processFilters(resetFilters, filterProcessor)
     }),
-    _useState18 = _slicedToArray(_useState17, 2),
-    gridRequest = _useState18[0],
-    setGridRequest = _useState18[1];
-  var _useState19 = useState(),
     _useState20 = _slicedToArray(_useState19, 2),
-    fetchDataCancelToken = _useState20[0],
-    setFetchDataCancelToken = _useState20[1];
-  var _useState21 = useState(false),
+    gridRequest = _useState20[0],
+    setGridRequest = _useState20[1];
+  var _useState21 = useState(),
     _useState22 = _slicedToArray(_useState21, 2),
-    loadingExportToCSV = _useState22[0],
-    setLoadingExportToCSV = _useState22[1];
+    fetchDataCancelToken = _useState22[0],
+    setFetchDataCancelToken = _useState22[1];
+  var _useState23 = useState(false),
+    _useState24 = _slicedToArray(_useState23, 2),
+    loadingExportToCSV = _useState24[0],
+    setLoadingExportToCSV = _useState24[1];
   var columnCreator = createColumns ?? defaultCreateColumns;
   var dataCreator = processData ?? function (_ref5) {
     var d = _ref5.data;
@@ -297,7 +301,11 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
     });
     setGridRequest(newGridRequest);
     tableInstance.toggleAllRowsSelected(false);
+    setLoading(true); // needed to avoid the "No records to show" message to be displayed for a split second
     fetchDataDebounced(newGridRequest);
+    if (isEmptySearch) {
+      setIsEmptySearch(false);
+    }
   }, [tableInstance, fetchDataDebounced, gridRequest]);
   var handleExportToCSV = useCallback(function () {
     setLoadingExportToCSV(true);
@@ -420,7 +428,8 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
     initialFilters: initialFilters,
     handleResetFilters: handleResetFilters,
     handleExportToCSV: handleExportToCSV,
-    loadingExportToCSV: loadingExportToCSV
+    loadingExportToCSV: loadingExportToCSV,
+    isEmptySearch: isEmptySearch
   };
   return /*#__PURE__*/React.createElement(EAMGridContext.Provider, {
     value: context

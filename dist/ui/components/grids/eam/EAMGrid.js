@@ -30,7 +30,8 @@ var EAMGrid = function EAMGrid(props) {
     totalRecords = _useContext.totalRecords,
     tableInstance = _useContext.tableInstance,
     loading = _useContext.loading,
-    loadingExportToCSV = _useContext.loadingExportToCSV;
+    loadingExportToCSV = _useContext.loadingExportToCSV,
+    isEmptySearch = _useContext.isEmptySearch;
   return /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
@@ -64,7 +65,8 @@ var EAMGrid = function EAMGrid(props) {
     loading: loading,
     tableInstance: tableInstance,
     getRowProps: getRowProps,
-    getCellProps: getCellProps
+    getCellProps: getCellProps,
+    isEmptySearch: isEmptySearch
   })), /*#__PURE__*/React.createElement(EAMGridFooter, null, /*#__PURE__*/React.createElement(Box, {
     flex: "1",
     display: "flex"

@@ -123,6 +123,7 @@ export const EAMGridContextProvider = (props) => {
     const [loading, setLoading] = useState(false);
     const [gridResult, setGridResult] = useState({});
     const [gridField, setGridField] = useState();
+    const [isEmptySearch, setIsEmptySearch] = useState(!searchOnMount);
 
     const resetFilters = useMemo(
         () =>
@@ -258,7 +259,11 @@ export const EAMGridContextProvider = (props) => {
         };
         setGridRequest(newGridRequest);
         tableInstance.toggleAllRowsSelected(false);
+        setLoading(true); // needed to avoid the "No records to show" message to be displayed for a split second
         fetchDataDebounced(newGridRequest);
+        if (isEmptySearch) {
+            setIsEmptySearch(false);
+        }
     }, [tableInstance, fetchDataDebounced, gridRequest]);
 
     const handleExportToCSV = useCallback(() => {
@@ -441,6 +446,7 @@ export const EAMGridContextProvider = (props) => {
         handleResetFilters,
         handleExportToCSV,
         loadingExportToCSV,
+        isEmptySearch,
     };
 
     return (
