@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { useHistory } from "react-router";
 /**
  * Use the 'customPrepend' and 'customAppend' props to add custom
  * content to the start and end of the base footer, respectively
@@ -10,7 +10,21 @@ var Footer = function Footer(props) {
     version = props.version,
     supportEmail = props.supportEmail,
     customAppend = props.customAppend;
-  return /*#__PURE__*/React.createElement(React.Fragment, null, customPrepend, /*#__PURE__*/React.createElement("b", null, appName), " (v", version, ")", ' ', /*#__PURE__*/React.createElement("a", {
+  var history = useHistory();
+  return /*#__PURE__*/React.createElement(React.Fragment, null, customPrepend, /*#__PURE__*/React.createElement("b", null, appName), /*#__PURE__*/React.createElement("span", {
+    style: {
+      marginLeft: 5,
+      marginRight: 5
+    }
+  }, "(", /*#__PURE__*/React.createElement("span", {
+    style: {
+      textDecorationLine: "underline",
+      cursor: "pointer"
+    },
+    onClick: function onClick() {
+      return history.push("/releaseNotes");
+    }
+  }, "v", version), ")"), /*#__PURE__*/React.createElement("a", {
     style: {
       color: 'white',
       marginRight: 10
