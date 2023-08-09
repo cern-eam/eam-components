@@ -14,7 +14,7 @@ const Footer = (props) => {
         <>
             {customPrepend}
             <b>{appName}</b>
-            <span style={{marginLeft: 5, marginRight: 5}}>(<span style={{textDecorationLine: "underline", cursor: "pointer"}}  onClick={() => history.push("/releaseNotes")}>v{version}</span>)</span>
+            <span style={{marginLeft: 5, marginRight: 5}}>(<span style={{textDecorationLine: "underline", cursor: "pointer"}}  onClick={() => history.push("/releasenotes")}>v{version}</span>)</span>
             <a
                 style={{ color: 'white', marginRight: 10 }}
                 href={`mailto:${supportEmail}`}

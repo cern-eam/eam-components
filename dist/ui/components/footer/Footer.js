@@ -22,7 +22,7 @@ var Footer = function Footer(props) {
       cursor: "pointer"
     },
     onClick: function onClick() {
-      return history.push("/releaseNotes");
+      return history.push("/releasenotes");
     }
   }, "v", version), ")"), /*#__PURE__*/React.createElement("a", {
     style: {
