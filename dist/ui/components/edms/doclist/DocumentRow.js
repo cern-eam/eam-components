@@ -31,6 +31,9 @@ var DocumentRow = /*#__PURE__*/function (_Component) {
     _this.state = {
       filesVisible: false
     };
+    //
+    // STYLES
+    //
     _this.docStyle = {
       display: "flex",
       alignItems: "center",
@@ -92,6 +95,9 @@ var DocumentRow = /*#__PURE__*/function (_Component) {
         color: statusColor
       });
     };
+    //
+    // DropZone handling
+    //
     _this.stopPropagation = function (event) {
       event.stopPropagation();
     };
@@ -109,10 +115,6 @@ var DocumentRow = /*#__PURE__*/function (_Component) {
         color: this.state.filesVisible ? 'rgb(0, 170, 255)' : 'rgba(0, 0, 0, 0.54)'
       };
     }
-
-    //
-    // DropZone handling
-    //
   }, {
     key: "render",
     value: function render() {

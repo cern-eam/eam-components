@@ -91,9 +91,11 @@ var DataGridTableBody = /*#__PURE__*/function (_Component) {
         _iterator.f();
       }
     };
+    // Click on "Select All"
     _this.selectAll = function () {
       _this._toggleCheckboxes(_this.props.rows, true);
     };
+    // Click on "Unselect All"
     _this.unselectAll = function () {
       _this._toggleCheckboxes(_this.props.rows, false);
     };

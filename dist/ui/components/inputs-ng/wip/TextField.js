@@ -77,7 +77,7 @@ var TextField = function TextField(props) {
     // Needed for example for the multi Autocomplete since
     // it relies on startAdornment to render the tags
     ,
-    startAdornment: props.InputProps.startAdornment // NOTE: this is not in the non-wip version
+    startAdornment: props.InputProps?.startAdornment // NOTE: this is not in the non-wip version
   }), !hideDescription && /*#__PURE__*/React.createElement(TextFieldDescription, {
     description: desc,
     value: value

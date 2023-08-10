@@ -22,6 +22,9 @@ var FileList = /*#__PURE__*/function (_Component) {
       args[_key] = arguments[_key];
     }
     _this = _super.call.apply(_super, [this].concat(args));
+    //
+    // STYLES
+    //
     _this.mainDivStyle = {
       margin: 7,
       marginLeft: 10,
@@ -36,6 +39,9 @@ var FileList = /*#__PURE__*/function (_Component) {
       display: "flex",
       flexDirection: "column"
     };
+    //
+    // HANDLERS
+    //
     _this.generateFilesInfo = function () {
       return _this.props.files.map(function (file) {
         return /*#__PURE__*/React.createElement("div", null, file.name, " (", _this.bytesToSize(file.size), ")");

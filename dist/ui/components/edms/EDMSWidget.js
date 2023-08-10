@@ -42,6 +42,9 @@ var EDMSWidget = /*#__PURE__*/function (_Component) {
       errorMessage: '',
       documentList: []
     };
+    //
+    // DOCUMENT CREATION
+    //
     _this.generateDocumentCreation = function (creationMode) {
       switch (creationMode) {
         case NCRCreationMode:
@@ -111,6 +114,9 @@ var EDMSWidget = /*#__PURE__*/function (_Component) {
         _this.unblockUI();
       });
     };
+    //
+    // FILE UPLOAD
+    //
     _this.uploadFile = function (docId, version, file) {
       var formData = new FormData();
       formData.append('file', file, file.name);
@@ -160,6 +166,9 @@ var EDMSWidget = /*#__PURE__*/function (_Component) {
         _this.readDocuments(_this.props.objectID, _this.props.objectType);
       });
     };
+    //
+    // READ DOCUMENTS
+    //
     _this.readDocuments = function (objectID, objectType) {
       //Is loading
       _this.blockUI();
@@ -187,14 +196,23 @@ var EDMSWidget = /*#__PURE__*/function (_Component) {
     _this.NCRFilter = function (document) {
       return document.documentType === 'Report' && document.attributes === 'Non conformity';
     };
+    //
+    // STYLES
+    //
     _this.mainDivStyle = {
       width: "100%"
     };
+    //
+    // ERROR HANDLING
+    //
     _this.getErrorMessage = function (reason) {
       if (reason && reason.response && reason.response.body && reason.response.body.errors) {
         return reason.response.body.errors[0].message;
       }
     };
+    //
+    // UI BLOCKING
+    //
     _this.blockUI = function () {
       _this.setState(function () {
         return {
@@ -228,10 +246,6 @@ var EDMSWidget = /*#__PURE__*/function (_Component) {
         this.unblockUI();
       }
     }
-
-    //
-    // DOCUMENT CREATION
-    //
   }, {
     key: "render",
     value: function render() {

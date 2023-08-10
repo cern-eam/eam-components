@@ -159,9 +159,11 @@ var EAMAutocomplete = /*#__PURE__*/function (_EAMBaseInput) {
         desc: desc
       });
     };
+    // Input rendering
     _this.renderInput = function (inputProps) {
       return renderDefaultInput(inputProps);
     };
+    // Fetch suggestions
     _this.handleSuggestionsFetchRequested = function (_ref2) {
       var value = _ref2.value;
       clearTimeout(_this.timeout);
@@ -210,6 +212,7 @@ var EAMAutocomplete = /*#__PURE__*/function (_EAMBaseInput) {
         return processedValue === _this.getSuggestionValue(v);
       });
     };
+    // Clear suggestions
     _this.handleSuggestionsClearRequested = function () {};
     _this.getSuggestionValue = function (suggestion) {
       return suggestion.code;
