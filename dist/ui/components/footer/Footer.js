@@ -9,6 +9,7 @@ var Footer = function Footer(props) {
     appName = props.appName,
     version = props.version,
     supportEmail = props.supportEmail,
+    releaseNotesPath = props.releaseNotesPath,
     customAppend = props.customAppend;
   var history = useHistory();
   return /*#__PURE__*/React.createElement(React.Fragment, null, customPrepend, /*#__PURE__*/React.createElement("b", null, appName), /*#__PURE__*/React.createElement("span", {
@@ -22,7 +23,7 @@ var Footer = function Footer(props) {
       cursor: "pointer"
     },
     onClick: function onClick() {
-      return history.push("/releasenotes");
+      return history.push(releaseNotesPath);
     }
   }, "v", version), ")"), /*#__PURE__*/React.createElement("a", {
     style: {

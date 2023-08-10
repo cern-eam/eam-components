@@ -5,7 +5,7 @@ import { useHistory } from "react-router";
  * content to the start and end of the base footer, respectively
  */
 const Footer = (props) => {
-    const { customPrepend, appName, version, supportEmail, customAppend } =
+    const { customPrepend, appName, version, supportEmail, releaseNotesPath, customAppend } =
         props;
 
     const history = useHistory();
@@ -18,7 +18,7 @@ const Footer = (props) => {
           (
           <span
             style={{ textDecorationLine: "underline", cursor: "pointer" }}
-            onClick={() => history.push("/releasenotes")}
+            onClick={() => history.push(releaseNotesPath)}
           >
             v{version}
           </span>
