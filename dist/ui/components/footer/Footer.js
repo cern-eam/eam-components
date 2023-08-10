@@ -26,7 +26,7 @@ var Footer = function Footer(props) {
     }
   }, "v", version), ")"), /*#__PURE__*/React.createElement("a", {
     style: {
-      color: 'white',
+      color: "white",
       marginRight: 10
     },
     href: "mailto:".concat(supportEmail)

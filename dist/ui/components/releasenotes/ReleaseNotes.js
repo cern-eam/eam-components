@@ -14,13 +14,12 @@ var ReleaseNotes = function ReleaseNotes(props) {
     fileContent = _useState2[0],
     setFileContent = _useState2[1];
   useEffect(function () {
-    console.log("fileCOMP", file);
     fetch(file).then(function (response) {
       return response.text();
     }).then(function (text) {
       return setFileContent(text);
     })["catch"](function (e) {
-      return console.log(e);
+      return console.err(e);
     });
   });
   return /*#__PURE__*/React.createElement("div", {
@@ -30,6 +29,7 @@ var ReleaseNotes = function ReleaseNotes(props) {
       overflow: "auto"
     }
   }, /*#__PURE__*/React.createElement(InfiniteScroll, {
+    height: "100%",
     dataLength: fileContent.length
   }, /*#__PURE__*/React.createElement(ReactMarkdown, null, fileContent)));
 };

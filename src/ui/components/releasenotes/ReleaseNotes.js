@@ -8,16 +8,15 @@ const ReleaseNotes = (props) => {
   const [fileContent, setFileContent] = useState("");
 
   useEffect(() => {
-    console.log("fileCOMP", file);
     fetch(file)
       .then((response) => response.text())
       .then((text) => setFileContent(text))
-      .catch((e) => console.log(e));
+      .catch((e) => console.err(e));
   });
 
   return (
     <div style={{ marginLeft: 20, height: "100%", overflow: "auto" }}>
-      <InfiniteScroll dataLength={fileContent.length}>
+      <InfiniteScroll height="100%" dataLength={fileContent.length}>
         <ReactMarkdown>{fileContent}</ReactMarkdown>
       </InfiniteScroll>
     </div>
