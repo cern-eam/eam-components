@@ -128,10 +128,14 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
     _useState14 = _slicedToArray(_useState13, 2),
     gridResult = _useState14[0],
     setGridResult = _useState14[1];
-  var _useState15 = useState(),
+  var _useState15 = useState({}),
     _useState16 = _slicedToArray(_useState15, 2),
-    gridField = _useState16[0],
-    setGridField = _useState16[1];
+    exportGridResult = _useState16[0],
+    setExportGridResult = _useState16[1];
+  var _useState17 = useState(),
+    _useState18 = _slicedToArray(_useState17, 2),
+    gridField = _useState18[0],
+    setGridField = _useState18[1];
   var resetFilters = useMemo(function () {
     return (initialFilters || []).map(function (filter) {
       return {
@@ -140,7 +144,7 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
       };
     });
   }, [initialFilters]);
-  var _useState17 = useState({
+  var _useState19 = useState({
       gridName: gridName,
       userFunctionName: userFunctionName ?? gridName,
       gridID: gridID,
@@ -152,17 +156,21 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
       gridSort: processSortBy(initialSortBy, sortByProcessor),
       gridFilter: processFilters(resetFilters, filterProcessor)
     }),
-    _useState18 = _slicedToArray(_useState17, 2),
-    gridRequest = _useState18[0],
-    setGridRequest = _useState18[1];
-  var _useState19 = useState(),
     _useState20 = _slicedToArray(_useState19, 2),
-    fetchDataCancelToken = _useState20[0],
-    setFetchDataCancelToken = _useState20[1];
-  var _useState21 = useState(false),
+    gridRequest = _useState20[0],
+    setGridRequest = _useState20[1];
+  var _useState21 = useState(),
     _useState22 = _slicedToArray(_useState21, 2),
-    loadingExportToCSV = _useState22[0],
-    setLoadingExportToCSV = _useState22[1];
+    fetchDataCancelToken = _useState22[0],
+    setFetchDataCancelToken = _useState22[1];
+  var _useState23 = useState(),
+    _useState24 = _slicedToArray(_useState23, 2),
+    fetchExportDataCancelToken = _useState24[0],
+    setFetchExportDataCancelToken = _useState24[1];
+  var _useState25 = useState(false),
+    _useState26 = _slicedToArray(_useState25, 2),
+    loadingExportToCSV = _useState26[0],
+    setLoadingExportToCSV = _useState26[1];
   var columnCreator = createColumns ?? defaultCreateColumns;
   var dataCreator = processData ?? function (_ref3) {
     var d = _ref3.data;
@@ -179,6 +187,11 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
       data: (gridResult?.row || []).map(getRowAsAnObject)
     });
   }, [gridResult.row]);
+  var exportedData = useMemo(function () {
+    return dataCreator({
+      data: (exportGridResult?.row || []).map(getRowAsAnObject)
+    });
+  }, [exportGridResult.row]);
   var hasUnkownTotalRecords = useMemo(function () {
     return (gridResult?.records ?? "").includes("+");
   }, [gridResult]);
@@ -222,6 +235,17 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
       }
     };
   }, []);
+  useEffect(function () {
+    fetchQueriedData(_objectSpread({}, gridRequest, {
+      rowCount: 20000
+    }));
+    console.log('hello');
+    return function () {
+      if (fetchExportDataCancelToken) {
+        fetchExportDataCancelToken.cancel();
+      }
+    };
+  }, []);
   var fetchData = useCallback(function (gr) {
     setLoading(true);
     if (fetchDataCancelToken) {
@@ -247,6 +271,25 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
       handleError && handleError(error);
     });
   }, [fetchDataCancelToken, setFetchDataCancelToken]);
+  var fetchQueriedData = useCallback(function (gr) {
+    setLoading(true);
+    if (fetchExportDataCancelToken) {
+      fetchExportDataCancelToken.cancel();
+    }
+    var newFetchDataCancelToken = Axios.CancelToken.source();
+    setFetchExportDataCancelToken(newFetchDataCancelToken);
+    console.log('hello inside');
+    GridWS.getGridData(gr, {
+      cancelToken: newFetchDataCancelToken.token
+    }).then(function (response) {
+      console.log("exported", response);
+      var newGridResult = response.body.data;
+      setExportGridResult(newGridResult);
+      setLoading(false);
+    })["catch"](function (error) {
+      handleError && handleError(error);
+    });
+  }, [fetchExportDataCancelToken, setFetchExportDataCancelToken]);
   var fetchDataDebounced = useAsyncDebounce(fetchData, 100);
   var handleOnSearch = useCallback(function () {
     setPageIndex(0);
@@ -353,6 +396,7 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
     data: data,
     dataspies: dataspies,
     disableFilters: disableFilters,
+    exportedData: exportedData,
     loading: loading,
     pageIndex: pageIndex,
     selectedDataspy: selectedDataspy,

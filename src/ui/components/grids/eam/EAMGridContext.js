@@ -108,6 +108,7 @@ export const EAMGridContextProvider = (props) => {
     const [rowsPerPage, setRowsPerPage] = useState(initialRowsPerPage || 50);
     const [loading, setLoading] = useState(false);
     const [gridResult, setGridResult] = useState({});
+    const [exportGridResult, setExportGridResult] = useState({});
     const [gridField, setGridField] = useState();
 
     const resetFilters = useMemo(
@@ -131,6 +132,7 @@ export const EAMGridContextProvider = (props) => {
         gridFilter: processFilters(resetFilters, filterProcessor),
     });
     const [fetchDataCancelToken, setFetchDataCancelToken] = useState();
+    const [fetchExportDataCancelToken, setFetchExportDataCancelToken] = useState();
     const [loadingExportToCSV, setLoadingExportToCSV] = useState(false);
     const columnCreator = createColumns ?? defaultCreateColumns;
     const dataCreator = processData ?? (({ data: d }) => d);
@@ -145,6 +147,13 @@ export const EAMGridContextProvider = (props) => {
                 data: (gridResult?.row || []).map(getRowAsAnObject),
             }),
         [gridResult.row]
+    );
+    const exportedData = useMemo(
+        () =>
+            dataCreator({
+                data: (exportGridResult?.row || []).map(getRowAsAnObject),
+            }),
+        [exportGridResult.row]
     );
 
     const hasUnkownTotalRecords = useMemo(
@@ -199,6 +208,18 @@ export const EAMGridContextProvider = (props) => {
         };
     }, []);
 
+        useEffect(() => {
+            fetchQueriedData({
+                ...gridRequest,
+                rowCount: 20000,
+            });
+            return () => {
+                if (fetchExportDataCancelToken) {
+                    fetchExportDataCancelToken.cancel();
+                }
+            };
+        }, []);
+
     const fetchData = useCallback(
         (gr) => {
             setLoading(true);
@@ -229,6 +250,29 @@ export const EAMGridContextProvider = (props) => {
         },
         [fetchDataCancelToken, setFetchDataCancelToken]
     );
+
+    const fetchQueriedData =useCallback(
+        (gr) => {
+            setLoading(true);
+            if (fetchExportDataCancelToken) {
+                fetchExportDataCancelToken.cancel();
+            }
+            const newFetchDataCancelToken = Axios.CancelToken.source();
+            setFetchExportDataCancelToken(newFetchDataCancelToken);
+            GridWS.getGridData(gr, {
+                cancelToken: newFetchDataCancelToken.token,
+            })
+                .then((response) => {
+                    const newGridResult = response.body.data;
+                    setExportGridResult(newGridResult);
+                    setLoading(false);
+                })
+                .catch((error) => {
+                    handleError && handleError(error);
+                });
+        },
+        [fetchExportDataCancelToken, setFetchExportDataCancelToken]
+        );
 
     const fetchDataDebounced = useAsyncDebounce(fetchData, 100);
 
@@ -401,6 +445,7 @@ export const EAMGridContextProvider = (props) => {
         data,
         dataspies,
         disableFilters,
+        exportedData,
         loading,
         pageIndex,
         selectedDataspy,
