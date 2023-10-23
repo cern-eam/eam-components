@@ -16,6 +16,8 @@ const EAMGrid = (props) => {
         getCellProps,
         rowsPerPageOptionsComputed,
         customFooterOptions,
+        hideHeader,
+        hideFooter,
     } = props;
     const {
         dataspies,
@@ -45,7 +47,7 @@ const EAMGrid = (props) => {
                 onSearch={handleOnSearch}
                 toggleFilters={toggleFilters}
             />
-            <EAMGridHead
+            { hideHeader ? null : <EAMGridHead
                 selectedDataspy={selectedDataspy}
                 dataspies={dataspies}
                 onSearch={handleOnSearch}
@@ -53,7 +55,7 @@ const EAMGrid = (props) => {
                 toggleFilters={toggleFilters}
                 onDataspyChange={handleDataspyChange}
                 onResetFilters={handleResetFilters}
-            />
+            />}
             <BlockUi tag="div" blocking={loading} style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <EAMGridMain
                     loading={loading}
@@ -63,7 +65,7 @@ const EAMGrid = (props) => {
                     isEmptySearch={isEmptySearch}
                 />
             </BlockUi>
-            <EAMGridFooter>
+            {hideFooter ? null : <EAMGridFooter>
                 <Box flex="1" display="flex">
                     {customFooterOptions ? (
                         customFooterOptions()
@@ -93,7 +95,7 @@ const EAMGrid = (props) => {
                     totalRecords={totalRecords}
                     rowsPerPageOptionsComputed={rowsPerPageOptionsComputed}
                 />
-            </EAMGridFooter>
+            </EAMGridFooter>}
         </div>
     )
 }

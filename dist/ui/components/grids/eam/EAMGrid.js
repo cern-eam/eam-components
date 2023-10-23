@@ -12,7 +12,9 @@ var EAMGrid = function EAMGrid(props) {
   var getRowProps = props.getRowProps,
     getCellProps = props.getCellProps,
     rowsPerPageOptionsComputed = props.rowsPerPageOptionsComputed,
-    customFooterOptions = props.customFooterOptions;
+    customFooterOptions = props.customFooterOptions,
+    hideHeader = props.hideHeader,
+    hideFooter = props.hideFooter;
   var _useContext = useContext(EAMGridContext),
     dataspies = _useContext.dataspies,
     selectedDataspy = _useContext.selectedDataspy,
@@ -44,7 +46,7 @@ var EAMGrid = function EAMGrid(props) {
     tableInstance: tableInstance,
     onSearch: handleOnSearch,
     toggleFilters: toggleFilters
-  }), /*#__PURE__*/React.createElement(EAMGridHead, {
+  }), hideHeader ? null : /*#__PURE__*/React.createElement(EAMGridHead, {
     selectedDataspy: selectedDataspy,
     dataspies: dataspies,
     onSearch: handleOnSearch,
@@ -67,7 +69,7 @@ var EAMGrid = function EAMGrid(props) {
     getRowProps: getRowProps,
     getCellProps: getCellProps,
     isEmptySearch: isEmptySearch
-  })), /*#__PURE__*/React.createElement(EAMGridFooter, null, /*#__PURE__*/React.createElement(Box, {
+  })), hideFooter ? null : /*#__PURE__*/React.createElement(EAMGridFooter, null, /*#__PURE__*/React.createElement(Box, {
     flex: "1",
     display: "flex"
   }, customFooterOptions ? customFooterOptions() : /*#__PURE__*/React.createElement(BlockUi, {
