@@ -188,7 +188,9 @@ var EAMAutocomplete = /*#__PURE__*/function (_EAMBaseInput) {
               _this.onChangeHandler(valueFound.code, valueFound);
             }
           });
-        })["catch"](function (error) {});
+        })["catch"](function (error) {
+          _this.onChangeHandler("", "");
+        });
       }, 200);
     };
     _this.handleChange = function (event, _ref3) {
