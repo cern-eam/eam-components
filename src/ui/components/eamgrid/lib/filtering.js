@@ -39,7 +39,7 @@ export function setFilter(filter, dataType) {
         // Creation of new filter
         newFilter = {
             operator: getDefaultFilterOperator(dataType),
-            fieldValue: '',
+            fieldValue: undefined,
             joiner: 'AND',
             ...filter
         }
