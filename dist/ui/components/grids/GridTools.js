@@ -7,33 +7,42 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 import queryString from 'query-string';
 var FILTER_SEPARATOR = ':::';
 var VALUE_SEPARATOR = ':';
+var JOINER_SEPARATOR = '^';
+var ARRAY_SEPARATOR = '$$';
 var OPERATOR_SEPARATOR = '|||';
 var parseGridFilters = function parseGridFilters(gridFiltersString) {
   var adaptGridFilters = function adaptGridFilters(_ref) {
     var _ref2 = _slicedToArray(_ref, 2),
       code = _ref2[0],
       value = _ref2[1];
-    var _ref3 = value && value.split(OPERATOR_SEPARATOR),
+    var _ref3 = value && value.split(JOINER_SEPARATOR),
       _ref4 = _slicedToArray(_ref3, 2),
       val = _ref4[0],
-      operator = _ref4[1];
+      joiner = _ref4[1];
+    var _ref5 = joiner && joiner.split(OPERATOR_SEPARATOR),
+      _ref6 = _slicedToArray(_ref5, 2),
+      joinerVal = _ref6[0],
+      operator = _ref6[1];
     return {
       fieldName: code,
       fieldValue: val,
-      operator: operator || 'EQUALS',
-      joiner: 'AND'
+      operator: operator || "EQUALS",
+      joiner: joinerVal || "AND",
+      leftParenthesis: false,
+      rightParenthesis: false
     };
   };
   try {
-    return gridFiltersString ? gridFiltersString.split(FILTER_SEPARATOR).filter(Boolean).map(function (gridFilter) {
+    return gridFiltersString.split(FILTER_SEPARATOR).filter(Boolean).map(function (gridFilter) {
       return gridFilter.split(VALUE_SEPARATOR);
-    }).map(adaptGridFilters) : [];
+    }).map(adaptGridFilters);
   } catch (err) {
     return [];
   }
 };
 var stringifyGridFilter = function stringifyGridFilter(gridFilter) {
-  return gridFilter.fieldValue ? gridFilter.fieldName + VALUE_SEPARATOR + (gridFilter.fieldValue || '') + OPERATOR_SEPARATOR + gridFilter.operator : '';
+  var fieldValue = gridFilter.fieldValue?.join?.(ARRAY_SEPARATOR) ?? gridFilter.fieldValue;
+  return fieldValue ? gridFilter.fieldName + VALUE_SEPARATOR + (fieldValue || '') + JOINER_SEPARATOR + gridFilter.joiner + OPERATOR_SEPARATOR + (gridFilter.operator || '=') : '';
 };
 var stringifyGridFilters = function stringifyGridFilters() {
   var gridFilters = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];

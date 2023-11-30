@@ -16,6 +16,7 @@ import GridWS from "../../eamgrid/lib/GridWS";
 import { EAMCellField, EAMFilterField, getRowAsAnObject } from "./utils";
 import useEAMGridTableInstance from "./useEAMGridTableInstance";
 import { useAsyncDebounce } from "react-table";
+var ARRAY_SEPARATOR = "$$";
 var defaultCreateColumns = function defaultCreateColumns(_ref) {
   var gridField = _ref.gridField,
     cellRenderer = _ref.cellRenderer;
@@ -37,13 +38,18 @@ var defaultCreateColumns = function defaultCreateColumns(_ref) {
 };
 var processFilters = function processFilters(filters, filterProcessor) {
   return filters.map(function (f) {
-    var filter = f.value;
-    var allowedFilter = Object.keys(filter).filter(function (key) {
+    var fieldValue = f.value.fieldValue;
+    if (fieldValue && fieldValue.includes(ARRAY_SEPARATOR)) {
+      fieldValue = fieldValue.split(ARRAY_SEPARATOR);
+    }
+    var filter = _objectSpread({}, f.value, {
+      fieldValue: fieldValue
+    });
+    return Object.keys(filter).filter(function (key) {
       return ["fieldName", "fieldValue", "joiner", "operator"].includes(key);
     }).reduce(function (newFilterObj, key) {
       return _objectSpread({}, newFilterObj, _defineProperty({}, key, filter[key]));
     }, {});
-    return allowedFilter;
   }).filter(function (filter) {
     return filter.fieldValue !== undefined || filter.fieldValue !== "" || ["IS EMPTY", "NOT EMPTY"].includes(filter.operator);
   }).map(filterProcessor);
@@ -222,6 +228,25 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
       }
     };
   }, []);
+  var adaptGridFilters = function adaptGridFilters(gr) {
+    return _objectSpread({}, gr, {
+      gridFilter: gr.gridFilter.map(function (filter) {
+        if (Array.isArray(filter?.fieldValue)) {
+          return filter.fieldValue.map(function (fieldValue, index) {
+            return {
+              fieldName: filter.fieldName,
+              fieldValue: fieldValue,
+              operator: filter.operator || 'EQUALS',
+              joiner: index < filter?.fieldValue.length - 1 ? 'OR' : 'AND',
+              leftParenthesis: index === 0 ? true : false,
+              rightParenthesis: index === filter?.fieldValue.length - 1 ? true : false
+            };
+          });
+        }
+        return filter;
+      }).flat()
+    });
+  };
   var fetchData = useCallback(function (gr) {
     setLoading(true);
     if (fetchDataCancelToken) {
@@ -229,7 +254,7 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
     }
     var newFetchDataCancelToken = Axios.CancelToken.source();
     setFetchDataCancelToken(newFetchDataCancelToken);
-    GridWS.getGridData(gr, {
+    GridWS.getGridData(adaptGridFilters(gr), {
       cancelToken: newFetchDataCancelToken.token
     }).then(function (response) {
       var newGridResult = response.body.data;

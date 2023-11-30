@@ -11,7 +11,6 @@ import {
     withStyles,
     Select,
     InputBase,
-    FormControlLabel,
 } from "@material-ui/core";
 import {
     ContainStart,
@@ -103,7 +102,7 @@ const isIndeterminate = (valueType) => valueType === null || valueType === CHECK
 const getEAMDefaultFilterValue = (column) => {
     const baseFitler = {
         fieldName: column.id,
-        fieldValue: undefined,
+        fieldValue: '',
         joiner: 'AND',
         operator: OPERATORS.BEGINS,
         leftParenthesis: false,
@@ -451,7 +450,7 @@ const EAMFilterField = ({ column, getDefaultValue = getEAMDefaultFilterValue }) 
                         </MenuItem>
                         )
                     )}
-                    </Select>
+                </Select>
             )
         default:
             return null;
