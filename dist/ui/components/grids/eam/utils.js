@@ -21,6 +21,7 @@ import { DatePicker, DateTimePicker } from "@material-ui/pickers";
 import { Clear as ClearIcon, InsertInvitation as CalendarIcon, Cancel as CancelIcon } from "@material-ui/icons";
 import { useAsyncDebounce, useMountedLayoutEffect } from "react-table";
 import { format as formatDate } from "date-fns";
+var ARRAY_SEPARATOR = "$$";
 var BootstrapInput = withStyles(function (theme) {
   return {
     root: {
@@ -365,6 +366,31 @@ var EAMFilterField = function EAMFilterField(_ref6) {
     setLocalFilter(filter);
     debouncedSetFilter(filter);
   }, [debouncedSetFilter]);
+
+  //To set the filter labels and the multiFilterValues on initial render
+  useEffect(function () {
+    if (filter?.fieldValue.includes(ARRAY_SEPARATOR)) {
+      var fieldValues = filter?.fieldValue.split(ARRAY_SEPARATOR);
+      var uniqueFieldValues = Array.from(new Set(fieldValues));
+      var labels = uniqueFieldValues.map(function (code) {
+        var fieldvalueOption = column.selectOptions.find(function (option) {
+          return option.code === code;
+        });
+        return fieldvalueOption.desc;
+      });
+      setMultiSelectFilter(function (prevMultiSelectFilter) {
+        return _objectSpread({}, prevMultiSelectFilter, {
+          fieldValue: uniqueFieldValues
+        });
+      });
+      setMultiFilterLabel(labels);
+    } else if (column?.selectOptions) {
+      var fieldvalueOption = column.selectOptions.find(function (option) {
+        return option.code === filter?.fieldValue;
+      });
+      setMultiFilterLabel([fieldvalueOption?.desc] || []);
+    }
+  }, []);
   var updateMultiSelectFilter = React.useCallback(function (fieldValueFilter) {
     setMultiSelectFilter(function (prev) {
       return _objectSpread({}, prev, {

@@ -35,6 +35,8 @@ import { useAsyncDebounce, useMountedLayoutEffect } from "react-table";
 import { format as formatDate } from "date-fns";
 
 
+const ARRAY_SEPARATOR = "$$"
+
 const BootstrapInput = withStyles((theme) => ({
     root: {
         width: '100%',
@@ -283,7 +285,7 @@ const EAMCellField = ({ column, value }) => {
 const EAMFilterField = ({ column, getDefaultValue = getEAMDefaultFilterValue }) => {
     const { dataType, filterValue: filter, setFilter } = column;
     const [localFilter, setLocalFilter] = useState(filter || getDefaultValue(column));
-    const [multiSelectFilter, setMultiSelectFilter] = useState({ ...(filter || getDefaultValue(column)), fieldValue: filter?.fieldValue?[filter?.fieldValue] : [] });
+    const [multiSelectFilter, setMultiSelectFilter] = useState({ ...(filter || getDefaultValue(column)), fieldValue: filter?.fieldValue ? [filter?.fieldValue] : [] });
     const [multiFilterLabel, setMultiFilterLabel] = useState([]);
 
     useMountedLayoutEffect(() => setLocalFilter(filter || getDefaultValue(column)), [filter])
@@ -294,6 +296,25 @@ const EAMFilterField = ({ column, getDefaultValue = getEAMDefaultFilterValue }) 
         setLocalFilter(filter);
         debouncedSetFilter(filter);
     }, [debouncedSetFilter]);
+
+    
+    //To set the filter labels and the multiFilterValues on initial render
+    useEffect(() => {
+        if (filter?.fieldValue.includes(ARRAY_SEPARATOR)) {
+            const fieldValues = filter?.fieldValue.split(ARRAY_SEPARATOR);
+            const uniqueFieldValues = Array.from(new Set(fieldValues));
+            const labels = uniqueFieldValues.map((code) => {
+                const fieldvalueOption = column.selectOptions.find(option => option.code === code)
+                return fieldvalueOption.desc;
+            })
+            setMultiSelectFilter((prevMultiSelectFilter) => ({ ...prevMultiSelectFilter, fieldValue: uniqueFieldValues }))
+            setMultiFilterLabel(labels);
+        }
+        else if(column?.selectOptions) {
+            const fieldvalueOption = column.selectOptions.find(option => option.code === filter?.fieldValue)
+            setMultiFilterLabel([fieldvalueOption?.desc] || []);
+        }
+    }, [])
 
     const updateMultiSelectFilter =  React.useCallback((fieldValueFilter) => {
         setMultiSelectFilter((prev) => ({ ...prev, fieldValue: fieldValueFilter }));
