@@ -11,6 +11,8 @@ import { EAMCellField, EAMFilterField, getRowAsAnObject } from "./utils";
 import useEAMGridTableInstance from "./useEAMGridTableInstance";
 import { useAsyncDebounce } from "react-table";
 
+const ARRAY_SEPARATOR = "$$";
+
 const defaultCreateColumns = ({ gridField, cellRenderer }) =>
     (gridField || [])
         .sort((a, b) => a.order - b.order)
@@ -30,8 +32,8 @@ const processFilters = (filters, filterProcessor) => {
         return filters
             .map((f) => {
                 let fieldValue = f.value.fieldValue
-                if (fieldValue && fieldValue.includes("$$")) {
-                    fieldValue = fieldValue.split("$$");
+                if (fieldValue && fieldValue.includes(ARRAY_SEPARATOR)) {
+                    fieldValue = fieldValue.split(ARRAY_SEPARATOR);
                 }
                 const filter = { ...f.value, fieldValue: fieldValue }
                 return Object.keys(filter)

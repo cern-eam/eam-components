@@ -14,11 +14,11 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TextField, Checkbox, MenuItem, ListItemIcon, ListItemText, Menu, IconButton, InputAdornment, withStyles, Select, InputBase } from "@material-ui/core";
 import { ContainStart, ContainEnd, Contain, GreaterThan, GreaterThanOrEqual, LessThan, LessThanOrEqual, Equal, NotEqualVariant, Rhombus, RhombusOutline } from 'mdi-material-ui';
 import { DatePicker, DateTimePicker } from "@material-ui/pickers";
-import { Clear as ClearIcon, InsertInvitation as CalendarIcon } from "@material-ui/icons";
+import { Clear as ClearIcon, InsertInvitation as CalendarIcon, Cancel as CancelIcon } from "@material-ui/icons";
 import { useAsyncDebounce, useMountedLayoutEffect } from "react-table";
 import { format as formatDate } from "date-fns";
 var BootstrapInput = withStyles(function (theme) {
@@ -34,10 +34,6 @@ var BootstrapInput = withStyles(function (theme) {
       },
       '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
         borderBottom: '2px solid #c5c5c5'
-      },
-      '& .MuiSelect-select:focus': {
-        backgroundColor: "white",
-        borderRadius: '4px'
       }
     },
     input: {
@@ -92,9 +88,11 @@ var isIndeterminate = function isIndeterminate(valueType) {
 var getEAMDefaultFilterValue = function getEAMDefaultFilterValue(column) {
   var baseFitler = {
     fieldName: column.id,
-    fieldValue: undefined,
+    fieldValue: '',
     joiner: 'AND',
-    operator: OPERATORS.BEGINS
+    operator: OPERATORS.BEGINS,
+    leftParenthesis: false,
+    rightParenthesis: false
   };
   switch (column.dataType) {
     case 'DATE':
@@ -347,6 +345,16 @@ var EAMFilterField = function EAMFilterField(_ref6) {
     _useState4 = _slicedToArray(_useState3, 2),
     localFilter = _useState4[0],
     setLocalFilter = _useState4[1];
+  var _useState5 = useState(_objectSpread({}, filter || getDefaultValue(column), {
+      fieldValue: filter?.fieldValue ? [filter?.fieldValue] : []
+    })),
+    _useState6 = _slicedToArray(_useState5, 2),
+    multiSelectFilter = _useState6[0],
+    setMultiSelectFilter = _useState6[1];
+  var _useState7 = useState([]),
+    _useState8 = _slicedToArray(_useState7, 2),
+    multiFilterLabel = _useState8[0],
+    setMultiFilterLabel = _useState8[1];
   useMountedLayoutEffect(function () {
     return setLocalFilter(filter || getDefaultValue(column));
   }, [filter]);
@@ -357,11 +365,45 @@ var EAMFilterField = function EAMFilterField(_ref6) {
     setLocalFilter(filter);
     debouncedSetFilter(filter);
   }, [debouncedSetFilter]);
+  var updateMultiSelectFilter = React.useCallback(function (fieldValueFilter) {
+    setMultiSelectFilter(function (prev) {
+      return _objectSpread({}, prev, {
+        fieldValue: fieldValueFilter
+      });
+    });
+    setMultiSelectFilter(function (prev) {
+      return _objectSpread({}, prev, {
+        joiner: "OR"
+      });
+    });
+    debouncedSetFilter(_objectSpread({}, multiSelectFilter, {
+      fieldValue: fieldValueFilter
+    }));
+  }, [debouncedSetFilter, multiSelectFilter]);
   var handleFilterTextFieldChange = React.useCallback(function (e) {
     return updateFilter(_objectSpread({}, localFilter, {
       fieldValue: e.target.value
     }));
   }, [localFilter, updateFilter]);
+  var handleMultiFilterCheckboxChange = React.useCallback(function (event, value, label) {
+    if (event.target.checked) {
+      var multiSelectValues = multiSelectFilter.fieldValue ?? [];
+      multiSelectValues.push(value);
+      setMultiFilterLabel(function (prev) {
+        return [].concat(_toConsumableArray(prev), [label]);
+      });
+      updateMultiSelectFilter(multiSelectValues);
+    } else {
+      setMultiFilterLabel(function (prev) {
+        return prev.filter(function (item) {
+          return item !== label;
+        });
+      });
+      updateMultiSelectFilter(multiSelectFilter.fieldValue.filter(function (item) {
+        return item !== value;
+      }));
+    }
+  }, [multiSelectFilter, updateMultiSelectFilter]);
   var handleCheckboxChange = React.useCallback(function () {
     var values = [CHECKBOX_FILTERS.CHECKED, CHECKBOX_FILTERS.UNCHECKED, CHECKBOX_FILTERS.INDETERMINATE];
     var nextValueIndex = (values.findIndex(function (e) {
@@ -462,6 +504,33 @@ var EAMFilterField = function EAMFilterField(_ref6) {
           value: column.getOptionValue(e),
           key: column.getOptionValue(e)
         }, column.getOptionLabel(e));
+      }));
+    case "__MULTISELECT":
+      return /*#__PURE__*/React.createElement(Select, {
+        multiple: true,
+        value: multiFilterLabel,
+        input: /*#__PURE__*/React.createElement(BootstrapInput, null),
+        renderValue: function renderValue() {
+          return multiFilterLabel.join(',');
+        },
+        MenuProps: {
+          variant: "menu",
+          style: {
+            top: 54
+          }
+        }
+      }, column?.selectOptions?.map(function (e) {
+        return /*#__PURE__*/React.createElement(MenuItem, {
+          value: column.getOptionValue(e),
+          key: column.getOptionValue(e)
+        }, /*#__PURE__*/React.createElement(Checkbox, {
+          checked: multiSelectFilter?.fieldValue.indexOf(column.getOptionValue(e)) > -1,
+          onChange: function onChange(event) {
+            handleMultiFilterCheckboxChange(event, column.getOptionValue(e), column.getOptionLabel(e));
+          }
+        }), /*#__PURE__*/React.createElement(ListItemText, {
+          primary: column.getOptionLabel(e)
+        }));
       }));
     default:
       return null;
