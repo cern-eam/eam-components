@@ -36,36 +36,34 @@ const EAMBarcodeScanner = (props) => {
         codeReader.current.reset();
     };
 
-    const startScanner = () => {
-        navigator.mediaDevices.getUserMedia({video: true})
-        .then(data => {
-            navigator.mediaDevices.enumerateDevices().then(devices => {
-                if (devices.length > 0) {
-                    let videoDevices = devices.filter(d => d.kind === 'videoinput')
-                    const device = localStorage.getItem("videoInputDevice");
-                    const selectedDevice = videoDevices.find((d) => d?.deviceId === device)?.deviceId ?? videoDevices[0].deviceId;
-                    setVideoInputDevices(videoDevices);
-                    setCurrentDevice(selectedDevice);
-                    startDecoding(selectedDevice);
-                }
-            }).catch(error => {console.error(error); handleClose();})
-        }).catch(error => {console.error(error); handleClose();})
-
+    const startScanner = async () => {
+        try {
+            const devices = await navigator.mediaDevices.enumerateDevices();
+            if (devices.length > 0) {
+                let videoDevices = devices.filter(d => d.kind === 'videoinput')
+                const device = localStorage.getItem("videoInputDevice");
+                const selectedDevice = videoDevices.find((d) => d?.deviceId === device)?.deviceId ?? videoDevices[0].deviceId;
+                setVideoInputDevices(videoDevices);
+                setCurrentDevice(selectedDevice);
+                await startDecoding(selectedDevice);
+            }
+        } catch(erro) {
+            console.error(erro); 
+        } finally {
+            handleClose();
+        }
     };
 
-    const startDecoding = (device) => {
-        codeReader.current
-            .decodeFromInputVideoDevice(device, "video")
-            .then((result) => {
-                onDetectedCallback(result.text);
-                codeReader.current.reset();
-                handleClose();
-            })
-            .catch((err) => console.error(err));
+    const startDecoding =  async (device) => {
+        try {
+            let result = await codeReader.current.decodeOnceFromVideoDevice(device, "video")
+            onDetectedCallback(result.text);
+        } catch(err) {
+            console.error(err)
+        };
     };
 
     const handleDeviceChange = (device) => {
-        codeReader.current.reset();
         setCurrentDevice(device);
         startDecoding(device);
         localStorage.setItem("videoInputDevice", device);
