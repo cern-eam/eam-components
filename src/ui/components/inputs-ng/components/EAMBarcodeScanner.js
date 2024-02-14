@@ -18,6 +18,7 @@ const EAMBarcodeScanner = (props) => {
     let [showBarcodeButton, setShowBarcodeButton] = useState(false);
     const [videoInputDevices, setVideoInputDevices] = useState([]);
     const [currentDevice, setCurrentDevice] = useState("");
+    const streamReaf = useRef(null);
 
     useEffect(() => {
         navigator.mediaDevices?.enumerateDevices().then((deviceCount) => {
@@ -34,6 +35,9 @@ const EAMBarcodeScanner = (props) => {
     const handleClose = () => {
         setOpen(false);
         codeReader.current.reset();
+        if(streamReaf.current) {
+            streamReaf.current.getTracks().forEach(track => track.stop());
+        }
     };
 
     const startScanner = async () => {
@@ -56,7 +60,9 @@ const EAMBarcodeScanner = (props) => {
 
     const startDecoding =  async (device) => {
         try {
-            let result = await codeReader.current.decodeOnceFromVideoDevice(device, "video")
+            let stream = await navigator.mediaDevices.getUserMedia({video: {deviceId: { exact: device }}});
+            streamReaf.current = stream;
+            let result = await codeReader.current.decodeOnceFromStream(stream, "video");
             onDetectedCallback(result.text);
         } catch(err) {
             console.error(err)
