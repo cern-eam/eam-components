@@ -18,7 +18,8 @@ const EAMBarcodeScanner = (props) => {
     let [showBarcodeButton, setShowBarcodeButton] = useState(false);
     const [videoInputDevices, setVideoInputDevices] = useState([]);
     const [currentDevice, setCurrentDevice] = useState("");
-    const streamReaf = useRef(null);
+    const streamRef = useRef(null);
+    const openRef = useRef(false);
 
     useEffect(() => {
         navigator.mediaDevices?.enumerateDevices().then((deviceCount) => {
@@ -30,14 +31,13 @@ const EAMBarcodeScanner = (props) => {
 
     const handleClickOpen = () => {
         setOpen(true);
+        openRef.current = true;
     };
 
     const handleClose = () => {
         setOpen(false);
-        codeReader.current.reset();
-        if(streamReaf.current) {
-            streamReaf.current.getTracks().forEach(track => track.stop());
-        }
+        openRef.current = false;
+        resetStreams();
     };
 
     const startScanner = async () => {
@@ -51,21 +51,22 @@ const EAMBarcodeScanner = (props) => {
                 setCurrentDevice(selectedDevice);
                 await startDecoding(selectedDevice);
             }
-        } catch(erro) {
-            console.error(erro); 
-        } finally {
-            handleClose();
-        }
+        } catch (error) {
+            console.error(error);
+        } 
     };
 
-    const startDecoding =  async (device) => {
-        try {
-            let stream = await navigator.mediaDevices.getUserMedia({video: {deviceId: { exact: device }}});
-            streamReaf.current = stream;
-            let result = await codeReader.current.decodeOnceFromStream(stream, "video");
+    const startDecoding = async (device) => {
+        try{
+            const stream = await navigator.mediaDevices.getUserMedia({video: {deviceId: { exact: device }}});
+            streamRef.current = stream;
+            const result = await codeReader.current.decodeOnceFromStream(stream, "video");
             onDetectedCallback(result.text);
-        } catch(err) {
-            console.error(err)
+            handleClose();
+        } catch (error) {
+            console.error(error);
+        } finally {
+            if (!openRef.current) resetStreams();
         };
     };
 
@@ -83,6 +84,13 @@ const EAMBarcodeScanner = (props) => {
     // Display just the children when no support for user media
     if (!showBarcodeButton) {
         return React.Fragment;
+    }
+
+    const resetStreams = () => {
+        codeReader.current.reset();
+        if(streamRef.current) {
+            streamRef.current.getTracks().forEach(track => track.stop());
+        }
     }
 
     // Active quagga when support for user media
