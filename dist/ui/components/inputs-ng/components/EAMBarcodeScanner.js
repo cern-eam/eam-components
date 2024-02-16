@@ -35,7 +35,8 @@ var EAMBarcodeScanner = function EAMBarcodeScanner(props) {
     _useState8 = _slicedToArray(_useState7, 2),
     currentDevice = _useState8[0],
     setCurrentDevice = _useState8[1];
-  var streamReaf = useRef(null);
+  var streamRef = useRef(null);
+  var openRef = useRef(false);
   useEffect(function () {
     navigator.mediaDevices?.enumerateDevices().then(function (deviceCount) {
       if (deviceCount.length > 0 && navigator.mediaDevices.getUserMedia) {
@@ -45,15 +46,12 @@ var EAMBarcodeScanner = function EAMBarcodeScanner(props) {
   }, []);
   var handleClickOpen = function handleClickOpen() {
     setOpen(true);
+    openRef.current = true;
   };
   var handleClose = function handleClose() {
     setOpen(false);
-    codeReader.current.reset();
-    if (streamReaf.current) {
-      streamReaf.current.getTracks().forEach(function (track) {
-        return track.stop();
-      });
-    }
+    openRef.current = false;
+    resetStreams();
   };
   var startScanner = function startScanner() {
     var devices, videoDevices, device, selectedDevice;
@@ -88,14 +86,10 @@ var EAMBarcodeScanner = function EAMBarcodeScanner(props) {
           _context.t0 = _context["catch"](0);
           console.error(_context.t0);
         case 17:
-          _context.prev = 17;
-          handleClose();
-          return _context.finish(17);
-        case 20:
         case "end":
           return _context.stop();
       }
-    }, null, null, [[0, 14, 17, 20]], Promise);
+    }, null, null, [[0, 14]], Promise);
   };
   var startDecoding = function startDecoding(device) {
     var stream, result;
@@ -113,25 +107,30 @@ var EAMBarcodeScanner = function EAMBarcodeScanner(props) {
           }));
         case 3:
           stream = _context2.sent;
-          streamReaf.current = stream;
+          streamRef.current = stream;
           _context2.next = 7;
           return _regeneratorRuntime().awrap(codeReader.current.decodeOnceFromStream(stream, "video"));
         case 7:
           result = _context2.sent;
           onDetectedCallback(result.text);
-          _context2.next = 14;
+          handleClose();
+          _context2.next = 15;
           break;
-        case 11:
-          _context2.prev = 11;
+        case 12:
+          _context2.prev = 12;
           _context2.t0 = _context2["catch"](0);
           console.error(_context2.t0);
-        case 14:
-          ;
         case 15:
+          _context2.prev = 15;
+          if (!openRef.current) resetStreams();
+          return _context2.finish(15);
+        case 18:
+          ;
+        case 19:
         case "end":
           return _context2.stop();
       }
-    }, null, null, [[0, 11]], Promise);
+    }, null, null, [[0, 12, 15, 18]], Promise);
   };
   var handleDeviceChange = function handleDeviceChange(device) {
     setCurrentDevice(device);
@@ -147,6 +146,14 @@ var EAMBarcodeScanner = function EAMBarcodeScanner(props) {
   if (!showBarcodeButton) {
     return React.Fragment;
   }
+  var resetStreams = function resetStreams() {
+    codeReader.current.reset();
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(function (track) {
+        return track.stop();
+      });
+    }
+  };
 
   // Active quagga when support for user media
   return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(IconButton, {
