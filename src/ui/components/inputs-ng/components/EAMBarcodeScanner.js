@@ -71,6 +71,7 @@ const EAMBarcodeScanner = (props) => {
     };
 
     const handleDeviceChange = (device) => {
+        codeReader.current.reset();
         setCurrentDevice(device);
         startDecoding(device);
         localStorage.setItem("videoInputDevice", device);
