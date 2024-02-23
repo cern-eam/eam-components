@@ -15,7 +15,6 @@ var muiSettings = function muiSettings(_ref) {
         main: secondaryColor
       } // Darker blue '#01579b'
     },
-
     typography: {
       body1: {
         fontSize: '14px'
