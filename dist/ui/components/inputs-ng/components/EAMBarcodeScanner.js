@@ -133,6 +133,7 @@ var EAMBarcodeScanner = function EAMBarcodeScanner(props) {
     }, null, null, [[0, 12, 15, 18]], Promise);
   };
   var handleDeviceChange = function handleDeviceChange(device) {
+    codeReader.current.reset();
     setCurrentDevice(device);
     startDecoding(device);
     localStorage.setItem("videoInputDevice", device);
