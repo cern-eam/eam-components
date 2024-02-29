@@ -206,7 +206,7 @@ export default class ChecklistItem extends Component {
         };
 
         const createField = ChecklistItemInput.createField;
-        const {CHECKBOX, FINDING, NUMERIC, ALPHANUMERIC, DATE, DATETIME} = ChecklistItemInput.FIELD;
+        const {CHECKBOX, FINDING, NUMERIC, NUMERIC2, ALPHANUMERIC, DATE, DATETIME} = ChecklistItemInput.FIELD;
 
         switch(checklistItem.type) {
             case "01":
@@ -331,6 +331,13 @@ export default class ChecklistItem extends Component {
                     createField(ALPHANUMERIC)
                 ];
                 options.style = ChecklistItemInput.STYLE.SINGLE_EXPAND;
+                break;
+            case "17":
+                fields = [
+                    createField(NUMERIC),
+                    createField(NUMERIC2)
+                ];
+                options.style = ChecklistItemInput.STYLE.SAMELINE;
                 break;
         }
 
