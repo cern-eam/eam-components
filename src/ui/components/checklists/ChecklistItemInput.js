@@ -5,12 +5,14 @@ import ChecklistFieldFinding from './fields/ChecklistFieldFinding';
 import ChecklistFieldAlphaNumeric from './fields/ChecklistFieldAlphaNumeric';
 import EAMDatePicker from "../inputs-ng/EAMDatePicker";
 import EAMDateTimePicker from "../inputs-ng/EAMDateTimePicker";
+import EAMAutocomplete from "../inputs-ng/EAMAutocomplete"
+import WSChecklists from '../../../tools/WSChecklists';
 
 export default class ChecklistItemInput extends Component {
     handleChange(type, value, onFail) {
-        const {result, finding, numericValue, numericValue2, freeText, date, dateTime} = this.props.checklistItem;
+        const {result, finding, numericValue, numericValue2, freeText, date, dateTime, entityCode} = this.props.checklistItem;
 
-        let newResult, newFinding, newNumericValue, newNumericValue2, newAlphaNumericValue, newDate, newDateTime;
+        let newResult, newFinding, newNumericValue, newNumericValue2, newAlphaNumericValue, newDate, newDateTime, newEntityCode;
 
         switch(type) {
             case ChecklistItemInput.FIELD.CHECKBOX:
@@ -34,6 +36,9 @@ export default class ChecklistItemInput extends Component {
             case ChecklistItemInput.FIELD.DATETIME:
                 newDateTime = value;
                 break;
+            case ChecklistItemInput.FIELD.ENTITY:
+                newEntityCode = value.code;
+                break;
         }
 
         let newProps = {
@@ -45,6 +50,7 @@ export default class ChecklistItemInput extends Component {
             freeText: newAlphaNumericValue === undefined ? freeText : newAlphaNumericValue.trim(),
             date: newDate === undefined ? date : newDate,
             dateTime: newDateTime === undefined ? dateTime : newDateTime,
+            entityCode: newEntityCode === undefined ? entityCode : newEntityCode
         };
 
         if(this.options.beforeOnChange && typeof this.options.beforeOnChange === 'function') {
@@ -124,6 +130,14 @@ export default class ChecklistItemInput extends Component {
                     key={key}
                     disabled={disabled}
                 />
+            case ChecklistItemInput.FIELD.ENTITY:
+                return <EAMAutocomplete
+                    value={checklistItem.entityCode}
+                    desc={checklistItem.entityDesc}
+                    onChange={code => this.handleChange(ChecklistItemInput.FIELD.ENTITY, code, null)}
+                    autocompleteHandler={WSChecklists.autocompleteEntity}
+                    autocompleteHandlerParams={[checklistItem.entityType]}
+            />
         }
     }
 
@@ -152,7 +166,8 @@ ChecklistItemInput.FIELD = {
     FINDING: "FINDING",
     ALPHANUMERIC: "ALPHANUMERIC",
     DATE: "DATE",
-    DATETIME: "DATETIME"
+    DATETIME: "DATETIME",
+    ENTITY: "ENTITY"
 }
 
 const SINGLE = {
