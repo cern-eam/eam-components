@@ -4,7 +4,7 @@ import Cog from 'mdi-material-ui/Cog';
 export default class ChecklistEquipment extends Component {
 
     mainStyle = {
-        marginTop: 15,
+        marginTop: 1,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",

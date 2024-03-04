@@ -180,6 +180,7 @@ const SINGLE_EXPAND = {
     flex: "1 0 auto",
     marginLeft: "auto",
     display: "flex",
+    padding: "0 14px 0 10px",
 }
 
 const ROWS = {
@@ -191,11 +192,10 @@ const ROWS = {
 }
 
 const SAMELINE = {
-    flex: "0 0 186px",
     display: "flex",
     marginLeft: "auto",
     flexWrap: "wrap",
-    justifyContent: "space-between"
+    justifyContent: "space-evenly"
 }
 
 ChecklistItemInput.STYLE = {

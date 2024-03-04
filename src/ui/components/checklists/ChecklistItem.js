@@ -5,6 +5,8 @@ import Collapse from '@mui/material/Collapse';
 import ChecklistItemFollowUp from "./ChecklistItemFollowUp";
 import ChecklistItemNotApplicableOptions from './ChecklistItemNotApplicableOptions';
 import WSChecklists from '../../../tools/WSChecklists';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 
 export default class ChecklistItem extends Component {
     constructor(props) {
@@ -86,6 +88,7 @@ export default class ChecklistItem extends Component {
     firstLineDesc = {
         float: "left",
         display: "flex",
+        marginRight: "15px",
         alignItems: "center",
         pointerEvents: "initial",
         color: "rgba(0, 0, 0, 0.87)"
@@ -336,7 +339,7 @@ export default class ChecklistItem extends Component {
                 fields = [
                     createField(ENTITY)
                 ];
-                options.style = ChecklistItemInput.STYLE.SINGLE;
+                options.style = ChecklistItemInput.STYLE.SINGLE_EXPAND;
                 break;
             case "17":
                 fields = [
@@ -371,10 +374,11 @@ export default class ChecklistItem extends Component {
     containerStyle = blocked => ({
         display: 'flex',
         alignItems: "stretch",
+        padding: '0px 3px 0px 2px',
         minHeight: 48,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        borderBottom: "dashed 1px #d1d3d4",
+        borderBottom: "solid 1px #d1d3d4",
         opacity: blocked ? 0.5 : 1
     })
 
@@ -387,6 +391,7 @@ export default class ChecklistItem extends Component {
                 <div style={this.getCheckListItemStyle(this.state.blocked)}>
                     <div style={this.firstLine}>
                         <div style={this.firstLineDesc} onClick={this.descClickHandler.bind(this)}>
+                            {this.state.detailsVisible ? <ExpandLessIcon style={{color: "#b0b0b0"}}/> : <ExpandMoreIcon style={{color: "#b0b0b0"}}/>}
                             <label>{checklistItem.desc}</label>
                             {checklistItem.requiredToClose === true && <label style={{color: "red"}}> *</label>}
                         </div>

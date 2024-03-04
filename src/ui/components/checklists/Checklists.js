@@ -249,16 +249,17 @@ class Checklists extends Component {
             (eqpToOtherId?.[equipmentCode] ? ` — ${eqpToOtherId[equipmentCode]}` : '')
 
         return <EquipmentExpansionPanel
+        style={{width: "100%", border: "1px solid #e0e0e0", borderRadius: "10px"}}
                 key={key}
                 expanded={!collapsed}
                 TransitionProps={{ unmountOnExit: true, timeout: 0 }}
                 onChange={(_, expanded) => this.setCollapsedEquipment(!expanded, activity.index, equipmentCode)}>
-            <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
+            <AccordionSummary style={{borderBottom: "3px solid #e0e0e0", borderRadius: "10px"}} expandIcon={<ExpandMoreIcon/>}>
                 <ChecklistEquipment 
                     key={firstChecklist.checkListCode + "_equipment"}
                     description={equipmentChecklistDesc}/>
             </AccordionSummary>
-            <AccordionDetails style={{marginTop: -18}}>
+            <AccordionDetails style={{marginTop: -2, padding: "0"}}>
                 <div style={{width: "100%"}}>
                     {checklists.map(checklist => <ChecklistItem 
                         key={'checklistItem$' + checklist.checkListCode}
