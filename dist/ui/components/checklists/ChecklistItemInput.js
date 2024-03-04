@@ -1,22 +1,22 @@
-function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : String(i); }
-function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-function _callSuper(t, o, e) { return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e)); }
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function _isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 import React, { Component } from 'react';
 import ChecklistFieldNumeric from './fields/ChecklistFieldNumeric';
 import ChecklistFieldCheckbox from './fields/ChecklistFieldCheckbox';
@@ -24,11 +24,14 @@ import ChecklistFieldFinding from './fields/ChecklistFieldFinding';
 import ChecklistFieldAlphaNumeric from './fields/ChecklistFieldAlphaNumeric';
 import EAMDatePicker from "../inputs-ng/EAMDatePicker";
 import EAMDateTimePicker from "../inputs-ng/EAMDateTimePicker";
+import EAMAutocomplete from "../inputs-ng/EAMAutocomplete";
+import WSChecklists from '../../../tools/WSChecklists';
 var ChecklistItemInput = /*#__PURE__*/function (_Component) {
   _inherits(ChecklistItemInput, _Component);
+  var _super = _createSuper(ChecklistItemInput);
   function ChecklistItemInput() {
     _classCallCheck(this, ChecklistItemInput);
-    return _callSuper(this, ChecklistItemInput, arguments);
+    return _super.apply(this, arguments);
   }
   _createClass(ChecklistItemInput, [{
     key: "handleChange",
@@ -37,10 +40,12 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
         result = _this$props$checklist.result,
         finding = _this$props$checklist.finding,
         numericValue = _this$props$checklist.numericValue,
+        numericValue2 = _this$props$checklist.numericValue2,
         freeText = _this$props$checklist.freeText,
         date = _this$props$checklist.date,
-        dateTime = _this$props$checklist.dateTime;
-      var newResult, newFinding, newNumericValue, newAlphaNumericValue, newDate, newDateTime;
+        dateTime = _this$props$checklist.dateTime,
+        entityCode = _this$props$checklist.entityCode;
+      var newResult, newFinding, newNumericValue, newNumericValue2, newAlphaNumericValue, newDate, newDateTime, newEntityCode;
       switch (type) {
         case ChecklistItemInput.FIELD.CHECKBOX:
           newResult = value === result ? null : value;
@@ -51,6 +56,9 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
         case ChecklistItemInput.FIELD.NUMERIC:
           newNumericValue = value;
           break;
+        case ChecklistItemInput.FIELD.NUMERIC2:
+          newNumericValue2 = value;
+          break;
         case ChecklistItemInput.FIELD.ALPHANUMERIC:
           newAlphaNumericValue = value;
           break;
@@ -60,14 +68,19 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
         case ChecklistItemInput.FIELD.DATETIME:
           newDateTime = value;
           break;
+        case ChecklistItemInput.FIELD.ENTITY:
+          newEntityCode = value.code;
+          break;
       }
       var newProps = _objectSpread({}, this.props.checklistItem, {
         result: newResult === undefined ? result : newResult,
         finding: newFinding === undefined ? finding : newFinding,
         numericValue: newNumericValue === undefined ? numericValue : newNumericValue,
+        numericValue2: newNumericValue2 === undefined ? numericValue2 : newNumericValue2,
         freeText: newAlphaNumericValue === undefined ? freeText : newAlphaNumericValue.trim(),
         date: newDate === undefined ? date : newDate,
-        dateTime: newDateTime === undefined ? dateTime : newDateTime
+        dateTime: newDateTime === undefined ? dateTime : newDateTime,
+        entityCode: newEntityCode === undefined ? entityCode : newEntityCode
       });
       if (this.options.beforeOnChange && typeof this.options.beforeOnChange === 'function') {
         newProps = this.options.beforeOnChange(newProps, type, value);
@@ -120,6 +133,19 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
             showError: showError,
             disabled: disabled
           });
+        case ChecklistItemInput.FIELD.NUMERIC2:
+          return /*#__PURE__*/React.createElement(ChecklistFieldNumeric, {
+            value: checklistItem.numericValue2,
+            UOM: checklistItem.UOM,
+            minimumValue: checklistItem.minimumValue,
+            maximumValue: checklistItem.maximumValue,
+            handleChange: function handleChange(value, onFail) {
+              return _this.handleChange(ChecklistItemInput.FIELD.NUMERIC, value, onFail);
+            },
+            key: key,
+            showError: showError,
+            disabled: disabled
+          });
         case ChecklistItemInput.FIELD.ALPHANUMERIC:
           return /*#__PURE__*/React.createElement(ChecklistFieldAlphaNumeric, {
             value: checklistItem.freeText,
@@ -147,6 +173,16 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
             },
             key: key,
             disabled: disabled
+          });
+        case ChecklistItemInput.FIELD.ENTITY:
+          return /*#__PURE__*/React.createElement(EAMAutocomplete, {
+            value: checklistItem.entityCode,
+            desc: checklistItem.entityDesc,
+            onChange: function onChange(code) {
+              return _this.handleChange(ChecklistItemInput.FIELD.ENTITY, code, null);
+            },
+            autocompleteHandler: WSChecklists.autocompleteEntity,
+            autocompleteHandlerParams: [checklistItem.entityType]
           });
       }
     }
@@ -182,10 +218,12 @@ export { ChecklistItemInput as default };
 ChecklistItemInput.FIELD = {
   CHECKBOX: "CHECKBOX",
   NUMERIC: "NUMERIC",
+  NUMERIC2: "NUMERIC2",
   FINDING: "FINDING",
   ALPHANUMERIC: "ALPHANUMERIC",
   DATE: "DATE",
-  DATETIME: "DATETIME"
+  DATETIME: "DATETIME",
+  ENTITY: "ENTITY"
 };
 var SINGLE = {
   flex: "0 0 186px",
@@ -195,7 +233,8 @@ var SINGLE = {
 var SINGLE_EXPAND = {
   flex: "1 0 auto",
   marginLeft: "auto",
-  display: "flex"
+  display: "flex",
+  padding: "0 14px 0 10px"
 };
 var ROWS = {
   flex: "0 0 186px",
@@ -205,11 +244,10 @@ var ROWS = {
   flexDirection: "column"
 };
 var SAMELINE = {
-  flex: "0 0 186px",
   display: "flex",
   marginLeft: "auto",
   flexWrap: "wrap",
-  justifyContent: "space-between"
+  justifyContent: "space-evenly"
 };
 ChecklistItemInput.STYLE = {
   SINGLE: SINGLE,
