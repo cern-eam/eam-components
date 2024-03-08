@@ -100,10 +100,10 @@ export default class ChecklistItemInput extends Component {
             case ChecklistItemInput.FIELD.NUMERIC2:
                 return <ChecklistFieldNumeric
                     value={checklistItem.numericValue2}
-                    UOM={checklistItem.UOM}
+                    UOM={checklistItem.UOM2}
                     minimumValue={checklistItem.minimumValue}
                     maximumValue={checklistItem.maximumValue}
-                    handleChange={(value, onFail) => this.handleChange(ChecklistItemInput.FIELD.NUMERIC, value, onFail)}
+                    handleChange={(value, onFail) => this.handleChange(ChecklistItemInput.FIELD.NUMERIC2, value, onFail)}
                     key={key}
                     showError={showError}
                     disabled={disabled}
