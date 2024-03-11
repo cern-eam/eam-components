@@ -11,7 +11,7 @@ const ChecklistFieldNumeric = props => {
 
     const [inputValue, setInputValue] = useState(stringValue);
     const [lastUpdatedValue, setUpdatedValue] = useState(stringValue);
-    const [numericLimitError, setNumericLimitError] = useState(false);
+    const [numericError, setNumericError] = useState(false);
 
     useEffect(() => {
         if(stringValue !== inputValue) {
@@ -23,21 +23,23 @@ const ChecklistFieldNumeric = props => {
     useEffect(() => {
         if (!isNaN(inputValue)) {
             const floatValue = parseFloat(inputValue);
-            let numericLimitErrorDetected = true;
+            let numericErrorDetected = true;
             if(typeof minimumValue === 'number' && floatValue < minimumValue) {
-                setNumericLimitError(`Minimum value is ${minimumValue}${UOM}`);
+                setNumericError(`Minimum value is ${minimumValue}${UOM}`);
             } else if(typeof maximumValue === 'number' && floatValue > maximumValue) {
-                setNumericLimitError(`Maximum value is ${maximumValue}${UOM}`);
+                setNumericError(`Maximum value is ${maximumValue}${UOM}`);
             } else {
-                setNumericLimitError(false);
-                numericLimitErrorDetected = false;
+                setNumericError(false);
+                numericErrorDetected = false;
             }
 
-            if (changed && numericLimitErrorDetected) {
-                showError(numericLimitError);
+            if (changed && numericErrorDetected) {
+                showError(numericError);
             }
+        } else {
+            setNumericError("Not a valid number")
         }
-    }, [inputValue, numericLimitError, changed, showError]);
+    }, [inputValue, numericError, changed, showError]);
 
     const inputProps = {
         onChange: event => setInputValue(event.target.value),
@@ -59,10 +61,10 @@ const ChecklistFieldNumeric = props => {
             <TextField disabled={disabled}
                        inputProps={inputProps}
                        endTextAdornment={UOM}
+                       errorText={numericError}
                        style={{flex: "0 0 177px", marginTop: 5, marginBottom: 5}}
                        />
         </div>
-        {numericLimitError && <p style={{color: 'red', marginLeft: '20px'}}>{numericLimitError}</p>}
     </>;
 };
 
