@@ -19,6 +19,7 @@ const EAMBarcodeScanner = (props) => {
     const [videoInputDevices, setVideoInputDevices] = useState([]);
     const [currentDevice, setCurrentDevice] = useState("");
     const streamRef = useRef(null);
+    const permisionStreamRef = useRef(null);
     const openRef = useRef(false);
 
     useEffect(() => {
@@ -41,6 +42,7 @@ const EAMBarcodeScanner = (props) => {
     };
 
     const startScanner = async () => {
+        permisionStreamRef.current = await navigator.mediaDevices.getUserMedia({audio: false, video: true})
         try {
             const devices = await navigator.mediaDevices.enumerateDevices();
             if (devices.length > 0) {
@@ -91,6 +93,9 @@ const EAMBarcodeScanner = (props) => {
         codeReader.current.reset();
         if(streamRef.current) {
             streamRef.current.getTracks().forEach(track => track.stop());
+        }
+        if(permisionStreamRef.current) {
+            permisionStreamRef.current.getTracks().forEach(track => track.stop());
         }
     }
 
