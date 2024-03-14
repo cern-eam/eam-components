@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     TextField,
     Checkbox,
@@ -28,11 +28,14 @@ import {
 import { DatePicker, DateTimePicker } from "@material-ui/pickers";
 import {
     Clear as ClearIcon,
-    InsertInvitation as CalendarIcon
+    InsertInvitation as CalendarIcon,
+    Cancel as CancelIcon
   } from "@material-ui/icons";
 import { useAsyncDebounce, useMountedLayoutEffect } from "react-table";
 import { format as formatDate } from "date-fns";
 
+
+const ARRAY_SEPARATOR = "$$"
 
 const BootstrapInput = withStyles((theme) => ({
     root: {
@@ -47,15 +50,11 @@ const BootstrapInput = withStyles((theme) => ({
         '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
             borderBottom: '2px solid #c5c5c5',
         },
-        '& .MuiSelect-select:focus': {
-            backgroundColor: "white",
-            borderRadius: '4px',
-        }
     },
     input: {
         paddingLeft: '4px'
     }
-  }))(InputBase);
+}))(InputBase);
 
 const FilterTextField = withStyles({
     root: {
@@ -105,9 +104,11 @@ const isIndeterminate = (valueType) => valueType === null || valueType === CHECK
 const getEAMDefaultFilterValue = (column) => {
     const baseFitler = {
         fieldName: column.id,
-        fieldValue: undefined,
+        fieldValue: '',
         joiner: 'AND',
-        operator: OPERATORS.BEGINS
+        operator: OPERATORS.BEGINS,
+        leftParenthesis: false,
+        rightParenthesis: false,
     }
     switch(column.dataType){
         case 'DATE':
@@ -284,6 +285,8 @@ const EAMCellField = ({ column, value }) => {
 const EAMFilterField = ({ column, getDefaultValue = getEAMDefaultFilterValue }) => {
     const { dataType, filterValue: filter, setFilter } = column;
     const [localFilter, setLocalFilter] = useState(filter || getDefaultValue(column));
+    const [multiSelectFilter, setMultiSelectFilter] = useState({ ...(filter || getDefaultValue(column)), fieldValue: filter?.fieldValue ? [filter?.fieldValue] : [] });
+    const [multiFilterLabel, setMultiFilterLabel] = useState([]);
 
     useMountedLayoutEffect(() => setLocalFilter(filter || getDefaultValue(column)), [filter])
 
@@ -294,9 +297,47 @@ const EAMFilterField = ({ column, getDefaultValue = getEAMDefaultFilterValue }) 
         debouncedSetFilter(filter);
     }, [debouncedSetFilter]);
 
+    
+    //To set the filter labels and the multiFilterValues on initial render
+    useEffect(() => {
+        if (filter?.fieldValue.includes(ARRAY_SEPARATOR)) {
+            const fieldValues = filter?.fieldValue.split(ARRAY_SEPARATOR);
+            const uniqueFieldValues = Array.from(new Set(fieldValues));
+            const labels = uniqueFieldValues.map((code) => {
+                const fieldvalueOption = column.selectOptions.find(option => option.code === code)
+                return fieldvalueOption.desc;
+            })
+            setMultiSelectFilter((prevMultiSelectFilter) => ({ ...prevMultiSelectFilter, fieldValue: uniqueFieldValues }))
+            setMultiFilterLabel(labels);
+        }
+        else if(column?.selectOptions) {
+            const fieldvalueOption = column.selectOptions.find(option => option.code === filter?.fieldValue)
+            setMultiFilterLabel([fieldvalueOption?.desc] || []);
+        }
+    }, [])
+
+    const updateMultiSelectFilter =  React.useCallback((fieldValueFilter) => {
+        setMultiSelectFilter((prev) => ({ ...prev, fieldValue: fieldValueFilter }));
+        setMultiSelectFilter((prev) => ({ ...prev, joiner: "OR" }))
+        debouncedSetFilter({ ...multiSelectFilter, fieldValue: fieldValueFilter });
+    }, [debouncedSetFilter, multiSelectFilter]);
+
     const handleFilterTextFieldChange = React.useCallback(
         e => updateFilter({ ...localFilter, fieldValue: e.target.value })
     , [localFilter, updateFilter]);
+    
+    const handleMultiFilterCheckboxChange = React.useCallback((event, value, label) => {
+        if (event.target.checked) {
+            const multiSelectValues = multiSelectFilter.fieldValue ?? [];
+            multiSelectValues.push(value);
+            setMultiFilterLabel((prev) => ([...prev, label]))
+            updateMultiSelectFilter(multiSelectValues);
+        }
+        else {
+            setMultiFilterLabel((prev) => prev.filter(item => item !== label))
+            updateMultiSelectFilter(multiSelectFilter.fieldValue.filter(item => item !== value));
+        }
+    }, [multiSelectFilter, updateMultiSelectFilter])
 
     const handleCheckboxChange = React.useCallback(() => {
         const values = [CHECKBOX_FILTERS.CHECKED, CHECKBOX_FILTERS.UNCHECKED, CHECKBOX_FILTERS.INDETERMINATE];
@@ -410,6 +451,26 @@ const EAMFilterField = ({ column, getDefaultValue = getEAMDefaultFilterValue }) 
                             {column.getOptionLabel(e)}
                         </option>
                     ))}
+                </Select>
+            )
+        case "__MULTISELECT":
+            return (
+                <Select
+                    multiple
+                    value={multiFilterLabel}
+                    input={<BootstrapInput />}
+                    renderValue={() => multiFilterLabel.join(',')}
+                    MenuProps={{ variant: "menu", style: { top: 54 } }}
+                >
+                    {column?.selectOptions?.map(e => (
+                        <MenuItem value={column.getOptionValue(e)} key={column.getOptionValue(e)}>
+                            <Checkbox checked={(multiSelectFilter?.fieldValue.indexOf(column.getOptionValue(e))) > -1} onChange={(event) => {
+                                handleMultiFilterCheckboxChange(event, column.getOptionValue(e), column.getOptionLabel(e))
+                            }} />
+                                <ListItemText primary={column.getOptionLabel(e)} />
+                        </MenuItem>
+                        )
+                    )}
                 </Select>
             )
         default:
