@@ -190,8 +190,11 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
             },
             key: key,
             disabled: disabled,
+            endAdornmentStyle: {
+              marginRight: "1px"
+            },
             style: {
-              marginRight: "-10px"
+              marginRight: "0px"
             }
           });
         case ChecklistItemInput.FIELD.DATETIME:
@@ -202,8 +205,11 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
             },
             key: key,
             disabled: disabled,
+            endAdornmentStyle: {
+              marginRight: "1px"
+            },
             style: {
-              marginRight: "-10px"
+              marginRight: "0px"
             }
           });
         case ChecklistItemInput.FIELD.ENTITY:
@@ -249,6 +255,9 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
         _iterator.f();
       }
       return /*#__PURE__*/React.createElement("div", {
+        onClick: function onClick(event) {
+          return event.stopPropagation();
+        },
         style: options.style || ChecklistItemInput.STYLE.ROWS
       }, fieldsRender);
     }

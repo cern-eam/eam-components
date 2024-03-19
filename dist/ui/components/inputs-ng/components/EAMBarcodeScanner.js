@@ -37,6 +37,7 @@ var EAMBarcodeScanner = function EAMBarcodeScanner(props) {
     currentDevice = _useState8[0],
     setCurrentDevice = _useState8[1];
   var streamRef = useRef(null);
+  var permisionStreamRef = useRef(null);
   var openRef = useRef(false);
   useEffect(function () {
     navigator.mediaDevices?.enumerateDevices().then(function (deviceCount) {
@@ -59,13 +60,20 @@ var EAMBarcodeScanner = function EAMBarcodeScanner(props) {
     return _regeneratorRuntime().async(function startScanner$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
-          _context.prev = 0;
-          _context.next = 3;
+          _context.next = 2;
+          return _regeneratorRuntime().awrap(navigator.mediaDevices.getUserMedia({
+            audio: false,
+            video: true
+          }));
+        case 2:
+          permisionStreamRef.current = _context.sent;
+          _context.prev = 3;
+          _context.next = 6;
           return _regeneratorRuntime().awrap(navigator.mediaDevices.enumerateDevices());
-        case 3:
+        case 6:
           devices = _context.sent;
           if (!(devices.length > 0)) {
-            _context.next = 12;
+            _context.next = 15;
             break;
           }
           videoDevices = devices.filter(function (d) {
@@ -77,20 +85,20 @@ var EAMBarcodeScanner = function EAMBarcodeScanner(props) {
           })?.deviceId ?? videoDevices[0].deviceId;
           setVideoInputDevices(videoDevices);
           setCurrentDevice(selectedDevice);
-          _context.next = 12;
+          _context.next = 15;
           return _regeneratorRuntime().awrap(startDecoding(selectedDevice));
-        case 12:
-          _context.next = 17;
+        case 15:
+          _context.next = 20;
           break;
-        case 14:
-          _context.prev = 14;
-          _context.t0 = _context["catch"](0);
-          console.error(_context.t0);
         case 17:
+          _context.prev = 17;
+          _context.t0 = _context["catch"](3);
+          console.error(_context.t0);
+        case 20:
         case "end":
           return _context.stop();
       }
-    }, null, null, [[0, 14]], Promise);
+    }, null, null, [[3, 17]], Promise);
   };
   var startDecoding = function startDecoding(device) {
     var stream, result;
@@ -134,6 +142,7 @@ var EAMBarcodeScanner = function EAMBarcodeScanner(props) {
     }, null, null, [[0, 12, 15, 18]], Promise);
   };
   var handleDeviceChange = function handleDeviceChange(device) {
+    codeReader.current.reset();
     setCurrentDevice(device);
     startDecoding(device);
     localStorage.setItem("videoInputDevice", device);
@@ -151,6 +160,11 @@ var EAMBarcodeScanner = function EAMBarcodeScanner(props) {
     codeReader.current.reset();
     if (streamRef.current) {
       streamRef.current.getTracks().forEach(function (track) {
+        return track.stop();
+      });
+    }
+    if (permisionStreamRef.current) {
+      permisionStreamRef.current.getTracks().forEach(function (track) {
         return track.stop();
       });
     }

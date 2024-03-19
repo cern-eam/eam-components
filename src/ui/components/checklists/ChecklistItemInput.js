@@ -144,7 +144,8 @@ export default class ChecklistItemInput extends Component {
                     onChange={value => this.handleChange(ChecklistItemInput.FIELD.DATE, value, null)}
                     key={key}
                     disabled={disabled}
-                    style={{marginRight: "-10px"}}
+                    endAdornmentStyle={{marginRight: "1px"}}
+                    style={{marginRight: "0px"}}
                 />
             case ChecklistItemInput.FIELD.DATETIME:
                 return <EAMDateTimePicker
@@ -152,7 +153,8 @@ export default class ChecklistItemInput extends Component {
                     onChange={value => this.handleChange(ChecklistItemInput.FIELD.DATETIME, value, null)}
                     key={key}
                     disabled={disabled}
-                    style={{marginRight: "-10px"}}
+                    endAdornmentStyle={{marginRight: "1px"}}
+                    style={{marginRight: "0px"}}
                 />
             case ChecklistItemInput.FIELD.ENTITY:
                 return <EAMAutocomplete
@@ -180,7 +182,7 @@ export default class ChecklistItemInput extends Component {
             fieldsRender.push(this.renderField(field, ++key));
         }
 
-        return <div style={options.style || ChecklistItemInput.STYLE.ROWS}>
+        return <div onClick={(event) => event.stopPropagation()} style={options.style || ChecklistItemInput.STYLE.ROWS}>
             {fieldsRender}
         </div>
     }

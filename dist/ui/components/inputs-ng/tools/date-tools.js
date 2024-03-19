@@ -6,7 +6,7 @@ function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _ty
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 import TextField from "../components/TextField";
 import React from 'react';
-export var renderDatePickerInput = function renderDatePickerInput(_ref, isInvalidDate, style, errorText, disabled) {
+export var renderDatePickerInput = function renderDatePickerInput(_ref, isInvalidDate, style, errorText, disabled, endAdornmentStyle) {
   var inputRef = _ref.inputRef,
     inputProps = _ref.inputProps,
     InputProps = _ref.InputProps;
@@ -14,10 +14,10 @@ export var renderDatePickerInput = function renderDatePickerInput(_ref, isInvali
     errorText = "Wrong Date format";
   }
   var endAdornment = /*#__PURE__*/React.createElement("div", {
-    style: {
+    style: _objectSpread({
       marginRight: 12,
       marginLeft: -8
-    }
+    }, endAdornmentStyle)
   }, InputProps?.endAdornment);
   return /*#__PURE__*/React.createElement(TextField, {
     style: style,

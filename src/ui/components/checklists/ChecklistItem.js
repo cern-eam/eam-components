@@ -371,7 +371,7 @@ export default class ChecklistItem extends Component {
         backgroundColor: color ? `#${color}` : undefined,
         borderLeft: color ? `#${color}` : undefined,
         width: '3px',
-        margin: '10px -2px 10px 2px', 
+        margin: '8px -2px 8px 2px', 
         borderRadius: '30px',
         flexShrink: 0
     })
@@ -401,8 +401,8 @@ export default class ChecklistItem extends Component {
             <div style={this.containerStyle(this.state.blocked, isLastItem, checklistItem.color)}>
                 <div style={this.colorStyle(checklistItem.color)}></div>
                 <div style={this.getCheckListItemStyle(this.state.blocked)}>
-                    <div style={this.firstLine}>
-                        <div style={this.firstLineDesc} onClick={this.descClickHandler.bind(this)}>
+                    <div style={this.firstLine} onClick={this.descClickHandler.bind(this)}>
+                        <div style={this.firstLineDesc}>
                             {this.state.detailsVisible ? <ExpandLessIcon style={{color: "#b0b0b0"}}/> : <ExpandMoreIcon style={{color: "#b0b0b0"}}/>}
                             <label>{checklistItem.desc}</label>
                             {checklistItem.requiredToClose === true && <label style={{color: "red"}}> *</label>}

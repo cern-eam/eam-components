@@ -74,7 +74,7 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
         backgroundColor: color ? "#".concat(color) : undefined,
         borderLeft: color ? "#".concat(color) : undefined,
         width: '3px',
-        margin: '10px -2px 10px 2px',
+        margin: '8px -2px 8px 2px',
         borderRadius: '30px',
         flexShrink: 0
       };
@@ -456,10 +456,10 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       }), /*#__PURE__*/React.createElement("div", {
         style: this.getCheckListItemStyle(this.state.blocked)
       }, /*#__PURE__*/React.createElement("div", {
-        style: this.firstLine
-      }, /*#__PURE__*/React.createElement("div", {
-        style: this.firstLineDesc,
+        style: this.firstLine,
         onClick: this.descClickHandler.bind(this)
+      }, /*#__PURE__*/React.createElement("div", {
+        style: this.firstLineDesc
       }, this.state.detailsVisible ? /*#__PURE__*/React.createElement(ExpandLessIcon, {
         style: {
           color: "#b0b0b0"
