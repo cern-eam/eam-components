@@ -39,7 +39,7 @@ const EAMBaseInput = (props) => {
 
     return (<RootDiv style={props.rootStyle}>
         {label &&
-        <LabelDiv>
+        <LabelDiv style={props.labelStyle}>
             <span>{label}</span>
             {required && <span style={requiredStyle}>*</span>}
         </LabelDiv>}

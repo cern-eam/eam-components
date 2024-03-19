@@ -26,7 +26,8 @@ var ChecklistEquipment = /*#__PURE__*/function (_Component) {
     _this.mainStyle = {
       marginTop: 1,
       display: "flex",
-      justifyContent: "center",
+      justifyContent: "flex-start",
+      marginLeft: '-8px',
       alignItems: "center",
       width: "100%"
     };

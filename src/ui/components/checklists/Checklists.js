@@ -4,6 +4,7 @@ import MuiExpansionPanel from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import AddIcon from '@mui/icons-material/Add';
 import WSChecklists from '../../../tools/WSChecklists';
 import ChecklistEquipment from "./ChecklistEquipment";
 import ChecklistItem from './ChecklistItem';
@@ -16,6 +17,7 @@ import Paper from '@mui/material/Paper';
 import Dialog from '@mui/material/Dialog';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import Collapse from '@mui/material/Collapse';
 
 const SIGNATURE_TYPES = {
     PERFORMER_1: 'PB01',
@@ -32,7 +34,9 @@ const SIGNATURE_ORDER = {
 const ActivityExpansionPanel = withStyles({
     root: {
         backgroundColor: '#fafafa',
-        //border: '1px solid #eeeeee',
+        marginTop: '10px',
+        outline: '1px solid #e0e0e0',
+        borderRadius: '5px',
         boxShadow: 'none',
         '&:last-child:not(:only-child)': {
             borderBottom: 0,
@@ -100,6 +104,8 @@ class Checklists extends Component {
             signaturesCollapsed: {},
             checklistsHidden: {},
             expandChecklistOptions: false,
+            expandChecklists: false,
+            expandActivities: false
         }
     }
 
@@ -141,7 +147,7 @@ class Checklists extends Component {
     }
 
     readActivities(workorder) {
-        const { getWorkOrderActivities, hideFilledItems, activity } = this.props;
+        const { getWorkOrderActivities, showFilledItems, activity } = this.props;
 
         getWorkOrderActivities(workorder)
             .then(response => {
@@ -154,7 +160,7 @@ class Checklists extends Component {
                     activities,
                     blocking: false
                 }, () => {
-                    if (hideFilledItems) {
+                    if (!showFilledItems) {
                         this.toggleFilledFilter();
                     }
 
@@ -249,19 +255,19 @@ class Checklists extends Component {
             (eqpToOtherId?.[equipmentCode] ? ` — ${eqpToOtherId[equipmentCode]}` : '')
 
         return <EquipmentExpansionPanel
-        style={{width: "100%", border: "1px solid #e0e0e0", borderRadius: "10px"}}
+        style={{width: "100%", outline: "1px solid #e0e0e0", borderRadius: "5px"}}
                 key={key}
                 expanded={!collapsed}
                 TransitionProps={{ unmountOnExit: true, timeout: 0 }}
                 onChange={(_, expanded) => this.setCollapsedEquipment(!expanded, activity.index, equipmentCode)}>
-            <AccordionSummary style={{borderBottom: "3px solid #e0e0e0", borderRadius: "10px"}} expandIcon={<ExpandMoreIcon/>}>
+            <AccordionSummary style={{outline: "1px solid #e0e0e0", borderRadius: "5px", marginTop: "5px"}} expandIcon={<ExpandMoreIcon/>}>
                 <ChecklistEquipment 
                     key={firstChecklist.checkListCode + "_equipment"}
                     description={equipmentChecklistDesc}/>
             </AccordionSummary>
-            <AccordionDetails style={{marginTop: -2, padding: "0"}}>
+            <AccordionDetails style={{padding: "0"}}>
                 <div style={{width: "100%"}}>
-                    {checklists.map(checklist => <ChecklistItem 
+                    {checklists.map((checklist, index) => <ChecklistItem 
                         key={'checklistItem$' + checklist.checkListCode}
                         updateChecklistItem={updateChecklistItem}
                         onUpdateChecklistItem={this.onUpdateChecklistItem}
@@ -273,8 +279,10 @@ class Checklists extends Component {
                         getWoLink={getWoLink}
                         resetSignatures={this.resetSignatures}
                         disabled={isDisabled}
+                        isLastItem={index === checklists.length - 1}
                         hideFollowUpProp={this.props.hideFollowUpProp}
                         expandChecklistOptions={expandChecklistOptions}
+                        register={this.props.register}
                     />)}
                 </div>
             </AccordionDetails>
@@ -425,35 +433,34 @@ class Checklists extends Component {
                     expanded={!activity.collapsed}
                     TransitionProps={{ unmountOnExit: true, timeout: 0 }}
                     onChange={(_, expanded) => this.setCollapsedActivity(!expanded, activity.index)}
-                    style={{marginTop: '5px'}}>
-                    <AccordionSummary expandIcon={
-                        <ExpandMoreIcon/>}>
-                        <div style={{padding: 2,
-                            flexGrow: "1",
-                            display: "flex",
-                            alignItems: "center"
-                        }}>
-                            <span style={{fontWeight: 500, flexBasis: "60%"}}>{activity.activityCode} — {activity.activityNote}</span>
-                            {!this.props.hideFollowUpProp && activity.checklists.some(checklist => !checklist.hideFollowUp) && <Button 
-                                key={activity.activityCode + '$createfuwo'}
-                                onClick={evt => {
-                                    evt.stopPropagation();
-                                    this.showCreateFollowUpWODialog(activity)
-                                }} 
-                                color="primary" 
-                                variant="outlined"
-                                style={{marginLeft: 'auto'}}
-                                disabled={this.props.disabled
-                                    || activity.checklists.every(
-                                        checklist => typeof checklist.followUpWorkOrder === 'string'
-                                        || checklist.followUp === false)
-                                }>
-                                Create Follow-up WO
-                            </Button>}
-                        </div>
-                    </AccordionSummary>
-                    
-                    <AccordionDetails style={{margin: 0, padding: 0}}>
+                    style={{marginTop: '10px'}}>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                    <div style={{ padding: 0, flexGrow: 1, display: "flex", alignItems: "center", justifyContent: "space-between"}}>
+                        <span style={{ fontWeight: 'bold', flexBasis: "66%", fontSize: 14, color: '#333' }}>{activity.activityCode} — {activity.activityNote}</span>
+                        {!this.props.hideFollowUpProp && activity.checklists.some(checklist => !checklist.hideFollowUp) && (
+                            <div style={{flexShrink: 0}}>
+                                <Button
+                                    key={`${activity.activityCode}$createfuwo`}
+                                    onClick={evt => {
+                                        evt.stopPropagation();
+                                        this.showCreateFollowUpWODialog(activity);
+                                    }}
+                                    color="primary"
+                                    variant="outlined"
+                                    size="small"
+                                    style={{ fontSize: '10px', marginRight: '8px'}}
+                                    disabled={this.props.disabled || activity.checklists.every(
+                                        checklist => typeof checklist.followUpWorkOrder === 'string' || checklist.followUp === false
+                                    )}
+                                >
+                                    <AddIcon style={{marginLeft: '-8px'}}></AddIcon>
+                                    Follow-up WO
+                                </Button>
+                            </div>
+                        )}
+                    </div>
+                    </AccordionSummary>                
+                    <AccordionDetails style={{marginTop: "-5px", padding: 2}}>
                         <div style={{width: "100%"}}>{this.renderChecklistsForActivity(activity, filteredEquipment)}
                         </div>
                     </AccordionDetails>
@@ -534,7 +541,7 @@ class Checklists extends Component {
             checklistsHidden: Object.keys(prevState.checklistsHidden).length > 0 ? {} : Object.fromEntries(prevState.activities
                 .map(activity => activity.checklists)
                 .flat(1)
-                .map(({checkListCode, result, finding, numericValue}) => [checkListCode, result || finding || numericValue]))
+                .map(({checkListCode, result, finding, numericValue, freeText, date, dateTime, entityCode}) => [checkListCode, result || finding || numericValue || date || dateTime || entityCode || freeText]))
         }), () => Object.keys(this.state.checklistsHidden).length === 0 && this.setNewFilter({
             activity: {code: this.state.filteredActivity},
             equipment: {code: this.state.filteredEquipment}
@@ -544,6 +551,34 @@ class Checklists extends Component {
     toggleExpandChecklistOptions = () => {
         this.setState((prevState) => ({
             expandChecklistOptions: !prevState.expandChecklistOptions
+        }));
+    }
+
+    toggleExpandActivities = () => {
+        this.setState((prevState) => ({
+            expandActivities: !prevState.expandActivities,
+            activities: prevState.activities.map(activity => ({
+                ...activity,
+                collapsed: prevState.expandActivities
+            }))
+        }));
+    }
+
+    toggleExpandChecklists = () => {
+        this.setState((prevState) => ({
+            expandChecklists: !prevState.expandChecklists,
+            activities: prevState.activities.map(activity => ({
+                ...activity,
+                equipments: Object.fromEntries(Object.entries(activity.equipments).map(([equipmentCode, equipment]) => {
+                    return [equipmentCode, { ...equipment, collapsed: prevState.expandChecklists }];
+                }))
+            }))
+        }));
+    }
+
+    toggleOptions = () => {
+        this.setState((prevState) => ({
+            showChecklistsOptions: !prevState.showChecklistsOptions
         }));
     }
 
@@ -597,30 +632,53 @@ class Checklists extends Component {
                     : (
                         <div style={divStyle}>
                             <BlockUi blocking={blocking}>
-                                <div style={{display: 'flex', justifyContent: 'start'}}>
-                                    <div style={{flexBasis: '75px'}}>
-                                        {this.props.topSlot}
-                                    </div>
-                                    {!blocking && <FormControlLabel
-                                        control={<Checkbox
-                                            color="primary"
-                                            checked={Object.keys(this.state.checklistsHidden).length > 0}
+                                <div style={{ display:'flex', gap: '20px', justifyContent: 'flex-end'}}>
+                                    <Collapse  in={this.props.expandChecklistsOptions}>
+                                        <div style={{display: 'flex', justifyContent: 'flex-end', flexWrap: 'wrap', paddingRight: 8}}>
+                                            {!blocking && <FormControlLabel
+                                                control={<Checkbox
+                                                    color="primary"
+                                                    checked={this.state.expandActivities}
+                                                    />}
+                                                label={'Expand Activities'}
+                                                labelPlacement="start"
+                                                onMouseDown={this.toggleExpandActivities}
+                                                onTouchStart={this.toggleExpandActivities}
                                             />}
-                                        label={'Hide filled items'}
-                                        onMouseDown={this.toggleFilledFilter}
-                                        onTouchStart={this.toggleFilledFilter}
-                                    />}
-                                    {!blocking && <FormControlLabel
-                                        control={<Checkbox
-                                            color="primary"
-                                            checked={this.state.expandChecklistOptions}
+                                            {!blocking && <FormControlLabel
+                                                control={<Checkbox
+                                                    color="primary"
+                                                    checked={this.state.expandChecklists}
+                                                    />}
+                                                label={'Expand Checklists'}
+                                                labelPlacement="start"
+                                                onMouseDown={this.toggleExpandChecklists}
+                                                onTouchStart={this.toggleExpandChecklists}
                                             />}
-                                        label={'Expand Checklist Options'}
-                                        onMouseDown={this.toggleExpandChecklistOptions}
-                                        onTouchStart={this.toggleExpandChecklistOptions}
-                                    />}
+                                            {!blocking && <FormControlLabel
+                                                control={<Checkbox
+                                                    color="primary"
+                                                    checked={this.state.expandChecklistOptions}
+                                                    />}
+                                                label={'Show Checklist Options'}
+                                                labelPlacement="start"
+                                                onMouseDown={this.toggleExpandChecklistOptions}
+                                                onTouchStart={this.toggleExpandChecklistOptions}
+                                            />}
+                                            {!blocking && <FormControlLabel
+                                                control={<Checkbox
+                                                    color="primary"
+                                                    checked={Object.keys(this.state.checklistsHidden).length == 0}
+                                                    />}
+                                                label={'Show filled items'}
+                                                labelPlacement="start"
+                                                onMouseDown={this.toggleFilledFilter}
+                                                onTouchStart={this.toggleFilledFilter}
+                                            />}
+                                        </div>
+                                    </Collapse>
                                 </div>
-                                <div style={{paddingLeft: 25, paddingRight: 25}}>
+                                <div style={{alignItems: 'center', paddingLeft: '16px'}}>
                                     {activities.length > 1 && <EAMSelect
                                         selectOnlyMode
                                         label={"Activity"}

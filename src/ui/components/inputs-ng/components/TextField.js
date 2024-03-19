@@ -41,7 +41,7 @@ const TextField = (props) => {
         inputProps,
         inputRef,
         endTextAdornment, endAdornment,
-        hideDescription, disabled, maxLength, uppercase, errorText, style, type} = props;
+        hideDescription, disabled, maxLength, uppercase, errorText, style, type, rightAlign} = props;
 
     const onInputUpperCaseHandler = event => {
         var input = event.target;
@@ -71,7 +71,7 @@ const TextField = (props) => {
                 </div>
                 <div onClick={event => event.stopPropagation() /* If we don't stop the propagation the input focuses on clicking in this area */ } style={{display: "flex"}}> 
                     {endAdornment}
-                    {barcodeScanner && !disabled && <EAMBarcodeScanner onChange={onChange} />}
+                    {barcodeScanner && !disabled && <EAMBarcodeScanner rightAlign={rightAlign} onChange={onChange} />}
                     {link && <EAMLink link = {link} value = {value}/>}
                 </div>
             </div>

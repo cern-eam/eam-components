@@ -28,8 +28,8 @@ class WSChecklists {
         return WS._get(`/checklists/definition/${taskCode}/${checklistDefinitionCode}`, config);
     }
 
-    autocompleteEntity = (entityType, filter, config = {}) => {
-        return WS._get(`/autocomplete/entity?s=${filter}&entityType=${entityType}`, config);
+    autocompleteEntity = (entityType, entityClass, filter, config = {}) => {
+        return WS._get(`/autocomplete/entity?s=${filter}&entityType=${entityType}&entityClass=${entityClass}`, config);
     };
 }
 

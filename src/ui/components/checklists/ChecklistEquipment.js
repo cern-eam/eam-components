@@ -6,7 +6,8 @@ export default class ChecklistEquipment extends Component {
     mainStyle = {
         marginTop: 1,
         display: "flex",
-        justifyContent: "center",
+        justifyContent: "flex-start",
+        marginLeft: '-8px',
         alignItems: "center",
         width: "100%"
     }

@@ -14,7 +14,6 @@ const textAreaStyle = {
 };
 
 const outerStyle = {
-    margin: 5,
     marginLeft: 17,
     display: "flex",
     flex: "1 1 auto"

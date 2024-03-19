@@ -1,5 +1,5 @@
 import React from 'react';
-import Checkbox from '@mui/material/Checkbox';
+import Radio from '@mui/material/Radio';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import withStyles from '@mui/styles/withStyles';
 
@@ -10,13 +10,13 @@ const labelStyle = {
     }
 };
 
-const ChecklistFieldCheckbox = props => {
+const ChecklistFieldRadio = props => {
     const {code, desc, checked, handleChange, classes, disabled} = props;
 
     return <FormControlLabel
         classes={{root: classes.root,label: classes.label}}
         control={
-            <Checkbox
+            <Radio
                 color="primary"
                 checked={checked}
                 onMouseDown={() => handleChange(code)}
@@ -28,4 +28,4 @@ const ChecklistFieldCheckbox = props => {
     />
 };
 
-export default withStyles(labelStyle)(ChecklistFieldCheckbox);
+export default withStyles(labelStyle)(ChecklistFieldRadio);

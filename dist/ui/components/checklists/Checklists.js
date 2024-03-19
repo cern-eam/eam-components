@@ -1,5 +1,9 @@
 var _SIGNATURE_ORDER;
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -27,6 +31,7 @@ import MuiExpansionPanel from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import AddIcon from '@mui/icons-material/Add';
 import WSChecklists from '../../../tools/WSChecklists';
 import ChecklistEquipment from "./ChecklistEquipment";
 import ChecklistItem from './ChecklistItem';
@@ -39,6 +44,7 @@ import Paper from '@mui/material/Paper';
 import Dialog from '@mui/material/Dialog';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import Collapse from '@mui/material/Collapse';
 var SIGNATURE_TYPES = {
   PERFORMER_1: 'PB01',
   PERFORMER_2: 'PB02',
@@ -48,7 +54,9 @@ var SIGNATURE_ORDER = (_SIGNATURE_ORDER = {}, _defineProperty(_SIGNATURE_ORDER, 
 var ActivityExpansionPanel = withStyles({
   root: {
     backgroundColor: '#fafafa',
-    //border: '1px solid #eeeeee',
+    marginTop: '10px',
+    outline: '1px solid #e0e0e0',
+    borderRadius: '5px',
     boxShadow: 'none',
     '&:last-child:not(:only-child)': {
       borderBottom: 0
@@ -243,8 +251,12 @@ var Checklists = /*#__PURE__*/function (_Component) {
             var checkListCode = _ref2.checkListCode,
               result = _ref2.result,
               finding = _ref2.finding,
-              numericValue = _ref2.numericValue;
-            return [checkListCode, result || finding || numericValue];
+              numericValue = _ref2.numericValue,
+              freeText = _ref2.freeText,
+              date = _ref2.date,
+              dateTime = _ref2.dateTime,
+              entityCode = _ref2.entityCode;
+            return [checkListCode, result || finding || numericValue || date || dateTime || entityCode || freeText];
           }))
         };
       }, function () {
@@ -265,6 +277,44 @@ var Checklists = /*#__PURE__*/function (_Component) {
         };
       });
     };
+    _this.toggleExpandActivities = function () {
+      _this.setState(function (prevState) {
+        return {
+          expandActivities: !prevState.expandActivities,
+          activities: prevState.activities.map(function (activity) {
+            return _objectSpread({}, activity, {
+              collapsed: prevState.expandActivities
+            });
+          })
+        };
+      });
+    };
+    _this.toggleExpandChecklists = function () {
+      _this.setState(function (prevState) {
+        return {
+          expandChecklists: !prevState.expandChecklists,
+          activities: prevState.activities.map(function (activity) {
+            return _objectSpread({}, activity, {
+              equipments: Object.fromEntries(Object.entries(activity.equipments).map(function (_ref3) {
+                var _ref4 = _slicedToArray(_ref3, 2),
+                  equipmentCode = _ref4[0],
+                  equipment = _ref4[1];
+                return [equipmentCode, _objectSpread({}, equipment, {
+                  collapsed: prevState.expandChecklists
+                })];
+              }))
+            });
+          })
+        };
+      });
+    };
+    _this.toggleOptions = function () {
+      _this.setState(function (prevState) {
+        return {
+          showChecklistsOptions: !prevState.showChecklistsOptions
+        };
+      });
+    };
     _this.state = {
       activities: [],
       blocking: true,
@@ -273,7 +323,9 @@ var Checklists = /*#__PURE__*/function (_Component) {
       filteredEquipment: null,
       signaturesCollapsed: {},
       checklistsHidden: {},
-      expandChecklistOptions: false
+      expandChecklistOptions: false,
+      expandChecklists: false,
+      expandActivities: false
     };
     return _this;
   }
@@ -295,7 +347,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
       var _this2 = this;
       var _this$props = this.props,
         getWorkOrderActivities = _this$props.getWorkOrderActivities,
-        hideFilledItems = _this$props.hideFilledItems,
+        showFilledItems = _this$props.showFilledItems,
         activity = _this$props.activity;
       getWorkOrderActivities(workorder).then(function (response) {
         var activities = getExpandedActivities(response.body.data);
@@ -307,7 +359,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
           activities: activities,
           blocking: false
         }, function () {
-          if (hideFilledItems) {
+          if (!showFilledItems) {
             _this2.toggleFilledFilter();
           }
           if (activity) {
@@ -362,8 +414,8 @@ var Checklists = /*#__PURE__*/function (_Component) {
       return /*#__PURE__*/React.createElement(EquipmentExpansionPanel, {
         style: {
           width: "100%",
-          border: "1px solid #e0e0e0",
-          borderRadius: "10px"
+          outline: "1px solid #e0e0e0",
+          borderRadius: "5px"
         },
         key: key,
         expanded: !collapsed,
@@ -376,8 +428,9 @@ var Checklists = /*#__PURE__*/function (_Component) {
         }
       }, /*#__PURE__*/React.createElement(AccordionSummary, {
         style: {
-          borderBottom: "3px solid #e0e0e0",
-          borderRadius: "10px"
+          outline: "1px solid #e0e0e0",
+          borderRadius: "5px",
+          marginTop: "5px"
         },
         expandIcon: /*#__PURE__*/React.createElement(ExpandMoreIcon, null)
       }, /*#__PURE__*/React.createElement(ChecklistEquipment, {
@@ -385,14 +438,13 @@ var Checklists = /*#__PURE__*/function (_Component) {
         description: equipmentChecklistDesc
       })), /*#__PURE__*/React.createElement(AccordionDetails, {
         style: {
-          marginTop: -2,
           padding: "0"
         }
       }, /*#__PURE__*/React.createElement("div", {
         style: {
           width: "100%"
         }
-      }, checklists.map(function (checklist) {
+      }, checklists.map(function (checklist, index) {
         return /*#__PURE__*/React.createElement(ChecklistItem, {
           key: 'checklistItem$' + checklist.checkListCode,
           updateChecklistItem: updateChecklistItem,
@@ -405,8 +457,10 @@ var Checklists = /*#__PURE__*/function (_Component) {
           getWoLink: getWoLink,
           resetSignatures: _this3.resetSignatures,
           disabled: isDisabled,
+          isLastItem: index === checklists.length - 1,
           hideFollowUpProp: _this3.props.hideFollowUpProp,
-          expandChecklistOptions: expandChecklistOptions
+          expandChecklistOptions: expandChecklistOptions,
+          register: _this3.props.register
         });
       }))));
     }
@@ -419,8 +473,8 @@ var Checklists = /*#__PURE__*/function (_Component) {
       var isDisabled = this.props.disabled || signatures && signatures[SIGNATURE_TYPES.PERFORMER_1] && !signatures[SIGNATURE_TYPES.PERFORMER_1].viewAsPerformer && signatures[SIGNATURE_TYPES.PERFORMER_2] && !signatures[SIGNATURE_TYPES.PERFORMER_2].viewAsPerformer;
       var checklists = originalChecklists.filter(function (checklist) {
         return !filteredEquipment || checklist.equipmentCode === filteredEquipment;
-      }).filter(function (_ref3) {
-        var checkListCode = _ref3.checkListCode;
+      }).filter(function (_ref5) {
+        var checkListCode = _ref5.checkListCode;
         return !checklistsHidden[checkListCode];
       });
       if (checklists.length === 0) {
@@ -517,42 +571,55 @@ var Checklists = /*#__PURE__*/function (_Component) {
             return _this6.setCollapsedActivity(!expanded, activity.index);
           },
           style: {
-            marginTop: '5px'
+            marginTop: '10px'
           }
         }, /*#__PURE__*/React.createElement(AccordionSummary, {
           expandIcon: /*#__PURE__*/React.createElement(ExpandMoreIcon, null)
         }, /*#__PURE__*/React.createElement("div", {
           style: {
-            padding: 2,
-            flexGrow: "1",
+            padding: 0,
+            flexGrow: 1,
             display: "flex",
-            alignItems: "center"
+            alignItems: "center",
+            justifyContent: "space-between"
           }
         }, /*#__PURE__*/React.createElement("span", {
           style: {
-            fontWeight: 500,
-            flexBasis: "60%"
+            fontWeight: 'bold',
+            flexBasis: "66%",
+            fontSize: 14,
+            color: '#333'
           }
         }, activity.activityCode, " \u2014 ", activity.activityNote), !_this6.props.hideFollowUpProp && activity.checklists.some(function (checklist) {
           return !checklist.hideFollowUp;
-        }) && /*#__PURE__*/React.createElement(Button, {
-          key: activity.activityCode + '$createfuwo',
+        }) && /*#__PURE__*/React.createElement("div", {
+          style: {
+            flexShrink: 0
+          }
+        }, /*#__PURE__*/React.createElement(Button, {
+          key: "".concat(activity.activityCode, "$createfuwo"),
           onClick: function onClick(evt) {
             evt.stopPropagation();
             _this6.showCreateFollowUpWODialog(activity);
           },
           color: "primary",
           variant: "outlined",
+          size: "small",
           style: {
-            marginLeft: 'auto'
+            fontSize: '10px',
+            marginRight: '8px'
           },
           disabled: _this6.props.disabled || activity.checklists.every(function (checklist) {
             return typeof checklist.followUpWorkOrder === 'string' || checklist.followUp === false;
           })
-        }, "Create Follow-up WO"))), /*#__PURE__*/React.createElement(AccordionDetails, {
+        }, /*#__PURE__*/React.createElement(AddIcon, {
           style: {
-            margin: 0,
-            padding: 0
+            marginLeft: '-8px'
+          }
+        }), "Follow-up WO")))), /*#__PURE__*/React.createElement(AccordionDetails, {
+          style: {
+            marginTop: "-5px",
+            padding: 2
           }
         }, /*#__PURE__*/React.createElement("div", {
           style: {
@@ -711,32 +778,58 @@ var Checklists = /*#__PURE__*/function (_Component) {
       }, /*#__PURE__*/React.createElement("div", {
         style: {
           display: 'flex',
-          justifyContent: 'start'
+          gap: '20px',
+          justifyContent: 'flex-end'
         }
+      }, /*#__PURE__*/React.createElement(Collapse, {
+        "in": this.props.expandChecklistsOptions
       }, /*#__PURE__*/React.createElement("div", {
         style: {
-          flexBasis: '75px'
+          display: 'flex',
+          justifyContent: 'flex-end',
+          flexWrap: 'wrap',
+          paddingRight: 8
         }
-      }, this.props.topSlot), !blocking && /*#__PURE__*/React.createElement(FormControlLabel, {
+      }, !blocking && /*#__PURE__*/React.createElement(FormControlLabel, {
         control: /*#__PURE__*/React.createElement(Checkbox, {
           color: "primary",
-          checked: Object.keys(this.state.checklistsHidden).length > 0
+          checked: this.state.expandActivities
         }),
-        label: 'Hide filled items',
-        onMouseDown: this.toggleFilledFilter,
-        onTouchStart: this.toggleFilledFilter
+        label: 'Expand Activities',
+        labelPlacement: "start",
+        onMouseDown: this.toggleExpandActivities,
+        onTouchStart: this.toggleExpandActivities
+      }), !blocking && /*#__PURE__*/React.createElement(FormControlLabel, {
+        control: /*#__PURE__*/React.createElement(Checkbox, {
+          color: "primary",
+          checked: this.state.expandChecklists
+        }),
+        label: 'Expand Checklists',
+        labelPlacement: "start",
+        onMouseDown: this.toggleExpandChecklists,
+        onTouchStart: this.toggleExpandChecklists
       }), !blocking && /*#__PURE__*/React.createElement(FormControlLabel, {
         control: /*#__PURE__*/React.createElement(Checkbox, {
           color: "primary",
           checked: this.state.expandChecklistOptions
         }),
-        label: 'Expand Checklist Options',
+        label: 'Show Checklist Options',
+        labelPlacement: "start",
         onMouseDown: this.toggleExpandChecklistOptions,
         onTouchStart: this.toggleExpandChecklistOptions
-      })), /*#__PURE__*/React.createElement("div", {
+      }), !blocking && /*#__PURE__*/React.createElement(FormControlLabel, {
+        control: /*#__PURE__*/React.createElement(Checkbox, {
+          color: "primary",
+          checked: Object.keys(this.state.checklistsHidden).length == 0
+        }),
+        label: 'Show filled items',
+        labelPlacement: "start",
+        onMouseDown: this.toggleFilledFilter,
+        onTouchStart: this.toggleFilledFilter
+      })))), /*#__PURE__*/React.createElement("div", {
         style: {
-          paddingLeft: 25,
-          paddingRight: 25
+          alignItems: 'center',
+          paddingLeft: '16px'
         }
       }, activities.length > 1 && /*#__PURE__*/React.createElement(EAMSelect, {
         selectOnlyMode: true,
