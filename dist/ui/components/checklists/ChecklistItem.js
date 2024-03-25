@@ -1,19 +1,19 @@
-function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : String(i); }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _callSuper(t, o, e) { return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e)); }
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 import React, { Component } from 'react';
 import ChecklistItemInput from './ChecklistItemInput';
 import ChecklistItemNotes from './ChecklistItemNotes';
@@ -21,15 +21,12 @@ import Collapse from '@mui/material/Collapse';
 import ChecklistItemFollowUp from "./ChecklistItemFollowUp";
 import ChecklistItemNotApplicableOptions from './ChecklistItemNotApplicableOptions';
 import WSChecklists from '../../../tools/WSChecklists';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 var ChecklistItem = /*#__PURE__*/function (_Component) {
   _inherits(ChecklistItem, _Component);
-  var _super = _createSuper(ChecklistItem);
   function ChecklistItem(props) {
     var _this;
     _classCallCheck(this, ChecklistItem);
-    _this = _super.call(this, props);
+    _this = _callSuper(this, ChecklistItem, [props]);
     _this.getCheckListItemStyle = function (blocked) {
       return {
         paddingTop: 5,
@@ -48,7 +45,6 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
     _this.firstLineDesc = {
       "float": "left",
       display: "flex",
-      marginRight: "5px",
       alignItems: "center",
       pointerEvents: "initial",
       color: "rgba(0, 0, 0, 0.87)"
@@ -59,8 +55,7 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
      * @returns {{marginLeft: number, marginTop: number, position: string, display: string}}
      */
     _this.checklistDetailsStyle = {
-      margin: 2,
-      marginLeft: 11,
+      margin: 5,
       display: "flex",
       alignItems: "center"
     };
@@ -70,25 +65,24 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       flex: '1 1 auto'
     };
     _this.colorStyle = function (color) {
-      return {
+      return _defineProperty(_defineProperty({
+        display: "flex",
+        marginRight: "15px",
         backgroundColor: color ? "#".concat(color) : undefined,
-        borderLeft: color ? "#".concat(color) : undefined,
-        width: '3px',
-        margin: '8px -2px 8px 2px',
-        borderRadius: '30px',
-        flexShrink: 0
-      };
+        border: 'solid 1px #d1d3d4',
+        flex: '0 1 auto',
+        width: '5px',
+        margin: '10px 15px 10px 0px'
+      }, "marginRight", '15px'), "borderRadius", '30px');
     };
-    _this.containerStyle = function (blocked, isLastItem, color) {
+    _this.containerStyle = function (blocked) {
       return {
         display: 'flex',
         alignItems: "stretch",
-        padding: '1px 8px 1px 0',
         minHeight: 48,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        borderBottom: isLastItem ? 'none' : "dashed 1px #d1d3d4",
-        backgroundColor: color ? "".concat(_this.hexToRgb(color, 0.14)) : '#white',
+        borderBottom: "dashed 1px #d1d3d4",
         opacity: blocked ? 0.5 : 1
       };
     };
@@ -259,8 +253,7 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       var _this$props2 = this.props,
         checklistItem = _this$props2.checklistItem,
         showError = _this$props2.showError,
-        disabled = _this$props2.disabled,
-        register = _this$props2.register;
+        disabled = _this$props2.disabled;
       var fields = [];
       var options = {};
 
@@ -272,27 +265,24 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       var createField = ChecklistItemInput.createField;
       var _ChecklistItemInput$F = ChecklistItemInput.FIELD,
         CHECKBOX = _ChecklistItemInput$F.CHECKBOX,
-        RADIO = _ChecklistItemInput$F.RADIO,
         FINDING = _ChecklistItemInput$F.FINDING,
         NUMERIC = _ChecklistItemInput$F.NUMERIC,
-        NUMERIC2 = _ChecklistItemInput$F.NUMERIC2,
         ALPHANUMERIC = _ChecklistItemInput$F.ALPHANUMERIC,
         DATE = _ChecklistItemInput$F.DATE,
-        DATETIME = _ChecklistItemInput$F.DATETIME,
-        ENTITY = _ChecklistItemInput$F.ENTITY;
+        DATETIME = _ChecklistItemInput$F.DATETIME;
       switch (checklistItem.type) {
         case "01":
           fields = [createField(CHECKBOX, {
             code: "COMPLETED",
             desc: "Completed"
           })];
-          options.style = ChecklistItemInput.STYLE.SAMELINE;
+          options.style = ChecklistItemInput.STYLE.SINGLE;
           break;
         case "02":
-          fields = [createField(RADIO, {
+          fields = [createField(CHECKBOX, {
             code: "YES",
             desc: "Yes"
-          }), createField(RADIO, {
+          }), createField(CHECKBOX, {
             code: "NO",
             desc: "No"
           })];
@@ -307,20 +297,17 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
         case "04":
         case "05":
           fields = [createField(NUMERIC)];
-          options.slider = true;
           options.beforeOnChange = clearResult;
           break;
         case "06":
           fields = [createField(FINDING), createField(NUMERIC)];
-          options.slider = true;
           options.beforeOnChange = clearResult;
-          options.style = ChecklistItemInput.STYLE.SAMELINE;
           break;
         case "07":
-          fields = [createField(RADIO, {
+          fields = [createField(CHECKBOX, {
             code: "OK",
             desc: "OK"
-          }), createField(RADIO, {
+          }), createField(CHECKBOX, {
             code: "REPAIRSNEEDED",
             desc: "Repairs Needed"
           }), createField(FINDING)];
@@ -344,20 +331,18 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
               }];
               break;
           }
-          options.label = "Resolution";
           options.beforeOnChange = function (newProps, type, value) {
             if (type === ChecklistItemInput.FIELD.CHECKBOX) {
               delete newProps.finding;
             }
             return newProps;
           };
-          options.style = ChecklistItemInput.STYLE.SAMELINE;
           break;
         case "08":
-          fields = [createField(RADIO, {
+          fields = [createField(CHECKBOX, {
             code: "GOOD",
             desc: "Good"
-          }), createField(RADIO, {
+          }), createField(CHECKBOX, {
             code: "POOR",
             desc: "Poor"
           })];
@@ -365,10 +350,10 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
           break;
         case "09":
         case "10":
-          fields = [createField(RADIO, {
+          fields = [createField(CHECKBOX, {
             code: "OK",
             desc: "OK"
-          }), createField(RADIO, {
+          }), createField(CHECKBOX, {
             code: "ADJUSTED",
             desc: "Adjusted"
           })];
@@ -376,14 +361,13 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
             fields.push(createField(NUMERIC));
           }
           options.style = ChecklistItemInput.STYLE.SAMELINE;
-          options.slider = true;
           break;
         case "11":
         case "12":
-          fields = [createField(RADIO, {
+          fields = [createField(CHECKBOX, {
             code: "OK",
             desc: "OK"
-          }), createField(RADIO, {
+          }), createField(CHECKBOX, {
             code: "NONCONFORMITY",
             desc: "Nonconformity"
           })];
@@ -397,28 +381,18 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
             };
           }
           options.style = ChecklistItemInput.STYLE.SAMELINE;
-          options.slider = true;
           break;
         case "13":
           fields = [createField(DATE)];
-          options.style = ChecklistItemInput.STYLE.SAMELINE;
+          options.style = ChecklistItemInput.STYLE.SINGLE;
           break;
         case "14":
           fields = [createField(DATETIME)];
-          options.style = ChecklistItemInput.STYLE.SAMELINE;
+          options.style = ChecklistItemInput.STYLE.SINGLE;
           break;
         case "15":
           fields = [createField(ALPHANUMERIC)];
           options.style = ChecklistItemInput.STYLE.SINGLE_EXPAND;
-          break;
-        case "16":
-          fields = [createField(ENTITY)];
-          options.style = ChecklistItemInput.STYLE.SINGLE_EXPAND;
-          break;
-        case "17":
-          fields = [createField(NUMERIC), createField(NUMERIC2)];
-          options.style = ChecklistItemInput.STYLE.SAMELINE;
-          options.slider = true;
           break;
       }
       if (fields === undefined) return /*#__PURE__*/React.createElement("div", null);
@@ -430,15 +404,8 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
         fields: fields,
         options: options,
         showError: showError,
-        disabled: disabled,
-        register: register
+        disabled: disabled
       });
-    }
-  }, {
-    key: "hexToRgb",
-    value: function hexToRgb(hex, opacity) {
-      var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-      return result ? "rgb(".concat(parseInt(result[1], 16), ", ").concat(parseInt(result[2], 16), ", ").concat(parseInt(result[3], 16), ", ").concat(opacity, ")") : null;
     }
   }, {
     key: "render",
@@ -446,29 +413,20 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       var _this6 = this;
       var _this$props3 = this.props,
         checklistItem = _this$props3.checklistItem,
-        isLastItem = _this$props3.isLastItem,
         hideFollowUpProp = _this$props3.hideFollowUpProp;
       var notApplicableOptions = this.state.notApplicableOptions;
       return /*#__PURE__*/React.createElement("div", {
-        style: this.containerStyle(this.state.blocked, isLastItem, checklistItem.color)
-      }, /*#__PURE__*/React.createElement("div", {
+        style: this.containerStyle(this.state.blocked)
+      }, checklistItem.color ? /*#__PURE__*/React.createElement("div", {
         style: this.colorStyle(checklistItem.color)
-      }), /*#__PURE__*/React.createElement("div", {
+      }) : null, /*#__PURE__*/React.createElement("div", {
         style: this.getCheckListItemStyle(this.state.blocked)
       }, /*#__PURE__*/React.createElement("div", {
-        style: this.firstLine,
-        onClick: this.descClickHandler.bind(this)
+        style: this.firstLine
       }, /*#__PURE__*/React.createElement("div", {
-        style: this.firstLineDesc
-      }, this.state.detailsVisible ? /*#__PURE__*/React.createElement(ExpandLessIcon, {
-        style: {
-          color: "#b0b0b0"
-        }
-      }) : /*#__PURE__*/React.createElement(ExpandMoreIcon, {
-        style: {
-          color: "#b0b0b0"
-        }
-      }), /*#__PURE__*/React.createElement("label", null, checklistItem.desc), checklistItem.requiredToClose === true && /*#__PURE__*/React.createElement("label", {
+        style: this.firstLineDesc,
+        onClick: this.descClickHandler.bind(this)
+      }, /*#__PURE__*/React.createElement("label", null, checklistItem.desc), checklistItem.requiredToClose === true && /*#__PURE__*/React.createElement("label", {
         style: {
           color: "red"
         }

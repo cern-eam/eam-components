@@ -4,8 +4,10 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import withStyles from '@mui/styles/withStyles';
 var labelStyle = {
   root: {
-    marginRight: -10,
-    justifyContent: "end"
+    margin: 5
+  },
+  label: {
+    fontSize: "0.95rem"
   }
 };
 var ChecklistFieldCheckbox = function ChecklistFieldCheckbox(props) {
@@ -31,8 +33,7 @@ var ChecklistFieldCheckbox = function ChecklistFieldCheckbox(props) {
       },
       disabled: disabled
     }),
-    label: desc,
-    labelPlacement: "start"
+    label: desc
   });
 };
 export default withStyles(labelStyle)(ChecklistFieldCheckbox);
