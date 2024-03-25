@@ -8,9 +8,9 @@ import EAMDateTimePicker from "../inputs-ng/EAMDateTimePicker";
 
 export default class ChecklistItemInput extends Component {
     handleChange(type, value, onFail) {
-        const {result, finding, numericValue, freeText, date, dateTime} = this.props.checklistItem;
+        const {result, finding, numericValue, numericValue2, freeText, date, dateTime} = this.props.checklistItem;
 
-        let newResult, newFinding, newNumericValue, newAlphaNumericValue, newDate, newDateTime;
+        let newResult, newFinding, newNumericValue, newNumericValue2, newAlphaNumericValue, newDate, newDateTime;
 
         switch(type) {
             case ChecklistItemInput.FIELD.CHECKBOX:
@@ -21,6 +21,9 @@ export default class ChecklistItemInput extends Component {
                 break;
             case ChecklistItemInput.FIELD.NUMERIC:
                 newNumericValue = value;
+                break;
+            case ChecklistItemInput.FIELD.NUMERIC2:
+                newNumericValue2 = value;
                 break;
             case ChecklistItemInput.FIELD.ALPHANUMERIC:
                 newAlphaNumericValue = value;
@@ -38,6 +41,7 @@ export default class ChecklistItemInput extends Component {
             result: newResult === undefined ? result : newResult,
             finding: newFinding === undefined ? finding : newFinding,
             numericValue: newNumericValue === undefined ? numericValue : newNumericValue,
+            numericValue2: newNumericValue2 === undefined ? numericValue2 : newNumericValue2,
             freeText: newAlphaNumericValue === undefined ? freeText : newAlphaNumericValue.trim(),
             date: newDate === undefined ? date : newDate,
             dateTime: newDateTime === undefined ? dateTime : newDateTime,
@@ -83,6 +87,17 @@ export default class ChecklistItemInput extends Component {
                     minimumValue={checklistItem.minimumValue}
                     maximumValue={checklistItem.maximumValue}
                     handleChange={(value, onFail) => this.handleChange(ChecklistItemInput.FIELD.NUMERIC, value, onFail)}
+                    key={key}
+                    showError={showError}
+                    disabled={disabled}
+                />
+            case ChecklistItemInput.FIELD.NUMERIC2:
+                return <ChecklistFieldNumeric
+                    value={checklistItem.numericValue2}
+                    UOM={checklistItem.UOM2}
+                    minimumValue={checklistItem.minimumValue}
+                    maximumValue={checklistItem.maximumValue}
+                    handleChange={(value, onFail) => this.handleChange(ChecklistItemInput.FIELD.NUMERIC2, value, onFail)}
                     key={key}
                     showError={showError}
                     disabled={disabled}
@@ -133,6 +148,7 @@ export default class ChecklistItemInput extends Component {
 ChecklistItemInput.FIELD = {
     CHECKBOX: "CHECKBOX",
     NUMERIC: "NUMERIC",
+    NUMERIC2: "NUMERIC2",
     FINDING: "FINDING",
     ALPHANUMERIC: "ALPHANUMERIC",
     DATE: "DATE",
