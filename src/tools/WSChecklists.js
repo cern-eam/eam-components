@@ -27,6 +27,10 @@ class WSChecklists {
     getChecklistDefinition(taskCode, checklistDefinitionCode, config = {}) {
         return WS._get(`/checklists/definition/${taskCode}/${checklistDefinitionCode}`, config);
     }
+
+    autocompleteEntity = (entityType, entityClass, filter, config = {}) => {
+        return WS._get(`/autocomplete/entity?s=${filter}&entityType=${entityType}&entityClass=${entityClass}`, config);
+    };
 }
 
 export default new WSChecklists();

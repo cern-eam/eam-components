@@ -10,14 +10,14 @@ import Constants from '../../../enums/Constants';
 
 const EAMDateTimePicker = (props) => {
 
-    const { value, onChange, style, errorText, disabled, minDate, maxDate, displayFormat } = props;
+    const { value, onChange, style, errorText, disabled, minDate, maxDate, displayFormat, endAdornmentStyle } = props;
     const [ isInvalidDate, setIsInvalidDate ] = useState(false);
 
     return (
         <EAMBaseInput {...props}>
             <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enLocale}>
                 <DateTimePicker
-                    renderInput={(props) => renderDatePickerInput(props, isInvalidDate, style, errorText, disabled)}
+                    renderInput={(props) => renderDatePickerInput(props, isInvalidDate, style, errorText, disabled, endAdornmentStyle)}
                     value={value}
                     disableMaskedInput
                     inputFormat={displayFormat || Constants.DATETIME_FORMAT_DISPLAY}
