@@ -18,6 +18,7 @@ import Dialog from '@mui/material/Dialog';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Collapse from '@mui/material/Collapse';
+import GridTools from '../grids/GridTools'
 
 const SIGNATURE_TYPES = {
     PERFORMER_1: 'PB01',
@@ -94,18 +95,20 @@ class Checklists extends Component {
     constructor(props) {
         super(props);
 
-        
+        let activityCode = GridTools.getURLParameterByName('activityCode');
         this.state = {
             activities: [],
             blocking: true,
             createFollowUpActivity: null,
-            filteredActivity: null,
+            activityCode,
+            filteredActivity: activityCode,
             filteredEquipment: null,
             signaturesCollapsed: {},
             checklistsHidden: {},
-            expandChecklistOptions: false,
-            expandChecklists: false,
-            expandActivities: false
+            showChecklistOptions: this.parseToBoolean(GridTools.getURLParameterByName("showChecklistOptions"), false),
+            showFilledItems: this.parseToBoolean(GridTools.getURLParameterByName("showFilledItems"), true),
+            expandChecklists: this.parseToBoolean(GridTools.getURLParameterByName("expandChecklists"), false),
+            expandActivities: this.parseToBoolean(GridTools.getURLParameterByName("expandActivities"), false)
         }
     }
 
@@ -137,7 +140,11 @@ class Checklists extends Component {
     }
 
     componentWillMount() {
-        this.readActivities(this.props.workorder)
+        this.readActivities(this.props.workorder);
+    }
+
+    parseToBoolean(value, defaultValue) {
+        return value.length === 0 ? defaultValue : value !== "false";
     }
 
     componentWillReceiveProps(nextProps) {
@@ -147,7 +154,7 @@ class Checklists extends Component {
     }
 
     readActivities(workorder) {
-        const { getWorkOrderActivities, showFilledItems, activity } = this.props;
+        const { getWorkOrderActivities, activity } = this.props;
 
         getWorkOrderActivities(workorder)
             .then(response => {
@@ -156,17 +163,19 @@ class Checklists extends Component {
 
                 this.collapse(checklists, activities);
 
-                this.setState({
-                    activities,
-                    blocking: false
-                }, () => {
-                    if (!showFilledItems) {
+                this.setState(prevState => {
+                    const newState = {
+                        activities,
+                        blocking: false
+                    };
+                    if (!prevState.showFilledItems) {
                         this.toggleFilledFilter();
                     }
 
                     if (activity) {
                         this.setNewFilter({ activity: {code: activity} });
                     }
+                    return newState;
                 })
             })
     }
@@ -239,7 +248,7 @@ class Checklists extends Component {
             eqpToOtherId
         } = this.props;
 
-        const { expandChecklistOptions } = this.state;
+        const { showChecklistOptions } = this.state;
 
         const firstChecklist = checklists[0];
         const equipmentCode = firstChecklist.equipmentCode;
@@ -281,7 +290,7 @@ class Checklists extends Component {
                         disabled={isDisabled}
                         isLastItem={index === checklists.length - 1}
                         hideFollowUpProp={this.props.hideFollowUpProp}
-                        expandChecklistOptions={expandChecklistOptions}
+                        showChecklistOptions={showChecklistOptions}
                         register={this.props.register}
                     />)}
                 </div>
@@ -548,9 +557,9 @@ class Checklists extends Component {
         }));
     }
 
-    toggleExpandChecklistOptions = () => {
+    toggleShowChecklistOptions = () => {
         this.setState((prevState) => ({
-            expandChecklistOptions: !prevState.expandChecklistOptions
+            showChecklistOptions: !prevState.showChecklistOptions
         }));
     }
 
@@ -588,7 +597,7 @@ class Checklists extends Component {
      * @returns {*}
      */
     render() {
-        const { activities, filteredActivity, filteredEquipment, blocking } = this.state;
+        const { activities, activityCode, filteredActivity, filteredEquipment, blocking } = this.state;
 
         // makes a global equipments array, with all the different equipments from all activities
         const equipments = activities.reduce((prev, activity) => {
@@ -658,12 +667,12 @@ class Checklists extends Component {
                                             {!blocking && <FormControlLabel
                                                 control={<Checkbox
                                                     color="primary"
-                                                    checked={this.state.expandChecklistOptions}
+                                                    checked={this.state.showChecklistOptions}
                                                     />}
                                                 label={'Show Checklist Options'}
                                                 labelPlacement="start"
-                                                onMouseDown={this.toggleExpandChecklistOptions}
-                                                onTouchStart={this.toggleExpandChecklistOptions}
+                                                onMouseDown={this.toggleShowChecklistOptions}
+                                                onTouchStart={this.toggleShowChecklistOptions}
                                             />}
                                             {!blocking && <FormControlLabel
                                                 control={<Checkbox
@@ -678,7 +687,7 @@ class Checklists extends Component {
                                         </div>
                                     </Collapse>
                                 </div>
-                                <div style={{alignItems: 'center', paddingLeft: '16px'}}>
+                                {!activityCode && <div style={{alignItems: 'center', paddingLeft: '16px'}}>
                                     {activities.length > 1 && <EAMSelect
                                         selectOnlyMode
                                         label={"Activity"}
@@ -703,7 +712,7 @@ class Checklists extends Component {
                                         value={filteredEquipment ? filteredEquipment : undefined}
                                         onChange={equipment => this.setNewFilter({equipmentCode: equipment.code})}
                                         menuContainerStyle={{'zIndex': 999}}/>}
-                                </div>
+                                </div>}
                                 {this.renderActivities(filteredActivity, filteredEquipment)}
                                 {this.props.bottomSlot}
                             </BlockUi>

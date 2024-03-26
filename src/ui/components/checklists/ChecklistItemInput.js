@@ -29,6 +29,9 @@ export default class ChecklistItemInput extends Component {
             case ChecklistItemInput.FIELD.NUMERIC2:
                 newNumericValue2 = value;
                 break;
+            case ChecklistItemInput.FIELD.NUMERIC2:
+                newNumericValue2 = value;
+                break;
             case ChecklistItemInput.FIELD.ALPHANUMERIC:
                 newAlphaNumericValue = value;
                 break;
@@ -48,6 +51,7 @@ export default class ChecklistItemInput extends Component {
             result: newResult === undefined ? result : newResult,
             finding: newFinding === undefined ? finding : newFinding,
             numericValue: newNumericValue === undefined ? numericValue : newNumericValue,
+            numericValue2: newNumericValue2 === undefined ? numericValue2 : newNumericValue2,
             numericValue2: newNumericValue2 === undefined ? numericValue2 : newNumericValue2,
             freeText: newAlphaNumericValue === undefined ? freeText : newAlphaNumericValue.trim(),
             date: newDate === undefined ? date : newDate,
@@ -192,6 +196,7 @@ ChecklistItemInput.FIELD = {
     CHECKBOX: "CHECKBOX",
     RADIO: "RADIO",
     NUMERIC: "NUMERIC",
+    NUMERIC2: "NUMERIC2",
     NUMERIC2: "NUMERIC2",
     FINDING: "FINDING",
     ALPHANUMERIC: "ALPHANUMERIC",

@@ -25,10 +25,10 @@ export default class ChecklistItem extends Component {
     }
     
     componentDidMount() {
-        const { checklistItem, expandChecklistOptions, taskCode } = this.props;
+        const { checklistItem, showChecklistOptions, taskCode } = this.props;
         // Handles expand/collapse of options when the checkbox was ticked before
         // the equipment's checklist had been expanded.
-        this.expandChecklistOptionsHandler(expandChecklistOptions, checklistItem, taskCode);
+        this.showChecklistOptionsHandler(showChecklistOptions, checklistItem, taskCode);
     }
 
     componentWillUnmount() {
@@ -55,10 +55,10 @@ export default class ChecklistItem extends Component {
             }
         }
 
-        const { expandChecklistOptions, taskCode } = nextProps;
+        const { showChecklistOptions, taskCode } = nextProps;
         // Expand/collapse options when the equipment's checklists are already expanded
-        if (expandChecklistOptions !== this.props.expandChecklistOptions) {
-            this.expandChecklistOptionsHandler(expandChecklistOptions, checklistItemProps, taskCode);
+        if (showChecklistOptions !== this.props.showChecklistOptions) {
+            this.showChecklistOptionsHandler(showChecklistOptions, checklistItemProps, taskCode);
         }
     }
 
@@ -160,7 +160,7 @@ export default class ChecklistItem extends Component {
         }
     }
 
-    expandChecklistOptionsHandler(expandChecklist, checklistItem, taskCode) {
+    showChecklistOptionsHandler(expandChecklist, checklistItem, taskCode) {
         const notes = this.notes.current.input.current.value;
         const followUp = checklistItem.followUp;
         let detailsVisible;
