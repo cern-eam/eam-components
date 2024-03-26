@@ -40,6 +40,6 @@ const flattenGridRow = row => row.map(row => row &&row.cell &&
 const getGridFieldsColumns = (gridFields, headers) =>
     gridFields.map(gf => ({
         id: gf.name,
-        header: headers[gf.name],
+        header: headers ? headers[gf.name] : gf.label,
         width: gf.width
     }));

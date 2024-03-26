@@ -18,6 +18,7 @@ const EAMGrid = (props) => {
         customFooterOptions,
         hideHeader,
         hideFooter,
+        gridContainerStyle
     } = props;
     const {
         dataspies,
@@ -56,7 +57,7 @@ const EAMGrid = (props) => {
                 onDataspyChange={handleDataspyChange}
                 onResetFilters={handleResetFilters}
             />}
-            <BlockUi tag="div" blocking={loading} style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <BlockUi tag="div" blocking={loading} style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center", ...gridContainerStyle }}>
                 <EAMGridMain
                     loading={loading}
                     tableInstance={tableInstance}
