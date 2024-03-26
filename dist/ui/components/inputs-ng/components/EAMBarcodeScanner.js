@@ -17,7 +17,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import EAMSelect from '../EAMSelect';
 var EAMBarcodeScanner = function EAMBarcodeScanner(props) {
-  var onChange = props.onChange;
+  var onChange = props.onChange,
+    rightAlign = props.rightAlign;
   var codeReader = useRef(new BrowserMultiFormatReader());
   var _useState = useState(false),
     _useState2 = _slicedToArray(_useState, 2),
@@ -171,6 +172,9 @@ var EAMBarcodeScanner = function EAMBarcodeScanner(props) {
 
   // Active quagga when support for user media
   return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(IconButton, {
+    sx: rightAlign ? {
+      marginRight: '-8px'
+    } : {},
     onClick: handleClickOpen
   }, /*#__PURE__*/React.createElement(BarcodeScan, null)), /*#__PURE__*/React.createElement(Dialog, {
     TransitionProps: {

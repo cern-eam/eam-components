@@ -24,6 +24,9 @@ import ChecklistFieldFinding from './fields/ChecklistFieldFinding';
 import ChecklistFieldAlphaNumeric from './fields/ChecklistFieldAlphaNumeric';
 import EAMDatePicker from "../inputs-ng/EAMDatePicker";
 import EAMDateTimePicker from "../inputs-ng/EAMDateTimePicker";
+import EAMAutocomplete from "../inputs-ng/EAMAutocomplete";
+import WSChecklists from '../../../tools/WSChecklists';
+import ChecklistFieldRadio from './fields/ChecklistFieldRadio';
 var ChecklistItemInput = /*#__PURE__*/function (_Component) {
   _inherits(ChecklistItemInput, _Component);
   function ChecklistItemInput() {
@@ -33,16 +36,20 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
   _createClass(ChecklistItemInput, [{
     key: "handleChange",
     value: function handleChange(type, value, onFail) {
+      var _this = this;
       var _this$props$checklist = this.props.checklistItem,
         result = _this$props$checklist.result,
         finding = _this$props$checklist.finding,
         numericValue = _this$props$checklist.numericValue,
+        numericValue2 = _this$props$checklist.numericValue2,
         freeText = _this$props$checklist.freeText,
         date = _this$props$checklist.date,
-        dateTime = _this$props$checklist.dateTime;
-      var newResult, newFinding, newNumericValue, newAlphaNumericValue, newDate, newDateTime;
+        dateTime = _this$props$checklist.dateTime,
+        entityCode = _this$props$checklist.entityCode;
+      var newResult, newFinding, newNumericValue, newNumericValue2, newAlphaNumericValue, newDate, newDateTime, newEntityCode;
       switch (type) {
         case ChecklistItemInput.FIELD.CHECKBOX:
+        case ChecklistItemInput.FIELD.RADIO:
           newResult = value === result ? null : value;
           break;
         case ChecklistItemInput.FIELD.FINDING:
@@ -50,6 +57,12 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
           break;
         case ChecklistItemInput.FIELD.NUMERIC:
           newNumericValue = value;
+          break;
+        case ChecklistItemInput.FIELD.NUMERIC2:
+          newNumericValue2 = value;
+          break;
+        case ChecklistItemInput.FIELD.NUMERIC2:
+          newNumericValue2 = value;
           break;
         case ChecklistItemInput.FIELD.ALPHANUMERIC:
           newAlphaNumericValue = value;
@@ -60,28 +73,36 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
         case ChecklistItemInput.FIELD.DATETIME:
           newDateTime = value;
           break;
+        case ChecklistItemInput.FIELD.ENTITY:
+          newEntityCode = value;
+          break;
       }
-      var newProps = _objectSpread({}, this.props.checklistItem, {
+      var newProps = _objectSpread({}, this.props.checklistItem, _defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty({
         result: newResult === undefined ? result : newResult,
         finding: newFinding === undefined ? finding : newFinding,
         numericValue: newNumericValue === undefined ? numericValue : newNumericValue,
-        freeText: newAlphaNumericValue === undefined ? freeText : newAlphaNumericValue.trim(),
-        date: newDate === undefined ? date : newDate,
-        dateTime: newDateTime === undefined ? dateTime : newDateTime
-      });
+        numericValue2: newNumericValue2 === undefined ? numericValue2 : newNumericValue2
+      }, "numericValue2", newNumericValue2 === undefined ? numericValue2 : newNumericValue2), "freeText", newAlphaNumericValue === undefined ? freeText : newAlphaNumericValue.trim()), "date", newDate === undefined ? date : newDate), "dateTime", newDateTime === undefined ? dateTime : newDateTime), "entityCode", newEntityCode === undefined ? entityCode : newEntityCode));
       if (this.options.beforeOnChange && typeof this.options.beforeOnChange === 'function') {
         newProps = this.options.beforeOnChange(newProps, type, value);
+      }
+      var hasChanged = Object.keys(newProps).some(function (key) {
+        return newProps[key] !== _this.props.checklistItem[key];
+      });
+      if (!hasChanged) {
+        return;
       }
       this.props.onChange(newProps, onFail);
     }
   }, {
     key: "renderField",
     value: function renderField(field, key) {
-      var _this = this;
+      var _this2 = this;
       var _this$props = this.props,
         checklistItem = _this$props.checklistItem,
         showError = _this$props.showError,
-        disabled = _this$props.disabled;
+        disabled = _this$props.disabled,
+        register = _this$props.register;
       var type = field[0];
       var options = field[1] || {};
       switch (type) {
@@ -91,7 +112,18 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
             desc: options.desc,
             checked: checklistItem.result === options.code,
             handleChange: function handleChange(code) {
-              return _this.handleChange(ChecklistItemInput.FIELD.CHECKBOX, code);
+              return _this2.handleChange(ChecklistItemInput.FIELD.CHECKBOX, code);
+            },
+            key: key,
+            disabled: disabled
+          });
+        case ChecklistItemInput.FIELD.RADIO:
+          return /*#__PURE__*/React.createElement(ChecklistFieldRadio, {
+            code: options.code,
+            desc: options.desc,
+            checked: checklistItem.result === options.code,
+            handleChange: function handleChange(code) {
+              return _this2.handleChange(ChecklistItemInput.FIELD.RADIO, code);
             },
             key: key,
             disabled: disabled
@@ -99,9 +131,10 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
         case ChecklistItemInput.FIELD.FINDING:
           return /*#__PURE__*/React.createElement(ChecklistFieldFinding, {
             dropdown: options.dropdown,
+            label: this.options.label,
             finding: checklistItem.finding,
             handleChange: function handleChange(code) {
-              return _this.handleChange(ChecklistItemInput.FIELD.FINDING, code);
+              return _this2.handleChange(ChecklistItemInput.FIELD.FINDING, code);
             },
             possibleFindings: checklistItem.possibleFindings,
             key: key,
@@ -114,18 +147,35 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
             minimumValue: checklistItem.minimumValue,
             maximumValue: checklistItem.maximumValue,
             handleChange: function handleChange(value, onFail) {
-              return _this.handleChange(ChecklistItemInput.FIELD.NUMERIC, value, onFail);
+              return _this2.handleChange(ChecklistItemInput.FIELD.NUMERIC, value, onFail);
             },
             key: key,
             showError: showError,
-            disabled: disabled
+            disabled: disabled,
+            slider: this.options.slider,
+            sliderRange: true
+          });
+        case ChecklistItemInput.FIELD.NUMERIC2:
+          return /*#__PURE__*/React.createElement(ChecklistFieldNumeric, {
+            value: checklistItem.numericValue2,
+            UOM: checklistItem.UOM2,
+            minimumValue: checklistItem.minimumValue2,
+            maximumValue: checklistItem.maximumValue2,
+            handleChange: function handleChange(value, onFail) {
+              return _this2.handleChange(ChecklistItemInput.FIELD.NUMERIC2, value, onFail);
+            },
+            key: key,
+            showError: showError,
+            disabled: disabled,
+            slider: this.options.slider,
+            sliderRange: true
           });
         case ChecklistItemInput.FIELD.ALPHANUMERIC:
           return /*#__PURE__*/React.createElement(ChecklistFieldAlphaNumeric, {
             value: checklistItem.freeText,
             maxLength: 4000,
             handleChange: function handleChange(value, onFail) {
-              return _this.handleChange(ChecklistItemInput.FIELD.ALPHANUMERIC, value, onFail);
+              return _this2.handleChange(ChecklistItemInput.FIELD.ALPHANUMERIC, value, onFail);
             },
             key: key,
             disabled: disabled
@@ -134,19 +184,50 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
           return /*#__PURE__*/React.createElement(EAMDatePicker, {
             value: checklistItem.date,
             onChange: function onChange(value) {
-              return _this.handleChange(ChecklistItemInput.FIELD.DATE, value, null);
+              return _this2.handleChange(ChecklistItemInput.FIELD.DATE, value, null);
             },
             key: key,
-            disabled: disabled
+            disabled: disabled,
+            endAdornmentStyle: {
+              marginRight: "1px"
+            },
+            style: {
+              marginRight: "0px"
+            }
           });
         case ChecklistItemInput.FIELD.DATETIME:
           return /*#__PURE__*/React.createElement(EAMDateTimePicker, {
             value: checklistItem.dateTime,
             onChange: function onChange(value) {
-              return _this.handleChange(ChecklistItemInput.FIELD.DATETIME, value, null);
+              return _this2.handleChange(ChecklistItemInput.FIELD.DATETIME, value, null);
             },
             key: key,
-            disabled: disabled
+            disabled: disabled,
+            endAdornmentStyle: {
+              marginRight: "1px"
+            },
+            style: {
+              marginRight: "0px"
+            }
+          });
+        case ChecklistItemInput.FIELD.ENTITY:
+          return /*#__PURE__*/React.createElement(EAMAutocomplete
+          //{...register('code', 'code', 'desc', 'checklistItem.entityOrg', entity => this.handleChange(ChecklistItemInput.FIELD.ENTITY, entity.code, () => {desc = ''}))}
+          , {
+            style: {
+              minWidth: '240px',
+              marginLeft: '10px'
+            },
+            barcodeScanner: true,
+            value: checklistItem.entityCode,
+            onChange: function onChange(entity) {
+              return _this2.handleChange(ChecklistItemInput.FIELD.ENTITY, entity.code, function () {
+                checklistItem.entityDesc = '';
+              });
+            },
+            rightAlign: true,
+            autocompleteHandler: WSChecklists.autocompleteEntity,
+            autocompleteHandlerParams: [checklistItem.entityType, checklistItem.entityClass]
           });
       }
     }
@@ -172,6 +253,9 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
         _iterator.f();
       }
       return /*#__PURE__*/React.createElement("div", {
+        onClick: function onClick(event) {
+          return event.stopPropagation();
+        },
         style: options.style || ChecklistItemInput.STYLE.ROWS
       }, fieldsRender);
     }
@@ -179,41 +263,26 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
   return ChecklistItemInput;
 }(Component);
 export { ChecklistItemInput as default };
-ChecklistItemInput.FIELD = {
+ChecklistItemInput.FIELD = _defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty(_defineProperty({
   CHECKBOX: "CHECKBOX",
+  RADIO: "RADIO",
   NUMERIC: "NUMERIC",
-  FINDING: "FINDING",
-  ALPHANUMERIC: "ALPHANUMERIC",
-  DATE: "DATE",
-  DATETIME: "DATETIME"
-};
-var SINGLE = {
-  flex: "0 0 186px",
-  display: "flex",
-  marginLeft: "auto"
-};
+  NUMERIC2: "NUMERIC2"
+}, "NUMERIC2", "NUMERIC2"), "FINDING", "FINDING"), "ALPHANUMERIC", "ALPHANUMERIC"), "DATE", "DATE"), "DATETIME", "DATETIME"), "ENTITY", "ENTITY");
 var SINGLE_EXPAND = {
-  flex: "1 0 auto",
-  marginLeft: "auto",
-  display: "flex"
-};
-var ROWS = {
-  flex: "0 0 186px",
+  flex: "1",
   display: "flex",
-  position: "relative",
-  marginLeft: "auto",
-  flexDirection: "column"
+  justifyContent: "flex-end"
 };
 var SAMELINE = {
-  flex: "0 0 186px",
   display: "flex",
   marginLeft: "auto",
   flexWrap: "wrap",
-  justifyContent: "space-between"
+  gap: "10px",
+  justifyContent: "flex-end",
+  flexDirection: "row"
 };
 ChecklistItemInput.STYLE = {
-  SINGLE: SINGLE,
-  ROWS: ROWS,
   SAMELINE: SAMELINE,
   SINGLE_EXPAND: SINGLE_EXPAND
 };

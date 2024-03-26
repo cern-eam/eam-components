@@ -344,3 +344,28 @@ export var EISIcon = function EISIcon(props) {
     d: "M871 587 c2 -1 15 -11 29 -22 l25 -20 -19 23 c-11 12 -24 22 -29 22 -6 0 -8 -1 -6 -3z"
   })));
 };
+export var IconSlash = function IconSlash(_ref4) {
+  var iconColor = _ref4.iconColor,
+    backgroundColor = _ref4.backgroundColor;
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: 'absolute',
+      top: '17px',
+      left: 7,
+      width: '60%',
+      height: '2px',
+      backgroundColor: iconColor,
+      transform: 'rotate(45deg)'
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: 'absolute',
+      top: '16px',
+      left: 8,
+      width: '60%',
+      height: '2px',
+      backgroundColor: backgroundColor,
+      transform: 'rotate(45deg)'
+    }
+  }));
+};

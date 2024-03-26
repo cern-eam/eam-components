@@ -23,9 +23,10 @@ var ChecklistEquipment = /*#__PURE__*/function (_Component) {
     }
     _this = _callSuper(this, ChecklistEquipment, [].concat(args));
     _this.mainStyle = {
-      marginTop: 15,
+      marginTop: 1,
       display: "flex",
-      justifyContent: "center",
+      justifyContent: "flex-start",
+      marginLeft: '-8px',
       alignItems: "center",
       width: "100%"
     };

@@ -21,7 +21,8 @@ var EAMDateTimePicker = function EAMDateTimePicker(props) {
     disabled = props.disabled,
     minDate = props.minDate,
     maxDate = props.maxDate,
-    displayFormat = props.displayFormat;
+    displayFormat = props.displayFormat,
+    endAdornmentStyle = props.endAdornmentStyle;
   var _useState = useState(false),
     _useState2 = _slicedToArray(_useState, 2),
     isInvalidDate = _useState2[0],
@@ -31,7 +32,7 @@ var EAMDateTimePicker = function EAMDateTimePicker(props) {
     adapterLocale: enLocale
   }, /*#__PURE__*/React.createElement(DateTimePicker, {
     renderInput: function renderInput(props) {
-      return renderDatePickerInput(props, isInvalidDate, style, errorText, disabled);
+      return renderDatePickerInput(props, isInvalidDate, style, errorText, disabled, endAdornmentStyle);
     },
     value: value,
     disableMaskedInput: true,
