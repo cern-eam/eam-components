@@ -74,7 +74,7 @@ export default class ChecklistItemInput extends Component {
     }
 
     renderField(field, key) {
-        var { checklistItem, showError, disabled, register } = this.props;
+        var { checklistItem, showError, disabled } = this.props;
 
         const type = field[0];
         const options = field[1] || {};
@@ -162,7 +162,6 @@ export default class ChecklistItemInput extends Component {
                 />
             case ChecklistItemInput.FIELD.ENTITY:
                 return <EAMAutocomplete
-                    //{...register('code', 'code', 'desc', 'checklistItem.entityOrg', entity => this.handleChange(ChecklistItemInput.FIELD.ENTITY, entity.code, () => {desc = ''}))}
                     style={{minWidth: '240px', marginLeft: '10px'}}
                     barcodeScanner
                     value={checklistItem.entityCode}
