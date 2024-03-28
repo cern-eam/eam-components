@@ -12,6 +12,10 @@ import WS from './WS';
 var WSChecklists = /*#__PURE__*/function () {
   function WSChecklists() {
     _classCallCheck(this, WSChecklists);
+    this.autocompleteEntity = function (entityType, entityClass, filter) {
+      var config = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
+      return WS._get("/autocomplete/entity?s=".concat(filter, "&entityType=").concat(entityType, "&entityClass=").concat(entityClass), config);
+    };
   }
   _createClass(WSChecklists, [{
     key: "getWorkOrderActivities",

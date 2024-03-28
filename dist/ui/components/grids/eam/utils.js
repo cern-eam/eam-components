@@ -96,12 +96,15 @@ var OPERATORS = {
   NOT_CONTAINS: 'NOTCONTAINS'
 };
 var CHECKBOX_FILTERS = {
-  CHECKED: -1,
-  UNCHECKED: 0,
-  INDETERMINATE: undefined
+  CHECKED: 'SELECTED',
+  UNCHECKED: 'NOT_SELECTED',
+  INDETERMINATE: ''
+};
+var getCurrentCheckboxValue = function getCurrentCheckboxValue(event) {
+  return event.target.getAttribute('data-indeterminate') === 'true' ? CHECKBOX_FILTERS.INDETERMINATE : event.target.checked ? CHECKBOX_FILTERS.UNCHECKED : CHECKBOX_FILTERS.CHECKED;
 };
 var getCheckedValue = function getCheckedValue(valueType) {
-  return Number(valueType) === CHECKBOX_FILTERS.CHECKED;
+  return valueType === CHECKBOX_FILTERS.CHECKED;
 };
 var isIndeterminate = function isIndeterminate(valueType) {
   return valueType === null || valueType === CHECKBOX_FILTERS.INDETERMINATE;
@@ -124,8 +127,7 @@ var getEAMDefaultFilterValue = function getEAMDefaultFilterValue(column) {
       });
     case 'CHKBOOLEAN':
       return _objectSpread({}, baseFitler, {
-        operator: '=',
-        fieldValue: CHECKBOX_FILTERS.INDETERMINATE
+        operator: CHECKBOX_FILTERS.INDETERMINATE
       });
     default:
       return baseFitler;
@@ -382,14 +384,14 @@ var EAMFilterField = function EAMFilterField(_ref6) {
       fieldValue: e.target.value
     }));
   }, [localFilter, updateFilter]);
-  var handleCheckboxChange = React.useCallback(function () {
-    var values = [CHECKBOX_FILTERS.CHECKED, CHECKBOX_FILTERS.UNCHECKED, CHECKBOX_FILTERS.INDETERMINATE];
-    var nextValueIndex = (values.findIndex(function (e) {
-      return e === Number(localFilter.fieldValue);
-    }) + 1) % values.length;
-    var nextValue = values[nextValueIndex];
+  var handleCheckboxChange = React.useCallback(function (event) {
+    var operators = Object.values(CHECKBOX_FILTERS);
+    var nextOperatorIndex = (operators.findIndex(function (e) {
+      return e === getCurrentCheckboxValue(event);
+    }) + 1) % operators.length;
+    var nextOperator = operators[nextOperatorIndex];
     updateFilter(_objectSpread({}, localFilter, {
-      fieldValue: nextValue
+      operator: nextOperator
     }));
   }, [localFilter, updateFilter]);
   var handleDatePickersChange = React.useCallback(function (value) {
@@ -436,8 +438,8 @@ var EAMFilterField = function EAMFilterField(_ref6) {
       });
     case "CHKBOOLEAN":
       return /*#__PURE__*/React.createElement(Checkbox, {
-        checked: getCheckedValue(localFilter.fieldValue),
-        indeterminate: isIndeterminate(localFilter.fieldValue),
+        checked: getCheckedValue(localFilter.operator),
+        indeterminate: isIndeterminate(localFilter.operator),
         onChange: handleCheckboxChange,
         style: {
           padding: 5
