@@ -25,7 +25,7 @@ const customGridRenderer = ({ value, column, customRenderers }) => {
 
 
 const EAMGridTab = (props) => {
-    const { screenCode, tabName, objectCode, customParamNames, customRenderers, showGrid, rowCount = 100} = props;
+    const { screenCode, tabName, objectCode, customParamNames, customRenderers, showGrid, rowCount = 100, gridContainerStyle} = props;
 
     const gridName = screenCode + '_' + tabName;
 
@@ -67,7 +67,7 @@ const EAMGridTab = (props) => {
             initialShowFilters={false}
             {...props}>
             <EAMGrid
-                gridContainerStyle={{height: '440px'}}
+                gridContainerStyle={{...gridContainerStyle}}
             />
         </EAMGridContextProvider>
         : 
