@@ -39,7 +39,6 @@ export function setFilter(filter, dataType) {
     // Creation of new filter
     newFilter = _objectSpread({
       operator: getDefaultFilterOperator(dataType),
-      fieldValue: undefined,
       joiner: 'AND'
     }, filter);
   }
