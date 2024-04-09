@@ -118,6 +118,7 @@ export default class ChecklistSignature extends Component {
                               borderTop: '1px dashed rgb(209, 211, 212)',
                               minHeight: '40px',
                               paddingTop: '4px',
+                              paddingLeft: '8px',
                               paddingBottom: '3px'}}>
               <Grid container spacing={1} className="activityDetails">
                 <Grid item xs={10} md={10} lg={10} style={{paddingTop: '6px'}}>

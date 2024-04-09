@@ -474,13 +474,13 @@ class Checklists extends Component {
                         </div>
                     </AccordionDetails>
                     {activity.signatures && renderedSignatures.length ? (
-                        <ActivityExpansionPanel style={{backgroundColor: 'white', border: '0px'}}
+                        <ActivityExpansionPanel style={{outline: '0px', marginTop: '0px'}}
                                                 expanded={!this.state.signaturesCollapsed[activity.activityCode]}
                                                 onChange={(_, expanded) => this.expandSignature(activity, expanded)}>
-                            <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
+                            <AccordionSummary style={{paddingLeft: '10px', minHeight: '20px'}} sx={{'& .MuiAccordionSummary-content': {justifyContent: 'center', marginTop: '16px', marginBottom: '16px'}}} expandIcon={<ExpandMoreIcon/>}>
                                 <span style={{fontWeight: 500}}>E-SIGNATURES</span>
                             </AccordionSummary>
-                            <AccordionDetails style={{margin: 0, padding: '0 24px', backgroundColor: 'white', minHeight: '50px'}}>
+                            <AccordionDetails style={{margin: 0, padding: 0, minHeight: '50px'}}>
                                 <div style={{width: "100%"}}>
                                     {renderedSignatures}
                                 </div>
