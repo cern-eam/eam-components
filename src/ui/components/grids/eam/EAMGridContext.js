@@ -11,6 +11,8 @@ import { EAMCellField, EAMFilterField, getRowAsAnObject } from "./utils";
 import useEAMGridTableInstance from "./useEAMGridTableInstance";
 import { useAsyncDebounce } from "react-table";
 
+const ARRAY_SEPARATOR = "$$";
+
 const defaultCreateColumns = ({ gridField, cellRenderer }) =>
     (gridField || [])
         .sort((a, b) => a.order - b.order)
@@ -27,32 +29,35 @@ const defaultCreateColumns = ({ gridField, cellRenderer }) =>
         }));
 
 const processFilters = (filters, filterProcessor) => {
-    return filters
-        .map((f) => {
-            const filter = f.value;
-            const allowedFilter = Object.keys(filter)
-                .filter((key) =>
-                    ["fieldName", "fieldValue", "joiner", "operator"].includes(
-                        key
+        return filters
+            .map((f) => {
+                let fieldValue = f.value.fieldValue
+                if (fieldValue && fieldValue.includes(ARRAY_SEPARATOR)) {
+                    fieldValue = fieldValue.split(ARRAY_SEPARATOR);
+                }
+                const filter = { ...f.value, fieldValue: fieldValue }
+                return Object.keys(filter)
+                    .filter((key) =>
+                        ["fieldName", "fieldValue", "joiner", "operator"].includes(
+                            key
+                        )
                     )
-                )
-                .reduce(
-                    (newFilterObj, key) => ({
-                        ...newFilterObj,
-                        [key]: filter[key],
-                    }),
-                    {}
-                );
-            return allowedFilter;
-        })
-        .filter(
-            (filter) =>
-                filter.fieldValue !== undefined ||
-                filter.fieldValue !== "" ||
-                ["IS EMPTY", "NOT EMPTY"].includes(filter.operator)
-        )
-        .map(filterProcessor);
-};
+                    .reduce(
+                        (newFilterObj, key) => ({
+                            ...newFilterObj,
+                            [key]: filter[key],
+                        }),
+                        {}
+                    );
+            })
+            .filter(
+                (filter) =>
+                    filter.fieldValue !== undefined ||
+                    filter.fieldValue !== "" ||
+                    ["IS EMPTY", "NOT EMPTY"].includes(filter.operator)
+            )
+            .map(filterProcessor);
+    };
 
 const processSortBy = (sortBy, sortByProcessor) =>
     (sortBy || [])
@@ -198,6 +203,27 @@ export const EAMGridContextProvider = (props) => {
             }
         };
     }, []);
+    const adaptGridFilters = (gr) => {
+        return {
+            ...gr,
+            gridFilter: gr.gridFilter.map((filter) => {
+                if (Array.isArray(filter?.fieldValue)) {
+                    return filter.fieldValue.map((fieldValue, index) => (
+                        {
+                            fieldName: filter.fieldName,
+                            fieldValue: fieldValue,
+                            operator: filter.operator || 'EQUALS',
+                            joiner: index < (filter?.fieldValue.length - 1) ? 'OR' : ('AND'),
+                            leftParenthesis: index === 0 ? true : false,
+                            rightParenthesis: index === (filter?.fieldValue.length - 1) ? true : false,
+                        }
+                    ))
+                }
+                return filter
+            }
+            ).flat()
+        }
+    }
 
     const fetchData = useCallback(
         (gr) => {
@@ -207,7 +233,7 @@ export const EAMGridContextProvider = (props) => {
             }
             const newFetchDataCancelToken = Axios.CancelToken.source();
             setFetchDataCancelToken(newFetchDataCancelToken);
-            GridWS.getGridData(gr, {
+            GridWS.getGridData(adaptGridFilters(gr), {
                 cancelToken: newFetchDataCancelToken.token,
             })
                 .then((response) => {
