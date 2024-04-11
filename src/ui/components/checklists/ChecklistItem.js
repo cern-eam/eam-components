@@ -234,6 +234,7 @@ export default class ChecklistItem extends Component {
                             checklistItem.possibleFindings.length >= Math.min(this.props.minFindingsDropdown, MINIMUM_MIN_FINDINGS)
                     })
                 ];
+                options.style = ChecklistItemInput.STYLE.SAMELINE;
                 break;
             case "04":
             case "05":
@@ -242,6 +243,7 @@ export default class ChecklistItem extends Component {
                 ];
                 options.slider = true;
                 options.beforeOnChange = clearResult;
+                options.style = ChecklistItemInput.STYLE.SAMELINE;
                 break;
             case "06":
                 fields = [
