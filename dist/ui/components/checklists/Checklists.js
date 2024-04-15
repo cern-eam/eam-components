@@ -635,14 +635,25 @@ var Checklists = /*#__PURE__*/function (_Component) {
           }
         }, _this6.renderChecklistsForActivity(activity, filteredEquipment))), activity.signatures && renderedSignatures.length ? /*#__PURE__*/React.createElement(ActivityExpansionPanel, {
           style: {
-            backgroundColor: 'white',
-            border: '0px'
+            outline: '0px',
+            marginTop: '0px'
           },
           expanded: !_this6.state.signaturesCollapsed[activity.activityCode],
           onChange: function onChange(_, expanded) {
             return _this6.expandSignature(activity, expanded);
           }
         }, /*#__PURE__*/React.createElement(AccordionSummary, {
+          style: {
+            paddingLeft: '10px',
+            minHeight: '20px'
+          },
+          sx: {
+            '& .MuiAccordionSummary-content': {
+              justifyContent: 'center',
+              marginTop: '16px',
+              marginBottom: '16px'
+            }
+          },
           expandIcon: /*#__PURE__*/React.createElement(ExpandMoreIcon, null)
         }, /*#__PURE__*/React.createElement("span", {
           style: {
@@ -651,8 +662,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
         }, "E-SIGNATURES")), /*#__PURE__*/React.createElement(AccordionDetails, {
           style: {
             margin: 0,
-            padding: '0 24px',
-            backgroundColor: 'white',
+            padding: 0,
             minHeight: '50px'
           }
         }, /*#__PURE__*/React.createElement("div", {

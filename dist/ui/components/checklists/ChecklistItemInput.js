@@ -101,8 +101,7 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
       var _this$props = this.props,
         checklistItem = _this$props.checklistItem,
         showError = _this$props.showError,
-        disabled = _this$props.disabled,
-        register = _this$props.register;
+        disabled = _this$props.disabled;
       var type = field[0];
       var options = field[1] || {};
       switch (type) {
@@ -211,9 +210,7 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
             }
           });
         case ChecklistItemInput.FIELD.ENTITY:
-          return /*#__PURE__*/React.createElement(EAMAutocomplete
-          //{...register('code', 'code', 'desc', 'checklistItem.entityOrg', entity => this.handleChange(ChecklistItemInput.FIELD.ENTITY, entity.code, () => {desc = ''}))}
-          , {
+          return /*#__PURE__*/React.createElement(EAMAutocomplete, {
             style: {
               minWidth: '240px',
               marginLeft: '10px'
