@@ -40,7 +40,9 @@ var EAMBaseInput = function EAMBaseInput(props) {
   }
   return /*#__PURE__*/React.createElement(RootDiv, {
     style: props.rootStyle
-  }, label && /*#__PURE__*/React.createElement(LabelDiv, null, /*#__PURE__*/React.createElement("span", null, label), required && /*#__PURE__*/React.createElement("span", {
+  }, label && /*#__PURE__*/React.createElement(LabelDiv, {
+    style: props.labelStyle
+  }, /*#__PURE__*/React.createElement("span", null, label), required && /*#__PURE__*/React.createElement("span", {
     style: requiredStyle
   }, "*")), /*#__PURE__*/React.createElement("div", {
     style: _objectSpread({}, componentStyle, {}, props.componentStyle)

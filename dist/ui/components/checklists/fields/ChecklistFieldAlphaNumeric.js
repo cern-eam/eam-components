@@ -24,8 +24,7 @@ var textAreaStyle = {
   fontFamily: 'Roboto, sans-serif'
 };
 var outerStyle = {
-  margin: 5,
-  marginLeft: 17,
+  marginLeft: 10,
   display: "flex",
   flex: "1 1 auto"
 };

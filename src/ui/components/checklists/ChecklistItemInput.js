@@ -5,15 +5,19 @@ import ChecklistFieldFinding from './fields/ChecklistFieldFinding';
 import ChecklistFieldAlphaNumeric from './fields/ChecklistFieldAlphaNumeric';
 import EAMDatePicker from "../inputs-ng/EAMDatePicker";
 import EAMDateTimePicker from "../inputs-ng/EAMDateTimePicker";
+import EAMAutocomplete from "../inputs-ng/EAMAutocomplete"
+import WSChecklists from '../../../tools/WSChecklists';
+import ChecklistFieldRadio from './fields/ChecklistFieldRadio';
 
 export default class ChecklistItemInput extends Component {
     handleChange(type, value, onFail) {
-        const {result, finding, numericValue, freeText, date, dateTime} = this.props.checklistItem;
+        const {result, finding, numericValue, numericValue2, freeText, date, dateTime, entityCode} = this.props.checklistItem;
 
-        let newResult, newFinding, newNumericValue, newAlphaNumericValue, newDate, newDateTime;
+        let newResult, newFinding, newNumericValue, newNumericValue2, newAlphaNumericValue, newDate, newDateTime, newEntityCode;
 
         switch(type) {
             case ChecklistItemInput.FIELD.CHECKBOX:
+            case ChecklistItemInput.FIELD.RADIO:
                 newResult = (value === result) ? null : value;
                 break;
             case ChecklistItemInput.FIELD.FINDING:
@@ -21,6 +25,12 @@ export default class ChecklistItemInput extends Component {
                 break;
             case ChecklistItemInput.FIELD.NUMERIC:
                 newNumericValue = value;
+                break;
+            case ChecklistItemInput.FIELD.NUMERIC2:
+                newNumericValue2 = value;
+                break;
+            case ChecklistItemInput.FIELD.NUMERIC2:
+                newNumericValue2 = value;
                 break;
             case ChecklistItemInput.FIELD.ALPHANUMERIC:
                 newAlphaNumericValue = value;
@@ -31,6 +41,9 @@ export default class ChecklistItemInput extends Component {
             case ChecklistItemInput.FIELD.DATETIME:
                 newDateTime = value;
                 break;
+            case ChecklistItemInput.FIELD.ENTITY:
+                newEntityCode = value;
+                break;
         }
 
         let newProps = {
@@ -38,13 +51,22 @@ export default class ChecklistItemInput extends Component {
             result: newResult === undefined ? result : newResult,
             finding: newFinding === undefined ? finding : newFinding,
             numericValue: newNumericValue === undefined ? numericValue : newNumericValue,
+            numericValue2: newNumericValue2 === undefined ? numericValue2 : newNumericValue2,
+            numericValue2: newNumericValue2 === undefined ? numericValue2 : newNumericValue2,
             freeText: newAlphaNumericValue === undefined ? freeText : newAlphaNumericValue.trim(),
             date: newDate === undefined ? date : newDate,
             dateTime: newDateTime === undefined ? dateTime : newDateTime,
+            entityCode: newEntityCode === undefined ? entityCode : newEntityCode
         };
 
         if(this.options.beforeOnChange && typeof this.options.beforeOnChange === 'function') {
             newProps = this.options.beforeOnChange(newProps, type, value);
+        }
+
+        const hasChanged = Object.keys(newProps).some(key => newProps[key] !== this.props.checklistItem[key]);
+
+        if(!hasChanged) {
+            return;
         }
         
         this.props.onChange(newProps, onFail);
@@ -67,9 +89,19 @@ export default class ChecklistItemInput extends Component {
                     key={key}
                     disabled={disabled}
                 />
+            case ChecklistItemInput.FIELD.RADIO:
+                return <ChecklistFieldRadio
+                    code={options.code}
+                    desc={options.desc}
+                    checked={checklistItem.result === options.code}
+                    handleChange={code => this.handleChange(ChecklistItemInput.FIELD.RADIO, code)}
+                    key={key}
+                    disabled={disabled}
+                />
             case ChecklistItemInput.FIELD.FINDING:
                 return <ChecklistFieldFinding
                     dropdown={options.dropdown}
+                    label={this.options.label}
                     finding={checklistItem.finding}
                     handleChange={code => this.handleChange(ChecklistItemInput.FIELD.FINDING, code)}
                     possibleFindings={checklistItem.possibleFindings}
@@ -86,6 +118,21 @@ export default class ChecklistItemInput extends Component {
                     key={key}
                     showError={showError}
                     disabled={disabled}
+                    slider={this.options.slider}
+                    sliderRange
+                />
+            case ChecklistItemInput.FIELD.NUMERIC2:
+                return <ChecklistFieldNumeric
+                    value={checklistItem.numericValue2}
+                    UOM={checklistItem.UOM2}
+                    minimumValue={checklistItem.minimumValue2}
+                    maximumValue={checklistItem.maximumValue2}
+                    handleChange={(value, onFail) => this.handleChange(ChecklistItemInput.FIELD.NUMERIC2, value, onFail)}
+                    key={key}
+                    showError={showError}
+                    disabled={disabled}
+                    slider={this.options.slider}
+                    sliderRange
                 />
             case ChecklistItemInput.FIELD.ALPHANUMERIC:
                 return <ChecklistFieldAlphaNumeric
@@ -101,6 +148,8 @@ export default class ChecklistItemInput extends Component {
                     onChange={value => this.handleChange(ChecklistItemInput.FIELD.DATE, value, null)}
                     key={key}
                     disabled={disabled}
+                    endAdornmentStyle={{marginRight: "1px"}}
+                    style={{marginRight: "0px"}}
                 />
             case ChecklistItemInput.FIELD.DATETIME:
                 return <EAMDateTimePicker
@@ -108,7 +157,19 @@ export default class ChecklistItemInput extends Component {
                     onChange={value => this.handleChange(ChecklistItemInput.FIELD.DATETIME, value, null)}
                     key={key}
                     disabled={disabled}
+                    endAdornmentStyle={{marginRight: "1px"}}
+                    style={{marginRight: "0px"}}
                 />
+            case ChecklistItemInput.FIELD.ENTITY:
+                return <EAMAutocomplete
+                    style={{minWidth: '240px', marginLeft: '10px'}}
+                    barcodeScanner
+                    value={checklistItem.entityCode}
+                    onChange={entity => this.handleChange(ChecklistItemInput.FIELD.ENTITY, entity.code, () => {checklistItem.entityDesc = ''})}
+                    rightAlign
+                    autocompleteHandler={WSChecklists.autocompleteEntity}
+                    autocompleteHandlerParams={[checklistItem.entityType, checklistItem.entityClass]}
+            />
         }
     }
 
@@ -124,7 +185,7 @@ export default class ChecklistItemInput extends Component {
             fieldsRender.push(this.renderField(field, ++key));
         }
 
-        return <div style={options.style || ChecklistItemInput.STYLE.ROWS}>
+        return <div onClick={(event) => event.stopPropagation()} style={options.style || ChecklistItemInput.STYLE.ROWS}>
             {fieldsRender}
         </div>
     }
@@ -132,44 +193,33 @@ export default class ChecklistItemInput extends Component {
 
 ChecklistItemInput.FIELD = {
     CHECKBOX: "CHECKBOX",
+    RADIO: "RADIO",
     NUMERIC: "NUMERIC",
+    NUMERIC2: "NUMERIC2",
+    NUMERIC2: "NUMERIC2",
     FINDING: "FINDING",
     ALPHANUMERIC: "ALPHANUMERIC",
     DATE: "DATE",
-    DATETIME: "DATETIME"
-}
-
-const SINGLE = {
-    flex: "0 0 186px",
-    display: "flex",
-    marginLeft: "auto"
+    DATETIME: "DATETIME",
+    ENTITY: "ENTITY"
 }
 
 const SINGLE_EXPAND = {
-    flex: "1 0 auto",
-    marginLeft: "auto",
+    flex: "1",
     display: "flex",
-}
-
-const ROWS = {
-    flex: "0 0 186px",
-    display: "flex",
-    position: "relative",
-    marginLeft: "auto",
-    flexDirection: "column"
+    justifyContent: "flex-end"
 }
 
 const SAMELINE = {
-    flex: "0 0 186px",
     display: "flex",
     marginLeft: "auto",
     flexWrap: "wrap",
-    justifyContent: "space-between"
+    gap: "10px",
+    justifyContent: "flex-end",
+    flexDirection: "row"
 }
 
 ChecklistItemInput.STYLE = {
-    SINGLE,
-    ROWS,
     SAMELINE,
     SINGLE_EXPAND
 };

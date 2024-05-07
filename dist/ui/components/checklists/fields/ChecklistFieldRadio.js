@@ -1,5 +1,5 @@
 import React from 'react';
-import Checkbox from '@mui/material/Checkbox';
+import Radio from '@mui/material/Radio';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import withStyles from '@mui/styles/withStyles';
 var labelStyle = {
@@ -8,7 +8,7 @@ var labelStyle = {
     justifyContent: "end"
   }
 };
-var ChecklistFieldCheckbox = function ChecklistFieldCheckbox(props) {
+var ChecklistFieldRadio = function ChecklistFieldRadio(props) {
   var code = props.code,
     desc = props.desc,
     checked = props.checked,
@@ -20,7 +20,7 @@ var ChecklistFieldCheckbox = function ChecklistFieldCheckbox(props) {
       root: classes.root,
       label: classes.label
     },
-    control: /*#__PURE__*/React.createElement(Checkbox, {
+    control: /*#__PURE__*/React.createElement(Radio, {
       color: "primary",
       checked: checked,
       onMouseDown: function onMouseDown() {
@@ -35,4 +35,4 @@ var ChecklistFieldCheckbox = function ChecklistFieldCheckbox(props) {
     labelPlacement: "start"
   });
 };
-export default withStyles(labelStyle)(ChecklistFieldCheckbox);
+export default withStyles(labelStyle)(ChecklistFieldRadio);

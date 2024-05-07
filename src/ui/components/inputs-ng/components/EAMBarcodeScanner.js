@@ -11,7 +11,7 @@ import EAMSelect from '../EAMSelect'
 
 
 const EAMBarcodeScanner = (props) => {
-    let { onChange } = props;
+    let { onChange, rightAlign } = props;
 
     let codeReader = useRef(new BrowserMultiFormatReader());
     let [open, setOpen] = useState(false);
@@ -102,7 +102,7 @@ const EAMBarcodeScanner = (props) => {
     // Active quagga when support for user media
     return (
         <div>
-            <IconButton onClick={handleClickOpen}>
+            <IconButton sx={rightAlign ? { marginRight: '-8px' } : {}} onClick={handleClickOpen}>
                 <BarcodeScan />
             </IconButton>
 

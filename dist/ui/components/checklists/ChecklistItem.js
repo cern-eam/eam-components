@@ -21,6 +21,8 @@ import Collapse from '@mui/material/Collapse';
 import ChecklistItemFollowUp from "./ChecklistItemFollowUp";
 import ChecklistItemNotApplicableOptions from './ChecklistItemNotApplicableOptions';
 import WSChecklists from '../../../tools/WSChecklists';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 var ChecklistItem = /*#__PURE__*/function (_Component) {
   _inherits(ChecklistItem, _Component);
   function ChecklistItem(props) {
@@ -45,6 +47,7 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
     _this.firstLineDesc = {
       "float": "left",
       display: "flex",
+      marginRight: "5px",
       alignItems: "center",
       pointerEvents: "initial",
       color: "rgba(0, 0, 0, 0.87)"
@@ -55,7 +58,8 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
      * @returns {{marginLeft: number, marginTop: number, position: string, display: string}}
      */
     _this.checklistDetailsStyle = {
-      margin: 5,
+      margin: 2,
+      marginLeft: 11,
       display: "flex",
       alignItems: "center"
     };
@@ -65,24 +69,25 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       flex: '1 1 auto'
     };
     _this.colorStyle = function (color) {
-      return _defineProperty(_defineProperty({
-        display: "flex",
-        marginRight: "15px",
+      return {
         backgroundColor: color ? "#".concat(color) : undefined,
-        border: 'solid 1px #d1d3d4',
-        flex: '0 1 auto',
-        width: '5px',
-        margin: '10px 15px 10px 0px'
-      }, "marginRight", '15px'), "borderRadius", '30px');
+        borderLeft: color ? "#".concat(color) : undefined,
+        width: '3px',
+        margin: '8px -2px 8px 2px',
+        borderRadius: '30px',
+        flexShrink: 0
+      };
     };
-    _this.containerStyle = function (blocked) {
+    _this.containerStyle = function (blocked, isLastItem, color) {
       return {
         display: 'flex',
         alignItems: "stretch",
+        padding: '1px 8px 1px 0',
         minHeight: 48,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        borderBottom: "dashed 1px #d1d3d4",
+        borderBottom: isLastItem ? 'none' : "dashed 1px #d1d3d4",
+        backgroundColor: color ? "".concat(_this.hexToRgb(color, 0.14)) : '#white',
         opacity: blocked ? 0.5 : 1
       };
     };
@@ -104,11 +109,11 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
     value: function componentDidMount() {
       var _this$props = this.props,
         checklistItem = _this$props.checklistItem,
-        expandChecklistOptions = _this$props.expandChecklistOptions,
+        showChecklistOptions = _this$props.showChecklistOptions,
         taskCode = _this$props.taskCode;
       // Handles expand/collapse of options when the checkbox was ticked before
       // the equipment's checklist had been expanded.
-      this.expandChecklistOptionsHandler(expandChecklistOptions, checklistItem, taskCode);
+      this.showChecklistOptionsHandler(showChecklistOptions, checklistItem, taskCode);
     }
   }, {
     key: "componentWillUnmount",
@@ -134,11 +139,11 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
           this.init(checklistItem);
         }
       }
-      var expandChecklistOptions = nextProps.expandChecklistOptions,
+      var showChecklistOptions = nextProps.showChecklistOptions,
         taskCode = nextProps.taskCode;
       // Expand/collapse options when the equipment's checklists are already expanded
-      if (expandChecklistOptions !== this.props.expandChecklistOptions) {
-        this.expandChecklistOptionsHandler(expandChecklistOptions, checklistItemProps, taskCode);
+      if (showChecklistOptions !== this.props.showChecklistOptions) {
+        this.showChecklistOptionsHandler(showChecklistOptions, checklistItemProps, taskCode);
       }
     }
   }, {
@@ -203,8 +208,8 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       }
     }
   }, {
-    key: "expandChecklistOptionsHandler",
-    value: function expandChecklistOptionsHandler(expandChecklist, checklistItem, taskCode) {
+    key: "showChecklistOptionsHandler",
+    value: function showChecklistOptionsHandler(expandChecklist, checklistItem, taskCode) {
       var notes = this.notes.current.input.current.value;
       var followUp = checklistItem.followUp;
       var detailsVisible;
@@ -253,7 +258,8 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       var _this$props2 = this.props,
         checklistItem = _this$props2.checklistItem,
         showError = _this$props2.showError,
-        disabled = _this$props2.disabled;
+        disabled = _this$props2.disabled,
+        register = _this$props2.register;
       var fields = [];
       var options = {};
 
@@ -265,24 +271,27 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       var createField = ChecklistItemInput.createField;
       var _ChecklistItemInput$F = ChecklistItemInput.FIELD,
         CHECKBOX = _ChecklistItemInput$F.CHECKBOX,
+        RADIO = _ChecklistItemInput$F.RADIO,
         FINDING = _ChecklistItemInput$F.FINDING,
         NUMERIC = _ChecklistItemInput$F.NUMERIC,
+        NUMERIC2 = _ChecklistItemInput$F.NUMERIC2,
         ALPHANUMERIC = _ChecklistItemInput$F.ALPHANUMERIC,
         DATE = _ChecklistItemInput$F.DATE,
-        DATETIME = _ChecklistItemInput$F.DATETIME;
+        DATETIME = _ChecklistItemInput$F.DATETIME,
+        ENTITY = _ChecklistItemInput$F.ENTITY;
       switch (checklistItem.type) {
         case "01":
           fields = [createField(CHECKBOX, {
             code: "COMPLETED",
             desc: "Completed"
           })];
-          options.style = ChecklistItemInput.STYLE.SINGLE;
+          options.style = ChecklistItemInput.STYLE.SAMELINE;
           break;
         case "02":
-          fields = [createField(CHECKBOX, {
+          fields = [createField(RADIO, {
             code: "YES",
             desc: "Yes"
-          }), createField(CHECKBOX, {
+          }), createField(RADIO, {
             code: "NO",
             desc: "No"
           })];
@@ -293,21 +302,26 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
           fields = [createField(FINDING, {
             dropdown: checklistItem.possibleFindings.length >= Math.min(this.props.minFindingsDropdown, MINIMUM_MIN_FINDINGS)
           })];
+          options.style = ChecklistItemInput.STYLE.SAMELINE;
           break;
         case "04":
         case "05":
           fields = [createField(NUMERIC)];
+          options.slider = true;
           options.beforeOnChange = clearResult;
+          options.style = ChecklistItemInput.STYLE.SAMELINE;
           break;
         case "06":
           fields = [createField(FINDING), createField(NUMERIC)];
+          options.slider = true;
           options.beforeOnChange = clearResult;
+          options.style = ChecklistItemInput.STYLE.SAMELINE;
           break;
         case "07":
-          fields = [createField(CHECKBOX, {
+          fields = [createField(RADIO, {
             code: "OK",
             desc: "OK"
-          }), createField(CHECKBOX, {
+          }), createField(RADIO, {
             code: "REPAIRSNEEDED",
             desc: "Repairs Needed"
           }), createField(FINDING)];
@@ -331,18 +345,20 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
               }];
               break;
           }
+          options.label = "Resolution";
           options.beforeOnChange = function (newProps, type, value) {
             if (type === ChecklistItemInput.FIELD.CHECKBOX) {
               delete newProps.finding;
             }
             return newProps;
           };
+          options.style = ChecklistItemInput.STYLE.SAMELINE;
           break;
         case "08":
-          fields = [createField(CHECKBOX, {
+          fields = [createField(RADIO, {
             code: "GOOD",
             desc: "Good"
-          }), createField(CHECKBOX, {
+          }), createField(RADIO, {
             code: "POOR",
             desc: "Poor"
           })];
@@ -350,10 +366,10 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
           break;
         case "09":
         case "10":
-          fields = [createField(CHECKBOX, {
+          fields = [createField(RADIO, {
             code: "OK",
             desc: "OK"
-          }), createField(CHECKBOX, {
+          }), createField(RADIO, {
             code: "ADJUSTED",
             desc: "Adjusted"
           })];
@@ -361,13 +377,14 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
             fields.push(createField(NUMERIC));
           }
           options.style = ChecklistItemInput.STYLE.SAMELINE;
+          options.slider = true;
           break;
         case "11":
         case "12":
-          fields = [createField(CHECKBOX, {
+          fields = [createField(RADIO, {
             code: "OK",
             desc: "OK"
-          }), createField(CHECKBOX, {
+          }), createField(RADIO, {
             code: "NONCONFORMITY",
             desc: "Nonconformity"
           })];
@@ -381,18 +398,28 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
             };
           }
           options.style = ChecklistItemInput.STYLE.SAMELINE;
+          options.slider = true;
           break;
         case "13":
           fields = [createField(DATE)];
-          options.style = ChecklistItemInput.STYLE.SINGLE;
+          options.style = ChecklistItemInput.STYLE.SAMELINE;
           break;
         case "14":
           fields = [createField(DATETIME)];
-          options.style = ChecklistItemInput.STYLE.SINGLE;
+          options.style = ChecklistItemInput.STYLE.SAMELINE;
           break;
         case "15":
           fields = [createField(ALPHANUMERIC)];
           options.style = ChecklistItemInput.STYLE.SINGLE_EXPAND;
+          break;
+        case "16":
+          fields = [createField(ENTITY)];
+          options.style = ChecklistItemInput.STYLE.SINGLE_EXPAND;
+          break;
+        case "17":
+          fields = [createField(NUMERIC), createField(NUMERIC2)];
+          options.style = ChecklistItemInput.STYLE.SAMELINE;
+          options.slider = true;
           break;
       }
       if (fields === undefined) return /*#__PURE__*/React.createElement("div", null);
@@ -404,8 +431,15 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
         fields: fields,
         options: options,
         showError: showError,
-        disabled: disabled
+        disabled: disabled,
+        register: register
       });
+    }
+  }, {
+    key: "hexToRgb",
+    value: function hexToRgb(hex, opacity) {
+      var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result ? "rgb(".concat(parseInt(result[1], 16), ", ").concat(parseInt(result[2], 16), ", ").concat(parseInt(result[3], 16), ", ").concat(opacity, ")") : null;
     }
   }, {
     key: "render",
@@ -413,20 +447,29 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       var _this6 = this;
       var _this$props3 = this.props,
         checklistItem = _this$props3.checklistItem,
+        isLastItem = _this$props3.isLastItem,
         hideFollowUpProp = _this$props3.hideFollowUpProp;
       var notApplicableOptions = this.state.notApplicableOptions;
       return /*#__PURE__*/React.createElement("div", {
-        style: this.containerStyle(this.state.blocked)
-      }, checklistItem.color ? /*#__PURE__*/React.createElement("div", {
+        style: this.containerStyle(this.state.blocked, isLastItem, checklistItem.color)
+      }, /*#__PURE__*/React.createElement("div", {
         style: this.colorStyle(checklistItem.color)
-      }) : null, /*#__PURE__*/React.createElement("div", {
+      }), /*#__PURE__*/React.createElement("div", {
         style: this.getCheckListItemStyle(this.state.blocked)
       }, /*#__PURE__*/React.createElement("div", {
-        style: this.firstLine
-      }, /*#__PURE__*/React.createElement("div", {
-        style: this.firstLineDesc,
+        style: this.firstLine,
         onClick: this.descClickHandler.bind(this)
-      }, /*#__PURE__*/React.createElement("label", null, checklistItem.desc), checklistItem.requiredToClose === true && /*#__PURE__*/React.createElement("label", {
+      }, /*#__PURE__*/React.createElement("div", {
+        style: this.firstLineDesc
+      }, this.state.detailsVisible ? /*#__PURE__*/React.createElement(ExpandLessIcon, {
+        style: {
+          color: "#b0b0b0"
+        }
+      }) : /*#__PURE__*/React.createElement(ExpandMoreIcon, {
+        style: {
+          color: "#b0b0b0"
+        }
+      }), /*#__PURE__*/React.createElement("label", null, checklistItem.desc), checklistItem.requiredToClose === true && /*#__PURE__*/React.createElement("label", {
         style: {
           color: "red"
         }

@@ -5,6 +5,8 @@ import Collapse from '@mui/material/Collapse';
 import ChecklistItemFollowUp from "./ChecklistItemFollowUp";
 import ChecklistItemNotApplicableOptions from './ChecklistItemNotApplicableOptions';
 import WSChecklists from '../../../tools/WSChecklists';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 
 export default class ChecklistItem extends Component {
     constructor(props) {
@@ -23,10 +25,10 @@ export default class ChecklistItem extends Component {
     }
     
     componentDidMount() {
-        const { checklistItem, expandChecklistOptions, taskCode } = this.props;
+        const { checklistItem, showChecklistOptions, taskCode } = this.props;
         // Handles expand/collapse of options when the checkbox was ticked before
         // the equipment's checklist had been expanded.
-        this.expandChecklistOptionsHandler(expandChecklistOptions, checklistItem, taskCode);
+        this.showChecklistOptionsHandler(showChecklistOptions, checklistItem, taskCode);
     }
 
     componentWillUnmount() {
@@ -53,10 +55,10 @@ export default class ChecklistItem extends Component {
             }
         }
 
-        const { expandChecklistOptions, taskCode } = nextProps;
+        const { showChecklistOptions, taskCode } = nextProps;
         // Expand/collapse options when the equipment's checklists are already expanded
-        if (expandChecklistOptions !== this.props.expandChecklistOptions) {
-            this.expandChecklistOptionsHandler(expandChecklistOptions, checklistItemProps, taskCode);
+        if (showChecklistOptions !== this.props.showChecklistOptions) {
+            this.showChecklistOptionsHandler(showChecklistOptions, checklistItemProps, taskCode);
         }
     }
 
@@ -86,6 +88,7 @@ export default class ChecklistItem extends Component {
     firstLineDesc = {
         float: "left",
         display: "flex",
+        marginRight: "5px",
         alignItems: "center",
         pointerEvents: "initial",
         color: "rgba(0, 0, 0, 0.87)"
@@ -97,7 +100,8 @@ export default class ChecklistItem extends Component {
      * @returns {{marginLeft: number, marginTop: number, position: string, display: string}}
      */
     checklistDetailsStyle = {
-            margin: 5,
+            margin: 2,
+            marginLeft: 11,
             display: "flex",
             alignItems: "center"
     }
@@ -156,7 +160,7 @@ export default class ChecklistItem extends Component {
         }
     }
 
-    expandChecklistOptionsHandler(expandChecklist, checklistItem, taskCode) {
+    showChecklistOptionsHandler(expandChecklist, checklistItem, taskCode) {
         const notes = this.notes.current.input.current.value;
         const followUp = checklistItem.followUp;
         let detailsVisible;
@@ -194,7 +198,7 @@ export default class ChecklistItem extends Component {
     }
 
     renderChecklistItemInput() {
-        const { checklistItem, showError, disabled } = this.props;
+        const { checklistItem, showError, disabled, register } = this.props;
 
         let fields = [];
         let options = {};
@@ -206,19 +210,19 @@ export default class ChecklistItem extends Component {
         };
 
         const createField = ChecklistItemInput.createField;
-        const {CHECKBOX, FINDING, NUMERIC, ALPHANUMERIC, DATE, DATETIME} = ChecklistItemInput.FIELD;
+        const {CHECKBOX, RADIO, FINDING, NUMERIC, NUMERIC2, ALPHANUMERIC, DATE, DATETIME, ENTITY} = ChecklistItemInput.FIELD;
 
         switch(checklistItem.type) {
             case "01":
                 fields = [
                     createField(CHECKBOX, {code: "COMPLETED", desc:"Completed"})
                 ];
-                options.style = ChecklistItemInput.STYLE.SINGLE;
+                options.style = ChecklistItemInput.STYLE.SAMELINE;
                 break;
             case "02":
                 fields = [
-                    createField(CHECKBOX, {code: "YES", desc: "Yes"}),
-                    createField(CHECKBOX, {code: "NO", desc: "No"})
+                    createField(RADIO, {code: "YES", desc: "Yes"}),
+                    createField(RADIO, {code: "NO", desc: "No"})
                 ];
                 options.style = ChecklistItemInput.STYLE.SAMELINE;
                 break;
@@ -230,26 +234,30 @@ export default class ChecklistItem extends Component {
                             checklistItem.possibleFindings.length >= Math.min(this.props.minFindingsDropdown, MINIMUM_MIN_FINDINGS)
                     })
                 ];
+                options.style = ChecklistItemInput.STYLE.SAMELINE;
                 break;
             case "04":
             case "05":
                 fields = [
                     createField(NUMERIC)
                 ];
+                options.slider = true;
                 options.beforeOnChange = clearResult;
+                options.style = ChecklistItemInput.STYLE.SAMELINE;
                 break;
             case "06":
                 fields = [
                     createField(FINDING),
                     createField(NUMERIC)
                 ];
-
+                options.slider = true;
                 options.beforeOnChange = clearResult;
+                options.style = ChecklistItemInput.STYLE.SAMELINE;
                 break;
             case "07":
                 fields = [
-                    createField(CHECKBOX, {code: "OK", desc: "OK"}),
-                    createField(CHECKBOX, {code: "REPAIRSNEEDED", desc: "Repairs Needed"}),
+                    createField(RADIO, {code: "OK", desc: "OK"}),
+                    createField(RADIO, {code: "REPAIRSNEEDED", desc: "Repairs Needed"}),
                     createField(FINDING)
                 ];
 
@@ -267,26 +275,27 @@ export default class ChecklistItem extends Component {
                         ];
                         break;
                 }
-
+                options.label = "Resolution";
                 options.beforeOnChange = (newProps, type, value) => {
                     if(type === ChecklistItemInput.FIELD.CHECKBOX) {
                         delete newProps.finding;
                     }
                     return newProps;
                 }
+                options.style = ChecklistItemInput.STYLE.SAMELINE;
                 break;
             case "08":
                 fields = [
-                    createField(CHECKBOX, {code: "GOOD", desc: "Good"}),
-                    createField(CHECKBOX, {code: "POOR", desc: "Poor"})
+                    createField(RADIO, {code: "GOOD", desc: "Good"}),
+                    createField(RADIO, {code: "POOR", desc: "Poor"})
                 ];
                 options.style = ChecklistItemInput.STYLE.SAMELINE;
                 break;
             case "09":
             case "10":
                 fields = [
-                    createField(CHECKBOX, {code: "OK", desc: "OK"}),
-                    createField(CHECKBOX, {code: "ADJUSTED", desc: "Adjusted"})
+                    createField(RADIO, {code: "OK", desc: "OK"}),
+                    createField(RADIO, {code: "ADJUSTED", desc: "Adjusted"})
                 ];
 
                 if(checklistItem.type === "10") {
@@ -294,12 +303,13 @@ export default class ChecklistItem extends Component {
                 }
 
                 options.style = ChecklistItemInput.STYLE.SAMELINE;
+                options.slider = true;
                 break;
             case "11":
             case "12":
                 fields = [
-                    createField(CHECKBOX, {code: "OK", desc: "OK"}),
-                    createField(CHECKBOX, {code: "NONCONFORMITY", desc: "Nonconformity"}),
+                    createField(RADIO, {code: "OK", desc: "OK"}),
+                    createField(RADIO, {code: "NONCONFORMITY", desc: "Nonconformity"}),
                 ];
 
                 if(checklistItem.type === "12") {
@@ -313,24 +323,39 @@ export default class ChecklistItem extends Component {
                 }
 
                 options.style = ChecklistItemInput.STYLE.SAMELINE;
+                options.slider = true;
                 break;
             case "13":
                 fields = [
                     createField(DATE)
                 ];
-                options.style = ChecklistItemInput.STYLE.SINGLE;
+                options.style = ChecklistItemInput.STYLE.SAMELINE;
                 break;
             case "14":
                 fields = [
                     createField(DATETIME)
                 ];
-                options.style = ChecklistItemInput.STYLE.SINGLE;
+                options.style = ChecklistItemInput.STYLE.SAMELINE;
                 break;
             case "15":
                 fields = [
                     createField(ALPHANUMERIC)
                 ];
                 options.style = ChecklistItemInput.STYLE.SINGLE_EXPAND;
+                break;
+            case "16":
+                fields = [
+                    createField(ENTITY)
+                ];
+                options.style = ChecklistItemInput.STYLE.SINGLE_EXPAND;
+                break;
+            case "17":
+                fields = [
+                    createField(NUMERIC),
+                    createField(NUMERIC2)
+                ];
+                options.style = ChecklistItemInput.STYLE.SAMELINE;
+                options.slider = true;
                 break;
         }
 
@@ -340,46 +365,52 @@ export default class ChecklistItem extends Component {
                                 onChange={(value, onFail) => this.onChange(value, onFail)}
                                 fields={fields} options={options}
                                 showError={showError}
-                                disabled={disabled} />
+                                disabled={disabled}
+                                register={register} />
     }
 
     colorStyle = color => ({
-        display: "flex",
-        marginRight: "15px",
         backgroundColor: color ? `#${color}` : undefined,
-        border: 'solid 1px #d1d3d4',
-        flex: '0 1 auto',
-        width: '5px',
-        margin: '10px 15px 10px 0px',
-        marginRight: '15px',
-        borderRadius: '30px'
+        borderLeft: color ? `#${color}` : undefined,
+        width: '3px',
+        margin: '8px -2px 8px 2px', 
+        borderRadius: '30px',
+        flexShrink: 0
     })
 
-    containerStyle = blocked => ({
+    hexToRgb (hex, opacity) {
+        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? `rgb(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}, ${opacity})`
+        : null;
+      }
+
+    containerStyle = (blocked, isLastItem, color) => ({
         display: 'flex',
         alignItems: "stretch",
+        padding: '1px 8px 1px 0',
         minHeight: 48,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        borderBottom: "dashed 1px #d1d3d4",
+        borderBottom: isLastItem ? 'none' : "dashed 1px #d1d3d4",
+        backgroundColor: color ? `${this.hexToRgb(color, 0.14)}` : '#white',
         opacity: blocked ? 0.5 : 1
     })
 
     render() {
-        const { checklistItem, hideFollowUpProp } = this.props;
+        const { checklistItem, isLastItem, hideFollowUpProp } = this.props;
         const { notApplicableOptions } = this.state;
         return (
-            <div style={this.containerStyle(this.state.blocked)}>
-                {checklistItem.color ? <div style={this.colorStyle(checklistItem.color)}></div> : null}
+            <div style={this.containerStyle(this.state.blocked, isLastItem, checklistItem.color)}>
+                <div style={this.colorStyle(checklistItem.color)}></div>
                 <div style={this.getCheckListItemStyle(this.state.blocked)}>
-                    <div style={this.firstLine}>
-                        <div style={this.firstLineDesc} onClick={this.descClickHandler.bind(this)}>
+                    <div style={this.firstLine} onClick={this.descClickHandler.bind(this)}>
+                        <div style={this.firstLineDesc}>
+                            {this.state.detailsVisible ? <ExpandLessIcon style={{color: "#b0b0b0"}}/> : <ExpandMoreIcon style={{color: "#b0b0b0"}}/>}
                             <label>{checklistItem.desc}</label>
                             {checklistItem.requiredToClose === true && <label style={{color: "red"}}> *</label>}
                         </div>
                         {this.renderChecklistItemInput()}
                     </div>
-
                     <Collapse in={this.state.detailsVisible}>
                         <div style={this.checklistDetailsStyle} >
                             <ChecklistItemNotes

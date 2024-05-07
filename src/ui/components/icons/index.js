@@ -333,3 +333,12 @@ export const EISIcon = props => {
         </SvgIcon>
     )
 }
+
+export const IconSlash = ({iconColor, backgroundColor}) => {
+    return(
+    <>
+        <div style={{position: 'absolute', top: '17px', left: 7, width: '60%', height: '2px', backgroundColor: iconColor, transform: 'rotate(45deg)'}}></div>
+        <div style={{position: 'absolute', top: '16px', left: 8, width: '60%', height: '2px', backgroundColor: backgroundColor, transform: 'rotate(45deg)'}}></div>
+    </>
+    );
+}

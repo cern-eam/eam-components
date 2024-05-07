@@ -134,6 +134,7 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
           borderTop: '1px dashed rgb(209, 211, 212)',
           minHeight: '40px',
           paddingTop: '4px',
+          paddingLeft: '8px',
           paddingBottom: '3px'
         }
       }, /*#__PURE__*/React.createElement(Grid, {

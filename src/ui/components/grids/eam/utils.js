@@ -111,12 +111,13 @@ const OPERATORS = {
 }
 
 const CHECKBOX_FILTERS = {
-    CHECKED: -1,
-    UNCHECKED: 0,
-    INDETERMINATE: undefined
+    CHECKED: 'SELECTED',
+    UNCHECKED: 'NOT_SELECTED',
+    INDETERMINATE: ''
 }
 
-const getCheckedValue = (valueType) => Number(valueType) === CHECKBOX_FILTERS.CHECKED;
+const getCurrentCheckboxValue = (event) => event.target.getAttribute('data-indeterminate') === 'true' ? CHECKBOX_FILTERS.INDETERMINATE : event.target.checked ? CHECKBOX_FILTERS.UNCHECKED : CHECKBOX_FILTERS.CHECKED;
+const getCheckedValue = (valueType) => valueType === CHECKBOX_FILTERS.CHECKED;
 const isIndeterminate = (valueType) => valueType === null || valueType === CHECKBOX_FILTERS.INDETERMINATE;
 
 const getEAMDefaultFilterValue = (column) => {
@@ -139,8 +140,7 @@ const getEAMDefaultFilterValue = (column) => {
         case 'CHKBOOLEAN':
             return {
                 ...baseFitler,
-                operator: '=',
-                fieldValue: CHECKBOX_FILTERS.INDETERMINATE
+                operator: CHECKBOX_FILTERS.INDETERMINATE,
             };
         default:
             return baseFitler
@@ -320,13 +320,13 @@ const EAMFilterField = ({ column, getDefaultValue = getEAMDefaultFilterValue }) 
         e => updateFilter({ ...localFilter, fieldValue: e.target.value })
     , [localFilter, updateFilter]);
 
-    const handleCheckboxChange = React.useCallback(() => {
-        const values = [CHECKBOX_FILTERS.CHECKED, CHECKBOX_FILTERS.UNCHECKED, CHECKBOX_FILTERS.INDETERMINATE];
-        const nextValueIndex = (values.findIndex(e => e === Number(localFilter.fieldValue)) + 1) % values.length;
-        const nextValue = values[nextValueIndex];
+    const handleCheckboxChange = React.useCallback((event) => {
+        const operators = Object.values(CHECKBOX_FILTERS);
+        const nextOperatorIndex = (operators.findIndex(e => e === getCurrentCheckboxValue(event)) + 1) % operators.length;
+        const nextOperator = operators[nextOperatorIndex];
         updateFilter({
             ...localFilter,
-            fieldValue: nextValue,
+            operator: nextOperator,
         });
     }, [localFilter, updateFilter]);
 
@@ -396,8 +396,8 @@ const EAMFilterField = ({ column, getDefaultValue = getEAMDefaultFilterValue }) 
         case "CHKBOOLEAN":
             return (
                 <Checkbox
-                    checked={getCheckedValue(localFilter.fieldValue)}
-                    indeterminate={isIndeterminate(localFilter.fieldValue)}
+                    checked={getCheckedValue(localFilter.operator)}
+                    indeterminate={isIndeterminate(localFilter.operator)}
                     onChange={handleCheckboxChange}
                     style={{
                         padding: 5,

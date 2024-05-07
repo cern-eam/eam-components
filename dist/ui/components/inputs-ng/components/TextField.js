@@ -50,7 +50,8 @@ var TextField = function TextField(props) {
     uppercase = props.uppercase,
     errorText = props.errorText,
     style = props.style,
-    type = props.type;
+    type = props.type,
+    rightAlign = props.rightAlign;
   var onInputUpperCaseHandler = function onInputUpperCaseHandler(event) {
     var input = event.target;
     var start = input.selectionStart;
@@ -86,6 +87,7 @@ var TextField = function TextField(props) {
       display: "flex"
     }
   }, endAdornment, barcodeScanner && !disabled && /*#__PURE__*/React.createElement(EAMBarcodeScanner, {
+    rightAlign: rightAlign,
     onChange: onChange
   }), link && /*#__PURE__*/React.createElement(EAMLink, {
     link: link,
