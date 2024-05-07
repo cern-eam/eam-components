@@ -72,8 +72,9 @@ var EAMBarcodeScanner = function EAMBarcodeScanner(props) {
           return _regeneratorRuntime().awrap(navigator.mediaDevices.enumerateDevices());
         case 6:
           devices = _context.sent;
+          resetStreams();
           if (!(devices.length > 0)) {
-            _context.next = 15;
+            _context.next = 16;
             break;
           }
           videoDevices = devices.filter(function (d) {
@@ -85,23 +86,23 @@ var EAMBarcodeScanner = function EAMBarcodeScanner(props) {
           })?.deviceId ?? videoDevices[0].deviceId;
           setVideoInputDevices(videoDevices);
           setCurrentDevice(selectedDevice);
-          _context.next = 15;
+          _context.next = 16;
           return _regeneratorRuntime().awrap(startDecoding(selectedDevice));
-        case 15:
-          _context.next = 20;
+        case 16:
+          _context.next = 21;
           break;
-        case 17:
-          _context.prev = 17;
+        case 18:
+          _context.prev = 18;
           _context.t0 = _context["catch"](3);
           console.error(_context.t0);
-        case 20:
+        case 21:
         case "end":
           return _context.stop();
       }
-    }, null, null, [[3, 17]], Promise);
+    }, null, null, [[3, 18]], Promise);
   };
   var startDecoding = function startDecoding(device) {
-    var stream, result;
+    var result;
     return _regeneratorRuntime().async(function startDecoding$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
@@ -115,31 +116,30 @@ var EAMBarcodeScanner = function EAMBarcodeScanner(props) {
             }
           }));
         case 3:
-          stream = _context2.sent;
-          streamRef.current = stream;
-          _context2.next = 7;
-          return _regeneratorRuntime().awrap(codeReader.current.decodeOnceFromStream(stream, "video"));
-        case 7:
+          streamRef.current = _context2.sent;
+          _context2.next = 6;
+          return _regeneratorRuntime().awrap(codeReader.current.decodeOnceFromStream(streamRef.current, "video"));
+        case 6:
           result = _context2.sent;
           onDetectedCallback(result.text);
           handleClose();
-          _context2.next = 15;
+          _context2.next = 14;
           break;
-        case 12:
-          _context2.prev = 12;
+        case 11:
+          _context2.prev = 11;
           _context2.t0 = _context2["catch"](0);
           console.error(_context2.t0);
-        case 15:
-          _context2.prev = 15;
+        case 14:
+          _context2.prev = 14;
           if (!openRef.current) resetStreams();
-          return _context2.finish(15);
-        case 18:
+          return _context2.finish(14);
+        case 17:
           ;
-        case 19:
+        case 18:
         case "end":
           return _context2.stop();
       }
-    }, null, null, [[0, 12, 15, 18]], Promise);
+    }, null, null, [[0, 11, 14, 17]], Promise);
   };
   var handleDeviceChange = function handleDeviceChange(device) {
     codeReader.current.reset();
