@@ -89,13 +89,12 @@ function PreviewDocumentsDialog(props) {
             setLoadingDocuments(true);
             let filesResponse = await WSEAMServicesClient.getAllFiles(props.taskCode);
             const documents = filesResponse.body.data.map((file) => ({
-                uri: URL.createObjectURL(base64ToBlob(file.data, "application/pdf")),
+                uri: URL.createObjectURL(base64ToBlob(file.data, file.type)),
                 fileName: file.name,
             }))
-            console.log(documents)
             setDocumments(documents);
         } catch (error) {
-            console.error("Failed to retrieve comments", error);
+            console.error("Failed to retrieve documents", error);
         } finally {
             setLoadingDocuments(false);
         }
@@ -146,7 +145,7 @@ function PreviewDocumentsDialog(props) {
                                         </div>
                                     </div>
                                 ))
-                            ) : (
+                            ) : !loadingInstructions && (
                                 <p>No instructions available.</p>
                             )}
                         </BlockUi>
@@ -156,20 +155,26 @@ function PreviewDocumentsDialog(props) {
                                 selectOnlyMode
                                 label="Document"
                                 renderValue={value => value.value || value.code}
-                                options={[{value: '1'}, {value: '2'}]}
+                                options={documents.map((document) => ({name: document.fileName}))}
                             />
+                        
                             <iframe
                                 allowFullScreen
                                 title="EDMS"
                                 className="documentIframe"
-                                src="https://edms.cern.ch/ui/file/2753872/latest/picture.jpg"
-                        ></iframe>*/}
-                         {documents.length > 0 ? (<DocViewer documents={documents}
+                                src={documents[0]?.uri}
+                        ></iframe>
+                        */}
+                        <div className="documentsContainer">
+                        {documents.length > 0 ? (<DocViewer documents={documents}
                                        initialActiveDocument={documents[0]}
                                        pluginRenderers={DocViewerRenderers}
                                        />)
-                                       : (<p>No documents available.</p>)
+                                       : !loadingDocuments && (<p>No documents available.</p>)
                         }
+                        </div>
+
+                         
                         </BlockUi>
                     </DialogContent>
                     <DialogActions>
