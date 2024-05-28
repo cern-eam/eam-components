@@ -31,6 +31,10 @@ class WSChecklists {
     autocompleteEntity = (entityType, entityClass, filter, config = {}) => {
         return WS._get(`/autocomplete/entity?s=${filter}&entityType=${entityType}&entityClass=${entityClass}`, config);
     };
+
+    getDocumentsNames = (entityKeyCode, config = {}) => {
+        return WS._get(`/documents/names?entityKeyCode=${entityKeyCode}&entityCode=TASK`, config);
+    };
 }
 
 export default new WSChecklists();
