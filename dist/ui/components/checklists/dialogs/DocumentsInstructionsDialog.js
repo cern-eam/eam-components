@@ -1,0 +1,151 @@
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+import React, { useEffect, useState } from 'react';
+import Button from '@mui/material/Button';
+import './DocumentsInstructionsDialog.css';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import BlockUi from 'react-block-ui';
+import KeyCode from "eam-components/dist/enums/KeyCode";
+import Dialog from "@mui/material/Dialog";
+import CommentUser from '../../comments/CommentUser';
+import EAMSelect from '../../inputs-ng/EAMSelect';
+import IconButton from '@mui/material/IconButton';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+var allowedTypes = ['IMAGE', 'PDF', 'VIDEO'];
+var flatFiles = function flatFiles(documents) {
+  return documents?.flatMap(function (document) {
+    return document.files.map(function (file) {
+      return {
+        label: "".concat(document.title, " - ").concat(file.fileName),
+        url: file.fullPath,
+        fileType: file.fileType
+      };
+    });
+  }).filter(function (file) {
+    return allowedTypes.includes(file.fileType);
+  });
+};
+function DocumentsInstructionsDialog(props) {
+  var title = props.title,
+    subtitle = props.subtitle,
+    taskPlanMetadata = props.taskPlanMetadata;
+  var _ref = taskPlanMetadata || {},
+    _ref$comments = _ref.comments,
+    comments = _ref$comments === void 0 ? [] : _ref$comments,
+    _ref$documents = _ref.documents,
+    documents = _ref$documents === void 0 ? [] : _ref$documents;
+  var _useState = useState(false),
+    _useState2 = _slicedToArray(_useState, 2),
+    open = _useState2[0],
+    setOpen = _useState2[1];
+  var _useState3 = useState(null),
+    _useState4 = _slicedToArray(_useState3, 2),
+    selectedDocument = _useState4[0],
+    setSelectedDocument = _useState4[1];
+  var _useState5 = useState([]),
+    _useState6 = _slicedToArray(_useState5, 2),
+    flattenedFiles = _useState6[0],
+    setFlattenedFiles = _useState6[1];
+  var toggleInfo = function toggleInfo() {
+    setOpen(!open);
+  };
+  var onKeyDown = function onKeyDown(e) {
+    if (e.keyCode === KeyCode.ENTER) {
+      e.stopPropagation();
+    }
+  };
+  useEffect(function () {
+    if (open) {
+      var _flattenedFiles = flatFiles(documents);
+      setFlattenedFiles(_flattenedFiles);
+      setSelectedDocument(_flattenedFiles?.[0]);
+    }
+  }, [open, taskPlanMetadata]);
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(IconButton, {
+    disabled: documents.length == 0 & comments.length == 0,
+    onClick: function onClick(e) {
+      e.stopPropagation();
+      toggleInfo();
+    }
+  }, /*#__PURE__*/React.createElement(InfoOutlinedIcon, {
+    fontSize: "small"
+  })), /*#__PURE__*/React.createElement("div", {
+    onClick: function onClick(e) {
+      e.stopPropagation();
+    },
+    onKeyDown: onKeyDown
+  }, /*#__PURE__*/React.createElement(Dialog, {
+    fullWidth: true,
+    maxWidth: "lg",
+    id: "documentsInstructionsDialog",
+    open: open,
+    onClose: toggleInfo,
+    "aria-labelledby": "form-dialog-title"
+  }, /*#__PURE__*/React.createElement(DialogTitle, {
+    id: "form-dialog-title",
+    className: "infoTitle"
+  }, title, " ", subtitle && /*#__PURE__*/React.createElement("p", {
+    className: "subtitle"
+  }, " - ", subtitle)), /*#__PURE__*/React.createElement(DialogContent, {
+    className: "dialogContent",
+    id: "content"
+  }, comments?.length > 0 && /*#__PURE__*/React.createElement(BlockUi, {
+    tag: "div",
+    className: "blockUiInstructions"
+  }, /*#__PURE__*/React.createElement("h3", null, "Instructions"), comments.map(function (comment, index) {
+    return /*#__PURE__*/React.createElement("div", {
+      key: index,
+      className: "instructionContainer"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "instructionTextContainer"
+    }, comment.text), /*#__PURE__*/React.createElement("div", {
+      className: "instructionInfoContainer"
+    }, /*#__PURE__*/React.createElement(CommentUser, {
+      userDesc: comment.creationUserDesc,
+      userDate: comment.creationDate
+    })));
+  })), flattenedFiles?.length > 0 && /*#__PURE__*/React.createElement(BlockUi, {
+    tag: "div",
+    className: "blockUiDocuments",
+    style: comments?.length == 0 ? {
+      border: 0
+    } : {}
+  }, flattenedFiles?.length !== 1 ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h3", null, "Documents"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(EAMSelect, {
+    label: "Document",
+    value: selectedDocument,
+    onChange: function onChange(value) {
+      return setSelectedDocument(value);
+    },
+    renderValue: function renderValue(value) {
+      return value.label || '';
+    },
+    options: flattenedFiles
+  }))) : /*#__PURE__*/React.createElement("p", {
+    className: "onlyOneDocument"
+  }, selectedDocument.label), selectedDocument?.label !== '' ? selectedDocument.fileType === 'VIDEO' ? /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("video", {
+    key: selectedDocument.label,
+    controls: true,
+    title: "EDMS",
+    className: "videoContainer"
+  }, /*#__PURE__*/React.createElement("source", {
+    src: selectedDocument?.url
+  }))) : /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("embed", {
+    key: selectedDocument.label,
+    allowFullScreen: true,
+    title: "EDMS",
+    className: "documentIframe",
+    src: selectedDocument?.url
+  })) : /*#__PURE__*/React.createElement("p", {
+    className: "noDocumentSelected"
+  }, "No document selected."))), /*#__PURE__*/React.createElement(DialogActions, null, /*#__PURE__*/React.createElement(Button, {
+    onClick: toggleInfo,
+    color: "primary"
+  }, "Close")))));
+}
+export default DocumentsInstructionsDialog;
