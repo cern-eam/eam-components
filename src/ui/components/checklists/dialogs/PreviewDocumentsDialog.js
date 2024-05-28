@@ -12,6 +12,7 @@ import CommentUser from '../../comments/CommentUser';
 import EAMSelect from '../../inputs-ng/EAMSelect';
 import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
+import HelpIcon from '@mui/icons-material/Help';
 import WSChecklists from '../../../../tools/WSChecklists';
 import WSEAMServicesClient from '../../../../tools/WSEAMServicesClient';
 import DocViewer, {DocViewerRenderers} from "@cyntler/react-doc-viewer";
@@ -29,30 +30,6 @@ const base64ToBlob = (base64, mimeType='') => {
 
     return new Blob([byteArray], {type: mimeType});
 }
-
-const MyHeader = (state, previousDocument, nextDocument) => {
-    if (!state.currentDocument || state.config?.header?.disableFileName) {
-      return null;
-    }
-  
-    return (
-      <>
-        <div>{state.currentDocument.uri || ""}</div>
-        <div>
-          <button onClick={previousDocument} disabled={state.currentFileNo === 0}>
-            Previous Document
-          </button>
-          <button
-            onClick={nextDocument}
-            disabled={state.currentFileNo >= state.documents.length - 1}
-          >
-            Next Document
-          </button>
-        </div>
-      </>
-    );
-  };
-
 
 function PreviewDocumentsDialog(props) {
 
@@ -114,7 +91,7 @@ function PreviewDocumentsDialog(props) {
     return (
         <>
             <IconButton onClick={(e) => { e.stopPropagation(); toggleInfo(); }}>
-                <InfoIcon fontSize='small' />
+                <HelpIcon fontSize='small' />
             </IconButton>
             <div onClick={(e) => { e.stopPropagation() }} onKeyDown={onKeyDown}>
                 <Dialog
