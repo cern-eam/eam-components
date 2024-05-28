@@ -10,6 +10,7 @@ const ChecklistFieldFinding = props => {
         return  <EAMSelect disabled={disabled}
                        value={finding || ''}
                        label={label}
+                       renderValue={value => value.desc || value.code}
                        selectOnlyMode={true}
                        options={possibleFindings}
                        onChange={value => handleChange(value.code)}
