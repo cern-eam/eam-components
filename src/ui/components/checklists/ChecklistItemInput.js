@@ -165,7 +165,7 @@ export default class ChecklistItemInput extends Component {
                     style={{minWidth: '240px', marginLeft: '10px'}}
                     barcodeScanner
                     value={checklistItem.entityCode}
-                    onChange={entity => this.handleChange(ChecklistItemInput.FIELD.ENTITY, entity.code, () => {checklistItem.entityDesc = ''})}
+                    onChange={entity => this.handleChange(ChecklistItemInput.FIELD.ENTITY, entity.code, () => {entity.desc = ''})}
                     rightAlign
                     autocompleteHandler={WSChecklists.autocompleteEntity}
                     autocompleteHandlerParams={[checklistItem.entityType, checklistItem.entityClass]}
