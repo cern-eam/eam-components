@@ -220,6 +220,9 @@ class Checklists extends Component {
     }
 
     onUpdateChecklistItem = checklistItem => {
+        if (checklistItem.conditional) {
+            this.readActivities(checklistItem.workOrderCode);
+        }
         const activityCode = checklistItem.activityCode;
         const checkListCode = checklistItem.checkListCode;
 
