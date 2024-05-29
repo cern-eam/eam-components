@@ -35,14 +35,17 @@ const EAMTable = (props) => {
         isRowSelected,
         onSelectRow,
         cellRenderer,
-        extraBodyRender
+        cellStyle,
+        extraBodyRender,
+        tableContainerProps,
+        tableProps
     } = props;
 
     const defaultCellRenderer = ({ row, columnMetadata, getDisplayValue, CellComponent }) => {
 
         if (columnMetadata.id === "__checkbox__") {
             return isRowSelectable && isRowSelectable({ row, columnMetadata }) ? (
-                <CellComponent >
+                <CellComponent>
                     <CustomCheckbox
                         checked={isRowSelected({ row, columnMetadata })}
                         color="primary"
@@ -51,7 +54,7 @@ const EAMTable = (props) => {
                 </CellComponent>
             ) : null;
         }
-        return (cellRenderer && cellRenderer({ row, columnMetadata, getDisplayValue, CellComponent })) || <CellComponent>{getDisplayValue()}</CellComponent>
+        return (cellRenderer && cellRenderer({ row, columnMetadata, getDisplayValue, CellComponent })) || <CellComponent style={cellStyle}>{getDisplayValue()}</CellComponent>
     }
 
     let computedColumnsMetadata = columnsMetadata;
@@ -78,8 +81,8 @@ const EAMTable = (props) => {
                 columnsMetadata={computedColumnsMetadata}
                 isSortEnabled={isSortEnabled}
                 sortBy={sortBy}>
-                <TableContainer>
-                    <Table size="small">
+                <TableContainer {...tableContainerProps}>
+                    <Table {...tableProps} size="small">
                         <MUITableHeader CellComponent={CustomCellComponent} />
                         <MUITableBody cellRenderer={defaultCellRenderer} />
                         {extraBodyRender && extraBodyRender()}

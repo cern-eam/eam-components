@@ -6,6 +6,7 @@ const EAMTableDataAdapter = (props) => {
     const [requestError, setRequestError] = React.useState(false);
     const [rows, setRows] = React.useState([]);
     const [columnsMetadata, setColumnsMetadata] = React.useState([]);
+    const [totalCount, setTotalCount] = React.useState(0);
 
     React.useEffect(() => {
         (async () => {
@@ -20,6 +21,7 @@ const EAMTableDataAdapter = (props) => {
                 setRows(convertRowData(responseBody));
                 setColumnsMetadata(convertColumnMetadata(responseBody));
                 setLoading(false);
+                setTotalCount(responseBody.data?.records ?? 0)
         })();
     }, [equipmentCode]);
 
@@ -28,6 +30,7 @@ const EAMTableDataAdapter = (props) => {
         requestError,
         rows,
         columnsMetadata,
+        totalCount
     };
 
     return props.children(context);
