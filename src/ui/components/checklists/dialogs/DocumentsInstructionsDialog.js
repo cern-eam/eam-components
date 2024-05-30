@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Button from '@mui/material/Button';
-import './PreviewDocumentsDialog.css';
+import './DocumentsInstructionsDialog.css';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -16,26 +16,14 @@ import HelpIcon from '@mui/icons-material/Help';
 import WSChecklists from '../../../../tools/WSChecklists';
 import WSEAMServicesClient from '../../../../tools/WSEAMServicesClient';
 import DocViewer, {DocViewerRenderers} from "@cyntler/react-doc-viewer";
+import WSEDMS from '../../../../tools/WSEDMS';
 
-
-const base64ToBlob = (base64, mimeType='') => {
-    const byteCharacters = atob(base64);
-    const byteNumbers = new Array(byteCharacters.length);
-
-    for (let i = 0; i < byteCharacters.length; i++) {
-        byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
-
-    const byteArray = new Uint8Array(byteNumbers);
-
-    return new Blob([byteArray], {type: mimeType});
-}
-
-function PreviewDocumentsDialog(props) {
+function DocumentsInstructionsDialog(props) {
 
     const [open, setOpen] = useState(false);
     const [comments, setComments] = useState([]);
-    const [documents, setDocumments] = useState([]);
+    const [documents, setDocuments] = useState([]);
+    const [selectedDocument, setSelectedDocument] = useState(null);
     const [loadingInstructions, setLoadingInstructions] = useState(false);
     const [loadingDocuments, setLoadingDocuments] = useState(false);
 
@@ -64,12 +52,18 @@ function PreviewDocumentsDialog(props) {
     const retrieveDocuments = async () => {
         try {
             setLoadingDocuments(true);
-            let filesResponse = await WSEAMServicesClient.getAllFiles(props.taskCode);
-            const documents = filesResponse.body.data.map((file) => ({
-                uri: URL.createObjectURL(base64ToBlob(file.data, file.type)),
-                fileName: file.name,
-            }))
-            setDocumments(documents);
+            let documentsResponse = await WSEDMS.getEDMSDocuments(props.taskCode, 'TASK', 'EDMS');
+            const documents = documentsResponse.body.data.flatMap((document) => (
+              document.files.map(file => (
+                {
+                    label: `${document.title} - ${file.fileName}`,
+                    url: file.fullPath
+                }
+            ))))
+            if(documents.length > 0) {
+                setSelectedDocument(documents[0]);
+            }
+            setDocuments(documents);
         } catch (error) {
             console.error("Failed to retrieve documents", error);
         } finally {
@@ -80,11 +74,7 @@ function PreviewDocumentsDialog(props) {
     useEffect(() => {
         if (open) {
             retrieveComments();
-            retrieveDocuments();
-        }
-        return () => {
-            setDocumments([]);
-            setComments([]);  
+            if(documents.length == 0) retrieveDocuments();
         }
     }, [open]);
 
@@ -97,7 +87,7 @@ function PreviewDocumentsDialog(props) {
                 <Dialog
                     fullWidth
                     maxWidth="lg"
-                    id="previewDocumentsDialog"
+                    id="documentsInstructionsDialog"
                     open={open}
                     onClose={toggleInfo}
                     aria-labelledby="form-dialog-title"
@@ -128,20 +118,33 @@ function PreviewDocumentsDialog(props) {
                         </BlockUi>
                         <BlockUi tag="div" blocking={loadingDocuments} className="blockUiDocuments">
                             <h3>Documents</h3>
-                            {/*<EAMSelect
-                                selectOnlyMode
-                                label="Document"
-                                renderValue={value => value.value || value.code}
-                                options={documents.map((document) => ({name: document.fileName}))}
-                            />
+                            {documents.length > 0 ? 
+                                <>
+                                <EAMSelect
+                                    
+                                    label="Document"
+                                    value={selectedDocument}
+                                    onChange={(value) => setSelectedDocument(value)}
+                                    renderValue={value => value.label || ''}
+                                    options={documents}
+                                />
+                                {selectedDocument?.code != '' ?  
+                                    <div>
+                                        <iframe
+                                            allowFullScreen
+                                            title="EDMS"
+                                            className="documentIframe"
+                                            src={selectedDocument?.url}
+                                        />
+                                    </div>
+                                :   <p className='noDocumentSelected'>No document selected.</p>
+                                }
+                                </>
+                            : !loadingDocuments && (<p>No documents available.</p>)
+                        }
                         
-                            <iframe
-                                allowFullScreen
-                                title="EDMS"
-                                className="documentIframe"
-                                src={documents[0]?.uri}
-                        ></iframe>
-                        */}
+                        
+                         {/*
                         <div className="documentsContainer">
                         {documents.length > 0 ? (<DocViewer documents={documents}
                                        initialActiveDocument={documents[0]}
@@ -150,12 +153,13 @@ function PreviewDocumentsDialog(props) {
                                        : !loadingDocuments && (<p>No documents available.</p>)
                         }
                         </div>
+                    */}
 
                          
                         </BlockUi>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={toggleInfo} color="primary" disabled={loadingInstructions || loadingDocuments}>
+                        <Button onClick={toggleInfo} color="primary">
                             Cancel
                         </Button>
                     </DialogActions>
@@ -165,4 +169,4 @@ function PreviewDocumentsDialog(props) {
     );
 }
 
-export default PreviewDocumentsDialog;
+export default DocumentsInstructionsDialog;

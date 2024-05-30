@@ -11,7 +11,7 @@
     display: flex;
     flex-direction: row;
     padding: 0px 10px 0px 10px;
-    max-height: 700px;
+    max-height: 800px;
 }
 
 .blockUiInstructions, .blockUiDocuments {
@@ -52,14 +52,23 @@
     margin-top: 10px;
 }
 
+.noDocumentSelected {
+    height: 55%;
+    align-content: center;
+    text-align: center;
+}
+
 @media (max-width: 768px) {
     .dialogContent {
         flex-direction: column;
+        padding: 0px;
     }
     .blockUiInstructions, .blockUiDocuments {
         width: 100%;
-        padding: 10px;
+        padding: 14px;
+        padding-top: 0px; 
         border: 0;
+        box-sizing: border-box;
     }
     .blockUiDocuments {
         border-left: none;

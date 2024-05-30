@@ -19,7 +19,7 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Collapse from '@mui/material/Collapse';
 import GridTools from '../grids/GridTools'
-import PreviewDocumentsDialog from './dialogs/PreviewDocumentsDialog';
+import DocumentsInstructionsDialog from './dialogs/DocumentsInstructionsDialog';
 
 const SIGNATURE_TYPES = {
     PERFORMER_1: 'PB01',
@@ -449,7 +449,7 @@ class Checklists extends Component {
                         <span style={{ fontWeight: 'bold', flexBasis: "66%", fontSize: 14, color: '#333' }}>{activity.activityCode} — {activity.activityNote}</span>
                         {!this.props.hideFollowUpProp && activity.checklists.some(checklist => !checklist.hideFollowUp) && (
                             <div style={{flexShrink: 0, flexDirection: 'row', display: 'flex'}}>
-                                <PreviewDocumentsDialog taskCode={activity.taskCode}/>
+                                <DocumentsInstructionsDialog taskCode={activity.taskCode}/>
                                 <Button
                                     key={`${activity.activityCode}$createfuwo`}
                                     onClick={evt => {
@@ -592,14 +592,6 @@ class Checklists extends Component {
             showChecklistsOptions: !prevState.showChecklistsOptions
         }));
     }
-    /*
-    toggleInfo = (taskCode) => {
-        this.setState((prevState) => ({
-            selectedTaskCode: taskCode,
-            showPreviewDocumentsDialog: !prevState.showPreviewDocumentsDialog
-        }));
-        console.log(this.state)
-    }*/
 
     /**s
      * Render the main checklists panel (only when there is at least one activity with checklist)
