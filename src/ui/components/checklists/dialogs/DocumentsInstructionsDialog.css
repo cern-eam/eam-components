@@ -7,6 +7,12 @@
     border-bottom: 1px solid rgb(201, 201, 201);
 }
 
+.taskCode {
+    margin: 0;
+    margin-left: 7px;
+    color: #868686;
+}
+
 .dialogContent {
     display: flex;
     flex-direction: row;
@@ -25,6 +31,10 @@
 
 .blockUiDocuments {
     border-left: 1px solid rgb(201, 201, 201);
+}
+
+#editorModeButtons{
+    display: none;
 }
 
 .instructionContainer {
@@ -55,6 +65,12 @@
 .noDocumentSelected {
     height: 55%;
     align-content: center;
+    text-align: center;
+}
+
+.onlyOneDocument {
+    font-size: 1.2rem;
+    font-weight: bold;
     text-align: center;
 }
 

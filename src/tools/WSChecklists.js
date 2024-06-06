@@ -1,4 +1,5 @@
 import WS from './WS';
+import WSCernServices from './WSCernServices';
 
 /**
  * Handles all calls to REST Api
@@ -34,6 +35,10 @@ class WSChecklists {
 
     getDocumentsNames = (entityKeyCode, config = {}) => {
         return WS._get(`/documents/names?entityKeyCode=${entityKeyCode}&entityCode=TASK`, config);
+    };
+
+    getTaskPlanInstructions = (entityKeyCode, config = {}) => {
+        return WSCernServices._get(`/taskplan/${entityKeyCode}/instructions`, config);
     };
 }
 

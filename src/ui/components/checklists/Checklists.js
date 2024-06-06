@@ -20,6 +20,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Collapse from '@mui/material/Collapse';
 import GridTools from '../grids/GridTools'
 import DocumentsInstructionsDialog from './dialogs/DocumentsInstructionsDialog';
+import WSCernServices from '../../../tools/WSCernServices';
 
 const SIGNATURE_TYPES = {
     PERFORMER_1: 'PB01',
@@ -99,6 +100,7 @@ class Checklists extends Component {
         let activityCode = GridTools.getURLParameterByName('activityCode');
         this.state = {
             activities: [],
+            taskPlanMetadata: [],
             blocking: true,
             createFollowUpActivity: null,
             activityCode,
@@ -155,12 +157,22 @@ class Checklists extends Component {
     }
 
     readActivities(workorder) {
-        const { getWorkOrderActivities, activity } = this.props;
+        const { getWorkOrderActivities, getTaskPlanInstructions, activity } = this.props;
 
         getWorkOrderActivities(workorder)
             .then(response => {
                 const activities = getExpandedActivities(response.body.data);
                 const checklists = activities.reduce((checklists, activity) => checklists.concat(activity.checklists), []);
+                const taskCodes = [...new Set(activities.map(activity => activity.taskCode))];
+                Promise.all(taskCodes.map(async (taskCode) => await getTaskPlanInstructions(taskCode)))
+                .then(responses => {
+                    const taskPlansMetadata = responses.reduce((acc, response) => {
+                        let data = response.body.data;
+                        acc[data.taskPlanCode] = data;
+                        return acc;
+                    }, {});
+                    this.setState({ taskPlansMetadata });
+                })
 
                 this.collapse(checklists, activities);
 
@@ -430,7 +442,7 @@ class Checklists extends Component {
     }
 
     renderActivities(filteredActivity, filteredEquipment) {
-        const { activities } = this.state;
+        const { activities, taskPlansMetadata } = this.state;
 
         return activities.filter(activity => (
                 activity.checklists && activity.checklists.length > 0
@@ -449,7 +461,10 @@ class Checklists extends Component {
                         <span style={{ fontWeight: 'bold', flexBasis: "66%", fontSize: 14, color: '#333' }}>{activity.activityCode} — {activity.activityNote}</span>
                         {!this.props.hideFollowUpProp && activity.checklists.some(checklist => !checklist.hideFollowUp) && (
                             <div style={{flexShrink: 0, flexDirection: 'row', display: 'flex'}}>
-                                <DocumentsInstructionsDialog taskCode={activity.taskCode}/>
+                                <DocumentsInstructionsDialog 
+                                    taskCode={activity.taskCode}
+                                    taskPlanMetadata={taskPlansMetadata?.[activity.taskCode]}
+                                />
                                 <Button
                                     key={`${activity.activityCode}$createfuwo`}
                                     onClick={evt => {
@@ -729,6 +744,7 @@ class Checklists extends Component {
 Checklists.defaultProps = {
     getWorkOrderActivities: WSChecklists.getWorkOrderActivities,
     updateChecklistItem: WSChecklists.updateChecklistItem,
+    getTaskPlanInstructions: WSChecklists.getTaskPlanInstructions,
     readonly: false,
     minFindingsDropdown: 3,
     maxExpandedChecklistItems: 50
