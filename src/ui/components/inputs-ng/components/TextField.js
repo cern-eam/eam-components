@@ -1,5 +1,4 @@
-import React, {useState} from 'react';
-import {useTheme} from '@mui/material/styles';
+import React from 'react';
 import EAMBarcodeScanner from './EAMBarcodeScanner';
 import EAMLink from './EAMLink';
 import TextFieldInput from './TextFieldInput';
@@ -7,10 +6,8 @@ import TextFieldTextAdornment from './TextFieldTextAdornment';
 import TextFieldDescription from './TextFieldDescription';
 
 const divInputStyle = {
-    display: "flex",
     flex: "1 1 auto",
-    position: "relative",
-    borderRadius: "4px"
+    position: "relative"
 }
 
 const divInputContainerStyle = {
@@ -36,12 +33,9 @@ const fieldInvalid = {
     borderRadius: '5px',
 }
 
-const numericInputFieldStyle = {
+const numericFieldStyle = {
     textAlign: "right",
-    paddingRight: 10,
-    outline: "0px",
-    borderRadius: '4px 0 0 4px',
-    borderRight: '0'
+    paddingRight: "calc (70px + padding-left)" // 70px is the width of the TextFieldTextAdornment component
 }
 
 const TextField = (props) => {
@@ -52,26 +46,20 @@ const TextField = (props) => {
         inputProps,
         inputRef,
         endTextAdornment, endAdornment,
-        hideDescription, disabled, maxLength, uppercase, errorText, style, type, inputType, rightAlign} = props;
-        
-        const onInputUpperCaseHandler = event => {
-            var input = event.target;
-            var start = input.selectionStart;
-            var end = input.selectionEnd;
-            input.value = input.value.toLocaleUpperCase();
-            input.setSelectionRange(start, end);
-        }
-        
-    const [focused, setFocused] = useState(false);
+        hideDescription, disabled, maxLength, uppercase, errorText, style, type, rightAlign} = props;
+
+    const onInputUpperCaseHandler = event => {
+        var input = event.target;
+        var start = input.selectionStart;
+        var end = input.selectionEnd;
+        input.value = input.value.toLocaleUpperCase();
+        input.setSelectionRange(start, end);
+    }
 
     return (
         <div style={{...divRootContainerStyle, ...style}}>
             <div style={divInputContainerStyle}>
-                <div style={{...divInputStyle, ...(errorText ? fieldInvalid : {}), ...(focused ? {outline: `2px solid ${useTheme().palette.primary.main}`}: {})}} 
-                ref={props.InputProps?.ref} 
-                onFocus={() => setFocused(true)}
-                onBlur={() => setFocused(false)}
-                > 
+                <div style={{...divInputStyle, ...(errorText ? fieldInvalid : {})}} ref={props.InputProps?.ref}>
                     <TextFieldInput type={type === 'password' ? 'password' : 'text'}
                                     ref={inputRef}
                                     {...inputProps}
@@ -80,8 +68,8 @@ const TextField = (props) => {
                                     maxLength={maxLength}
                                     //TODO this is not the best solution as we are overriding onInput handler that could be potentially passed from inputProps
                                     onInput={uppercase ? onInputUpperCaseHandler : undefined}
-                                    style={inputType === 'numericInputField' ? numericInputFieldStyle : {}}
-                    />
+                                    style = {type === 'number' ? numericFieldStyle : {}}
+                                    />
                     {!hideDescription &&<TextFieldDescription
                         description = {desc}
                         value = {value}

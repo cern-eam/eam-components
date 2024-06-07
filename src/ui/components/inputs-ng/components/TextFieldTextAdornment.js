@@ -1,6 +1,9 @@
 import { styled } from '@mui/material/styles';
 
 const TextFieldTextAdornment = styled('div')({
+    position: "absolute",
+    right: "1px",
+    top: "1px",
     width: "70px",
     height: "36px",
     backgroundColor: "rgb(242, 242, 242)",
@@ -11,9 +14,7 @@ const TextFieldTextAdornment = styled('div')({
     alignItems: "center",
     justifyContent: "center",
     pointerEvents: "none",
-    color: "#495057",
-    border: "1px solid #e0e0e0",
-    borderLeft: '0'
+    color: "#495057"
 })
 
 export default TextFieldTextAdornment;
