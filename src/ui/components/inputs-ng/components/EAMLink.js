@@ -1,13 +1,15 @@
 import React from 'react';
 import IconButton from '@mui/material/IconButton';
 import OpenInNewIcon from 'mdi-material-ui/OpenInNew';
+import FileOpenIcon from '@mui/icons-material/FileOpen';
 import { Link } from 'react-router-dom';
 
 const EAMLink = ({link, value}) => {
 
     let eamLink = null;
-
+    let isExternalLink = null;
     if (link && link(value)) {
+        isExternalLink = !link().startsWith('/');
         if (link().startsWith('http')) {
             eamLink = React.forwardRef((props, ref) => (
                 <a href={link(value)} {...props} target="_blank" rel="noopener noreferrer" />
@@ -18,7 +20,7 @@ const EAMLink = ({link, value}) => {
     }
 
     return (<IconButton component={eamLink} disabled={!value}>
-                <OpenInNewIcon />
+                {isExternalLink ? <OpenInNewIcon/> : <FileOpenIcon/>}
             </IconButton>);
 }
 
