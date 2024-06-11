@@ -1,7 +1,7 @@
 import React from 'react';
 import IconButton from '@mui/material/IconButton';
 import OpenInNewIcon from 'mdi-material-ui/OpenInNew';
-import FileOpenIcon from '@mui/icons-material/FileOpen';
+import OpenInBrowserIcon from '@mui/icons-material/OpenInBrowser';
 import { Link } from 'react-router-dom';
 
 const EAMLink = ({link, value}) => {
@@ -20,7 +20,7 @@ const EAMLink = ({link, value}) => {
     }
 
     return (<IconButton component={eamLink} disabled={!value}>
-                {isExternalLink ? <OpenInNewIcon/> : <FileOpenIcon/>}
+                {isExternalLink ? <OpenInNewIcon/> : <OpenInBrowserIcon/>}
             </IconButton>);
 }
 
