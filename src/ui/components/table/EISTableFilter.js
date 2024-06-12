@@ -1,37 +1,45 @@
 import React from 'react';
-import Select from '@mui/material/Select';
+import { Box, Chip, Typography } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import MenuItem from '@mui/material/MenuItem';
 
-const filterSelectStyle = {
+const filterSetStyle = {
+    display: 'grid',
     fontSize: '0.8125rem',
-};
+    gridAutoFlow: 'column',
+    marginLeft: '0.5rem',
+    gridColumnGap: '0.5rem',
+    paddingRight: '100%'
+}
 
 const EISTableFilter = (props) => {
     const { filters, handleFilterChange, activeFilter } = props;
 
-    const propagateFilterChange = (e) => {
-        handleFilterChange(e.target.value);
-    };
-
     return (
         filters &&
         Object.keys(filters).length && (
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <FilterListIcon style={{ marginLeft: 'auto' }} />
-                <Select
-                    style={filterSelectStyle}
-                    value={filters[activeFilter].text}
-                    onChange={propagateFilterChange}
-                    renderValue={(value) => <span>{value}</span>}
+
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+
+                <Typography 
+                variant="body2" 
+                color="textSecondary" 
+                style={{ width: '100%', textAlign: 'center' }}
                 >
+                    Filter:
+                </Typography>
+
+                <Box style={filterSetStyle}>
                     {Object.keys(filters).map((key) => (
-                        <MenuItem key={key} value={key}>
-                            {filters[key].text}
-                        </MenuItem>
+                        <Chip
+                        size="small"
+                        label={key}
+                        color={activeFilter === key ? 'primary' : 'default'}
+                        onClick={() => {handleFilterChange(key); activeFilter}}/>
                     ))}
-                </Select>
+                </Box>
+
             </div>
+
         )
     );
 };
