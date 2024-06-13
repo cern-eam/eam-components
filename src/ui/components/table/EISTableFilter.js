@@ -1,14 +1,12 @@
 import React from 'react';
 import { Box, Chip, Typography } from '@mui/material';
-import FilterListIcon from '@mui/icons-material/FilterList';
 
 const filterSetStyle = {
     display: 'grid',
     fontSize: '0.8125rem',
     gridAutoFlow: 'column',
     marginLeft: '0.5rem',
-    gridColumnGap: '0.5rem',
-    paddingRight: '100%'
+    gridColumnGap: '0.5rem'
 }
 
 const EISTableFilter = (props) => {
@@ -18,13 +16,9 @@ const EISTableFilter = (props) => {
         filters &&
         Object.keys(filters).length && (
 
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <Box display="flex" alignItems="center">
 
-                <Typography 
-                variant="body2" 
-                color="textSecondary" 
-                style={{ width: '100%', textAlign: 'center' }}
-                >
+                <Typography variant="body2" color="textSecondary">
                     Filter:
                 </Typography>
 
@@ -38,7 +32,7 @@ const EISTableFilter = (props) => {
                     ))}
                 </Box>
 
-            </div>
+            </Box>
 
         )
     );
