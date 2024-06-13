@@ -20,7 +20,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Collapse from '@mui/material/Collapse';
 import GridTools from '../grids/GridTools'
 import DocumentsInstructionsDialog from './dialogs/DocumentsInstructionsDialog';
-import WSCernServices from '../../../tools/WSCernServices';
+import { isCernMode } from '../../../tools/CERNMode';
 
 const SIGNATURE_TYPES = {
     PERFORMER_1: 'PB01',
@@ -163,8 +163,11 @@ class Checklists extends Component {
             .then(response => {
                 const activities = getExpandedActivities(response.body.data);
                 const checklists = activities.reduce((checklists, activity) => checklists.concat(activity.checklists), []);
-                const taskCodes = [...new Set(activities.map(activity => activity.taskCode))];
-                Promise.all(taskCodes.map(async (taskCode) => await getTaskPlanInstructions(taskCode)))
+                const taskCodes = [...new Set(activities.map(activity => ({
+                    code: activity.taskCode,
+                    revision: activity.taskRev
+                })))]
+                isCernMode && Promise.all(taskCodes.map(async (taskCode) => await getTaskPlanInstructions(taskCode.code, taskCode.revision)))
                 .then(responses => {
                     const taskPlansMetadata = responses.reduce((acc, response) => {
                         let data = response.body.data;
@@ -458,13 +461,14 @@ class Checklists extends Component {
                     style={{marginTop: '10px'}}>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <div style={{ padding: 0, flexGrow: 1, display: "flex", alignItems: "center", justifyContent: "space-between"}}>
-                        <span style={{ fontWeight: 'bold', flexBasis: "66%", fontSize: 14, color: '#333' }}>{activity.activityCode} — {activity.activityNote}</span>
+                        <span style={{ fontWeight: 'bold', flexBasis: "66%", fontSize: 14, color: '#333' }}>{activity.activityCode} — {activity.activityNote || activity.tradeCode}</span>
                         {!this.props.hideFollowUpProp && activity.checklists.some(checklist => !checklist.hideFollowUp) && (
-                            <div style={{flexShrink: 0, flexDirection: 'row', display: 'flex'}}>
-                                <DocumentsInstructionsDialog 
-                                    taskCode={activity.taskCode}
+                            <div style={{flexShrink: 0, flexDirection: 'row', display: 'flex', cursor: 'default'}} onClick={(e) => e.stopPropagation()}>
+                                {isCernMode && <DocumentsInstructionsDialog 
+                                    title={activity.taskCode}
+                                    subtitle={activity.activityNote || activity.tradeCode}
                                     taskPlanMetadata={taskPlansMetadata?.[activity.taskCode]}
-                                />
+                                />}
                                 <Button
                                     key={`${activity.activityCode}$createfuwo`}
                                     onClick={evt => {

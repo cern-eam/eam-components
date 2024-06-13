@@ -4,10 +4,11 @@
     justify-content: center;
     font-size: 1.5rem;
     font-weight: bold;
+    padding: 8px 0px 8px 0px;
     border-bottom: 1px solid rgb(201, 201, 201);
 }
 
-.taskCode {
+.subtitle {
     margin: 0;
     margin-left: 7px;
     color: #868686;
@@ -22,7 +23,7 @@
 
 .blockUiInstructions, .blockUiDocuments {
     flex: 1;
-    padding: 20px;
+    padding: 10px;
     padding-top: 0;
     min-height: 300px;
     max-height: calc(100% - 64px);

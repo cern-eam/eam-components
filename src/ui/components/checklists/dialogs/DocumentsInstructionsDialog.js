@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState} from 'react';
 import Button from '@mui/material/Button';
 import './DocumentsInstructionsDialog.css';
 import DialogActions from '@mui/material/DialogActions';
@@ -10,8 +10,7 @@ import Dialog from "@mui/material/Dialog"
 import CommentUser from '../../comments/CommentUser';
 import EAMSelect from '../../inputs-ng/EAMSelect';
 import IconButton from '@mui/material/IconButton';
-import InfoIcon from '@mui/icons-material/Info';
-import HelpIcon from '@mui/icons-material/Help';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 const flatFiles = (documents) => {
     return documents?.flatMap((document) => (
@@ -25,7 +24,7 @@ const flatFiles = (documents) => {
 
 function DocumentsInstructionsDialog(props) {
 
-    const {taskCode, taskPlanMetadata} = props;
+    const {title, subtitle, taskPlanMetadata} = props;
 
     const { comments = [], documents = [] } = taskPlanMetadata || {};
 
@@ -54,7 +53,7 @@ function DocumentsInstructionsDialog(props) {
     return (
         <>
             <IconButton disabled={documents.length == 0 & comments.length == 0} onClick={(e) => { e.stopPropagation(); toggleInfo(); }}>
-                <InfoIcon fontSize='small' />
+                <InfoOutlinedIcon fontSize='small' />
             </IconButton>
             <div onClick={(e) => { e.stopPropagation() }} onKeyDown={onKeyDown}>
                 <Dialog
@@ -66,7 +65,7 @@ function DocumentsInstructionsDialog(props) {
                     aria-labelledby="form-dialog-title"
                 >
                     <DialogTitle id="form-dialog-title" className="infoTitle">
-                        INFO - <p className="taskCode"> {taskCode}</p>
+                        {title} {subtitle && <p className="subtitle"> - {subtitle}</p>}
                     </DialogTitle>
                     <DialogContent className="dialogContent" id="content">
                         {comments?.length > 0 && (
@@ -105,7 +104,7 @@ function DocumentsInstructionsDialog(props) {
                                 )}
                                 {selectedDocument?.code !== '' ? (
                                     <div>
-                                        <iframe
+                                        <embed 
                                             allowFullScreen
                                             title="EDMS"
                                             className="documentIframe"
