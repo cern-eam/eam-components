@@ -33,9 +33,9 @@ const fieldInvalid = {
     borderRadius: '5px',
 }
 
-const numericFieldStyle = {
+const numericInputAdornmentStyle = {
     textAlign: "right",
-    paddingRight: "calc (70px + padding-left)" // 70px is the width of the TextFieldTextAdornment component
+    paddingRight: "80px" // 70px for the width of the TextFieldTextAdornment component + 10px padding
 }
 
 const TextField = (props) => {
@@ -68,7 +68,7 @@ const TextField = (props) => {
                                     maxLength={maxLength}
                                     //TODO this is not the best solution as we are overriding onInput handler that could be potentially passed from inputProps
                                     onInput={uppercase ? onInputUpperCaseHandler : undefined}
-                                    style = {type === 'number' ? numericFieldStyle : {}}
+                                    style = {type === 'number' && endTextAdornment ? numericInputAdornmentStyle : {}}
                                     />
                     {!hideDescription &&<TextFieldDescription
                         description = {desc}
