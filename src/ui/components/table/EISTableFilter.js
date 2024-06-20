@@ -1,37 +1,39 @@
 import React from 'react';
-import Select from '@mui/material/Select';
-import FilterListIcon from '@mui/icons-material/FilterList';
-import MenuItem from '@mui/material/MenuItem';
+import { Box, Chip, Typography } from '@mui/material';
 
-const filterSelectStyle = {
+const filterSetStyle = {
+    display: 'grid',
     fontSize: '0.8125rem',
-};
+    gridAutoFlow: 'column',
+    marginLeft: '0.5rem',
+    gridColumnGap: '0.5rem'
+}
 
 const EISTableFilter = (props) => {
     const { filters, handleFilterChange, activeFilter } = props;
 
-    const propagateFilterChange = (e) => {
-        handleFilterChange(e.target.value);
-    };
-
     return (
         filters &&
         Object.keys(filters).length && (
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <FilterListIcon style={{ marginLeft: 'auto' }} />
-                <Select
-                    style={filterSelectStyle}
-                    value={filters[activeFilter].text}
-                    onChange={propagateFilterChange}
-                    renderValue={(value) => <span>{value}</span>}
-                >
+
+            <Box display="flex" alignItems="center">
+
+                <Typography variant="body2" color="textSecondary">
+                    Filter:
+                </Typography>
+
+                <Box style={filterSetStyle}>
                     {Object.keys(filters).map((key) => (
-                        <MenuItem key={key} value={key}>
-                            {filters[key].text}
-                        </MenuItem>
+                        <Chip
+                        size="small"
+                        label={key}
+                        color={activeFilter === key ? 'primary' : 'default'}
+                        onClick={() => {handleFilterChange(key); activeFilter}}/>
                     ))}
-                </Select>
-            </div>
+                </Box>
+
+            </Box>
+
         )
     );
 };
