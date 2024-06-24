@@ -10,11 +10,12 @@ import ajax from './ajax';
 /**
  * Handles all calls to REST Api
  */
-var WS = /*#__PURE__*/function () {
-  function WS() {
-    _classCallCheck(this, WS);
+var baseUrl = '/apis/cern-eam-services/rest';
+var WSCernServices = /*#__PURE__*/function () {
+  function WSCernServices() {
+    _classCallCheck(this, WSCernServices);
   }
-  _createClass(WS, [{
+  _createClass(WSCernServices, [{
     key: "_get",
     value:
     //
@@ -22,27 +23,27 @@ var WS = /*#__PURE__*/function () {
     //
     function _get(url) {
       var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      return ajax.get(process.env.REACT_APP_BACKEND + url, config);
+      return ajax.get(baseUrl + url, config);
     }
   }, {
     key: "_post",
     value: function _post(url, data) {
       var config = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-      return ajax.post(process.env.REACT_APP_BACKEND + url, data, config);
+      return ajax.post(baseUrl + url, data, config);
     }
   }, {
     key: "_put",
     value: function _put(url, data) {
       var config = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-      return ajax.put(process.env.REACT_APP_BACKEND + url, data, config);
+      return ajax.put(baseUrl + url, data, config);
     }
   }, {
     key: "_delete",
     value: function _delete(url) {
       var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      return ajax["delete"](process.env.REACT_APP_BACKEND + url, config);
+      return ajax["delete"](baseUrl + url, config);
     }
   }]);
-  return WS;
+  return WSCernServices;
 }();
-export default new WS();
+export default new WSCernServices();
