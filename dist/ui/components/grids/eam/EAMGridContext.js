@@ -283,6 +283,7 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
     fetchDataDebounced(newGridRequest);
   }, [tableInstance, fetchDataDebounced, gridRequest]);
   var handleExportToCSV = useCallback(function () {
+    setLoading(true);
     setLoadingExportToCSV(true);
     return GridWS.exportDataToCSV(gridRequest).then(function (result) {
       var hiddenElement = document.createElement("a");
@@ -293,6 +294,7 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
       hiddenElement.download = "exported_data.csv";
       hiddenElement.click();
     })["finally"](function () {
+      setLoading(false);
       setLoadingExportToCSV(false);
     });
   }, [gridRequest]);

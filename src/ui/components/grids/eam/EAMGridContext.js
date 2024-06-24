@@ -270,6 +270,7 @@ export const EAMGridContextProvider = (props) => {
     }, [tableInstance, fetchDataDebounced, gridRequest]);
 
     const handleExportToCSV = useCallback(() => {
+        setLoading(true);
         setLoadingExportToCSV(true);
         return GridWS.exportDataToCSV(gridRequest)
             .then((result) => {
@@ -287,6 +288,7 @@ export const EAMGridContextProvider = (props) => {
                 hiddenElement.click();
             })
             .finally(() => {
+                setLoading(false);
                 setLoadingExportToCSV(false);
             });
     }, [gridRequest]);
