@@ -10,7 +10,6 @@ import GridWS from "../../eamgrid/lib/GridWS";
 import { EAMCellField, EAMFilterField, getRowAsAnObject } from "./utils";
 import useEAMGridTableInstance from "./useEAMGridTableInstance";
 import { useAsyncDebounce } from "react-table";
-import { set } from "date-fns";
 
 const ARRAY_SEPARATOR = "$$";
 
