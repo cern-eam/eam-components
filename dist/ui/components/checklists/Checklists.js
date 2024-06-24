@@ -949,7 +949,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
         }
       })), this.renderActivities(filteredActivity, filteredEquipment), this.props.bottomSlot), /*#__PURE__*/React.createElement(Dialog, {
         open: this.state.createFollowUpActivity !== null
-      }, dialog), "isCernMode && (", /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("iframe", {
+      }, dialog), isCernMode && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("iframe", {
         src: "https://testedms.cern.ch/ui/SsoLoginServlet",
         style: {
           width: 0,
@@ -963,7 +963,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
           height: 0,
           display: 'none'
         }
-      })), ")");
+      })));
     }
   }]);
   return Checklists;
