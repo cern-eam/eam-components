@@ -737,7 +737,7 @@ class Checklists extends Component {
                                 {this.renderActivities(filteredActivity, filteredEquipment)}
                                 {this.props.bottomSlot}
                             </BlockUi>
-                            <Dialog open={this.state.createFollowUpActivity !== null}>{dialog}</Dialog>
+                            <Dialog open={this.state.createFollowUpActivity !== null}>{dialog}</Dialog> 
                             {isCernMode && (
                                 <>
                                     <iframe src="https://testedms.cern.ch/ui/SsoLoginServlet" style={{ width: 0, height: 0, display: 'none' }}></iframe>
