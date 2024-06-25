@@ -116,7 +116,7 @@ function DocumentsInstructionsDialog(props) {
     style: comments?.length == 0 ? {
       border: 0
     } : {}
-  }, flattenedFiles?.length !== 1 ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h3", null, "Documents"), /*#__PURE__*/React.createElement(EAMSelect, {
+  }, flattenedFiles?.length !== 1 ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h3", null, "Documents"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(EAMSelect, {
     label: "Document",
     value: selectedDocument,
     onChange: function onChange(value) {
@@ -126,7 +126,7 @@ function DocumentsInstructionsDialog(props) {
       return value.label || '';
     },
     options: flattenedFiles
-  })) : /*#__PURE__*/React.createElement("p", {
+  }))) : /*#__PURE__*/React.createElement("p", {
     className: "onlyOneDocument"
   }, selectedDocument.label), selectedDocument?.code !== '' ? /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("embed", {
     key: selectedDocument.label,

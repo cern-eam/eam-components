@@ -92,13 +92,15 @@ function DocumentsInstructionsDialog(props) {
                                 {flattenedFiles?.length !== 1 ? (
                                     <>
                                         <h3>Documents</h3>
-                                        <EAMSelect
-                                            label="Document"
-                                            value={selectedDocument}
-                                            onChange={(value) => setSelectedDocument(value)}
-                                            renderValue={(value) => value.label || ''}
-                                            options={flattenedFiles}
-                                        />
+                                        <div>
+                                            <EAMSelect
+                                                label="Document"
+                                                value={selectedDocument}
+                                                onChange={(value) => setSelectedDocument(value)}
+                                                renderValue={(value) => value.label || ''}
+                                                options={flattenedFiles}
+                                            />
+                                        </div>
                                     </>
                                 ) : (
                                     <p className='onlyOneDocument'>{selectedDocument.label}</p>
