@@ -129,7 +129,7 @@ function DocumentsInstructionsDialog(props) {
   })) : /*#__PURE__*/React.createElement("p", {
     className: "onlyOneDocument"
   }, selectedDocument.label), selectedDocument?.code !== '' ? /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("embed", {
-    key: selectedDocument.code,
+    key: selectedDocument.label,
     allowFullScreen: true,
     title: "EDMS",
     className: "documentIframe",

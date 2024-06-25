@@ -106,7 +106,7 @@ function DocumentsInstructionsDialog(props) {
                                 {selectedDocument?.code !== '' ? (
                                     <div>
                                         <embed
-                                        key={selectedDocument.code}
+                                            key={selectedDocument.label}
                                             allowFullScreen
                                             title="EDMS"
                                             className="documentIframe"
