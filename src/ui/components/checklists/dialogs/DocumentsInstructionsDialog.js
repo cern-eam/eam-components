@@ -29,6 +29,7 @@ function DocumentsInstructionsDialog(props) {
     const { comments = [], documents = [] } = taskPlanMetadata || {};
 
     const [open, setOpen] = useState(false);
+    const [embedKey, setEmbedKey] = useState(0);
     const [selectedDocument, setSelectedDocument] = useState(null);
     const [flattenedFiles, setFlattenedFiles] = useState([]);
 
@@ -104,7 +105,8 @@ function DocumentsInstructionsDialog(props) {
                                 )}
                                 {selectedDocument?.code !== '' ? (
                                     <div>
-                                        <embed 
+                                        <embed
+                                        key={selectedDocument.code}
                                             allowFullScreen
                                             title="EDMS"
                                             className="documentIframe"
