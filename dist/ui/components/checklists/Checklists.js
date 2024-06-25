@@ -675,7 +675,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
         }), "Follow-up WO")))), /*#__PURE__*/React.createElement(AccordionDetails, {
           style: {
             marginTop: "-5px",
-            padding: 0
+            padding: "0px"
           }
         }, /*#__PURE__*/React.createElement("div", {
           style: {
