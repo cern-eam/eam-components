@@ -40,14 +40,18 @@ function DocumentsInstructionsDialog(props) {
     _useState2 = _slicedToArray(_useState, 2),
     open = _useState2[0],
     setOpen = _useState2[1];
-  var _useState3 = useState(null),
+  var _useState3 = useState(0),
     _useState4 = _slicedToArray(_useState3, 2),
-    selectedDocument = _useState4[0],
-    setSelectedDocument = _useState4[1];
-  var _useState5 = useState([]),
+    embedKey = _useState4[0],
+    setEmbedKey = _useState4[1];
+  var _useState5 = useState(null),
     _useState6 = _slicedToArray(_useState5, 2),
-    flattenedFiles = _useState6[0],
-    setFlattenedFiles = _useState6[1];
+    selectedDocument = _useState6[0],
+    setSelectedDocument = _useState6[1];
+  var _useState7 = useState([]),
+    _useState8 = _slicedToArray(_useState7, 2),
+    flattenedFiles = _useState8[0],
+    setFlattenedFiles = _useState8[1];
   var toggleInfo = function toggleInfo() {
     setOpen(!open);
   };
@@ -125,6 +129,7 @@ function DocumentsInstructionsDialog(props) {
   })) : /*#__PURE__*/React.createElement("p", {
     className: "onlyOneDocument"
   }, selectedDocument.label), selectedDocument?.code !== '' ? /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("embed", {
+    key: selectedDocument.code,
     allowFullScreen: true,
     title: "EDMS",
     className: "documentIframe",
