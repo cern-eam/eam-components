@@ -490,7 +490,7 @@ class Checklists extends Component {
                         )}
                     </div>
                     </AccordionSummary>                
-                    <AccordionDetails style={{marginTop: "-5px", padding: 2}}>
+                    <AccordionDetails style={{marginTop: "-5px"}}>
                         <div style={{width: "100%"}}>{this.renderChecklistsForActivity(activity, filteredEquipment)}
                         </div>
                     </AccordionDetails>
