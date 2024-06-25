@@ -893,12 +893,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
         labelPlacement: "start",
         onMouseDown: this.toggleFilledFilter,
         onTouchStart: this.toggleFilledFilter
-      })))), !activityCode && /*#__PURE__*/React.createElement("div", {
-        style: {
-          alignItems: 'center',
-          paddingLeft: '16px'
-        }
-      }, activities.length > 1 && /*#__PURE__*/React.createElement(EAMSelect, {
+      })))), !activityCode && /*#__PURE__*/React.createElement("div", null, activities.length > 1 && /*#__PURE__*/React.createElement(EAMSelect, {
         selectOnlyMode: true,
         label: "Activity",
         renderSuggestion: function renderSuggestion(suggestion) {

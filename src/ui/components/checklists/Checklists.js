@@ -708,7 +708,7 @@ class Checklists extends Component {
                                         </div>
                                     </Collapse>
                                 </div>
-                                {!activityCode && <div style={{alignItems: 'center', paddingLeft: '16px'}}>
+                                {!activityCode && <div>
                                     {activities.length > 1 && <EAMSelect
                                         selectOnlyMode
                                         label={"Activity"}
