@@ -12,14 +12,17 @@ import EAMSelect from '../../inputs-ng/EAMSelect';
 import IconButton from '@mui/material/IconButton';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
+const allowedTypes = ['IMAGE', 'PDF', 'VIDEO']
+
 const flatFiles = (documents) => {
     return documents?.flatMap((document) => (
         document.files.map(file => (
           {
               label: `${document.title} - ${file.fileName}`,
-              url: file.fullPath
+              url: file.fullPath,
+              fileType: file.fileType
           }
-      ))))
+      )))).filter(file => allowedTypes.includes(file.fileType))
 };
 
 function DocumentsInstructionsDialog(props) {
@@ -29,7 +32,6 @@ function DocumentsInstructionsDialog(props) {
     const { comments = [], documents = [] } = taskPlanMetadata || {};
 
     const [open, setOpen] = useState(false);
-    const [embedKey, setEmbedKey] = useState(0);
     const [selectedDocument, setSelectedDocument] = useState(null);
     const [flattenedFiles, setFlattenedFiles] = useState([]);
 
@@ -105,19 +107,31 @@ function DocumentsInstructionsDialog(props) {
                                 ) : (
                                     <p className='onlyOneDocument'>{selectedDocument.label}</p>
                                 )}
-                                {selectedDocument?.code !== '' ? (
-                                    <div>
-                                        <embed
-                                            key={selectedDocument.label}
-                                            allowFullScreen
-                                            title="EDMS"
-                                            className="documentIframe"
-                                            src={selectedDocument?.url}
-                                        />
-                                    </div>
-                                ) : (
+                                {selectedDocument?.label !== '' ? (
+                                    selectedDocument.fileType === 'VIDEO' ? 
+                                        <div>
+                                            <video
+                                                key={selectedDocument.label}
+                                                controls
+                                                title="EDMS"
+                                                className="videoContainer"
+                                            >
+                                                <source src={selectedDocument?.url} />
+                                            </video>
+                                        </div>
+                                    :  
+                                        <div>
+                                            <embed
+                                                key={selectedDocument.label}
+                                                allowFullScreen
+                                                title="EDMS"
+                                                className="documentIframe"
+                                                src={selectedDocument?.url}
+                                            />
+                                        </div>
+                                    ) : (
                                     <p className="noDocumentSelected">No document selected.</p>
-                                )}
+                                    )}
                             </BlockUi>
                         )}
 
