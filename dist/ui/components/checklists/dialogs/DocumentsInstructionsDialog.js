@@ -17,14 +17,18 @@ import CommentUser from '../../comments/CommentUser';
 import EAMSelect from '../../inputs-ng/EAMSelect';
 import IconButton from '@mui/material/IconButton';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+var allowedTypes = ['IMAGE', 'PDF', 'VIDEO'];
 var flatFiles = function flatFiles(documents) {
   return documents?.flatMap(function (document) {
     return document.files.map(function (file) {
       return {
         label: "".concat(document.title, " - ").concat(file.fileName),
-        url: file.fullPath
+        url: file.fullPath,
+        fileType: file.fileType
       };
     });
+  }).filter(function (file) {
+    return allowedTypes.includes(file.fileType);
   });
 };
 function DocumentsInstructionsDialog(props) {
@@ -40,18 +44,14 @@ function DocumentsInstructionsDialog(props) {
     _useState2 = _slicedToArray(_useState, 2),
     open = _useState2[0],
     setOpen = _useState2[1];
-  var _useState3 = useState(0),
+  var _useState3 = useState(null),
     _useState4 = _slicedToArray(_useState3, 2),
-    embedKey = _useState4[0],
-    setEmbedKey = _useState4[1];
-  var _useState5 = useState(null),
+    selectedDocument = _useState4[0],
+    setSelectedDocument = _useState4[1];
+  var _useState5 = useState([]),
     _useState6 = _slicedToArray(_useState5, 2),
-    selectedDocument = _useState6[0],
-    setSelectedDocument = _useState6[1];
-  var _useState7 = useState([]),
-    _useState8 = _slicedToArray(_useState7, 2),
-    flattenedFiles = _useState8[0],
-    setFlattenedFiles = _useState8[1];
+    flattenedFiles = _useState6[0],
+    setFlattenedFiles = _useState6[1];
   var toggleInfo = function toggleInfo() {
     setOpen(!open);
   };
@@ -128,7 +128,14 @@ function DocumentsInstructionsDialog(props) {
     options: flattenedFiles
   }))) : /*#__PURE__*/React.createElement("p", {
     className: "onlyOneDocument"
-  }, selectedDocument.label), selectedDocument?.code !== '' ? /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("embed", {
+  }, selectedDocument.label), selectedDocument?.label !== '' ? selectedDocument.fileType === 'VIDEO' ? /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("video", {
+    key: selectedDocument.label,
+    controls: true,
+    title: "EDMS",
+    className: "videoContainer"
+  }, /*#__PURE__*/React.createElement("source", {
+    src: selectedDocument?.url
+  }))) : /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("embed", {
     key: selectedDocument.label,
     allowFullScreen: true,
     title: "EDMS",

@@ -65,6 +65,12 @@
     margin-top: 10px;
 }
 
+.videoContainer {
+    margin-top: 10px;
+    width: 100%;
+    min-width: 100%;
+}
+
 .noDocumentSelected {
     height: 55%;
     align-content: center;

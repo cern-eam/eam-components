@@ -222,7 +222,7 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
             value: checklistItem.entityCode,
             onChange: function onChange(entity) {
               return _this2.handleChange(ChecklistItemInput.FIELD.ENTITY, entity.code, function () {
-                checklistItem.entityDesc = '';
+                entity.desc = '';
               });
             },
             rightAlign: true,
