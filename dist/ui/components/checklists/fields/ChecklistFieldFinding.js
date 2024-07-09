@@ -12,6 +12,9 @@ var ChecklistFieldFinding = function ChecklistFieldFinding(props) {
     disabled: disabled,
     value: finding || '',
     label: label,
+    renderValue: function renderValue(value) {
+      return value.desc || value.code;
+    },
     selectOnlyMode: true,
     options: possibleFindings,
     onChange: function onChange(value) {
