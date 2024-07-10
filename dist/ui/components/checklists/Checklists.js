@@ -114,7 +114,7 @@ function getExpandedActivities(activities) {
 }
 
 // External updates on the activities will not be reflected in this component
-// For instance, if the description of an activity is changed 
+// For instance, if the description of an activity is changed
 // in "Activities and Booked Labor", it will not be reflected here
 var Checklists = /*#__PURE__*/function (_Component) {
   function Checklists(props) {
