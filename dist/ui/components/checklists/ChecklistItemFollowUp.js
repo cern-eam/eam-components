@@ -29,7 +29,8 @@ var ChecklistItemFollowUp = /*#__PURE__*/function (_Component) {
     _this.mainStyle = {
       flex: "1",
       display: "flex",
-      marginLeft: 10
+      marginLeft: 10,
+      marginRight: "-3px"
     };
     _this.followUpWOCodeStyle = {
       paddingLeft: '8px',

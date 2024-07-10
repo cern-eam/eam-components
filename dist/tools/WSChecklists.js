@@ -5,6 +5,7 @@ function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), 
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 import WS from './WS';
+import WSCernServices from './WSCernServices';
 
 /**
  * Handles all calls to REST Api
@@ -15,6 +16,10 @@ var WSChecklists = /*#__PURE__*/function () {
     this.autocompleteEntity = function (entityType, entityClass, filter) {
       var config = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
       return WS._get("/autocomplete/entity?s=".concat(filter, "&entityType=").concat(entityType, "&entityClass=").concat(entityClass), config);
+    };
+    this.getTaskPlanInstructions = function (code, revision) {
+      var config = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+      return WSCernServices._get("/taskplan/".concat(code, "/").concat(revision, "/instructions"), config);
     };
   }
   return _createClass(WSChecklists, [{
