@@ -19,6 +19,8 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Collapse from '@mui/material/Collapse';
 import GridTools from '../grids/GridTools'
+import DocumentsInstructionsDialog from './dialogs/DocumentsInstructionsDialog';
+import { isCernMode } from '../../../tools/CERNMode';
 
 const SIGNATURE_TYPES = {
     PERFORMER_1: 'PB01',
@@ -89,7 +91,7 @@ function getExpandedActivities(activities) {
 }
 
 // External updates on the activities will not be reflected in this component
-// For instance, if the description of an activity is changed 
+// For instance, if the description of an activity is changed
 // in "Activities and Booked Labor", it will not be reflected here
 class Checklists extends Component {
     constructor(props) {
@@ -98,6 +100,7 @@ class Checklists extends Component {
         let activityCode = GridTools.getURLParameterByName('activityCode');
         this.state = {
             activities: [],
+            taskPlanMetadata: [],
             blocking: true,
             createFollowUpActivity: null,
             activityCode,
@@ -117,7 +120,7 @@ class Checklists extends Component {
         const defaultCollapse = (checklists, activities) => {
             // if there are less than this.props.maxExpandedChecklistItems checklists, do not collapse anything
             if(checklists.length < maxExpandedChecklistItems) return;
-            
+
             // otherwise, collapse every activity and every equipment within each activity
             activities.forEach(activity => {
                 if(!activity.forceActivityExpansion) {
@@ -154,12 +157,24 @@ class Checklists extends Component {
     }
 
     readActivities(workorder, refreshCollapse = true) {
-        const { getWorkOrderActivities, activity } = this.props;
-
+        const { getWorkOrderActivities, getTaskPlanInstructions, activity } = this.props;
         getWorkOrderActivities(workorder)
             .then(response => {
                 let activities = getExpandedActivities(response.body.data);
                 const checklists = activities.reduce((checklists, activity) => checklists.concat(activity.checklists), []);
+                const taskCodes = [...new Set(activities.map(activity => ({
+                    code: activity.taskCode,
+                    revision: activity.taskRev
+                })))]
+                isCernMode && Promise.all(taskCodes.map(async (taskCode) => await getTaskPlanInstructions(taskCode.code, taskCode.revision)))
+                .then(responses => {
+                    const taskPlansMetadata = responses.reduce((acc, response) => {
+                        let data = response.body.data;
+                        acc[data.taskPlanCode] = data;
+                        return acc;
+                    }, {});
+                    this.setState({ taskPlansMetadata });
+                })
 
                 if (refreshCollapse) {
                     this.collapse(checklists, activities);
@@ -204,7 +219,7 @@ class Checklists extends Component {
         const types = ["PB01", "PB02", "RB01"];
         types.forEach(type => this.setSignature(activityCode, type, null, null));
     }
-    
+
     setSignature = (activityCode, type, signer, time) => {
         this.setState(state => {
             const activities = [...state.activities];
@@ -277,13 +292,13 @@ class Checklists extends Component {
                 TransitionProps={{ unmountOnExit: true, timeout: 0 }}
                 onChange={(_, expanded) => this.setCollapsedEquipment(!expanded, activity.index, equipmentCode)}>
             <AccordionSummary style={{outline: "1px solid #e0e0e0", borderRadius: "5px", marginTop: "5px"}} expandIcon={<ExpandMoreIcon/>}>
-                <ChecklistEquipment 
+                <ChecklistEquipment
                     key={firstChecklist.checkListCode + "_equipment"}
                     description={equipmentChecklistDesc}/>
             </AccordionSummary>
             <AccordionDetails style={{padding: "0"}}>
                 <div style={{width: "100%"}}>
-                    {checklists.map((checklist, index) => <ChecklistItem 
+                    {checklists.map((checklist, index) => <ChecklistItem
                         key={'checklistItem$' + checklist.checkListCode}
                         updateChecklistItem={updateChecklistItem}
                         onUpdateChecklistItem={this.onUpdateChecklistItem}
@@ -309,7 +324,7 @@ class Checklists extends Component {
         const { checklistsHidden } = this.state;
 
         const { checklists: originalChecklists, signatures } = activity;
-        const isDisabled = this.props.disabled || (signatures && 
+        const isDisabled = this.props.disabled || (signatures &&
             ((signatures[SIGNATURE_TYPES.PERFORMER_1] && !signatures[SIGNATURE_TYPES.PERFORMER_1].viewAsPerformer)
             && (signatures[SIGNATURE_TYPES.PERFORMER_2] && !signatures[SIGNATURE_TYPES.PERFORMER_2].viewAsPerformer)));
 
@@ -320,7 +335,7 @@ class Checklists extends Component {
         if (checklists.length === 0) {
             return <p style={{textAlign: 'center'}}>All checklists in this activity are hidden.</p>;
         }
-        
+
         const result = [];
 
         // this stores the index of the checklists that are related to a different equipment than the one before them
@@ -345,10 +360,10 @@ class Checklists extends Component {
             const start = equipmentBoundaries[i-1];
             const end = equipmentBoundaries[i];
             const equipmentCode = checklists[start].equipmentCode;
-            
+
             result.push(this.renderChecklistsForEquipment(equipmentCode + start, checklists.slice(start, end), activity, isDisabled));
         }
-        
+
 
         return result;
     }
@@ -425,7 +440,7 @@ class Checklists extends Component {
         return Object.values(activity.signatures)
         .sort((signature1, signature2) => SIGNATURE_ORDER[signature1.type] - SIGNATURE_ORDER[signature2.type])
         .filter(signature => this.shouldRenderSignature(activity.signatures, signature))
-        .map(signature => 
+        .map(signature =>
                 <ChecklistSignature signature={signature}
                                 workOrderCode={activity.workOrderNumber}
                                 activityCode={activity.activityCode}
@@ -436,7 +451,7 @@ class Checklists extends Component {
     }
 
     renderActivities(filteredActivity, filteredEquipment) {
-        const { activities } = this.state;
+        const { activities, taskPlansMetadata } = this.state;
 
         return activities.filter(activity => (
                 activity.checklists && activity.checklists.length > 0
@@ -452,9 +467,14 @@ class Checklists extends Component {
                     style={{marginTop: '10px'}}>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <div style={{ padding: 0, flexGrow: 1, display: "flex", alignItems: "center", justifyContent: "space-between"}}>
-                        <span style={{ fontWeight: 'bold', flexBasis: "66%", fontSize: 14, color: '#333' }}>{activity.activityCode} — {activity.activityNote}</span>
+                        <span style={{ fontWeight: 'bold', flexBasis: "66%", fontSize: 14, color: '#333' }}>{activity.activityCode} — {activity.activityNote || activity.tradeCode}</span>
                         {!this.props.hideFollowUpProp && activity.checklists.some(checklist => !checklist.hideFollowUp) && (
-                            <div style={{flexShrink: 0}}>
+                            <div style={{flexShrink: 0, flexDirection: 'row', display: 'flex', cursor: 'default'}} onClick={(e) => e.stopPropagation()}>
+                                {isCernMode && <DocumentsInstructionsDialog
+                                    title={activity.taskCode}
+                                    subtitle={activity.activityNote || activity.tradeCode}
+                                    taskPlanMetadata={taskPlansMetadata?.[activity.taskCode]}
+                                />}
                                 <Button
                                     key={`${activity.activityCode}$createfuwo`}
                                     onClick={evt => {
@@ -475,8 +495,8 @@ class Checklists extends Component {
                             </div>
                         )}
                     </div>
-                    </AccordionSummary>                
-                    <AccordionDetails style={{marginTop: "-5px", padding: 2}}>
+                    </AccordionSummary>
+                    <AccordionDetails style={{marginTop: "-5px", padding: "0px"}}>
                         <div style={{width: "100%"}}>{this.renderChecklistsForActivity(activity, filteredEquipment)}
                         </div>
                     </AccordionDetails>
@@ -491,7 +511,7 @@ class Checklists extends Component {
                                 <div style={{width: "100%"}}>
                                     {renderedSignatures}
                                 </div>
-                            </AccordionDetails>               
+                            </AccordionDetails>
                         </ActivityExpansionPanel>
                     ) : null}
                 </ActivityExpansionPanel>
@@ -501,7 +521,7 @@ class Checklists extends Component {
     setNewFilter(filters) {
         const {activity, equipmentCode} = filters;
         const activityCode = activity?.code;
-        
+
         this.setState((state, props) => {
             // the activity and equipment codes that will be effectively used for the filtering
             // if any parameterized filter is unspecified (undefined), the value used is in state
@@ -513,11 +533,11 @@ class Checklists extends Component {
 
             if(effectiveActivityCode || effectiveEquipmentCode) {
                 // if we're filtering, collapse everything that is not equal to our filters
-                activityCollapsedPredicate = (activity) => 
+                activityCollapsedPredicate = (activity) =>
                     (activity.activityCode !== effectiveActivityCode)
                     && Object.keys(activity.equipments)
                         .every(equipmentCode2 => equipmentCode2 !== effectiveEquipmentCode);
-                
+
                 equipmentCollapsedPredicate = (equipmentCode) => effectiveEquipmentCode
                     && equipmentCode !== effectiveEquipmentCode;
             } else {
@@ -632,18 +652,18 @@ class Checklists extends Component {
             }}>
                 <div style={{fontSize:'25px', marginBottom: '15px'}}>Create follow-up work orders?</div>
                 <p>Activity {activity.activityCode} — {activity.activityNote}</p>
-                <div> 
+                <div>
                     {<Button type= 'submit' onClick={this.hideCreateFollowUpWODialog}>
                         Cancel
                     </Button>}
-                    {<Button onClick={() => this.createFollowUpWOs(this.state.createFollowUpActivity)} color='primary'> 
+                    {<Button onClick={() => this.createFollowUpWOs(this.state.createFollowUpActivity)} color='primary'>
                         Confirm
                     </Button>}
                 </div>
             </Paper>;
 
         return (
-                !blocking && isEmptyState 
+                !blocking && isEmptyState
                     ? <SimpleEmptyState message="No Checklists to show."/>
                     : (
                         <div style={divStyle}>
@@ -694,7 +714,7 @@ class Checklists extends Component {
                                         </div>
                                     </Collapse>
                                 </div>
-                                {!activityCode && <div style={{alignItems: 'center', paddingLeft: '16px'}}>
+                                {!activityCode && <div>
                                     {activities.length > 1 && <EAMSelect
                                         selectOnlyMode
                                         label={"Activity"}
@@ -702,12 +722,12 @@ class Checklists extends Component {
                                         renderValue={value => value.desc || value.code}
                                         options={filteredActivities
                                                 .filter(activity => filteredEquipment ? activity.equipments[filteredEquipment] !== undefined : true)
-                                                .map(activity => 
+                                                .map(activity =>
                                                 ({code: activity.activityCode, desc: activity.activityCode + " — " + activity.activityNote}))}
                                         value={filteredActivity}
                                         onChange={activity => this.setNewFilter({ activity: { code: activity.code } })}
                                         menuContainerStyle={{'zIndex': 999}}/>}
-                                    
+
                                     {Object.keys(equipments).length > 1 && <EAMSelect
                                         selectOnlyMode
                                         label={"Equipment"}
@@ -723,10 +743,16 @@ class Checklists extends Component {
                                 {this.renderActivities(filteredActivity, filteredEquipment)}
                                 {this.props.bottomSlot}
                             </BlockUi>
-                            <Dialog open={this.state.createFollowUpActivity !== null}>{dialog}</Dialog> 
+                            <Dialog open={this.state.createFollowUpActivity !== null}>{dialog}</Dialog>
+                            {isCernMode && (
+                                <>
+                                    <iframe src="https://testedms.cern.ch/ui/SsoLoginServlet" style={{ width: 0, height: 0, display: 'none' }}></iframe>
+                                    <iframe src="https:/edms.cern.ch/ui/SsoLoginServlet" style={{ width: 0, height: 0, display: 'none' }}></iframe>
+                                </>
+                            )}
                         </div>
                     )
-                
+
         )
     }
 }
@@ -734,6 +760,7 @@ class Checklists extends Component {
 Checklists.defaultProps = {
     getWorkOrderActivities: WSChecklists.getWorkOrderActivities,
     updateChecklistItem: WSChecklists.updateChecklistItem,
+    getTaskPlanInstructions: WSChecklists.getTaskPlanInstructions,
     readonly: false,
     minFindingsDropdown: 3,
     maxExpandedChecklistItems: 50
