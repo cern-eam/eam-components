@@ -740,8 +740,7 @@ class Checklists extends Component {
                             <Dialog open={this.state.createFollowUpActivity !== null}>{dialog}</Dialog> 
                             {isCernMode && (
                                 <>
-                                    <iframe src="https://testedms.cern.ch/ui/SsoLoginServlet" style={{ width: 0, height: 0, display: 'none' }}></iframe>
-                                    <iframe src="https:/edms.cern.ch/ui/SsoLoginServlet" style={{ width: 0, height: 0, display: 'none' }}></iframe>
+                                    <iframe src={this.props.edmsLoginServletLink} style={{ width: 0, height: 0, display: 'none' }}></iframe>
                                 </>
                             )}
                         </div>
