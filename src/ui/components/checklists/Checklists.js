@@ -153,15 +153,19 @@ class Checklists extends Component {
         }
     }
 
-    readActivities(workorder) {
+    readActivities(workorder, refreshCollapse = true) {
         const { getWorkOrderActivities, activity } = this.props;
 
         getWorkOrderActivities(workorder)
             .then(response => {
-                const activities = getExpandedActivities(response.body.data);
+                let activities = getExpandedActivities(response.body.data);
                 const checklists = activities.reduce((checklists, activity) => checklists.concat(activity.checklists), []);
 
-                this.collapse(checklists, activities);
+                if (refreshCollapse) {
+                    this.collapse(checklists, activities);
+                } else {
+                    activities = activities.map((activity, index) => ({...this.state.activities[index],  checklists: activity.checklists}))
+                }
 
                 this.setState(prevState => {
                     const newState = {
@@ -221,7 +225,7 @@ class Checklists extends Component {
 
     onUpdateChecklistItem = checklistItem => {
         if (checklistItem.conditional) {
-            this.readActivities(checklistItem.workOrderCode);
+            this.readActivities(checklistItem.workOrderCode, false);
         }
         const activityCode = checklistItem.activityCode;
         const checkListCode = checklistItem.checkListCode;

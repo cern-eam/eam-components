@@ -7,6 +7,8 @@ import ChecklistItemNotApplicableOptions from './ChecklistItemNotApplicableOptio
 import WSChecklists from '../../../tools/WSChecklists';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import Tooltip from '@mui/material/Tooltip';
+import {FileTreeOutline} from 'mdi-material-ui';
 
 export default class ChecklistItem extends Component {
     constructor(props) {
@@ -407,7 +409,11 @@ export default class ChecklistItem extends Component {
                         <div style={this.firstLineDesc}>
                             {this.state.detailsVisible ? <ExpandLessIcon style={{color: "#b0b0b0"}}/> : <ExpandMoreIcon style={{color: "#b0b0b0"}}/>}
                             <label>{checklistItem.desc}</label>
-                            {checklistItem.requiredToClose === true && <label style={{color: "red"}}> *</label>}
+                            {checklistItem.requiredToClose === true && <label style={{color: "red", marginLeft: '3px'}}> *</label>}
+                            {checklistItem.conditional && 
+                            <Tooltip title="Conditional Item">
+                                <FileTreeOutline style={{color: "#b0b0b0", marginLeft: '3px', fontSize: '1.2rem'}}/>
+                            </Tooltip>}
                         </div>
                         {this.renderChecklistItemInput()}
                     </div>
