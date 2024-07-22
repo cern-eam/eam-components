@@ -352,3 +352,15 @@ export const IconSlash = ({iconColor, backgroundColor}) => {
     </>
     );
 }
+
+export const HazardIcon = props => {
+    return(
+    <SvgIcon {...props} viewBox='0 0 600 525'>
+    <path d="M597.5,499.6L313.7,8c-2.9-5-8.2-8-13.9-8c-5.7,0-11,3.1-13.9,8L2.1,499.6c-2.9,5-2.9,11.1,0,16 c2.9,5,8.2,8,13.9,8h567.6c5.7,0,11-3.1,13.9-8C600.4,510.6,600.4,504.5,597.5,499.6z"/>
+    <polygon fill="#e8bf28" points="43.8,491.5 299.8,48.2 555.8,491.5"/>
+    <path d="M270 180 a15 15 0 0 1 15 -15 h30 a15 15 0 0 1 15 15 v150 a15 15 0 0 1 -15 15 h-30 a15 15 0 0 1 -15 -15 z"/>
+    <circle cx="300" cy="420" r="30"/>
+    </SvgIcon>
+
+    )
+}
