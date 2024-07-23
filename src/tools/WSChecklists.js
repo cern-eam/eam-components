@@ -1,4 +1,5 @@
 import WS from './WS';
+import WSCernServices from './WSCernServices';
 
 /**
  * Handles all calls to REST Api
@@ -30,6 +31,10 @@ class WSChecklists {
 
     autocompleteEntity = (entityType, entityClass, filter, config = {}) => {
         return WS._get(`/autocomplete/entity?s=${filter}&entityType=${entityType}&entityClass=${entityClass}`, config);
+    };
+
+    getTaskPlanInstructions = (code, revision, config = {}) => {
+        return WSCernServices._get(`/taskplan/${code}/${revision}/instructions`, config);
     };
 }
 

@@ -8,7 +8,8 @@ export default class ChecklistItemFollowUp extends Component {
     mainStyle = {
         flex: "1",
         display: "flex",
-        marginLeft: 10
+        marginLeft: 10,
+        marginRight: "-3px"
     }
 
     followUpWOCodeStyle = {

@@ -25,8 +25,8 @@ const customGridRenderer = ({ value, column, customRenderers }) => {
 
 
 const EAMGridTab = (props) => {
-    const { screenCode, tabName, additionalParams, additionalAttributes, gridName, objectCode, customRenderers, paramNames, showGrid, rowCount = 100, gridContainerStyle, setHasHazards } = props;
-    gridName ??= screenCode + '_' + tabName;
+    const { screenCode, tabName, additionalParams, additionalAttributes, objectCode, customRenderers, paramNames, showGrid, rowCount = 100, gridContainerStyle, setHasHazards } = props;
+    const gridName = props.gridName || screenCode + '_' + tabName;
 
     const getParams = () => {
         return Object.fromEntries(paramNames.map(paramName => [paramName, objectCode]))
