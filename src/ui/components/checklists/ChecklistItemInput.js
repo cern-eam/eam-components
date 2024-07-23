@@ -47,7 +47,7 @@ export default class ChecklistItemInput extends Component {
         }
 
         let newProps = {
-            ...this.props.checklistItem, 
+            ...this.props.checklistItem,
             result: newResult === undefined ? result : newResult,
             finding: newFinding === undefined ? finding : newFinding,
             numericValue: newNumericValue === undefined ? numericValue : newNumericValue,
@@ -68,7 +68,7 @@ export default class ChecklistItemInput extends Component {
         if(!hasChanged) {
             return;
         }
-        
+
         this.props.onChange(newProps, onFail);
 
     }
