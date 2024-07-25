@@ -1,13 +1,15 @@
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
+function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _iterableToArray(r) { if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r); }
+function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(r); }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
 import React from "react";
 import { DataGrid } from "../datagrid";
 import { MUITableHeader, MUITableBody } from "../datagrid/presentation/table";
-import { Table, TableCell, TableContainer, Checkbox, Fade, withStyles } from "@material-ui/core";
+import { Table, TableCell, TableContainer, Checkbox, Fade } from "@mui/material";
+import withStyles from '@mui/styles/withStyles';
 import BlockUi from 'react-block-ui';
 var CustomCellComponent = withStyles(function (theme) {
   return {
@@ -36,7 +38,10 @@ var EAMTable = function EAMTable(props) {
     isRowSelected = props.isRowSelected,
     onSelectRow = props.onSelectRow,
     cellRenderer = props.cellRenderer,
-    extraBodyRender = props.extraBodyRender;
+    cellStyle = props.cellStyle,
+    extraBodyRender = props.extraBodyRender,
+    tableContainerProps = props.tableContainerProps,
+    tableProps = props.tableProps;
   var defaultCellRenderer = function defaultCellRenderer(_ref) {
     var row = _ref.row,
       columnMetadata = _ref.columnMetadata,
@@ -67,7 +72,9 @@ var EAMTable = function EAMTable(props) {
       columnMetadata: columnMetadata,
       getDisplayValue: getDisplayValue,
       CellComponent: CellComponent
-    }) || /*#__PURE__*/React.createElement(CellComponent, null, getDisplayValue());
+    }) || /*#__PURE__*/React.createElement(CellComponent, {
+      style: cellStyle
+    }, getDisplayValue());
   };
   var computedColumnsMetadata = columnsMetadata;
   if (selectRowsEnabled) {
@@ -76,17 +83,17 @@ var EAMTable = function EAMTable(props) {
     }];
     computedColumnsMetadata = [].concat(extraColumnsMetadata, _toConsumableArray(columnsMetadata));
   }
-  return loading ? /*#__PURE__*/React.createElement("div", {
-    style: {
-      textAlign: "center",
-      padding: 14
-    }
-  }, /*#__PURE__*/React.createElement(Fade, {
+  return loading ? /*#__PURE__*/React.createElement(Fade, {
     "in": loading,
     style: {
       transitionDelay: loading ? "200ms" : "0ms"
     },
     unmountOnExit: true
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center",
+      padding: 14
+    }
   }, /*#__PURE__*/React.createElement(BlockUi, {
     blocking: loading
   }))) : /*#__PURE__*/React.createElement(DataGrid, {
@@ -94,9 +101,9 @@ var EAMTable = function EAMTable(props) {
     columnsMetadata: computedColumnsMetadata,
     isSortEnabled: isSortEnabled,
     sortBy: sortBy
-  }, /*#__PURE__*/React.createElement(TableContainer, null, /*#__PURE__*/React.createElement(Table, {
+  }, /*#__PURE__*/React.createElement(TableContainer, tableContainerProps, /*#__PURE__*/React.createElement(Table, _extends({}, tableProps, {
     size: "small"
-  }, /*#__PURE__*/React.createElement(MUITableHeader, {
+  }), /*#__PURE__*/React.createElement(MUITableHeader, {
     CellComponent: CustomCellComponent
   }), /*#__PURE__*/React.createElement(MUITableBody, {
     cellRenderer: defaultCellRenderer

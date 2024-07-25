@@ -1,38 +1,34 @@
 import React from 'react';
-import Select from '@material-ui/core/Select';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import MenuItem from '@material-ui/core/MenuItem';
-var filterSelectStyle = {
-  fontSize: '0.8125rem'
+import { Box, Chip, Typography } from '@mui/material';
+var filterSetStyle = {
+  display: 'grid',
+  fontSize: '0.8125rem',
+  gridAutoFlow: 'column',
+  marginLeft: '0.5rem',
+  gridColumnGap: '0.5rem'
 };
 var EISTableFilter = function EISTableFilter(props) {
   var filters = props.filters,
     handleFilterChange = props.handleFilterChange,
     activeFilter = props.activeFilter;
-  var propagateFilterChange = function propagateFilterChange(e) {
-    handleFilterChange(e.target.value);
-  };
-  return filters && Object.keys(filters).length && /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      justifyContent: 'space-between'
-    }
-  }, /*#__PURE__*/React.createElement(FilterListIcon, {
-    style: {
-      marginLeft: 'auto'
-    }
-  }), /*#__PURE__*/React.createElement(Select, {
-    style: filterSelectStyle,
-    value: filters[activeFilter].text,
-    onChange: propagateFilterChange,
-    renderValue: function renderValue(value) {
-      return /*#__PURE__*/React.createElement("span", null, value);
-    }
+  return filters && Object.keys(filters).length && /*#__PURE__*/React.createElement(Box, {
+    display: "flex",
+    alignItems: "center"
+  }, /*#__PURE__*/React.createElement(Typography, {
+    variant: "body2",
+    color: "textSecondary"
+  }, "Filter:"), /*#__PURE__*/React.createElement(Box, {
+    style: filterSetStyle
   }, Object.keys(filters).map(function (key) {
-    return /*#__PURE__*/React.createElement(MenuItem, {
-      key: key,
-      value: key
-    }, filters[key].text);
+    return /*#__PURE__*/React.createElement(Chip, {
+      size: "small",
+      label: key,
+      color: activeFilter === key ? 'primary' : 'default',
+      onClick: function onClick() {
+        handleFilterChange(key);
+        activeFilter;
+      }
+    });
   })));
 };
 export default EISTableFilter;

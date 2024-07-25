@@ -1,7 +1,10 @@
-import { Box, withStyles } from "@material-ui/core";
-var EAMGridFooter = withStyles(function (theme) {
-  return {
-    root: {
+import React from "react";
+import { Box } from "@mui/material";
+import { createTheme } from "@mui/material/styles";
+var theme = createTheme();
+var EAMGridFooter = function EAMGridFooter(props) {
+  return /*#__PURE__*/React.createElement(Box, {
+    sx: {
       display: "flex",
       alignItems: "center",
       flexDirection: "row",
@@ -10,9 +13,9 @@ var EAMGridFooter = withStyles(function (theme) {
       border: "1px solid ".concat(theme.palette.grey[200]),
       borderTop: "none",
       borderRadius: "0 0 4px 4px",
-      padding: "0.5rem",
+      padding: "0.2rem 0.5rem 0.2rem 0.5rem",
       flexWrap: "wrap"
     }
-  };
-})(Box);
+  }, props.children);
+};
 export default EAMGridFooter;

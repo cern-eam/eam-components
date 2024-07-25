@@ -1,28 +1,38 @@
-function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+var _excluded = ["canSort", "canFilter"];
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _objectWithoutProperties(e, t) { if (null == e) return {}; var o, r, i = _objectWithoutPropertiesLoose(e, t); if (Object.getOwnPropertySymbols) { var n = Object.getOwnPropertySymbols(e); for (r = 0; r < n.length; r++) o = n[r], t.indexOf(o) >= 0 || {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]); } return i; }
+function _objectWithoutPropertiesLoose(r, e) { if (null == r) return {}; var t = {}; for (var n in r) if ({}.hasOwnProperty.call(r, n)) { if (e.indexOf(n) >= 0) continue; t[n] = r[n]; } return t; }
 import Axios from "axios";
 import React, { useState, createContext, useCallback, useMemo, useEffect } from "react";
 import GridWS from "../../eamgrid/lib/GridWS";
 import { EAMCellField, EAMFilterField, getRowAsAnObject } from "./utils";
 import useEAMGridTableInstance from "./useEAMGridTableInstance";
 import { useAsyncDebounce } from "react-table";
-var ARRAY_SEPARATOR = "$$";
 var defaultCreateColumns = function defaultCreateColumns(_ref) {
   var gridField = _ref.gridField,
-    cellRenderer = _ref.cellRenderer;
-  return (gridField || []).sort(function (a, b) {
+    cellRenderer = _ref.cellRenderer,
+    modifyEAMGridColumns = _ref.modifyEAMGridColumns;
+  return modifyEAMGridColumns((gridField || []).sort(function (a, b) {
     return a.order - b.order;
-  }).map(function (field) {
+  })).map(function (_ref2) {
+    var canSort = _ref2.canSort,
+      canFilter = _ref2.canFilter,
+      field = _objectWithoutProperties(_ref2, _excluded);
+    var isGridField = gridField?.findIndex(function (_ref3) {
+      var name = _ref3.name;
+      return name === field.name;
+    }) > -1;
     return {
       id: field.name,
       Header: field.label,
@@ -32,24 +42,26 @@ var defaultCreateColumns = function defaultCreateColumns(_ref) {
       maxWidth: 99999,
       dataType: field.dataType,
       Filter: EAMFilterField,
-      Cell: cellRenderer ? cellRenderer : EAMCellField
+      Cell: function Cell() {
+        for (var _len = arguments.length, props = new Array(_len), _key = 0; _key < _len; _key++) {
+          props[_key] = arguments[_key];
+        }
+        return cellRenderer?.(...props) ?? EAMCellField.apply(void 0, props);
+      },
+      _canSort: canSort ?? isGridField,
+      _canFilter: canFilter ?? isGridField
     };
   });
 };
 var processFilters = function processFilters(filters, filterProcessor) {
   return filters.map(function (f) {
-    var fieldValue = f.value.fieldValue;
-    if (fieldValue && fieldValue.includes(ARRAY_SEPARATOR)) {
-      fieldValue = fieldValue.split(ARRAY_SEPARATOR);
-    }
-    var filter = _objectSpread({}, f.value, {
-      fieldValue: fieldValue
-    });
-    return Object.keys(filter).filter(function (key) {
+    var filter = f.value;
+    var allowedFilter = Object.keys(filter).filter(function (key) {
       return ["fieldName", "fieldValue", "joiner", "operator"].includes(key);
     }).reduce(function (newFilterObj, key) {
       return _objectSpread({}, newFilterObj, _defineProperty({}, key, filter[key]));
     }, {});
+    return allowedFilter;
   }).filter(function (filter) {
     return filter.fieldValue !== undefined || filter.fieldValue !== "" || ["IS EMPTY", "NOT EMPTY"].includes(filter.operator);
   }).map(filterProcessor);
@@ -63,8 +75,8 @@ var processSortBy = function processSortBy(sortBy, sortByProcessor) {
   }).map(sortByProcessor);
 };
 var hasCustomFieldColumn = function hasCustomFieldColumn(columns) {
-  return columns.map(function (_ref2) {
-    var id = _ref2.id;
+  return columns.map(function (_ref4) {
+    var id = _ref4.id;
     return id.toLowerCase();
   }).some(function (id) {
     return id.startsWith("c_") && ["_evnt", "_obj", "_part"].some(function (ending) {
@@ -88,8 +100,8 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
     onChangeSelectedRows = props.onChangeSelectedRows,
     onChangeFilters = props.onChangeFilters,
     onChangeSortBy = props.onChangeSortBy,
-    onChangePage = props.onChangePage,
-    onChangeRowsPerPage = props.onChangeRowsPerPage,
+    onPageChange = props.onPageChange,
+    onRowsPerPageChange = props.onRowsPerPageChange,
     onChangeDataspy = props.onChangeDataspy,
     searchOnMount = props.searchOnMount,
     cellRenderer = props.cellRenderer,
@@ -105,7 +117,24 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
     filterProcessor = _props$filterProcesso === void 0 ? function (e) {
       return e;
     } : _props$filterProcesso,
-    blockGrid = props.blockGrid;
+    _props$gridRequestAda = props.gridRequestAdapter,
+    gridRequestAdapter = _props$gridRequestAda === void 0 ? function (e) {
+      return e;
+    } : _props$gridRequestAda,
+    _props$modifyEAMGridC = props.modifyEAMGridColumns,
+    modifyEAMGridColumns = _props$modifyEAMGridC === void 0 ? function (e) {
+      return e;
+    } : _props$modifyEAMGridC,
+    _props$isRowSelectabl = props.isRowSelectable,
+    isRowSelectable = _props$isRowSelectabl === void 0 ? function (e) {
+      return true;
+    } : _props$isRowSelectabl,
+    _props$modifyColumns = props.modifyColumns,
+    modifyColumns = _props$modifyColumns === void 0 ? function (e) {
+      return e;
+    } : _props$modifyColumns,
+    _props$initialShowFil = props.initialShowFilters,
+    initialShowFilters = _props$initialShowFil === void 0 ? true : _props$initialShowFil;
   var _useState = useState(0),
     _useState2 = _slicedToArray(_useState, 2),
     pageIndex = _useState2[0],
@@ -114,7 +143,7 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
     _useState4 = _slicedToArray(_useState3, 2),
     selectedDataspy = _useState4[0],
     setSelectedDataspy = _useState4[1];
-  var _useState5 = useState(false),
+  var _useState5 = useState(!initialShowFilters),
     _useState6 = _slicedToArray(_useState5, 2),
     disableFilters = _useState6[0],
     setDisableFilters = _useState6[1];
@@ -138,6 +167,10 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
     _useState16 = _slicedToArray(_useState15, 2),
     gridField = _useState16[0],
     setGridField = _useState16[1];
+  var _useState17 = useState(!searchOnMount),
+    _useState18 = _slicedToArray(_useState17, 2),
+    isEmptySearch = _useState18[0],
+    setIsEmptySearch = _useState18[1];
   var resetFilters = useMemo(function () {
     return (initialFilters || []).map(function (filter) {
       return {
@@ -146,7 +179,7 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
       };
     });
   }, [initialFilters]);
-  var _useState17 = useState({
+  var _useState19 = useState({
       gridName: gridName,
       userFunctionName: userFunctionName ?? gridName,
       gridID: gridID,
@@ -158,26 +191,27 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
       gridSort: processSortBy(initialSortBy, sortByProcessor),
       gridFilter: processFilters(resetFilters, filterProcessor)
     }),
-    _useState18 = _slicedToArray(_useState17, 2),
-    gridRequest = _useState18[0],
-    setGridRequest = _useState18[1];
-  var _useState19 = useState(),
     _useState20 = _slicedToArray(_useState19, 2),
-    fetchDataCancelToken = _useState20[0],
-    setFetchDataCancelToken = _useState20[1];
-  var _useState21 = useState(false),
+    gridRequest = _useState20[0],
+    setGridRequest = _useState20[1];
+  var _useState21 = useState(),
     _useState22 = _slicedToArray(_useState21, 2),
-    loadingExportToCSV = _useState22[0],
-    setLoadingExportToCSV = _useState22[1];
+    fetchDataCancelToken = _useState22[0],
+    setFetchDataCancelToken = _useState22[1];
+  var _useState23 = useState(false),
+    _useState24 = _slicedToArray(_useState23, 2),
+    loadingExportToCSV = _useState24[0],
+    setLoadingExportToCSV = _useState24[1];
   var columnCreator = createColumns ?? defaultCreateColumns;
-  var dataCreator = processData ?? function (_ref3) {
-    var d = _ref3.data;
+  var dataCreator = processData ?? function (_ref5) {
+    var d = _ref5.data;
     return d;
   };
   var columns = useMemo(function () {
     return columnCreator({
       gridField: gridField,
-      cellRenderer: cellRenderer
+      cellRenderer: cellRenderer,
+      modifyEAMGridColumns: modifyEAMGridColumns
     });
   }, [gridField, cellRenderer, columnCreator]);
   var data = useMemo(function () {
@@ -203,7 +237,9 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
     disableFilters: disableFilters,
     autoResetSortBy: false,
     autoResetFilters: false,
-    autoResetSelectedRows: false
+    autoResetSelectedRows: false,
+    isRowSelectable: isRowSelectable,
+    modifyColumns: modifyColumns
   }, tableInstanceProps));
   var _tableInstance$state = tableInstance.state,
     sortBy = _tableInstance$state.sortBy,
@@ -228,34 +264,19 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
       }
     };
   }, []);
-  var adaptGridFilters = function adaptGridFilters(gr) {
-    return _objectSpread({}, gr, {
-      gridFilter: gr.gridFilter.map(function (filter) {
-        if (Array.isArray(filter?.fieldValue)) {
-          return filter.fieldValue.map(function (fieldValue, index) {
-            return {
-              fieldName: filter.fieldName,
-              fieldValue: fieldValue,
-              operator: filter.operator || 'EQUALS',
-              joiner: index < filter?.fieldValue.length - 1 ? 'OR' : 'AND',
-              leftParenthesis: index === 0 ? true : false,
-              rightParenthesis: index === filter?.fieldValue.length - 1 ? true : false
-            };
-          });
-        }
-        return filter;
-      }).flat()
-    });
-  };
-  var fetchData = useCallback(function (gr) {
+  var fetchData = useCallback(function (gridRequest) {
+    var gr = gridRequestAdapter(gridRequest);
     setLoading(true);
     if (fetchDataCancelToken) {
       fetchDataCancelToken.cancel();
     }
     var newFetchDataCancelToken = Axios.CancelToken.source();
     setFetchDataCancelToken(newFetchDataCancelToken);
-    GridWS.getGridData(adaptGridFilters(gr), {
-      cancelToken: newFetchDataCancelToken.token
+    GridWS.getGridData(gr, {
+      cancelToken: newFetchDataCancelToken.token,
+      headers: {
+        INFOR_LOCALIZE_RESULTS: true
+      }
     }).then(function (response) {
       var newGridResult = response.body.data;
       if (gr.includeMetadata) {
@@ -276,16 +297,23 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
   var handleOnSearch = useCallback(function () {
     setPageIndex(0);
     var newGridRequest = _objectSpread({}, gridRequest, {
-      cursorPosition: 0
+      cursorPosition: 1
     });
     setGridRequest(newGridRequest);
     tableInstance.toggleAllRowsSelected(false);
+    setLoading(true); // needed to avoid the "No records to show" message to be displayed for a split second
     fetchDataDebounced(newGridRequest);
+    if (isEmptySearch) {
+      setIsEmptySearch(false);
+    }
   }, [tableInstance, fetchDataDebounced, gridRequest]);
   var handleExportToCSV = useCallback(function () {
-    setLoading(true);
     setLoadingExportToCSV(true);
-    return GridWS.exportDataToCSV(gridRequest).then(function (result) {
+    return GridWS.exportDataToCSV(gridRequestAdapter(gridRequest), {
+      headers: {
+        INFOR_LOCALIZE_RESULTS: true
+      }
+    }).then(function (result) {
       var hiddenElement = document.createElement("a");
       // utf8BOM used to enable detection of utf-8 encoding by excel when opening the CSV file
       var utf8BOM = "\uFEFF";
@@ -294,7 +322,6 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
       hiddenElement.download = "exported_data.csv";
       hiddenElement.click();
     })["finally"](function () {
-      setLoading(false);
       setLoadingExportToCSV(false);
     });
   }, [gridRequest]);
@@ -303,7 +330,7 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
     if (JSON.stringify(newGridFilters) === JSON.stringify(gridRequest.gridFilter)) return;
     setGridRequest(_objectSpread({}, gridRequest, {
       gridFilter: newGridFilters,
-      cursorPosition: 0
+      cursorPosition: 1
     }));
     onChangeFilters && onChangeFilters(newGridFilters);
   }, [filters, gridRequest, onChangeFilters, tableInstance]);
@@ -312,7 +339,7 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
     if (JSON.stringify(newGridSort) === JSON.stringify(gridRequest.gridSort) || !newGridSort.length && !gridRequest.gridSort) return;
     var newGridRequest = _objectSpread({}, gridRequest, {
       gridSort: newGridSort,
-      cursorPosition: 0
+      cursorPosition: 1
     });
     setPageIndex(0);
     setGridRequest(newGridRequest);
@@ -329,20 +356,20 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
     tableInstance.toggleAllRowsSelected(false);
     setGridRequest(newGridRequest);
     fetchDataDebounced(newGridRequest);
-    onChangePage && onChangePage(page);
-  }, [fetchDataDebounced, gridRequest, rowsPerPage, tableInstance, onChangePage]);
+    onPageChange && onPageChange(page);
+  }, [fetchDataDebounced, gridRequest, rowsPerPage, tableInstance, onPageChange]);
   var handleChangeRowsPerPage = useCallback(function (perPage) {
     setPageIndex(0);
     setRowsPerPage(perPage);
     var newGridRequest = _objectSpread({}, gridRequest, {
-      cursorPosition: 0,
+      cursorPosition: 1,
       rowCount: perPage
     });
     tableInstance.toggleAllRowsSelected(false);
     setGridRequest(newGridRequest);
     fetchDataDebounced(newGridRequest);
-    onChangeRowsPerPage && onChangeRowsPerPage(perPage);
-  }, [fetchDataDebounced, gridRequest, tableInstance, onChangeRowsPerPage]);
+    onRowsPerPageChange && onRowsPerPageChange(perPage);
+  }, [fetchDataDebounced, gridRequest, tableInstance, onRowsPerPageChange]);
   var handleDataspyChange = useCallback(function (dataspy) {
     if (!dataspy) return;
     setSelectedDataspy(dataspy);
@@ -402,7 +429,7 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
     handleResetFilters: handleResetFilters,
     handleExportToCSV: handleExportToCSV,
     loadingExportToCSV: loadingExportToCSV,
-    blockGrid: blockGrid
+    isEmptySearch: isEmptySearch
   };
   return /*#__PURE__*/React.createElement(EAMGridContext.Provider, {
     value: context

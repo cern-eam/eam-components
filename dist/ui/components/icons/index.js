@@ -4,15 +4,15 @@ var _excluded = ["className"],
   _excluded4 = ["color"],
   _excluded5 = ["size", "color", "fontWeight"],
   _excluded6 = ["style", "color"];
-function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
-function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
-function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+function _objectWithoutProperties(e, t) { if (null == e) return {}; var o, r, i = _objectWithoutPropertiesLoose(e, t); if (Object.getOwnPropertySymbols) { var n = Object.getOwnPropertySymbols(e); for (r = 0; r < n.length; r++) o = n[r], t.indexOf(o) >= 0 || {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]); } return i; }
+function _objectWithoutPropertiesLoose(r, e) { if (null == r) return {}; var t = {}; for (var n in r) if ({}.hasOwnProperty.call(r, n)) { if (e.indexOf(n) >= 0) continue; t[n] = r[n]; } return t; }
+function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
 import React from 'react';
-import SvgIcon from '@material-ui/core/SvgIcon';
-import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
+import SvgIcon from '@mui/material/SvgIcon';
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import { ToggleSwitch, HomeModern, HelpCircle } from 'mdi-material-ui';
-import CheckCircle from '@material-ui/icons/CheckCircle';
-import green from '@material-ui/core/colors/green';
+import CheckCircle from '@mui/icons-material/CheckCircle';
+import green from '@mui/material/colors/green';
 export var PartIcon = React.forwardRef(function (props, ref) {
   return /*#__PURE__*/React.createElement(SvgIcon, _extends({}, props, {
     ref: ref,
@@ -343,4 +343,29 @@ export var EISIcon = function EISIcon(props) {
   }), /*#__PURE__*/React.createElement("path", {
     d: "M871 587 c2 -1 15 -11 29 -22 l25 -20 -19 23 c-11 12 -24 22 -29 22 -6 0 -8 -1 -6 -3z"
   })));
+};
+export var IconSlash = function IconSlash(_ref4) {
+  var iconColor = _ref4.iconColor,
+    backgroundColor = _ref4.backgroundColor;
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: 'absolute',
+      top: '17px',
+      left: 7,
+      width: '60%',
+      height: '2px',
+      backgroundColor: iconColor,
+      transform: 'rotate(45deg)'
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: 'absolute',
+      top: '16px',
+      left: 8,
+      width: '60%',
+      height: '2px',
+      backgroundColor: backgroundColor,
+      transform: 'rotate(45deg)'
+    }
+  }));
 };

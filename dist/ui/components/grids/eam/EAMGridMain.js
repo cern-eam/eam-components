@@ -1,23 +1,26 @@
-function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
-function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 import React, { useCallback, useEffect, useRef } from "react";
-import { TableContainer, TableHead, TableRow, TableCell, TableBody, withStyles, Table, TableSortLabel, Typography } from "@material-ui/core";
+import { TableContainer, TableHead, TableRow, TableCell, TableBody, Table, TableSortLabel, Typography } from "@mui/material";
+import withStyles from '@mui/styles/withStyles';
 import { CellMeasurer, CellMeasurerCache, List, AutoSizer } from "react-virtualized";
 import { ScrollSync, ScrollSyncPane } from "react-scroll-sync";
+import './grid.css';
 var DefaultBodyCellComponent = withStyles(function (theme) {
   return {
     root: {
       overflow: 'hidden',
-      borderRight: "1px solid ".concat(theme.palette.grey[200]),
-      borderTop: "1px solid ".concat(theme.palette.grey[200]),
+      borderRight: "1px solid ".concat(theme.palette.grey[300]),
+      borderTop: "1px solid ".concat(theme.palette.grey[300]),
       borderBottom: 'none',
       padding: theme.spacing(1),
-      wordBreak: 'break-word'
+      wordBreak: 'break-word',
+      color: 'unset'
     }
   };
 })(TableCell);
@@ -26,10 +29,17 @@ var DefaultHeadCellComponent = withStyles(function (theme) {
     root: {
       whiteSpace: 'nowrap',
       textOverflow: 'ellipsis',
-      background: theme.palette.grey[100]
+      background: theme.palette.grey[100],
+      overflow: 'hidden',
+      borderRight: "1px solid ".concat(theme.palette.grey[300]),
+      borderTop: "1px solid ".concat(theme.palette.grey[300]),
+      borderBottom: 'none',
+      padding: theme.spacing(1),
+      wordBreak: 'break-word',
+      color: theme.palette.grey[500]
     }
   };
-})(DefaultBodyCellComponent);
+})(TableCell);
 var DefaultTableComponent = withStyles(function (theme) {
   return {
     root: {
@@ -57,6 +67,7 @@ var defaultPropsGetter = function defaultPropsGetter() {
 };
 var _cache;
 var _list;
+var MIN_CELL_WIDTH = 130;
 var EAMGridMain = function EAMGridMain(props) {
   var loading = props.loading,
     tableInstance = props.tableInstance,
@@ -72,7 +83,7 @@ var EAMGridMain = function EAMGridMain(props) {
     BodyCellComponent = _props$BodyCellCompon === void 0 ? DefaultBodyCellComponent : _props$BodyCellCompon,
     _props$HeadCellCompon = props.HeadCellComponent,
     HeadCellComponent = _props$HeadCellCompon === void 0 ? DefaultHeadCellComponent : _props$HeadCellCompon,
-    disableScrollUp = props.disableScrollUp;
+    isEmptySearch = props.isEmptySearch;
   var getTableProps = tableInstance.getTableProps,
     getTableBodyProps = tableInstance.getTableBodyProps,
     headerGroups = tableInstance.headerGroups,
@@ -92,8 +103,8 @@ var EAMGridMain = function EAMGridMain(props) {
     rows.forEach(function (_, i) {
       return _cache.clear(i);
     });
-    if (_list && !disableScrollUp) {
-      _list.recomputeRowHeights();
+    if (_list) {
+      _list && _list.recomputeRowHeights();
       _list.scrollToRow(0);
     }
   }, [rows]);
@@ -107,7 +118,10 @@ var EAMGridMain = function EAMGridMain(props) {
     prepareRow(row);
     var customRowProps = getRowProps(row);
     var tableRowProps = row.getRowProps(_objectSpread({}, customRowProps, {
-      style: _objectSpread({}, style, {}, customRowProps.style)
+      style: _objectSpread({}, style, {
+        width: 'unset',
+        minWidth: '100%'
+      }, customRowProps.style)
     }));
     return /*#__PURE__*/React.createElement(CellMeasurer, {
       cache: _cache,
@@ -124,13 +138,23 @@ var EAMGridMain = function EAMGridMain(props) {
         var cellProps = [{
           style: {
             maxWidth: cell.column.maxWidth,
-            width: cell.column.width
+            minWidth: cell.column.minWidth ?? MIN_CELL_WIDTH,
+            width: cell.column.width,
+            display: 'flex',
+            alignItems: 'center'
           }
         }, getCellProps(cell)].filter(Boolean);
         return /*#__PURE__*/React.createElement(BodyCellComponent, _extends({}, cell.getCellProps(cellProps), {
           className: "td",
           component: "div"
-        }), cell.render("Cell"));
+        }), /*#__PURE__*/React.createElement("div", {
+          style: {
+            width: '100%',
+            display: 'flex',
+            alignItems: 'flex-start',
+            justifyContent: 'flex-start'
+          }
+        }, cell.render("Cell")));
       }));
     });
   },
@@ -167,6 +191,7 @@ var EAMGridMain = function EAMGridMain(props) {
       var headerProps = [{
         style: {
           maxWidth: column.maxWidth,
+          minWidth: column.minWidth ?? MIN_CELL_WIDTH,
           width: column.width
         }
       }, getColumnProps(column)].filter(Boolean);
@@ -176,15 +201,15 @@ var EAMGridMain = function EAMGridMain(props) {
         component: "div"
       }), /*#__PURE__*/React.createElement("div", column.getSortByToggleProps({
         title: 'Toggle Sort By'
-      }), column.render("Header"), column.id !== 'selection' ? /*#__PURE__*/React.createElement(DefaultTableSortLabel, {
+      }), column.render("Header"), column._canSort ? /*#__PURE__*/React.createElement(DefaultTableSortLabel, {
         active: column.isSorted,
         direction: column.isSortedDesc ? 'desc' : 'asc'
-      }) : null), column.id !== 'selection' && /*#__PURE__*/React.createElement("div", {
+      }) : null), /*#__PURE__*/React.createElement("div", {
         style: {
           display: 'flex',
           justifyContent: 'center'
         }
-      }, column.canFilter ? column.render('Filter') : null));
+      }, column.canFilter && column._canFilter ? column.render('Filter') : null));
     }));
   }))), /*#__PURE__*/React.createElement(TableBody, _extends({}, getTableBodyProps(), {
     style: {
@@ -192,7 +217,7 @@ var EAMGridMain = function EAMGridMain(props) {
       display: 'table-row'
     },
     component: "div"
-  }), !rows.length && !loading ? /*#__PURE__*/React.createElement("div", {
+  }), noResults ? /*#__PURE__*/React.createElement("div", {
     style: {
       width: "100%",
       position: "absolute",
@@ -203,7 +228,7 @@ var EAMGridMain = function EAMGridMain(props) {
   }, /*#__PURE__*/React.createElement(Typography, {
     variant: "body2",
     color: "textSecondary"
-  }, "No records to show")) : /*#__PURE__*/React.createElement("div", {
+  }, isEmptySearch ? 'Perform a search to display values' : 'No records to show')) : /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'block',
       height: '100%'

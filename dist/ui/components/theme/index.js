@@ -1,24 +1,20 @@
-import { createMuiTheme } from '@material-ui/core/styles';
-import blue from '@material-ui/core/colors/blue';
-import green from '@material-ui/core/colors/green';
-import red from '@material-ui/core/colors/red';
-import lightBlue from '@material-ui/core/colors/lightBlue';
-import lightGreen from '@material-ui/core/colors/lightGreen';
-import deepOrange from '@material-ui/core/colors/deepOrange';
+import { createTheme, adaptV4Theme } from '@mui/material/styles';
+import { blue, green, red, lightBlue, lightGreen, deepOrange } from '@mui/material/colors';
 var muiSettings = function muiSettings(_ref) {
   var primaryColor = _ref.primaryColor,
-    secondaryColor = _ref.secondaryColor;
+    secondaryColor = _ref.secondaryColor,
+    primaryExtraLight = _ref.primaryExtraLight;
   return {
     palette: {
       primary: {
-        main: primaryColor
+        main: primaryColor,
+        extraLight: primaryExtraLight
       },
-      //EAMLight blue '#2196F3'
+      // EAMLight blue '#2196F3'
       secondary: {
         main: secondaryColor
-      } //Darker blue '#01579b'
+      } // Darker blue '#01579b'
     },
-
     typography: {
       body1: {
         fontSize: '14px'
@@ -33,26 +29,29 @@ var muiSettings = function muiSettings(_ref) {
     }
   };
 };
-export var theme = createMuiTheme({
+export var theme = createTheme(adaptV4Theme({
   primaryColor: blue[500],
-  secondaryColor: lightBlue[900]
-});
-var BLUE = createMuiTheme(muiSettings({
-  primaryColor: blue[500],
-  secondaryColor: lightBlue[900]
+  secondaryColor: lightBlue[900],
+  primaryExtraLight: blue[50]
 }));
-var GREEN = createMuiTheme(muiSettings({
+var BLUE = createTheme(adaptV4Theme(muiSettings({
+  primaryColor: blue[500],
+  secondaryColor: lightBlue[900],
+  primaryExtraLight: blue[50]
+})));
+var GREEN = createTheme(adaptV4Theme(muiSettings({
   primaryColor: green[600],
-  secondaryColor: lightGreen[900]
-}));
-var RED = createMuiTheme(muiSettings({
+  secondaryColor: lightGreen[900],
+  primaryExtraLight: green[50]
+})));
+var RED = createTheme(adaptV4Theme(muiSettings({
   primaryColor: red[500],
   secondaryColor: deepOrange[900]
-}));
-var DANGER = createMuiTheme(muiSettings({
+})));
+var DANGER = createTheme(adaptV4Theme(muiSettings({
   primaryColor: red[900],
   secondaryColor: red[500]
-}));
+})));
 export default {
   BLUE: BLUE,
   GREEN: GREEN,

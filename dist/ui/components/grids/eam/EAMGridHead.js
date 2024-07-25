@@ -1,13 +1,15 @@
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-import { Box, Button, Chip, Grid, makeStyles, Typography, withStyles } from "@material-ui/core";
-import FilterIcon from "@material-ui/icons/FilterList";
-import SearchIcon from "@material-ui/icons/Search";
-import Autocomplete from "@material-ui/lab/Autocomplete";
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _iterableToArray(r) { if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r); }
+function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(r); }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+import { Box, Button, Chip, Grid, Typography } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
+import withStyles from '@mui/styles/withStyles';
+import FilterIcon from "@mui/icons-material/FilterList";
+import SearchIcon from "@mui/icons-material/Search";
+import Autocomplete from '@mui/material/Autocomplete';
 import React, { createRef, useCallback, useEffect, useMemo, useState } from "react";
 import DataspyAutocompleteInput from "./DataspyAutocompleteInput";
 var ContainerGrid = withStyles(function (theme) {
@@ -47,7 +49,7 @@ var EAMGridHead = function EAMGridHead(_ref) {
     return dataspies.length < 4;
   }, [dataspies]);
   return /*#__PURE__*/React.createElement(Box, {
-    padding: "0.5rem"
+    component: ContainerGrid
   }, /*#__PURE__*/React.createElement(Grid, {
     container: true,
     spacing: 1,
@@ -83,7 +85,7 @@ var EAMGridHead = function EAMGridHead(_ref) {
     value: selectedDataspy || {},
     options: [selectedDataspy || {}].concat(_toConsumableArray(dataspies)).filter(Boolean),
     disableClearable: true,
-    getOptionSelected: function getOptionSelected(option, value) {
+    isOptionEqualToValue: function isOptionEqualToValue(option, value) {
       return value.code === option.code;
     },
     getOptionLabel: function getOptionLabel(dataspy) {
@@ -104,7 +106,7 @@ var EAMGridHead = function EAMGridHead(_ref) {
     container: true,
     spacing: 1,
     direction: "row",
-    justify: "flex-end",
+    justifyContent: "flex-end",
     alignItems: "center",
     wrap: "nowrap"
   }, /*#__PURE__*/React.createElement(Grid, {
