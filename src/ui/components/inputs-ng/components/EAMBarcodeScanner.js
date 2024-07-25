@@ -45,6 +45,7 @@ const EAMBarcodeScanner = (props) => {
         permisionStreamRef.current = await navigator.mediaDevices.getUserMedia({audio: false, video: true})
         try {
             const devices = await navigator.mediaDevices.enumerateDevices();
+            resetStreams();
             if (devices.length > 0) {
                 let videoDevices = devices.filter(d => d.kind === 'videoinput')
                 const device = localStorage.getItem("videoInputDevice");
@@ -60,9 +61,8 @@ const EAMBarcodeScanner = (props) => {
 
     const startDecoding = async (device) => {
         try{
-            const stream = await navigator.mediaDevices.getUserMedia({video: {deviceId: { exact: device }}});
-            streamRef.current = stream;
-            const result = await codeReader.current.decodeOnceFromStream(stream, "video");
+            streamRef.current = await navigator.mediaDevices.getUserMedia({video: {deviceId: { exact: device }}});
+            const result = await codeReader.current.decodeOnceFromStream(streamRef.current, "video");
             onDetectedCallback(result.text);
             handleClose();
         } catch (error) {
