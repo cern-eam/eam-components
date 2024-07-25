@@ -37,6 +37,7 @@ var customGridRenderer = function customGridRenderer(_ref2) {
 var EAMGridTab = function EAMGridTab(props) {
   var screenCode = props.screenCode,
     tabName = props.tabName,
+    additionalParams = props.additionalParams,
     objectCode = props.objectCode,
     customRenderers = props.customRenderers,
     paramNames = props.paramNames,
@@ -44,7 +45,7 @@ var EAMGridTab = function EAMGridTab(props) {
     _props$rowCount = props.rowCount,
     rowCount = _props$rowCount === void 0 ? 100 : _props$rowCount,
     gridContainerStyle = props.gridContainerStyle;
-  var gridName = screenCode + '_' + tabName;
+  var gridName = props.gridName || screenCode + '_' + tabName;
   var getParams = function getParams() {
     return Object.fromEntries(paramNames.map(function (paramName) {
       return [paramName, objectCode];
@@ -53,15 +54,14 @@ var EAMGridTab = function EAMGridTab(props) {
   var gridRequest = {
     rowCount: rowCount,
     cursorPosition: 1,
-    params: _objectSpread({}, getParams()),
+    params: _objectSpread({}, getParams(), {}, additionalParams),
     gridName: gridName,
     useNative: true,
     includeMetadata: true
   };
   var paramRequestAdapter = function paramRequestAdapter(gridRequest) {
     return _objectSpread({}, gridRequest, {
-      userFunctionName: screenCode,
-      params: _objectSpread({}, getParams())
+      params: _objectSpread({}, getParams(), {}, additionalParams)
     });
   };
   return showGrid ? /*#__PURE__*/React.createElement(EAMGridContextProvider, _extends({

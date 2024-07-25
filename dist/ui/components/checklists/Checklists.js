@@ -178,7 +178,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
     };
     _this.onUpdateChecklistItem = function (checklistItem) {
       if (checklistItem.conditional) {
-        _this.readActivities(checklistItem.workOrderCode);
+        _this.readActivities(checklistItem.workOrderCode, false);
       }
       var activityCode = checklistItem.activityCode;
       var checkListCode = checklistItem.checkListCode;
@@ -359,6 +359,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
     key: "readActivities",
     value: function readActivities(workorder) {
       var _this2 = this;
+      var refreshCollapse = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
       var _this$props = this.props,
         getWorkOrderActivities = _this$props.getWorkOrderActivities,
         getTaskPlanInstructions = _this$props.getTaskPlanInstructions,
@@ -397,7 +398,15 @@ var Checklists = /*#__PURE__*/function (_Component) {
             taskPlansMetadata: taskPlansMetadata
           });
         });
-        _this2.collapse(checklists, activities);
+        if (refreshCollapse) {
+          _this2.collapse(checklists, activities);
+        } else {
+          activities = activities.map(function (activity, index) {
+            return _objectSpread({}, _this2.state.activities[index], {
+              checklists: activity.checklists
+            });
+          });
+        }
         _this2.setState(function (prevState) {
           var newState = {
             activities: activities,
@@ -946,14 +955,7 @@ var Checklists = /*#__PURE__*/function (_Component) {
       })), this.renderActivities(filteredActivity, filteredEquipment), this.props.bottomSlot), /*#__PURE__*/React.createElement(Dialog, {
         open: this.state.createFollowUpActivity !== null
       }, dialog), isCernMode && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("iframe", {
-        src: "https://testedms.cern.ch/ui/SsoLoginServlet",
-        style: {
-          width: 0,
-          height: 0,
-          display: 'none'
-        }
-      }), /*#__PURE__*/React.createElement("iframe", {
-        src: "https:/edms.cern.ch/ui/SsoLoginServlet",
+        src: this.props.edmsLoginServletLink,
         style: {
           width: 0,
           height: 0,

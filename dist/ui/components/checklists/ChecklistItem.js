@@ -23,6 +23,8 @@ import ChecklistItemNotApplicableOptions from './ChecklistItemNotApplicableOptio
 import WSChecklists from '../../../tools/WSChecklists';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import Tooltip from '@mui/material/Tooltip';
+import { FileTreeOutline } from 'mdi-material-ui';
 var ChecklistItem = /*#__PURE__*/function (_Component) {
   function ChecklistItem(props) {
     var _this;
@@ -471,9 +473,18 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
         }
       }), /*#__PURE__*/React.createElement("label", null, checklistItem.desc), checklistItem.requiredToClose === true && /*#__PURE__*/React.createElement("label", {
         style: {
-          color: "red"
+          color: "red",
+          marginLeft: '3px'
         }
-      }, " *")), this.renderChecklistItemInput()), /*#__PURE__*/React.createElement(Collapse, {
+      }, " *"), checklistItem.conditional && /*#__PURE__*/React.createElement(Tooltip, {
+        title: "Conditional Item"
+      }, /*#__PURE__*/React.createElement(FileTreeOutline, {
+        style: {
+          color: "#b0b0b0",
+          marginLeft: '3px',
+          fontSize: '1.2rem'
+        }
+      }))), this.renderChecklistItemInput()), /*#__PURE__*/React.createElement(Collapse, {
         "in": this.state.detailsVisible
       }, /*#__PURE__*/React.createElement("div", {
         style: this.checklistDetailsStyle
