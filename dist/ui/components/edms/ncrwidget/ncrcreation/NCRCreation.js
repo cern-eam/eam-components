@@ -18,7 +18,7 @@ import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
 import Tune from 'mdi-material-ui/Tune';
 import ContentSaveOutline from 'mdi-material-ui/ContentSaveOutline';
-import IconButton from '@mui/material/IconButton';
+import IconButton from '@material-ui/core/IconButton';
 import FilePlus from 'mdi-material-ui/FilePlus';
 import DotsVertial from 'mdi-material-ui/DotsVertical';
 import NCRCreationProperties from "./NCRCreationProperties";
@@ -54,8 +54,7 @@ var NCRCreation = /*#__PURE__*/function (_Component) {
     //
     _this.mainDivStyle = {
       borderBottom: "1px solid rgb(238, 238, 238)",
-      margin: 5,
-      minHeight: '300px'
+      margin: 5
     };
     _this.newDocStyle = {
       display: "flex",

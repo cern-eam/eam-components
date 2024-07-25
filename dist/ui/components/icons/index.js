@@ -8,11 +8,11 @@ function _objectWithoutProperties(source, excluded) { if (source == null) return
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 import React from 'react';
-import SvgIcon from '@mui/material/SvgIcon';
-import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
+import SvgIcon from '@material-ui/core/SvgIcon';
+import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import { ToggleSwitch, HomeModern, HelpCircle } from 'mdi-material-ui';
-import CheckCircle from '@mui/icons-material/CheckCircle';
-import green from '@mui/material/colors/green';
+import CheckCircle from '@material-ui/icons/CheckCircle';
+import green from '@material-ui/core/colors/green';
 export var PartIcon = React.forwardRef(function (props, ref) {
   return /*#__PURE__*/React.createElement(SvgIcon, _extends({}, props, {
     ref: ref,
@@ -343,29 +343,4 @@ export var EISIcon = function EISIcon(props) {
   }), /*#__PURE__*/React.createElement("path", {
     d: "M871 587 c2 -1 15 -11 29 -22 l25 -20 -19 23 c-11 12 -24 22 -29 22 -6 0 -8 -1 -6 -3z"
   })));
-};
-export var IconSlash = function IconSlash(_ref4) {
-  var iconColor = _ref4.iconColor,
-    backgroundColor = _ref4.backgroundColor;
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    style: {
-      position: 'absolute',
-      top: '17px',
-      left: 7,
-      width: '60%',
-      height: '2px',
-      backgroundColor: iconColor,
-      transform: 'rotate(45deg)'
-    }
-  }), /*#__PURE__*/React.createElement("div", {
-    style: {
-      position: 'absolute',
-      top: '16px',
-      left: 8,
-      width: '60%',
-      height: '2px',
-      backgroundColor: backgroundColor,
-      transform: 'rotate(45deg)'
-    }
-  }));
 };

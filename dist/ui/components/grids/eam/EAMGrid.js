@@ -7,14 +7,13 @@ import { EAMGridContext } from "./EAMGridContext";
 import BlockUi from "react-block-ui";
 import "react-block-ui/style.css";
 import EAMGridKeyboardHandler from "./EAMGridKeyboardHandler";
-import { Box, Button } from "@mui/material";
+import { Box, Button } from "@material-ui/core";
 var EAMGrid = function EAMGrid(props) {
   var getRowProps = props.getRowProps,
     getCellProps = props.getCellProps,
     rowsPerPageOptionsComputed = props.rowsPerPageOptionsComputed,
     customFooterOptions = props.customFooterOptions,
-    hideHeader = props.hideHeader,
-    hideFooter = props.hideFooter;
+    disableScrollUp = props.disableScrollUp;
   var _useContext = useContext(EAMGridContext),
     dataspies = _useContext.dataspies,
     selectedDataspy = _useContext.selectedDataspy,
@@ -33,7 +32,7 @@ var EAMGrid = function EAMGrid(props) {
     tableInstance = _useContext.tableInstance,
     loading = _useContext.loading,
     loadingExportToCSV = _useContext.loadingExportToCSV,
-    isEmptySearch = _useContext.isEmptySearch;
+    blockGrid = _useContext.blockGrid;
   return /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
@@ -46,7 +45,7 @@ var EAMGrid = function EAMGrid(props) {
     tableInstance: tableInstance,
     onSearch: handleOnSearch,
     toggleFilters: toggleFilters
-  }), hideHeader ? null : /*#__PURE__*/React.createElement(EAMGridHead, {
+  }), /*#__PURE__*/React.createElement(EAMGridHead, {
     selectedDataspy: selectedDataspy,
     dataspies: dataspies,
     onSearch: handleOnSearch,
@@ -56,7 +55,7 @@ var EAMGrid = function EAMGrid(props) {
     onResetFilters: handleResetFilters
   }), /*#__PURE__*/React.createElement(BlockUi, {
     tag: "div",
-    blocking: loading,
+    blocking: loading || blockGrid,
     style: {
       height: "100%",
       display: "flex",
@@ -68,8 +67,8 @@ var EAMGrid = function EAMGrid(props) {
     tableInstance: tableInstance,
     getRowProps: getRowProps,
     getCellProps: getCellProps,
-    isEmptySearch: isEmptySearch
-  })), hideFooter ? null : /*#__PURE__*/React.createElement(EAMGridFooter, null, /*#__PURE__*/React.createElement(Box, {
+    disableScrollUp: disableScrollUp
+  })), /*#__PURE__*/React.createElement(EAMGridFooter, null, /*#__PURE__*/React.createElement(Box, {
     flex: "1",
     display: "flex"
   }, customFooterOptions ? customFooterOptions() : /*#__PURE__*/React.createElement(BlockUi, {
@@ -84,8 +83,8 @@ var EAMGrid = function EAMGrid(props) {
     onClick: handleExportToCSV
   }, "Export to CSV"))), /*#__PURE__*/React.createElement(EAMGridPagination, {
     labelRowsPerPage: "Per Page",
-    onPageChange: handleChangePage,
-    onRowsPerPageChange: handleChangeRowsPerPage,
+    onChangePage: handleChangePage,
+    onChangeRowsPerPage: handleChangeRowsPerPage,
     pageIndex: pageIndex,
     rowsPerPage: rowsPerPage,
     hasUnkownTotalRecords: hasUnkownTotalRecords,

@@ -20,7 +20,7 @@ import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import EAMBaseInput, { formStyles } from './EAMBaseInput';
 import PropTypes from 'prop-types';
-import withStyles from '@mui/styles/withStyles';
+import { withStyles } from '@material-ui/core/styles';
 import EAMFormLabel from "./EAMFormLabel";
 import classNames from 'classnames';
 var EAMSelect = /*#__PURE__*/function (_EAMBaseInput) {

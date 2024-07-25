@@ -12,7 +12,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 import React, { Component } from 'react';
-import Cog from 'mdi-material-ui/Cog';
+import Settings from 'mdi-material-ui/Settings';
 var ChecklistEquipment = /*#__PURE__*/function (_Component) {
   _inherits(ChecklistEquipment, _Component);
   var _super = _createSuper(ChecklistEquipment);
@@ -24,10 +24,9 @@ var ChecklistEquipment = /*#__PURE__*/function (_Component) {
     }
     _this = _super.call.apply(_super, [this].concat(args));
     _this.mainStyle = {
-      marginTop: 1,
+      marginTop: 15,
       display: "flex",
-      justifyContent: "flex-start",
-      marginLeft: '-8px',
+      justifyContent: "center",
       alignItems: "center",
       width: "100%"
     };
@@ -42,7 +41,7 @@ var ChecklistEquipment = /*#__PURE__*/function (_Component) {
     value: function render() {
       return /*#__PURE__*/React.createElement("div", {
         style: this.mainStyle
-      }, /*#__PURE__*/React.createElement(Cog, {
+      }, /*#__PURE__*/React.createElement(Settings, {
         style: this.settingsIconStyle
       }), this.props.description);
     }

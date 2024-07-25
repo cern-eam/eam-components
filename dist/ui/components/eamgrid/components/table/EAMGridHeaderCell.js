@@ -1,5 +1,5 @@
 import React from 'react';
-import withStyles from '@mui/styles/withStyles';
+import { withStyles } from "@material-ui/core/styles/index";
 var styles = {
   headerCellContainer: {
     display: "flex",

@@ -1,7 +1,10 @@
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
@@ -9,52 +12,53 @@ function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) ===
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 import React, { Component } from 'react';
-import TextField from '@material-ui/core/TextField';
-var DEFAULTS = {
-  fullWidth: true,
-  margin: 'dense'
-};
-var DEFAULT_NESTED_OBJECTS = {
-  FormHelperTextProps: {},
-  InputLabelProps: {
-    shrink: true,
-    style: {
-      fontSize: '1.125rem',
-      color: '#145886'
-    }
-  },
-  InputProps: {},
-  inputProps: {},
-  SelectProps: {}
-};
-var generateCustomProps = function generateCustomProps(props) {
-  return _objectSpread({}, DEFAULTS, {}, props, {}, generateCustomNestedObjectProps(props));
-};
-var generateCustomNestedObjectProps = function generateCustomNestedObjectProps(props) {
-  return Object.keys(DEFAULT_NESTED_OBJECTS).reduce(function (customObjectProps, defaultObjectKey) {
-    customObjectProps[defaultObjectKey] = _objectSpread({}, DEFAULT_NESTED_OBJECTS[defaultObjectKey], {}, props[defaultObjectKey]);
-    return customObjectProps;
-  }, {});
-};
-var EAMTextField = /*#__PURE__*/function (_Component) {
-  _inherits(EAMTextField, _Component);
-  var _super = _createSuper(EAMTextField);
-  function EAMTextField() {
-    _classCallCheck(this, EAMTextField);
+import IconButton from '@material-ui/core/IconButton';
+import OpenInNewIcon from 'mdi-material-ui/OpenInNew';
+import { Link } from 'react-router-dom';
+var EAMLinkInput = /*#__PURE__*/function (_Component) {
+  _inherits(EAMLinkInput, _Component);
+  var _super = _createSuper(EAMLinkInput);
+  function EAMLinkInput() {
+    _classCallCheck(this, EAMLinkInput);
     return _super.apply(this, arguments);
   }
-  _createClass(EAMTextField, [{
+  _createClass(EAMLinkInput, [{
     key: "render",
     value: function render() {
-      return /*#__PURE__*/React.createElement(TextField, generateCustomProps(this.props));
+      var _this = this;
+      // No value, no link
+      if (!this.props.value) {
+        return this.props.children;
+      }
+      var iconButtonStyle = {
+        position: "absolute",
+        top: this.props.top || 30,
+        right: this.props.right || -2,
+        backgroundColor: "white",
+        width: 32,
+        height: 32,
+        zIndex: 100,
+        padding: 0
+      };
+      var EAMLink = function EAMLink(props) {
+        return /*#__PURE__*/React.createElement(Link, _extends({
+          to: process.env.REACT_APP_FRONTEND + _this.props.link + _this.props.value
+        }, props));
+      };
+      return /*#__PURE__*/React.createElement("div", {
+        style: {
+          position: "relative"
+        }
+      }, this.props.children, /*#__PURE__*/React.createElement(IconButton, {
+        style: iconButtonStyle,
+        component: EAMLink
+      }, this.props.icon));
     }
   }]);
-  return EAMTextField;
+  return EAMLinkInput;
 }(Component);
-export { EAMTextField as default };
+EAMLinkInput.defaultProps = {
+  icon: /*#__PURE__*/React.createElement(OpenInNewIcon, null)
+};
+export default EAMLinkInput;

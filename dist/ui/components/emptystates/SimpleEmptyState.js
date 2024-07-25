@@ -1,7 +1,6 @@
 import React from 'react';
-import InfoIcon from '@mui/icons-material/Info';
-import { Typography } from '@mui/material';
-import withStyles from '@mui/styles/withStyles';
+import InfoIcon from '@material-ui/icons/Info';
+import { Typography, withStyles } from '@material-ui/core';
 var styles = function styles(theme) {
   return {
     root: {

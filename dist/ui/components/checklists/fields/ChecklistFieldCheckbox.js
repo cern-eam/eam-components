@@ -1,11 +1,13 @@
 import React from 'react';
-import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import withStyles from '@mui/styles/withStyles';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { withStyles } from '@material-ui/core/styles';
 var labelStyle = {
   root: {
-    marginRight: -10,
-    justifyContent: "end"
+    margin: 5
+  },
+  label: {
+    fontSize: "0.95rem"
   }
 };
 var ChecklistFieldCheckbox = function ChecklistFieldCheckbox(props) {
@@ -31,8 +33,7 @@ var ChecklistFieldCheckbox = function ChecklistFieldCheckbox(props) {
       },
       disabled: disabled
     }),
-    label: desc,
-    labelPlacement: "start"
+    label: desc
   });
 };
 export default withStyles(labelStyle)(ChecklistFieldCheckbox);

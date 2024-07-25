@@ -15,7 +15,8 @@ import React, { Component } from 'react';
 import WSComments from "../../../tools/WSComments";
 import Comment from "./Comment";
 import CommentNew from "./CommentNew";
-import List from '@mui/material/List';
+import EISPanel from '../panel';
+import List from '@material-ui/core/List';
 import PropTypes from "prop-types";
 var datatablePanelStyle = {
   marginLeft: -18,
@@ -37,7 +38,7 @@ var Comments = /*#__PURE__*/function (_Component) {
       newCommentText: ''
     };
     _this.readComments = function (entityCode, entityKeyCode) {
-      _this.props.readComments(entityCode, entityKeyCode + (_this.props.entityOrganization ? '#' + _this.props.entityOrganization : '')).then(function (response) {
+      _this.props.readComments(entityCode, entityKeyCode).then(function (response) {
         _this.setState(function () {
           return {
             comments: response.body.data,
@@ -46,6 +47,7 @@ var Comments = /*#__PURE__*/function (_Component) {
         });
       })["catch"](function (reason) {
         _this.props.handleError(reason);
+        //No comments...
         _this.setState(function () {
           return {
             comments: []
@@ -54,28 +56,43 @@ var Comments = /*#__PURE__*/function (_Component) {
       });
     };
     _this.createComment = function (comment) {
-      delete comment.pk; //Remove pk property to avoid unmarshalling error
-      if (_this.props.entityOrganization) {
-        comment.organization = _this.props.entityOrganization;
-      }
+      //Remove pk property
+      delete comment.pk;
+      //Create the comment and set the new list
       _this.props.createComment(comment).then(function (response) {
+        _this.setState(function () {
+          return {
+            comments: response.body.data,
+            newCommentText: ''
+          };
+        });
         if (_this.props.onCommentAdded) {
           _this.props.onCommentAdded(comment);
         }
-        _this.readComments(_this.props.entityCode, _this.props.entityKeyCode);
       })["catch"](function (reason) {
         _this.props.handleError(reason);
+        //Try to read comments again
+        _this.readComments(_this.props.entityCode, _this.props.entityKeyCode);
       });
     };
     _this.updateComment = function (comment) {
-      delete comment.pk; //Remove pk property to avoid unmarshalling error
+      //Remove pk property
+      delete comment.pk;
+      delete comment.updateCount;
+      //Update the comment and set the new list
       _this.props.updateComment(comment).then(function (response) {
+        _this.setState(function () {
+          return {
+            comments: response.body.data
+          };
+        });
         if (_this.props.onCommentUpdated) {
           _this.props.onCommentUpdated(comment);
         }
-        _this.readComments(_this.props.entityCode, _this.props.entityKeyCode);
       })["catch"](function (reason) {
         _this.props.handleError(reason);
+        //Try to read comments again
+        _this.readComments(_this.props.entityCode, _this.props.entityKeyCode);
       });
     };
     _this.updateNewCommentText = function (text) {
@@ -85,11 +102,11 @@ var Comments = /*#__PURE__*/function (_Component) {
         };
       });
     };
-    _this.createCommentForNewEntity = function (entityKeyCode) {
+    _this.createCommentForNewEntity = function () {
       if (_this.state.newCommentText) {
         _this.createComment({
           entityCode: _this.props.entityCode,
-          entityKeyCode: _this.props.entityKeyCode ? _this.props.entityKeyCode : entityKeyCode,
+          entityKeyCode: _this.props.entityKeyCode,
           text: _this.state.newCommentText
         });
       }
@@ -99,6 +116,7 @@ var Comments = /*#__PURE__*/function (_Component) {
   _createClass(Comments, [{
     key: "componentWillMount",
     value: function componentWillMount() {
+      //Just read for existing object
       if (this.props.entityKeyCode) this.readComments(this.props.entityCode, this.props.entityKeyCode);
     }
   }, {

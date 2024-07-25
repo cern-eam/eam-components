@@ -1,36 +1,61 @@
 import React from 'react';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 import ChecklistFieldCheckbox from './ChecklistFieldCheckbox';
-import EAMSelect from '../../inputs-ng/EAMSelect';
+import { withStyles } from '@material-ui/core/styles';
+var style = {
+  root: {
+    margin: 5,
+    marginLeft: 17,
+    border: "1px solid #ced4da",
+    borderRadius: 4
+  },
+  selectRoot: {
+    fontSize: "0.95rem"
+  },
+  select: {
+    paddingLeft: 10,
+    width: 128,
+    overflow: "hidden",
+    textOverflow: "ellipsis"
+  },
+  icon: {
+    paddingRight: 3
+  }
+};
 var ChecklistFieldFinding = function ChecklistFieldFinding(props) {
   var finding = props.finding,
     _handleChange = props.handleChange,
     possibleFindings = props.possibleFindings,
-    disabled = props.disabled,
-    label = props.label;
+    classes = props.classes,
+    disabled = props.disabled;
   var dropdown = props.dropdown === undefined ? true : props.dropdown;
-  if (dropdown) return /*#__PURE__*/React.createElement(EAMSelect, {
+  if (dropdown) return /*#__PURE__*/React.createElement(FormControl, {
     disabled: disabled,
-    value: finding || '',
-    label: label,
-    selectOnlyMode: true,
-    options: possibleFindings,
-    onChange: function onChange(value) {
-      return _handleChange(value.code);
-    },
-    componentStyle: {
-      flex: "0 0 177px"
-    },
-    rootStyle: {
-      justifyContent: 'flex-end',
-      width: 'auto'
-    },
-    labelStyle: {
-      fontSize: '14px',
-      flex: 1,
-      margin: '0 4px',
-      marginTop: '0px'
+    classes: {
+      root: classes.root
     }
-  });else return possibleFindings.map(function (findingElement) {
+  }, /*#__PURE__*/React.createElement(Select, {
+    classes: {
+      root: classes.selectRoot,
+      select: classes.select,
+      icon: classes.icon
+    },
+    disableUnderline: true,
+    value: finding || '',
+    onChange: function onChange(event) {
+      return _handleChange(event.target.value);
+    },
+    disabled: disabled
+  }, /*#__PURE__*/React.createElement(MenuItem, {
+    value: null
+  }, "\u200B"), possibleFindings.map(function (finding) {
+    return /*#__PURE__*/React.createElement(MenuItem, {
+      key: finding.code,
+      value: finding.code
+    }, finding.desc);
+  })));else return possibleFindings.map(function (findingElement) {
     return /*#__PURE__*/React.createElement(ChecklistFieldCheckbox, {
       code: findingElement.code,
       desc: findingElement.desc,
@@ -43,4 +68,4 @@ var ChecklistFieldFinding = function ChecklistFieldFinding(props) {
     });
   });
 };
-export default ChecklistFieldFinding;
+export default withStyles(style)(ChecklistFieldFinding);

@@ -1,9 +1,9 @@
 import React from "react";
 import { DataGridContext } from "../../DataGridContext";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
-import TableSortLabel from "@mui/material/TableSortLabel";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import TableCell from "@material-ui/core/TableCell";
+import TableSortLabel from "@material-ui/core/TableSortLabel";
 import { DATA_GRID_SORT_DIRECTIONS } from "../../Constants";
 var createSortHandler = function createSortHandler(_ref) {
   var columnID = _ref.columnID,

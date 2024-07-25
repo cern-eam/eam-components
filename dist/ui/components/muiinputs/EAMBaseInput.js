@@ -22,9 +22,10 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 import React, { Component } from 'react';
-import IconButton from '@mui/material/IconButton';
+import IconButton from '@material-ui/core/IconButton';
 import OpenInNewIcon from 'mdi-material-ui/OpenInNew';
 import { Link } from 'react-router-dom';
+var typingNumberReg = /^\-?\d*\.?\d*?$/;
 var EAMBaseInput = /*#__PURE__*/function (_Component) {
   _inherits(EAMBaseInput, _Component);
   var _super = _createSuper(EAMBaseInput);
@@ -66,6 +67,7 @@ var EAMBaseInput = /*#__PURE__*/function (_Component) {
       var children = props.children,
         elementInfo = props.elementInfo,
         customValidators = props.customValidators,
+        valueKey = props.valueKey,
         transformers = props.transformers;
       if (children && elementInfo) {
         var key = typeof elementInfo.xpath === 'string' ? elementInfo.xpath : elementInfo.text + elementInfo.elementId;
@@ -244,8 +246,7 @@ var EAMBaseInput = /*#__PURE__*/function (_Component) {
         style: this.mainDivStyle
       }, this.renderComponent(), this.props.link && this.props.link(this.state.value) && /*#__PURE__*/React.createElement(IconButton, {
         style: this.linkButtonStyle,
-        component: eamLink,
-        size: "large"
+        component: eamLink
       }, this.props.icon));
     }
   }]);

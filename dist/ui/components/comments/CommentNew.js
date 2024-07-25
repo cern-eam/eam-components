@@ -16,8 +16,8 @@ import './Comments.css';
 import CommentBar from "./CommentBar";
 import CommentAvatar from "./CommentAvatar";
 import TextareaAutosize from 'react-autosize-textarea';
-import ListItem from '@mui/material/ListItem';
-import withStyles from '@mui/styles/withStyles';
+import ListItem from '@material-ui/core/ListItem';
+import { withStyles } from "@material-ui/core/styles/index";
 var initialContainerStyle = {
   opacity: 1.0,
   pointerEvents: 'all'

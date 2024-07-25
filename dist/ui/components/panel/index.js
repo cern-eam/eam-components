@@ -16,14 +16,14 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 import React, { Component } from 'react';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Accordion from '@mui/material/Accordion';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import FontIcon from '@mui/material/Icon';
-import IconButton from '@mui/material/IconButton';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import FontIcon from '@material-ui/core/Icon';
+import IconButton from '@material-ui/core/IconButton';
 import OpenInNewIcon from 'mdi-material-ui/OpenInNew';
-import Fullscreen from '@mui/icons-material/Fullscreen';
+import Fullscreen from '@material-ui/icons/Fullscreen';
 import { FullscreenExit } from 'mdi-material-ui';
 var EISPanel = /*#__PURE__*/function (_Component) {
   _inherits(EISPanel, _Component);
@@ -36,13 +36,12 @@ var EISPanel = /*#__PURE__*/function (_Component) {
     }
     _this = _super.call.apply(_super, [this].concat(args));
     _this.state = {
-      panelExpanded: _this.props.defaultExpanded ?? true
+      panelExpanded: true
     };
     _this.headingStyle = {
       display: 'flex',
       alignItems: 'center',
-      fontWeight: 900,
-      flexGrow: 1
+      fontWeight: 500
     };
     _this.headingIconStyle = {
       fontSize: 20,
@@ -52,7 +51,7 @@ var EISPanel = /*#__PURE__*/function (_Component) {
       backgroundColor: '#fafafa',
       borderBottom: '1px solid #EEEEEE',
       minHeight: '45px',
-      height: '50px'
+      height: '45px'
     };
     _this.linkIconStyle = {
       color: '#00aaff'
@@ -87,25 +86,16 @@ var EISPanel = /*#__PURE__*/function (_Component) {
         TransitionProps: {
           timeout: 300
         },
-        onChange: this._onPanelChange,
-        sx: {
-          boxShadow: "rgb(0 0 0 / 10%) 0px 1px 2px 0px",
-          '&:before': {
-            display: 'none'
-          },
-          '&.Mui-expanded': {
-            margin: "8px 0px"
-          }
-        }
+        onChange: this._onPanelChange
       }, this.props.ExpansionPanelProps), /*#__PURE__*/React.createElement(AccordionSummary, {
         expandIcon: this.props.alwaysExpanded ? undefined : /*#__PURE__*/React.createElement(ExpandMoreIcon, null),
-        style: _objectSpread({}, this.summaryStyle, {}, this.props.summaryStyle)
+        style: this.summaryStyle
       }, /*#__PURE__*/React.createElement("div", {
         style: this.headingStyle
       }, this.props.headingIcon && /*#__PURE__*/React.createElement(FontIcon, {
         style: this.headingIconStyle,
         className: 'fa ' + this.props.headingIcon
-      }), this.props.summaryIcon && /*#__PURE__*/React.createElement(this.props.summaryIcon, null), /*#__PURE__*/React.createElement("div", null, this.props.heading), this.props.link && /*#__PURE__*/React.createElement(IconButton, {
+      }), /*#__PURE__*/React.createElement("div", null, this.props.heading), this.props.link && /*#__PURE__*/React.createElement(IconButton, {
         onClick: this.linkClickHandler.bind(this),
         style: {
           height: 'auto',

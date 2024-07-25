@@ -14,7 +14,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 import React, { Component } from 'react';
 import FileRow from './FileRow';
 import FilePlus from 'mdi-material-ui/FilePlus';
-import IconButton from '@mui/material/IconButton';
+import IconButton from '@material-ui/core/IconButton';
 var FileList = /*#__PURE__*/function (_Component) {
   _inherits(FileList, _Component);
   var _super = _createSuper(FileList);

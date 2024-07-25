@@ -1,5 +1,4 @@
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
-function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
@@ -15,14 +14,14 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
-import React, { useState } from "react";
-import { TextField, Checkbox, MenuItem, ListItemIcon, ListItemText, Menu, IconButton, InputAdornment, Select, InputBase } from "@mui/material";
-import withStyles from '@mui/styles/withStyles';
-import { ContainStart, ContainEnd, Contain, GreaterThan, GreaterThanOrEqual, LessThan, LessThanOrEqual, Equal, NotEqualVariant, Rhombus, RhombusOutline, MinusCircleOffOutline } from 'mdi-material-ui';
-import { DatePicker, DateTimePicker } from "@mui/x-date-pickers";
-import { Clear as ClearIcon, InsertInvitation as CalendarIcon } from "@mui/icons-material";
+import React, { useEffect, useState } from "react";
+import { TextField, Checkbox, MenuItem, ListItemIcon, ListItemText, Menu, IconButton, InputAdornment, withStyles, Select, InputBase } from "@material-ui/core";
+import { ContainStart, ContainEnd, Contain, GreaterThan, GreaterThanOrEqual, LessThan, LessThanOrEqual, Equal, NotEqualVariant, Rhombus, RhombusOutline } from 'mdi-material-ui';
+import { DatePicker, DateTimePicker } from "@material-ui/pickers";
+import { Clear as ClearIcon, InsertInvitation as CalendarIcon, Cancel as CancelIcon } from "@material-ui/icons";
 import { useAsyncDebounce, useMountedLayoutEffect } from "react-table";
 import { format as formatDate } from "date-fns";
+var ARRAY_SEPARATOR = "$$";
 var BootstrapInput = withStyles(function (theme) {
   return {
     root: {
@@ -36,10 +35,6 @@ var BootstrapInput = withStyles(function (theme) {
       },
       '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
         borderBottom: '2px solid #c5c5c5'
-      },
-      '& .MuiSelect-select:focus': {
-        backgroundColor: "white",
-        borderRadius: '4px'
       }
     },
     input: {
@@ -59,20 +54,6 @@ var FilterTextField = withStyles({
     },
     '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
       borderBottom: '2px solid #c5c5c5'
-    },
-    '& .MuiInputBase-adornedStart': {
-      paddingRight: '2px',
-      paddingLeft: '2px'
-    },
-    '& .MuiIconButton-root': {
-      padding: '6px 0 6px 0',
-      borderRadius: '10%'
-    },
-    '& .MuiInputBase-inputAdornedStart': {
-      paddingRight: '4px'
-    },
-    '& .MuiInputAdornment-positionEnd': {
-      paddingRight: '12px'
     }
   }
 })(TextField);
@@ -92,19 +73,15 @@ var OPERATORS = {
   IS_EMPTY: 'IS EMPTY',
   LESS_THAN: 'LESS_THAN',
   LESS_THAN_EQUALS: 'LESS_THAN_EQUALS',
-  NOT_EMPTY: 'NOT EMPTY',
-  NOT_CONTAINS: 'NOTCONTAINS'
+  NOT_EMPTY: 'NOT EMPTY'
 };
 var CHECKBOX_FILTERS = {
-  CHECKED: 'SELECTED',
-  UNCHECKED: 'NOT_SELECTED',
-  INDETERMINATE: ''
-};
-var getCurrentCheckboxValue = function getCurrentCheckboxValue(event) {
-  return event.target.getAttribute('data-indeterminate') === 'true' ? CHECKBOX_FILTERS.INDETERMINATE : event.target.checked ? CHECKBOX_FILTERS.UNCHECKED : CHECKBOX_FILTERS.CHECKED;
+  CHECKED: -1,
+  UNCHECKED: 0,
+  INDETERMINATE: undefined
 };
 var getCheckedValue = function getCheckedValue(valueType) {
-  return valueType === CHECKBOX_FILTERS.CHECKED;
+  return Number(valueType) === CHECKBOX_FILTERS.CHECKED;
 };
 var isIndeterminate = function isIndeterminate(valueType) {
   return valueType === null || valueType === CHECKBOX_FILTERS.INDETERMINATE;
@@ -112,22 +89,24 @@ var isIndeterminate = function isIndeterminate(valueType) {
 var getEAMDefaultFilterValue = function getEAMDefaultFilterValue(column) {
   var baseFitler = {
     fieldName: column.id,
-    fieldValue: undefined,
+    fieldValue: '',
     joiner: 'AND',
-    operator: OPERATORS.BEGINS
+    operator: OPERATORS.BEGINS,
+    leftParenthesis: false,
+    rightParenthesis: false
   };
   switch (column.dataType) {
     case 'DATE':
     case 'DATETIME':
     case 'DECIMAL':
     case 'NUMBER':
-    case 'CURRENCY':
       return _objectSpread({}, baseFitler, {
-        operator: OPERATORS.EQUAL
+        operator: 'GREATER_THAN'
       });
     case 'CHKBOOLEAN':
       return _objectSpread({}, baseFitler, {
-        operator: CHECKBOX_FILTERS.INDETERMINATE
+        operator: '=',
+        fieldValue: CHECKBOX_FILTERS.INDETERMINATE
       });
     default:
       return baseFitler;
@@ -151,10 +130,6 @@ var getEAMFilterOperators = function getEAMFilterOperators(_ref) {
         'value': OPERATORS.ENDS,
         'label': 'Ends with',
         'icon': /*#__PURE__*/React.createElement(ContainEnd, null)
-      }, {
-        'value': OPERATORS.NOT_CONTAINS,
-        'label': 'Does Not Contain',
-        'icon': /*#__PURE__*/React.createElement(MinusCircleOffOutline, null)
       }, {
         'value': OPERATORS.EQUAL,
         'label': 'Equals',
@@ -209,7 +184,6 @@ var getEAMFilterOperators = function getEAMFilterOperators(_ref) {
       }];
     case "DECIMAL":
     case "NUMBER":
-    case "CURRENCY":
       return [{
         'value': OPERATORS.EQUAL,
         'label': 'Equals',
@@ -318,10 +292,9 @@ var DateFilterAdornment = function DateFilterAdornment(_ref4) {
   var localFilter = _ref4.localFilter,
     setLocalFilter = _ref4.setLocalFilter;
   return React.useMemo(function () {
-    return /*#__PURE__*/React.createElement(InputAdornment, {
+    return localFilter.fieldValue ? /*#__PURE__*/React.createElement(InputAdornment, {
       position: "end"
     }, /*#__PURE__*/React.createElement(IconButton, {
-      edge: "end",
       size: "small",
       onClick: function onClick(e) {
         setLocalFilter(_objectSpread({}, localFilter, {
@@ -330,7 +303,11 @@ var DateFilterAdornment = function DateFilterAdornment(_ref4) {
         }));
         e.stopPropagation();
       }
-    }, /*#__PURE__*/React.createElement(ClearIcon, null)));
+    }, /*#__PURE__*/React.createElement(ClearIcon, null))) : /*#__PURE__*/React.createElement(InputAdornment, {
+      position: "end"
+    }, /*#__PURE__*/React.createElement(IconButton, {
+      size: "small"
+    }, /*#__PURE__*/React.createElement(CalendarIcon, null)));
   }, [localFilter, setLocalFilter]);
 };
 var EAMCellField = function EAMCellField(_ref5) {
@@ -369,6 +346,16 @@ var EAMFilterField = function EAMFilterField(_ref6) {
     _useState4 = _slicedToArray(_useState3, 2),
     localFilter = _useState4[0],
     setLocalFilter = _useState4[1];
+  var _useState5 = useState(_objectSpread({}, filter || getDefaultValue(column), {
+      fieldValue: filter?.fieldValue ? [filter?.fieldValue] : []
+    })),
+    _useState6 = _slicedToArray(_useState5, 2),
+    multiSelectFilter = _useState6[0],
+    setMultiSelectFilter = _useState6[1];
+  var _useState7 = useState([]),
+    _useState8 = _slicedToArray(_useState7, 2),
+    multiFilterLabel = _useState8[0],
+    setMultiFilterLabel = _useState8[1];
   useMountedLayoutEffect(function () {
     return setLocalFilter(filter || getDefaultValue(column));
   }, [filter]);
@@ -379,55 +366,95 @@ var EAMFilterField = function EAMFilterField(_ref6) {
     setLocalFilter(filter);
     debouncedSetFilter(filter);
   }, [debouncedSetFilter]);
+
+  //To set the filter labels and the multiFilterValues on initial render
+  useEffect(function () {
+    if (filter?.fieldValue.includes(ARRAY_SEPARATOR)) {
+      var fieldValues = filter?.fieldValue.split(ARRAY_SEPARATOR);
+      var uniqueFieldValues = Array.from(new Set(fieldValues));
+      var labels = uniqueFieldValues.map(function (code) {
+        var fieldvalueOption = column.selectOptions.find(function (option) {
+          return option.code === code;
+        });
+        return fieldvalueOption.desc;
+      });
+      setMultiSelectFilter(function (prevMultiSelectFilter) {
+        return _objectSpread({}, prevMultiSelectFilter, {
+          fieldValue: uniqueFieldValues
+        });
+      });
+      setMultiFilterLabel(labels);
+    } else if (column?.selectOptions) {
+      var fieldvalueOption = column.selectOptions.find(function (option) {
+        return option.code === filter?.fieldValue;
+      });
+      setMultiFilterLabel([fieldvalueOption?.desc] || []);
+    }
+  }, []);
+  var updateMultiSelectFilter = React.useCallback(function (fieldValueFilter) {
+    setMultiSelectFilter(function (prev) {
+      return _objectSpread({}, prev, {
+        fieldValue: fieldValueFilter
+      });
+    });
+    setMultiSelectFilter(function (prev) {
+      return _objectSpread({}, prev, {
+        joiner: "OR"
+      });
+    });
+    debouncedSetFilter(_objectSpread({}, multiSelectFilter, {
+      fieldValue: fieldValueFilter
+    }));
+  }, [debouncedSetFilter, multiSelectFilter]);
   var handleFilterTextFieldChange = React.useCallback(function (e) {
     return updateFilter(_objectSpread({}, localFilter, {
       fieldValue: e.target.value
     }));
   }, [localFilter, updateFilter]);
-  var handleCheckboxChange = React.useCallback(function (event) {
-    var operators = Object.values(CHECKBOX_FILTERS);
-    var nextOperatorIndex = (operators.findIndex(function (e) {
-      return e === getCurrentCheckboxValue(event);
-    }) + 1) % operators.length;
-    var nextOperator = operators[nextOperatorIndex];
+  var handleMultiFilterCheckboxChange = React.useCallback(function (event, value, label) {
+    if (event.target.checked) {
+      var multiSelectValues = multiSelectFilter.fieldValue ?? [];
+      multiSelectValues.push(value);
+      setMultiFilterLabel(function (prev) {
+        return [].concat(_toConsumableArray(prev), [label]);
+      });
+      updateMultiSelectFilter(multiSelectValues);
+    } else {
+      setMultiFilterLabel(function (prev) {
+        return prev.filter(function (item) {
+          return item !== label;
+        });
+      });
+      updateMultiSelectFilter(multiSelectFilter.fieldValue.filter(function (item) {
+        return item !== value;
+      }));
+    }
+  }, [multiSelectFilter, updateMultiSelectFilter]);
+  var handleCheckboxChange = React.useCallback(function () {
+    var values = [CHECKBOX_FILTERS.CHECKED, CHECKBOX_FILTERS.UNCHECKED, CHECKBOX_FILTERS.INDETERMINATE];
+    var nextValueIndex = (values.findIndex(function (e) {
+      return e === Number(localFilter.fieldValue);
+    }) + 1) % values.length;
+    var nextValue = values[nextValueIndex];
     updateFilter(_objectSpread({}, localFilter, {
-      operator: nextOperator
+      fieldValue: nextValue
     }));
   }, [localFilter, updateFilter]);
   var handleDatePickersChange = React.useCallback(function (value) {
-    updateFilter(_objectSpread({}, localFilter, {
-      fieldValue: value ? formatDate(value, 'dd-MMM-yyyy') : '',
+    return updateFilter(_objectSpread({}, localFilter, {
+      fieldValue: formatDate(value, "dd-MMM-yyyy"),
       _dateValue: value
     }));
   }, [localFilter, updateFilter]);
-  var renderDatePickerInput = function renderDatePickerInput(props) {
-    var InputProps = props.InputProps;
-    return /*#__PURE__*/React.createElement(FilterTextField, _extends({}, props, {
-      size: "small",
-      InputProps: _objectSpread({}, InputProps, {
-        startAdornment: /*#__PURE__*/React.createElement(QualifierMenuAdornment, {
-          column: column,
-          localFilter: localFilter,
-          setLocalFilter: updateFilter
-        }),
-        endAdornment: localFilter?._dateValue ? /*#__PURE__*/React.createElement(DateFilterAdornment, {
-          localFilter: localFilter,
-          setLocalFilter: updateFilter
-        }) : InputProps?.endAdornment
-      })
-    }));
-  };
   switch (dataType) {
     case "VARCHAR":
     case "MIXVARCHAR":
     case "DECIMAL":
     case "NUMBER":
-    case "CURRENCY":
       return /*#__PURE__*/React.createElement(FilterTextField, {
         value: localFilter.fieldValue || '',
         onChange: handleFilterTextFieldChange,
         disabled: [OPERATORS.IS_EMPTY, OPERATORS.NOT_EMPTY].includes(localFilter.operator),
-        size: "small",
         InputProps: {
           startAdornment: /*#__PURE__*/React.createElement(QualifierMenuAdornment, {
             column: column,
@@ -438,8 +465,8 @@ var EAMFilterField = function EAMFilterField(_ref6) {
       });
     case "CHKBOOLEAN":
       return /*#__PURE__*/React.createElement(Checkbox, {
-        checked: getCheckedValue(localFilter.operator),
-        indeterminate: isIndeterminate(localFilter.operator),
+        checked: getCheckedValue(localFilter.fieldValue),
+        indeterminate: isIndeterminate(localFilter.fieldValue),
         onChange: handleCheckboxChange,
         style: {
           padding: 5
@@ -448,21 +475,47 @@ var EAMFilterField = function EAMFilterField(_ref6) {
       });
     case "DATE":
       return /*#__PURE__*/React.createElement(DatePicker, {
-        clearable: true,
+        autoOk: true,
+        clearable: 1,
+        variant: "inline",
+        ampm: false,
         value: localFilter._dateValue || null,
         onChange: handleDatePickersChange,
-        inputFormat: "dd-MMM-yyyy",
-        disableOpenPicker: localFilter?._dateValue ? true : false,
-        renderInput: renderDatePickerInput
+        format: "dd-MMM-yyyy",
+        TextFieldComponent: FilterTextField,
+        InputProps: {
+          startAdornment: /*#__PURE__*/React.createElement(QualifierMenuAdornment, {
+            column: column,
+            localFilter: localFilter,
+            setLocalFilter: updateFilter
+          }),
+          endAdornment: /*#__PURE__*/React.createElement(DateFilterAdornment, {
+            localFilter: localFilter,
+            setLocalFilter: updateFilter
+          })
+        }
       });
     case "DATETIME":
       return /*#__PURE__*/React.createElement(DateTimePicker, {
-        clearable: true,
+        autoOk: true,
+        clearable: 1,
+        variant: "inline",
+        ampm: false,
         value: localFilter._dateValue || null,
         onChange: handleDatePickersChange,
-        inputFormat: "dd-MMM-yyyy HH:mm",
-        disableOpenPicker: localFilter?._dateValue ? true : false,
-        renderInput: renderDatePickerInput
+        format: "dd-MMM-yyyy HH:mm",
+        TextFieldComponent: FilterTextField,
+        InputProps: {
+          startAdornment: /*#__PURE__*/React.createElement(QualifierMenuAdornment, {
+            column: column,
+            localFilter: localFilter,
+            setLocalFilter: updateFilter
+          }),
+          endAdornment: /*#__PURE__*/React.createElement(DateFilterAdornment, {
+            localFilter: localFilter,
+            setLocalFilter: updateFilter
+          })
+        }
       });
     case "__SELECT":
       return /*#__PURE__*/React.createElement(Select, {
@@ -477,6 +530,33 @@ var EAMFilterField = function EAMFilterField(_ref6) {
           value: column.getOptionValue(e),
           key: column.getOptionValue(e)
         }, column.getOptionLabel(e));
+      }));
+    case "__MULTISELECT":
+      return /*#__PURE__*/React.createElement(Select, {
+        multiple: true,
+        value: multiFilterLabel,
+        input: /*#__PURE__*/React.createElement(BootstrapInput, null),
+        renderValue: function renderValue() {
+          return multiFilterLabel.join(',');
+        },
+        MenuProps: {
+          variant: "menu",
+          style: {
+            top: 54
+          }
+        }
+      }, column?.selectOptions?.map(function (e) {
+        return /*#__PURE__*/React.createElement(MenuItem, {
+          value: column.getOptionValue(e),
+          key: column.getOptionValue(e)
+        }, /*#__PURE__*/React.createElement(Checkbox, {
+          checked: multiSelectFilter?.fieldValue.indexOf(column.getOptionValue(e)) > -1,
+          onChange: function onChange(event) {
+            handleMultiFilterCheckboxChange(event, column.getOptionValue(e), column.getOptionLabel(e));
+          }
+        }), /*#__PURE__*/React.createElement(ListItemText, {
+          primary: column.getOptionLabel(e)
+        }));
       }));
     default:
       return null;

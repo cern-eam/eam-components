@@ -15,7 +15,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 import React from 'react';
 import EAMBaseInput from './EAMBaseInput';
 import EAMTextField from './EAMTextField';
-import InputAdornment from '@mui/material/InputAdornment';
+import InputAdornment from '@material-ui/core/InputAdornment';
 var EAMInput = /*#__PURE__*/function (_EAMBaseInput) {
   _inherits(EAMInput, _EAMBaseInput);
   var _super = _createSuper(EAMInput);
@@ -55,7 +55,9 @@ var EAMInput = /*#__PURE__*/function (_EAMBaseInput) {
     key: "renderComponent",
     value: function renderComponent() {
       var _this2 = this;
-      var elementInfo = this.props.elementInfo;
+      var _this$props = this.props,
+        elementInfo = _this$props.elementInfo,
+        inputProps = _this$props.inputProps;
       return /*#__PURE__*/React.createElement(EAMTextField, _extends({
         disabled: this.state.disabled || elementInfo && elementInfo.readonly,
         error: this.state.error,
@@ -69,7 +71,8 @@ var EAMInput = /*#__PURE__*/function (_EAMBaseInput) {
         onBlur: this.onLoseFocus,
         InputLabelProps: {
           shrink: true
-        }
+        },
+        inputProps: inputProps
       }, this.generateInputProps(this.props)));
     }
   }]);

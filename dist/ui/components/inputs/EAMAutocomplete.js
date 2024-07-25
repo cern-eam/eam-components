@@ -21,7 +21,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
-import withStyles from '@mui/styles/withStyles';
+import { withStyles } from '@material-ui/core/styles';
 import EAMBaseInput, { formStyles } from "./EAMBaseInput";
 import EAMFormLabel from "./EAMFormLabel";
 import classNames from 'classnames';

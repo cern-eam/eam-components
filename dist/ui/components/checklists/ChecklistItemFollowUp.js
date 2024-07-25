@@ -15,8 +15,8 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 import React, { Component } from 'react';
-import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { Link } from 'react-router-dom';
 var ChecklistItemFollowUp = /*#__PURE__*/function (_Component) {
   _inherits(ChecklistItemFollowUp, _Component);
@@ -31,8 +31,7 @@ var ChecklistItemFollowUp = /*#__PURE__*/function (_Component) {
     _this.mainStyle = {
       flex: "1",
       display: "flex",
-      marginLeft: 10,
-      marginRight: "-3px"
+      marginLeft: 10
     };
     _this.followUpWOCodeStyle = {
       paddingLeft: '8px',
@@ -65,13 +64,13 @@ var ChecklistItemFollowUp = /*#__PURE__*/function (_Component) {
         }, /*#__PURE__*/React.createElement(Link, {
           to: getWoLink(checklistItem.followUpWorkOrder),
           target: "_blank"
-        }, checklistItem.followUpWorkOrder)) : /*#__PURE__*/React.createElement(Checkbox, {
+        }, checklistItem.followUpWorkOrder)) : /*#__PURE__*/React.createElement(Checkbox, _defineProperty({
           color: "primary",
           checked: checklistItem.followUp === '+' || checklistItem.followUp === true,
-          disabled: Boolean(checklistItem.followUpWorkOrder) || this.props.disabled,
+          disabled: Boolean(checklistItem.followUpWorkOrder),
           onMouseDown: this.handleChange,
           onTouchStart: this.handleChange
-        }),
+        }, "disabled", this.props.disabled)),
         labelPlacement: "start",
         label: "Follow-up"
       })));

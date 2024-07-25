@@ -1,11 +1,5 @@
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
-var _excluded = ["classes", "autoFocus", "value", "label", "disabled", "error", "helperText", "required"];
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+var _excluded = ["classes", "autoFocus", "value", "label", "disabled", "endAdornment", "error", "helperText", "required"];
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
@@ -24,52 +18,66 @@ function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _ty
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
-import InputAdornment from '@material-ui/core/InputAdornment';
-import MenuItem from '@material-ui/core/MenuItem';
-import Paper from '@material-ui/core/Paper';
-import { makeStyles } from '@material-ui/core/styles';
-import SvgIcon from '@material-ui/core/SvgIcon';
 import React from 'react';
 import Autosuggest from 'react-autosuggest';
-import EAMBaseInput from './EAMBaseInput';
-import EAMTextField from './EAMTextField';
+import TextField from '@material-ui/core/TextField';
+import Paper from '@material-ui/core/Paper';
+import MenuItem from '@material-ui/core/MenuItem';
+import { withStyles } from '@material-ui/core/styles';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import axios from "axios/index";
 
 /**
  * Default input, if none is provided
  */
-function renderInput(inputProps) {
+
+function getTextWidth(text) {
+  var canvas = document.createElement("canvas");
+  var context = canvas.getContext("2d");
+  context.font = '16px Roboto';
+  var metrics = context.measureText(text);
+  return metrics.width;
+}
+function renderDefaultInput(inputProps) {
   var classes = inputProps.classes,
     autoFocus = inputProps.autoFocus,
     value = inputProps.value,
     label = inputProps.label,
     disabled = inputProps.disabled,
+    endAdornment = inputProps.endAdornment,
     error = inputProps.error,
     helperText = inputProps.helperText,
     required = inputProps.required,
     other = _objectWithoutProperties(inputProps, _excluded);
-  var arrowIconStyle = {
-    color: "rgba(0, 0, 0, 0.54)",
-    pointerEvents: 'none',
+  var inputAdornmentStyle = {
+    height: 20,
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    top: 6,
+    left: 5 + getTextWidth(value),
     position: "absolute",
-    right: 0
+    pointerEvents: "none",
+    fontSize: 16,
+    color: "#9E9E9E"
   };
-  return /*#__PURE__*/React.createElement(EAMTextField, {
+  return /*#__PURE__*/React.createElement(TextField, {
     required: required,
     error: error,
     helperText: helperText,
+    style: {
+      overflow: "hidden"
+    },
     disabled: disabled,
-    autoFocus: autoFocus,
+    margin: "normal",
     label: label,
-    value: value,
+    autoFocus: autoFocus,
     className: classes.textField,
+    value: value,
     InputProps: _objectSpread({
-      endAdornment: !disabled && /*#__PURE__*/React.createElement(InputAdornment, {
-        position: "end"
-      }, /*#__PURE__*/React.createElement(SvgIcon, {
-        style: arrowIconStyle
-      }, /*#__PURE__*/React.createElement("path", {
-        d: "M7 10l5 5 5-5z"
-      }))),
+      endAdornment: endAdornment && /*#__PURE__*/React.createElement(InputAdornment, {
+        style: inputAdornmentStyle
+      }, " \u2014 ", endAdornment),
       classes: {
         input: classes.input
       }
@@ -97,7 +105,7 @@ function renderSuggestionsContainer(options) {
     square: true
   }), children);
 }
-var useStyles = makeStyles(function (theme) {
+var styles = function styles(theme) {
   return {
     container: {
       flexGrow: 1,
@@ -108,7 +116,7 @@ var useStyles = makeStyles(function (theme) {
       marginBottom: theme.spacing(3),
       left: 0,
       right: 0,
-      zIndex: 9999
+      zIndex: 10
     },
     suggestion: {
       display: 'block'
@@ -116,121 +124,123 @@ var useStyles = makeStyles(function (theme) {
     suggestionsList: {
       margin: 0,
       padding: 0,
-      listStyleType: 'none',
-      overflowY: "auto",
-      overflowX: "hidden",
-      maxHeight: function maxHeight(props) {
-        return (props.suggestionsPixelHeight || 400) + 'px';
-      }
+      listStyleType: 'none'
+    },
+    textField: {
+      width: '100%'
     }
   };
-});
-var EAMSelect = /*#__PURE__*/function (_EAMBaseInput) {
-  _inherits(EAMSelect, _EAMBaseInput);
-  var _super = _createSuper(EAMSelect);
-  function EAMSelect() {
+};
+
+/**
+ * Autocomplete component
+ * Possible props:
+ *  - getSuggestions (required): should return a Promise of an object
+ *  - placeholder (not required): Placeholder to display inside the input. Only needed if you use the default input rendering
+ *  - getSuggestionValue(suggestion) (not required): return the value to display inside the input once a suggestion is selected
+ *  - renderSuggestion (not required): define how you want to render a suggestion.
+ *  - label (not required): label of the input
+ */
+var Autocomplete = /*#__PURE__*/function (_React$Component) {
+  _inherits(Autocomplete, _React$Component);
+  var _super = _createSuper(Autocomplete);
+  function Autocomplete() {
     var _this;
-    _classCallCheck(this, EAMSelect);
+    _classCallCheck(this, Autocomplete);
     for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
     _this = _super.call.apply(_super, [this].concat(args));
     _this.state = {
+      value: '',
       suggestions: []
     };
-    _this.init = function (props) {
-      var value = props.value || '';
-      var values = props.values;
-      var valueFound = _this.findValueInValues(value, values);
-      _this.setValue({
-        code: valueFound && valueFound.code || value,
-        desc: valueFound && valueFound.desc || value
-      }, false);
+    // Input rendering
+    _this.renderInput = function (inputProps) {
+      return renderDefaultInput(inputProps);
     };
-    _this.onSuggestionChange = function (code, desc) {
-      _this.props.updateProperty(_this.props.valueKey, code || '');
-      if (_this.props && _this.props.valueDesc) {
-        _this.props.updateProperty(_this.props.valueDesc, desc);
-      }
-    };
-    _this.findValueInValues = function (value, values) {
-      var processedValue = value.trim();
-      return (values || []).find(function (v) {
-        return v.code.toUpperCase() === processedValue.toUpperCase() || v.desc && v.desc.toUpperCase() === processedValue.toUpperCase();
-      });
-    };
+    // Fetch suggestions
     _this.handleSuggestionsFetchRequested = function (_ref) {
-      var value = _ref.value,
-        reason = _ref.reason;
-      var suggestions = _this.props.values;
-      if (!suggestions) {
-        return;
-      }
-      if (value && reason !== 'input-focused') {
-        suggestions = suggestions.filter(function (suggestion) {
-          var codeParts = suggestion.code.toUpperCase().split(' ').filter(function (p) {
-            return p.length > 1;
+      var value = _ref.value;
+      clearTimeout(_this.timeout);
+      _this.timeout = setTimeout(function () {
+        if (!!_this.cancelSource) _this.cancelSource.cancel();
+        _this.cancelSource = axios.CancelToken.source();
+        _this.props.getSuggestions(value, {
+          cancelToken: _this.cancelSource.token
+        }).then(function (result) {
+          _this.setState({
+            suggestions: result.body.data
           });
-          return codeParts.some(function (p) {
-            return p.startsWith(value.toUpperCase());
-          }) || suggestion.desc && suggestion.desc.toUpperCase().startsWith(value.toUpperCase());
-        });
-      }
-      _this.setState({
-        suggestions: suggestions
-      });
+        })["catch"](function (error) {});
+      }, 200);
     };
-    _this.handleSuggestionsClearRequested = function () {
-      _this.setState({
-        suggestions: []
-      }, function () {
-        var dropdownValue = _this.state.value && _this.findValueInValues(_this.state.value.code, _this.props.values);
-        var value = dropdownValue || _this.state.value;
-        value && _this.onSuggestionChange(value.code, value.desc);
-      });
-    };
-    _this.handleSuggestionSelected = function (event, _ref2) {
-      var suggestion = _ref2.suggestion;
-      if (suggestion) _this.onSuggestionChange(suggestion.code, suggestion.desc);
-    };
-    _this.handleChange = function (event, _ref3) {
-      var newValue = _ref3.newValue;
+    _this.handleChange = function (event, _ref2) {
+      var newValue = _ref2.newValue;
+      // Initially, the onChange only happened on lose focus (onBlur) event. However, both events
+      //(onChange and onBlur) are fired at the same time, causing the onBlur() event to not have 
+      //the updated state. Therefore, and until a complete redesign is in place, either the parent shall
+      //be updated at every key stroke, or thehandleSuggestionsClearRequested must contain a workaround
+      // this.setState({
+      //     value: newValue,
+      //     endAdornment: ''
+      // })
       _this.setValue({
-        code: newValue,
-        desc: ''
+        code: value,
+        desc: endAdornment
       });
+      //this.props.onChange(newValue); // This triggers a re-render all parent's child components
+    };
+    // Clear suggestions
+    _this.handleSuggestionsClearRequested = function () {
+      return _this.setState({
+        suggestions: []
+      }, function (_) {
+        // Not the cleaniest of ways to achieve the parent update on the value: the parent should save 
+        //a ref and call getValue for that purpose. However, and to avoid manipulating state directly,
+        //we update it as a callback which should have the state updated
+        _this.props.onSuggestionChange(_this.getValue().code, _this.getValue().desc);
+      });
+    };
+    _this.onSuggestionSelected = function (event, _ref3) {
+      var suggestion = _ref3.suggestion;
+      if (suggestion) _this.props.onSuggestionChange(suggestion.code, suggestion.desc);
+    };
+    // Render
+    _this.renderSuggestion = function (suggestion) {
+      return _this.props.renderSuggestion ? _this.props.renderSuggestion(suggestion) : /*#__PURE__*/React.createElement("div", null, suggestion.code);
     };
     _this.getSuggestionValue = function (suggestion) {
-      return suggestion.code;
+      return suggestion.desc;
     };
     _this.shouldRenderSuggestions = function (value) {
-      // Returning true causes the suggestions to be
-      // rendered when the input is blank and focused
-      return true;
+      return !!value;
     };
     return _this;
   }
-  _createClass(EAMSelect, [{
-    key: "renderValue",
-    value: function renderValue(value) {
-      return _toConsumableArray(new Set([value.code, value.desc])).filter(Boolean).join(' - ');
+  _createClass(Autocomplete, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.setStateFromProps(this.props);
     }
   }, {
-    key: "renderComponent",
-    value: function renderComponent() {
-      var _this$props = this.props,
-        classes = _this$props.classes,
-        elementInfo = _this$props.elementInfo,
-        renderSuggestion = _this$props.renderSuggestion,
-        renderValue = _this$props.renderValue;
-      var _this$state = this.state,
-        value = _this$state.value,
-        error = _this$state.error,
-        helperText = _this$state.helperText,
-        disabled = _this$state.disabled;
-      var suggestionRenderer = renderSuggestion || this.renderValue;
-      var valueRenderer = renderValue || this.renderValue;
-      if (!value) return null;
+    key: "componentWillReceiveProps",
+    value: function componentWillReceiveProps(nextProps) {
+      this.setStateFromProps(nextProps);
+    }
+  }, {
+    key: "setStateFromProps",
+    value: function setStateFromProps(props) {
+      this.setValue({
+        code: props.value || '',
+        desc: props.valueDesc || ''
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+      var classes = this.props.classes;
       return /*#__PURE__*/React.createElement(Autosuggest, {
         theme: {
           container: classes.container,
@@ -239,42 +249,35 @@ var EAMSelect = /*#__PURE__*/function (_EAMBaseInput) {
           suggestion: classes.suggestion
         },
         focusInputOnSuggestionClick: false,
-        onSuggestionSelected: this.handleSuggestionSelected,
+        onSuggestionSelected: this.onSuggestionSelected.bind(this),
         suggestions: this.state.suggestions,
         onSuggestionsFetchRequested: this.handleSuggestionsFetchRequested,
         onSuggestionsClearRequested: this.handleSuggestionsClearRequested,
-        getSuggestionValue: this.getSuggestionValue,
         renderSuggestionsContainer: renderSuggestionsContainer,
+        getSuggestionValue: function getSuggestionValue(suggestion) {
+          return suggestion.desc;
+        },
         renderSuggestion: function renderSuggestion(suggestion, _ref4) {
           var isHighlighted = _ref4.isHighlighted;
-          return renderSuggestionContainer(suggestionRenderer(suggestion), suggestion, isHighlighted);
+          return renderSuggestionContainer(_this2.renderSuggestion(suggestion), suggestion, isHighlighted);
         },
-        renderInputComponent: renderInput.bind(this),
-        shouldRenderSuggestions: this.shouldRenderSuggestions,
+        renderInputComponent: this.renderInput.bind(this),
+        shouldRenderSuggestions: this.shouldRenderSuggestions.bind(this),
         inputProps: {
-          required: this.isRequired(),
-          error: error,
-          helperText: helperText,
+          required: this.props.required,
+          error: this.props.error,
+          helperText: this.props.helperText,
+          endAdornment: this.getValue().desc,
           classes: classes,
-          value: valueRenderer(value),
-          label: elementInfo && elementInfo.text,
-          disabled: disabled || elementInfo && elementInfo.readonly,
-          onChange: this.handleChange
+          placeholder: this.props.placeholder,
+          label: this.props.label,
+          value: this.getValue().code,
+          onChange: this.handleChange,
+          disabled: this.props.disabled
         }
       });
     }
   }]);
-  return EAMSelect;
-}(EAMBaseInput);
-var ClassComponentStyler = function ClassComponentStyler(props) {
-  var classes = useStyles(props);
-  var Component = props.component;
-  return /*#__PURE__*/React.createElement(Component, _extends({
-    classes: classes
-  }, props));
-};
-export default (function (props) {
-  return /*#__PURE__*/React.createElement(ClassComponentStyler, _extends({
-    component: EAMSelect
-  }, props));
-});
+  return Autocomplete;
+}(React.Component);
+export default withStyles(styles)(Autocomplete);

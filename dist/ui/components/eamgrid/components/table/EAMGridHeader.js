@@ -12,11 +12,11 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 import React, { Component } from 'react';
-import ArrowDownward from '@mui/icons-material/ArrowDownward';
-import ArrowUpward from '@mui/icons-material/ArrowUpward';
+import ArrowDownward from '@material-ui/icons/ArrowDownward';
+import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import DataGridFilter from './header-filter/EAMGridFilter';
-import withStyles from '@mui/styles/withStyles';
-import Tooltip from '@mui/material/Tooltip';
+import { withStyles } from "@material-ui/core/styles/index";
+import Tooltip from '@material-ui/core/Tooltip';
 import EAMGridHeaderCell from './EAMGridHeaderCell';
 var styles = {
   tableHeader: {

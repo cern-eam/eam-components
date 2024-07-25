@@ -14,7 +14,7 @@ import ErrorTypes from "../enums/ErrorTypes";
  * Default timeout is 20s.
  * This can be overidden with the config object
  */
-var DEFAULT_TIMEOUT = 40000;
+var DEFAULT_TIMEOUT = 20000;
 var Ajax = /*#__PURE__*/function () {
   function Ajax() {
     _classCallCheck(this, Ajax);

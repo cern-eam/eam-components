@@ -12,12 +12,12 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 import React, { Component } from 'react';
-import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
 import WSChecklists from '../../../tools/WSChecklists';
-import Grid from '@mui/material/Grid';
+import Grid from '@material-ui/core/Grid';
 var modalStyle = {
   padding: '30px',
   textAlign: 'center'
@@ -135,7 +135,6 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
           borderTop: '1px dashed rgb(209, 211, 212)',
           minHeight: '40px',
           paddingTop: '4px',
-          paddingLeft: '8px',
           paddingBottom: '3px'
         }
       }, /*#__PURE__*/React.createElement(Grid, {

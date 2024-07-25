@@ -7,8 +7,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 import React from "react";
 import { DataGrid } from "../datagrid";
 import { MUITableHeader, MUITableBody } from "../datagrid/presentation/table";
-import { Table, TableCell, TableContainer, Checkbox, Fade } from "@mui/material";
-import withStyles from '@mui/styles/withStyles';
+import { Table, TableCell, TableContainer, Checkbox, Fade, withStyles } from "@material-ui/core";
 import BlockUi from 'react-block-ui';
 var CustomCellComponent = withStyles(function (theme) {
   return {
@@ -77,17 +76,17 @@ var EAMTable = function EAMTable(props) {
     }];
     computedColumnsMetadata = [].concat(extraColumnsMetadata, _toConsumableArray(columnsMetadata));
   }
-  return loading ? /*#__PURE__*/React.createElement(Fade, {
+  return loading ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center",
+      padding: 14
+    }
+  }, /*#__PURE__*/React.createElement(Fade, {
     "in": loading,
     style: {
       transitionDelay: loading ? "200ms" : "0ms"
     },
     unmountOnExit: true
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      textAlign: "center",
-      padding: 14
-    }
   }, /*#__PURE__*/React.createElement(BlockUi, {
     blocking: loading
   }))) : /*#__PURE__*/React.createElement(DataGrid, {

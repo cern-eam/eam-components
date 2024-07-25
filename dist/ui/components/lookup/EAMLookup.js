@@ -13,7 +13,7 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 import React from 'react';
 import { Search } from '@material-ui/icons';
-import { Dialog, DialogContent, withStyles } from '@mui/material';
+import { Dialog, DialogContent, withStyles } from '@material-ui/core';
 import EAMGrid from '../eamgrid';
 import { handleError } from '../actions/uiActions';
 import PropTypes from 'prop-types';

@@ -12,16 +12,17 @@ function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) ===
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-import Icon from '@mui/material/Icon';
+import DateFnsUtils from '@date-io/date-fns';
+import Icon from '@material-ui/core/Icon';
 import { format } from 'date-fns';
 import parse from "date-fns/parse";
-import { DatePicker, DateTimePicker } from '@mui/x-date-pickers';
+import { DatePicker, DateTimePicker } from '@material-ui/pickers';
 import PropTypes from 'prop-types';
 import React from 'react';
 import EAMBaseInput from './EAMBaseInput';
 import EAMTextField from './EAMTextField';
-import EventIcon from '@mui/icons-material/Event';
-import { InputAdornment, IconButton } from "@mui/material";
+import EventIcon from '@material-ui/icons/Event';
+import { InputAdornment, IconButton } from "@material-ui/core";
 var DefaultEndAdornment = function DefaultEndAdornment(props) {
   return /*#__PURE__*/React.createElement(InputAdornment, {
     position: "end"
@@ -98,9 +99,7 @@ var EAMDatePicker = /*#__PURE__*/function (_EAMBaseInput) {
         label: elementInfo && elementInfo.text,
         leftArrowIcon: /*#__PURE__*/React.createElement(Icon, null, " keyboard_arrow_left "),
         rightArrowIcon: /*#__PURE__*/React.createElement(Icon, null, " keyboard_arrow_right "),
-        renderInput: function renderInput(props) {
-          return /*#__PURE__*/React.createElement(EAMTextField, props);
-        }
+        TextFieldComponent: EAMTextField
       };
     }
   }, {

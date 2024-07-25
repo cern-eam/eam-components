@@ -8,58 +8,68 @@ function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefine
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 import React from 'react';
 var EAMTableDataAdapter = function EAMTableDataAdapter(props) {
-  var equipmentCode = props.equipmentCode,
-    fetchData = props.fetchData,
+  var fetchData = props.fetchData,
     convertRowData = props.convertRowData,
     convertColumnMetadata = props.convertColumnMetadata;
   var _React$useState = React.useState(true),
     _React$useState2 = _slicedToArray(_React$useState, 2),
     loading = _React$useState2[0],
     setLoading = _React$useState2[1];
-  var _React$useState3 = React.useState(false),
+  var _React$useState3 = React.useState(true),
     _React$useState4 = _slicedToArray(_React$useState3, 2),
-    requestError = _React$useState4[0],
-    setRequestError = _React$useState4[1];
-  var _React$useState5 = React.useState([]),
+    mounted = _React$useState4[0],
+    setMounted = _React$useState4[1];
+  var _React$useState5 = React.useState(false),
     _React$useState6 = _slicedToArray(_React$useState5, 2),
-    rows = _React$useState6[0],
-    setRows = _React$useState6[1];
+    requestError = _React$useState6[0],
+    setRequestError = _React$useState6[1];
   var _React$useState7 = React.useState([]),
     _React$useState8 = _slicedToArray(_React$useState7, 2),
-    columnsMetadata = _React$useState8[0],
-    setColumnsMetadata = _React$useState8[1];
+    rows = _React$useState8[0],
+    setRows = _React$useState8[1];
+  var _React$useState9 = React.useState([]),
+    _React$useState10 = _slicedToArray(_React$useState9, 2),
+    columnsMetadata = _React$useState10[0],
+    setColumnsMetadata = _React$useState10[1];
   React.useEffect(function () {
     (function _callee() {
       var response, responseBody;
       return _regeneratorRuntime().async(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
+            if (!mounted) {
+              _context.next = 11;
+              break;
+            }
             setLoading(true);
-            _context.next = 3;
+            _context.next = 4;
             return _regeneratorRuntime().awrap(fetchData()["catch"](function () {
               setLoading(false);
               setRequestError(true);
               return;
             }));
-          case 3:
+          case 4:
             response = _context.sent;
             responseBody = response && response.body;
             if (responseBody) {
-              _context.next = 7;
+              _context.next = 8;
               break;
             }
             return _context.abrupt("return");
-          case 7:
+          case 8:
             setRows(convertRowData(responseBody));
             setColumnsMetadata(convertColumnMetadata(responseBody));
             setLoading(false);
-          case 10:
+          case 11:
           case "end":
             return _context.stop();
         }
       }, null, null, null, Promise);
     })();
-  }, [equipmentCode]);
+    return function () {
+      return setMounted(false);
+    };
+  }, []);
   var context = {
     loading: loading,
     requestError: requestError,

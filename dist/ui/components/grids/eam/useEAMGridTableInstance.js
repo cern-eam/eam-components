@@ -1,4 +1,4 @@
-var _excluded = ["selectable", "modifyColumns", "isRowSelectable"];
+var _excluded = ["selectable"];
 function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
@@ -9,8 +9,7 @@ function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symb
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 import React from "react";
-import { Checkbox } from "@mui/material";
-import withStyles from '@mui/styles/withStyles';
+import { Checkbox, withStyles } from "@material-ui/core";
 import { useFilters, useFlexLayout, useRowSelect, useSortBy, useTable } from "react-table";
 var DefaultCheckbox = withStyles(function () {
   return {
@@ -19,30 +18,18 @@ var DefaultCheckbox = withStyles(function () {
     }
   };
 })(Checkbox);
-var useModifyColumns = function useModifyColumns(modifyColumns) {
-  return function (hooks) {
-    return hooks.visibleColumns.push(function (columns) {
-      return columns.length ? modifyColumns?.(columns) ?? columns : columns;
-    });
-  };
-};
 var useSelectionCheckboxHook = function useSelectionCheckboxHook(selectable) {
-  var isRowSelectable = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {
-    return true;
-  };
   return function (hooks) {
     return hooks.visibleColumns.push(function (columns) {
       if (!selectable) return columns;
       return columns.length ? [{
-        id: "__selection",
+        id: "selection",
         Header: function Header(_ref) {
           var getToggleAllRowsSelectedProps = _ref.getToggleAllRowsSelectedProps;
           return /*#__PURE__*/React.createElement("div", {
             style: {
               display: 'flex',
-              alignItems: 'center',
-              minWidth: 42,
-              maxWidth: 42
+              alignItems: 'center'
             }
           }, /*#__PURE__*/React.createElement(DefaultCheckbox, _extends({
             color: "primary",
@@ -53,17 +40,16 @@ var useSelectionCheckboxHook = function useSelectionCheckboxHook(selectable) {
         },
         Cell: function Cell(_ref2) {
           var row = _ref2.row;
-          return isRowSelectable(row?.values) ? /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(DefaultCheckbox, _extends({
+          return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(DefaultCheckbox, _extends({
             color: "primary"
-          }, row.getToggleRowSelectedProps()))) : null;
+          }, row.getToggleRowSelectedProps())));
         },
         Filter: null,
         filter: null,
+        disableSortBy: true,
         width: '',
         minWidth: 42,
-        maxWidth: 42,
-        _canSort: false,
-        _canFilter: false
+        maxWidth: 150
       }].concat(_toConsumableArray(columns)) : columns;
     });
   };
@@ -71,10 +57,8 @@ var useSelectionCheckboxHook = function useSelectionCheckboxHook(selectable) {
 var useEAMGridTableInstance = function useEAMGridTableInstance(settings) {
   var _settings$selectable = settings.selectable,
     selectable = _settings$selectable === void 0 ? false : _settings$selectable,
-    modifyColumns = settings.modifyColumns,
-    isRowSelectable = settings.isRowSelectable,
     useTableSettings = _objectWithoutProperties(settings, _excluded);
-  var tableInstance = useTable(useTableSettings, useFilters, useSortBy, useRowSelect, useFlexLayout, useSelectionCheckboxHook(selectable, isRowSelectable), useModifyColumns(modifyColumns));
+  var tableInstance = useTable(useTableSettings, useFilters, useSortBy, useRowSelect, useFlexLayout, useSelectionCheckboxHook(selectable));
   return tableInstance;
 };
 export default useEAMGridTableInstance;

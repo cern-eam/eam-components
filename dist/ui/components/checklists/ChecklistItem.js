@@ -17,12 +17,10 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 import React, { Component } from 'react';
 import ChecklistItemInput from './ChecklistItemInput';
 import ChecklistItemNotes from './ChecklistItemNotes';
-import Collapse from '@mui/material/Collapse';
+import Collapse from '@material-ui/core/Collapse';
 import ChecklistItemFollowUp from "./ChecklistItemFollowUp";
 import ChecklistItemNotApplicableOptions from './ChecklistItemNotApplicableOptions';
 import WSChecklists from '../../../tools/WSChecklists';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 var ChecklistItem = /*#__PURE__*/function (_Component) {
   _inherits(ChecklistItem, _Component);
   var _super = _createSuper(ChecklistItem);
@@ -48,7 +46,6 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
     _this.firstLineDesc = {
       "float": "left",
       display: "flex",
-      marginRight: "5px",
       alignItems: "center",
       pointerEvents: "initial",
       color: "rgba(0, 0, 0, 0.87)"
@@ -59,10 +56,12 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
      * @returns {{marginLeft: number, marginTop: number, position: string, display: string}}
      */
     _this.checklistDetailsStyle = {
-      margin: 2,
-      marginLeft: 11,
+      marginLeft: -5,
+      marginTop: -5,
+      marginRight: -8,
+      paddingRight: 3,
       display: "flex",
-      alignItems: "center"
+      flexDirection: "row"
     };
     _this.checklistNotApplicableStyle = {
       paddingTop: 5,
@@ -70,25 +69,25 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       flex: '1 1 auto'
     };
     _this.colorStyle = function (color) {
-      return {
+      var _ref;
+      return _ref = {
+        display: "flex",
+        marginRight: "15px",
         backgroundColor: color ? "#".concat(color) : undefined,
-        borderLeft: color ? "#".concat(color) : undefined,
-        width: '3px',
-        margin: '8px -2px 8px 2px',
-        borderRadius: '30px',
-        flexShrink: 0
-      };
+        border: 'solid 1px #d1d3d4',
+        flex: '0 1 auto',
+        width: '5px',
+        margin: '10px 15px 10px 0px'
+      }, _defineProperty(_ref, "marginRight", '15px'), _defineProperty(_ref, "borderRadius", '30px'), _ref;
     };
-    _this.containerStyle = function (blocked, isLastItem, color) {
+    _this.containerStyle = function (blocked) {
       return {
         display: 'flex',
         alignItems: "stretch",
-        padding: '1px 8px 1px 0',
         minHeight: 48,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        borderBottom: isLastItem ? 'none' : "dashed 1px #d1d3d4",
-        backgroundColor: color ? "".concat(_this.hexToRgb(color, 0.14)) : '#white',
+        borderBottom: "dashed 1px #d1d3d4",
         opacity: blocked ? 0.5 : 1
       };
     };
@@ -104,17 +103,6 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
     key: "componentWillMount",
     value: function componentWillMount() {
       this.init(this.props.checklistItem);
-    }
-  }, {
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      var _this$props = this.props,
-        checklistItem = _this$props.checklistItem,
-        showChecklistOptions = _this$props.showChecklistOptions,
-        taskCode = _this$props.taskCode;
-      // Handles expand/collapse of options when the checkbox was ticked before
-      // the equipment's checklist had been expanded.
-      this.showChecklistOptionsHandler(showChecklistOptions, checklistItem, taskCode);
     }
   }, {
     key: "componentWillUnmount",
@@ -139,12 +127,6 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
           });
           this.init(checklistItem);
         }
-      }
-      var showChecklistOptions = nextProps.showChecklistOptions,
-        taskCode = nextProps.taskCode;
-      // Expand/collapse options when the equipment's checklists are already expanded
-      if (showChecklistOptions !== this.props.showChecklistOptions) {
-        this.showChecklistOptionsHandler(showChecklistOptions, checklistItemProps, taskCode);
       }
     }
   }, {
@@ -195,72 +177,40 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       });
     }
   }, {
-    key: "fetchChecklistDefinition",
-    value: function fetchChecklistDefinition(checklistItem, taskCode) {
-      var _this3 = this;
-      if (checklistItem && checklistItem.notApplicableOptions === undefined) {
-        WSChecklists.getChecklistDefinition(taskCode, checklistItem.checklistDefinitionCode).then(function (response) {
-          _this3.setState({
-            notApplicableOptions: response.body.data.notApplicableOptions
-          });
-        })["catch"](function (error) {
-          _this3.props.handleError(error);
-        });
-      }
-    }
-  }, {
-    key: "showChecklistOptionsHandler",
-    value: function showChecklistOptionsHandler(expandChecklist, checklistItem, taskCode) {
-      var notes = this.notes.current.input.current.value;
-      var followUp = checklistItem.followUp;
-      var detailsVisible;
-
-      // Only collapse empty details
-      if (notes || followUp) {
-        detailsVisible = true;
-      } else {
-        detailsVisible = expandChecklist;
-      }
-      this.setState({
-        detailsVisible: detailsVisible
-      });
-
-      // Don't perform the WS call when collapsing
-      if (expandChecklist) {
-        this.fetchChecklistDefinition(checklistItem, taskCode);
-      }
-    }
-  }, {
     key: "descClickHandler",
     value: function descClickHandler() {
-      var _this4 = this;
+      var _this3 = this;
       var notes = this.notes.current;
-      this.setState(function (state) {
+      this.setState(function (state, props) {
         var detailsVisible = !state.detailsVisible;
         if (detailsVisible) {
           setTimeout(function () {
-            return _this4.notes.current.focus();
+            return _this3.notes.current.focus();
           }, 0);
-          // Don't perform the WS call when collapsing
-          var _this4$props = _this4.props,
-            checklistItem = _this4$props.checklistItem,
-            taskCode = _this4$props.taskCode;
-          _this4.fetchChecklistDefinition(checklistItem, taskCode);
         }
         return {
           detailsVisible: detailsVisible
         };
       });
+      var _this$props = this.props,
+        checklistItem = _this$props.checklistItem,
+        taskCode = _this$props.taskCode;
+      if (checklistItem && checklistItem.notApplicableOptions === undefined) {
+        WSChecklists.getChecklistDefinition(taskCode, checklistItem.checklistDefinitionCode).then(function (response) {
+          _this3.setState({
+            notApplicableOptions: response.body.data.notApplicableOptions
+          });
+        });
+      }
     }
   }, {
     key: "renderChecklistItemInput",
     value: function renderChecklistItemInput() {
-      var _this5 = this;
+      var _this4 = this;
       var _this$props2 = this.props,
         checklistItem = _this$props2.checklistItem,
         showError = _this$props2.showError,
-        disabled = _this$props2.disabled,
-        register = _this$props2.register;
+        disabled = _this$props2.disabled;
       var fields = [];
       var options = {};
 
@@ -272,27 +222,24 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       var createField = ChecklistItemInput.createField;
       var _ChecklistItemInput$F = ChecklistItemInput.FIELD,
         CHECKBOX = _ChecklistItemInput$F.CHECKBOX,
-        RADIO = _ChecklistItemInput$F.RADIO,
         FINDING = _ChecklistItemInput$F.FINDING,
         NUMERIC = _ChecklistItemInput$F.NUMERIC,
-        NUMERIC2 = _ChecklistItemInput$F.NUMERIC2,
         ALPHANUMERIC = _ChecklistItemInput$F.ALPHANUMERIC,
         DATE = _ChecklistItemInput$F.DATE,
-        DATETIME = _ChecklistItemInput$F.DATETIME,
-        ENTITY = _ChecklistItemInput$F.ENTITY;
+        DATETIME = _ChecklistItemInput$F.DATETIME;
       switch (checklistItem.type) {
         case "01":
           fields = [createField(CHECKBOX, {
             code: "COMPLETED",
             desc: "Completed"
           })];
-          options.style = ChecklistItemInput.STYLE.SAMELINE;
+          options.style = ChecklistItemInput.STYLE.SINGLE;
           break;
         case "02":
-          fields = [createField(RADIO, {
+          fields = [createField(CHECKBOX, {
             code: "YES",
             desc: "Yes"
-          }), createField(RADIO, {
+          }), createField(CHECKBOX, {
             code: "NO",
             desc: "No"
           })];
@@ -303,26 +250,21 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
           fields = [createField(FINDING, {
             dropdown: checklistItem.possibleFindings.length >= Math.min(this.props.minFindingsDropdown, MINIMUM_MIN_FINDINGS)
           })];
-          options.style = ChecklistItemInput.STYLE.SAMELINE;
           break;
         case "04":
         case "05":
           fields = [createField(NUMERIC)];
-          options.slider = true;
           options.beforeOnChange = clearResult;
-          options.style = ChecklistItemInput.STYLE.SAMELINE;
           break;
         case "06":
           fields = [createField(FINDING), createField(NUMERIC)];
-          options.slider = true;
           options.beforeOnChange = clearResult;
-          options.style = ChecklistItemInput.STYLE.SAMELINE;
           break;
         case "07":
-          fields = [createField(RADIO, {
+          fields = [createField(CHECKBOX, {
             code: "OK",
             desc: "OK"
-          }), createField(RADIO, {
+          }), createField(CHECKBOX, {
             code: "REPAIRSNEEDED",
             desc: "Repairs Needed"
           }), createField(FINDING)];
@@ -346,20 +288,18 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
               }];
               break;
           }
-          options.label = "Resolution";
           options.beforeOnChange = function (newProps, type, value) {
             if (type === ChecklistItemInput.FIELD.CHECKBOX) {
               delete newProps.finding;
             }
             return newProps;
           };
-          options.style = ChecklistItemInput.STYLE.SAMELINE;
           break;
         case "08":
-          fields = [createField(RADIO, {
+          fields = [createField(CHECKBOX, {
             code: "GOOD",
             desc: "Good"
-          }), createField(RADIO, {
+          }), createField(CHECKBOX, {
             code: "POOR",
             desc: "Poor"
           })];
@@ -367,10 +307,10 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
           break;
         case "09":
         case "10":
-          fields = [createField(RADIO, {
+          fields = [createField(CHECKBOX, {
             code: "OK",
             desc: "OK"
-          }), createField(RADIO, {
+          }), createField(CHECKBOX, {
             code: "ADJUSTED",
             desc: "Adjusted"
           })];
@@ -378,14 +318,13 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
             fields.push(createField(NUMERIC));
           }
           options.style = ChecklistItemInput.STYLE.SAMELINE;
-          options.slider = true;
           break;
         case "11":
         case "12":
-          fields = [createField(RADIO, {
+          fields = [createField(CHECKBOX, {
             code: "OK",
             desc: "OK"
-          }), createField(RADIO, {
+          }), createField(CHECKBOX, {
             code: "NONCONFORMITY",
             desc: "Nonconformity"
           })];
@@ -399,78 +338,50 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
             };
           }
           options.style = ChecklistItemInput.STYLE.SAMELINE;
-          options.slider = true;
           break;
         case "13":
           fields = [createField(DATE)];
-          options.style = ChecklistItemInput.STYLE.SAMELINE;
+          options.style = ChecklistItemInput.STYLE.SINGLE;
           break;
         case "14":
           fields = [createField(DATETIME)];
-          options.style = ChecklistItemInput.STYLE.SAMELINE;
+          options.style = ChecklistItemInput.STYLE.SINGLE;
           break;
         case "15":
           fields = [createField(ALPHANUMERIC)];
           options.style = ChecklistItemInput.STYLE.SINGLE_EXPAND;
-          break;
-        case "16":
-          fields = [createField(ENTITY)];
-          options.style = ChecklistItemInput.STYLE.SINGLE_EXPAND;
-          break;
-        case "17":
-          fields = [createField(NUMERIC), createField(NUMERIC2)];
-          options.style = ChecklistItemInput.STYLE.SAMELINE;
-          options.slider = true;
           break;
       }
       if (fields === undefined) return /*#__PURE__*/React.createElement("div", null);
       return /*#__PURE__*/React.createElement(ChecklistItemInput, {
         checklistItem: checklistItem,
         onChange: function onChange(value, onFail) {
-          return _this5.onChange(value, onFail);
+          return _this4.onChange(value, onFail);
         },
         fields: fields,
         options: options,
         showError: showError,
-        disabled: disabled,
-        register: register
+        disabled: disabled
       });
-    }
-  }, {
-    key: "hexToRgb",
-    value: function hexToRgb(hex, opacity) {
-      var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-      return result ? "rgb(".concat(parseInt(result[1], 16), ", ").concat(parseInt(result[2], 16), ", ").concat(parseInt(result[3], 16), ", ").concat(opacity, ")") : null;
     }
   }, {
     key: "render",
     value: function render() {
-      var _this6 = this;
-      var _this$props3 = this.props,
-        checklistItem = _this$props3.checklistItem,
-        isLastItem = _this$props3.isLastItem,
-        hideFollowUpProp = _this$props3.hideFollowUpProp;
+      var _this5 = this;
+      var checklistItem = this.props.checklistItem;
       var notApplicableOptions = this.state.notApplicableOptions;
       return /*#__PURE__*/React.createElement("div", {
-        style: this.containerStyle(this.state.blocked, isLastItem, checklistItem.color)
-      }, /*#__PURE__*/React.createElement("div", {
+        style: this.containerStyle(this.state.blocked)
+      }, checklistItem.color ? /*#__PURE__*/React.createElement("div", {
         style: this.colorStyle(checklistItem.color)
-      }), /*#__PURE__*/React.createElement("div", {
+      }) : null, /*#__PURE__*/React.createElement("div", {
         style: this.getCheckListItemStyle(this.state.blocked)
       }, /*#__PURE__*/React.createElement("div", {
-        style: this.firstLine,
-        onClick: this.descClickHandler.bind(this)
+        style: this.firstLine
       }, /*#__PURE__*/React.createElement("div", {
-        style: this.firstLineDesc
-      }, this.state.detailsVisible ? /*#__PURE__*/React.createElement(ExpandLessIcon, {
-        style: {
-          color: "#b0b0b0"
-        }
-      }) : /*#__PURE__*/React.createElement(ExpandMoreIcon, {
-        style: {
-          color: "#b0b0b0"
-        }
-      }), /*#__PURE__*/React.createElement("label", null, checklistItem.desc), checklistItem.requiredToClose === true && /*#__PURE__*/React.createElement("label", {
+        style: this.firstLineDesc,
+        onClick: this.descClickHandler.bind(this)
+      }, /*#__PURE__*/React.createElement("label", null, checklistItem.desc), checklistItem.requiredToClose === true && /*#__PURE__*/React.createElement("label", {
         style: {
           color: "red"
         }
@@ -482,13 +393,13 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
         ref: this.notes,
         checklistItem: checklistItem,
         onChange: function onChange(value) {
-          return _this6.onChange(value);
+          return _this5.onChange(value);
         },
         disabled: this.props.disabled
       }), !checklistItem.hideFollowUp && /*#__PURE__*/React.createElement(ChecklistItemFollowUp, {
         checklistItem: checklistItem,
         onChange: function onChange(value) {
-          return _this6.onChange(value);
+          return _this5.onChange(value);
         },
         getWoLink: this.props.getWoLink,
         disabled: this.props.disabled
@@ -498,7 +409,7 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
         checklistItem: checklistItem,
         notApplicableOptions: notApplicableOptions,
         onChange: function onChange(value) {
-          return _this6.onChange(value);
+          return _this5.onChange(value);
         },
         disabled: this.props.disabled
       })))));
