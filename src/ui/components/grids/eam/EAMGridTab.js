@@ -25,7 +25,7 @@ const customGridRenderer = ({ value, column, customRenderers }) => {
 
 
 const EAMGridTab = (props) => {
-    const { screenCode, tabName, additionalParams, additionalAttributes, objectCode, customRenderers, paramNames, showGrid, rowCount = 100, gridContainerStyle, setHasHazards } = props;
+    const { screenCode, tabName, additionalParams, additionalAttributes, objectCode, customRenderers, paramNames, showGrid, rowCount = 100, gridContainerStyle, computed } = props;
     const gridName = props.gridName || screenCode + '_' + tabName;
 
     const getParams = () => {
@@ -86,7 +86,7 @@ const EAMGridTab = (props) => {
                             {!loading && !requestError && !rows.length && <caption style={{...captionStyle}}>No data to show.</caption>}
                             {!loading && requestError && <caption style={{...captionStyle}}>Failed to load data</caption>}
                             {totalCount > 0 && totalCount > rowCount && <caption style={{...captionStyle}}>First {rowCount} records. Show grid to see all the records.</caption>}
-                            {setHasHazards && setHasHazards(totalCount > 0)}
+                            {computed && computed({rowCount: rowCount})}
                         </>
                     } />
             }
