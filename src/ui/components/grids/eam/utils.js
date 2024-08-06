@@ -459,7 +459,7 @@ const EAMFilterField = ({ column, getDefaultValue = getEAMDefaultFilterValue }) 
                     multiple
                     value={multiFilterLabel}
                     input={<BootstrapInput />}
-                    renderValue={() => multiFilterLabel.join(',')}
+                    renderValue={() => multiFilterLabel.filter(Boolean).join(',')}
                     MenuProps={{ variant: "menu", style: { top: 54 } }}
                 >
                     {column?.selectOptions?.map(e => (
