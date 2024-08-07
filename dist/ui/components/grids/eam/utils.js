@@ -537,7 +537,7 @@ var EAMFilterField = function EAMFilterField(_ref6) {
         value: multiFilterLabel,
         input: /*#__PURE__*/React.createElement(BootstrapInput, null),
         renderValue: function renderValue() {
-          return multiFilterLabel.join(',');
+          return multiFilterLabel.filter(Boolean).join(',');
         },
         MenuProps: {
           variant: "menu",
