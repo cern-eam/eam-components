@@ -357,7 +357,13 @@ var EAMFilterField = function EAMFilterField(_ref6) {
     multiFilterLabel = _useState8[0],
     setMultiFilterLabel = _useState8[1];
   useMountedLayoutEffect(function () {
-    return setLocalFilter(filter || getDefaultValue(column));
+    setLocalFilter(filter || getDefaultValue(column));
+    if (!filter?.fieldValue) {
+      setMultiSelectFilter(_objectSpread({}, getDefaultValue(column), {
+        fieldValue: []
+      }));
+      setMultiFilterLabel([]);
+    }
   }, [filter]);
   var debouncedSetFilter = useAsyncDebounce(function (filter) {
     return setFilter(filter);
@@ -366,7 +372,6 @@ var EAMFilterField = function EAMFilterField(_ref6) {
     setLocalFilter(filter);
     debouncedSetFilter(filter);
   }, [debouncedSetFilter]);
-
   //To set the filter labels and the multiFilterValues on initial render
   useEffect(function () {
     if (filter?.fieldValue.includes(ARRAY_SEPARATOR)) {

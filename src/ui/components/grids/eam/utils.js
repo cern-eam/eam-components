@@ -290,7 +290,14 @@ const EAMFilterField = ({ column, getDefaultValue = getEAMDefaultFilterValue }) 
     const [multiSelectFilter, setMultiSelectFilter] = useState({ ...(filter || getDefaultValue(column)), fieldValue: filter?.fieldValue ? [filter?.fieldValue] : [] });
     const [multiFilterLabel, setMultiFilterLabel] = useState([]);
 
-    useMountedLayoutEffect(() => setLocalFilter(filter || getDefaultValue(column)), [filter])
+    useMountedLayoutEffect(() => {
+        setLocalFilter(filter || getDefaultValue(column))
+        if (!filter?.fieldValue)
+        {
+            setMultiSelectFilter({ ...(getDefaultValue(column)), fieldValue: [] })
+            setMultiFilterLabel([])
+        }
+    }, [filter])
 
     const debouncedSetFilter = useAsyncDebounce(filter => setFilter(filter), process.env.NODE_ENV === 'development' ? 100 : 0);
 
@@ -298,8 +305,6 @@ const EAMFilterField = ({ column, getDefaultValue = getEAMDefaultFilterValue }) 
         setLocalFilter(filter);
         debouncedSetFilter(filter);
     }, [debouncedSetFilter]);
-
-    
     //To set the filter labels and the multiFilterValues on initial render
     useEffect(() => {
         if (filter?.fieldValue.includes(ARRAY_SEPARATOR)) {
