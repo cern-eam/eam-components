@@ -11,6 +11,8 @@ import {
     withStyles,
     Select,
     InputBase,
+    FormControlLabel,
+    Button,
 } from "@material-ui/core";
 import {
     ContainStart,
@@ -288,7 +290,14 @@ const EAMFilterField = ({ column, getDefaultValue = getEAMDefaultFilterValue }) 
     const [multiSelectFilter, setMultiSelectFilter] = useState({ ...(filter || getDefaultValue(column)), fieldValue: filter?.fieldValue ? [filter?.fieldValue] : [] });
     const [multiFilterLabel, setMultiFilterLabel] = useState([]);
 
-    useMountedLayoutEffect(() => setLocalFilter(filter || getDefaultValue(column)), [filter])
+    useMountedLayoutEffect(() => {
+        setLocalFilter(filter || getDefaultValue(column))
+        if (!filter?.fieldValue)
+        {
+            setMultiSelectFilter({ ...(getDefaultValue(column)), fieldValue: [] })
+            setMultiFilterLabel([])
+        }
+    }, [filter])
 
     const debouncedSetFilter = useAsyncDebounce(filter => setFilter(filter), process.env.NODE_ENV === 'development' ? 100 : 0);
 
@@ -296,8 +305,6 @@ const EAMFilterField = ({ column, getDefaultValue = getEAMDefaultFilterValue }) 
         setLocalFilter(filter);
         debouncedSetFilter(filter);
     }, [debouncedSetFilter]);
-
-    
     //To set the filter labels and the multiFilterValues on initial render
     useEffect(() => {
         if (filter?.fieldValue.includes(ARRAY_SEPARATOR)) {
@@ -460,17 +467,42 @@ const EAMFilterField = ({ column, getDefaultValue = getEAMDefaultFilterValue }) 
                     value={multiFilterLabel}
                     input={<BootstrapInput />}
                     renderValue={() => multiFilterLabel.filter(Boolean).join(',')}
-                    MenuProps={{ variant: "menu", style: { top: 54 } }}
+                    MenuProps={{ variant: "menu", style: { top: 54, width: '100%', display: 'flex', flexDirection: 'column' } }}
                 >
-                    {column?.selectOptions?.map(e => (
-                        <MenuItem value={column.getOptionValue(e)} key={column.getOptionValue(e)}>
-                            <Checkbox checked={(multiSelectFilter?.fieldValue.indexOf(column.getOptionValue(e))) > -1} onChange={(event) => {
-                                handleMultiFilterCheckboxChange(event, column.getOptionValue(e), column.getOptionLabel(e))
-                            }} />
-                                <ListItemText primary={column.getOptionLabel(e)} />
-                        </MenuItem>
-                        )
-                    )}
+                    <>
+                        <div style={{display: 'flex', justifyContent: 'center', justifyItems: 'center',  padding: '5px 20px'}}>
+                            <Button
+                                variant="text"
+                                onClick={() => {
+                                  updateMultiSelectFilter(column.selectOptions.map(option => option.code));
+                                  setMultiFilterLabel(column.selectOptions.map(option => option.desc));
+                                }}
+                                style={{ color: '#337ab7', marginRight: '30px' }}
+                            >
+                                Select all
+                            </Button>
+                            <Button
+                                variant="text"
+                                onClick={() => {
+                                  updateMultiSelectFilter([]);
+                                  setMultiFilterLabel([]);
+                                }}
+                                style={{ color: '#337ab7' }}
+                            >
+                                Unselect all
+                            </Button>
+                        </div>
+                        <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'left'}}>
+                        {column?.selectOptions?.map(e => (
+                            <MenuItem value={column.getOptionValue(e)} key={column.getOptionValue(e)} style={{padding: '0 20px'}}>
+                                <Checkbox checked={(multiSelectFilter?.fieldValue.indexOf(column.getOptionValue(e))) > -1} onChange={(event) => {
+                                    handleMultiFilterCheckboxChange(event, column.getOptionValue(e), column.getOptionLabel(e))
+                                }} size="small"/>
+                                    <ListItemText primary={column.getOptionLabel(e)} />
+                            </MenuItem>
+                        ))}
+                        </div>
+                    </>
                 </Select>
             )
         default:
