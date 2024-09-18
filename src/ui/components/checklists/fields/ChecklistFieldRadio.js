@@ -28,4 +28,4 @@ const ChecklistFieldRadio = props => {
     />
 };
 
-export default withStyles(labelStyle)(ChecklistFieldRadio);
+export default withStyles(labelStyle)(ChecklistFieldRadio); 

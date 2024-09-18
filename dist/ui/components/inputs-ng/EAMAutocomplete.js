@@ -14,7 +14,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 import React, { useState, useEffect } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import useFetchAutocompleteOptions from './hooks/useFetchAutocompleteOptions';
-import { areEqual, componentsProps, renderOptionHandler, updateCodeDesc } from './tools/input-tools';
+import { areEqual, componentsProps, renderOptionHandler } from './tools/input-tools';
 import EAMBaseInput from './components/EAMBaseInput';
 import TextField from './components/TextField';
 import { saveHistory, HISTORY_ID_PREFIX } from './tools/history-tools';
