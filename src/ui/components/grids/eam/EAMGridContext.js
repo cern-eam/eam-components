@@ -272,7 +272,7 @@ export const EAMGridContextProvider = (props) => {
     const handleExportToCSV = useCallback(() => {
         setLoading(true);
         setLoadingExportToCSV(true);
-        return GridWS.exportDataToCSV(gridRequest)
+        return GridWS.exportDataToCSV(adaptGridFilters(gridRequest))
             .then((result) => {
                 const hiddenElement = document.createElement("a");
                 // utf8BOM used to enable detection of utf-8 encoding by excel when opening the CSV file
