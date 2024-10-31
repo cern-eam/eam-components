@@ -151,7 +151,7 @@ class Checklists extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.workorder !== nextProps.workorder) {
+        if (this.props.workorder !== nextProps.workorder || this.props.version !== nextProps.version) {
             this.readActivities(nextProps.workorder)
         }
     }
@@ -470,7 +470,7 @@ class Checklists extends Component {
                         <span style={{ fontWeight: 'bold', flexBasis: "66%", fontSize: 14, color: '#333' }}>{activity.activityCode} — {activity.activityNote || activity.tradeCode}</span>
                         {!this.props.hideFollowUpProp && activity.checklists.some(checklist => !checklist.hideFollowUp) && (
                             <div style={{flexShrink: 0, flexDirection: 'row', display: 'flex', cursor: 'default'}} onClick={(e) => e.stopPropagation()}>
-                                {isCernMode && <DocumentsInstructionsDialog 
+                                {isCernMode && <DocumentsInstructionsDialog
                                     title={activity.taskCode}
                                     subtitle={activity.activityNote || activity.tradeCode}
                                     taskPlanMetadata={taskPlansMetadata?.[activity.taskCode]}
@@ -495,7 +495,7 @@ class Checklists extends Component {
                             </div>
                         )}
                     </div>
-                    </AccordionSummary>                
+                    </AccordionSummary>
                     <AccordionDetails style={{marginTop: "-5px", padding: "0px"}}>
                         <div style={{width: "100%"}}>{this.renderChecklistsForActivity(activity, filteredEquipment)}
                         </div>
@@ -743,7 +743,7 @@ class Checklists extends Component {
                                 {this.renderActivities(filteredActivity, filteredEquipment)}
                                 {this.props.bottomSlot}
                             </BlockUi>
-                            <Dialog open={this.state.createFollowUpActivity !== null}>{dialog}</Dialog> 
+                            <Dialog open={this.state.createFollowUpActivity !== null}>{dialog}</Dialog>
                             {isCernMode && (
                                 <>
                                     <iframe src={this.props.edmsLoginServletLink} style={{ width: 0, height: 0, display: 'none' }}></iframe>
