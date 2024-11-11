@@ -12,28 +12,14 @@ import BlockUi from "react-block-ui";
 import Collapse from "@mui/material/Collapse";
 import { isCernMode } from "../../../tools/CERNMode";
 import WSChecklists from "../../../tools/WSChecklists";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import AccordionDetails from "@mui/material/AccordionDetails";
+
 import FollowUpActivityDialog from "./dialogs/FollowUpActivityDialog";
 import ChecklistsOptions from "./ChecklistsOptions";
 import ChecklistsSelectors from "./ChecklistsSelectors";
-import ChecklistsSignature from "./ChecklistsSignature";
-import ChecklistsActivityExpansionPanel from "./ChecklistsActivityExpansionPanel";
-import ChecklistsActivityDetails from "./ChecklistsActivityDetails";
-import ChecklistsActivitySummary from "./ChecklistsActivitySummary";
 
-const SIGNATURE_TYPES = {
-  PERFORMER_1: "PB01",
-  PERFORMER_2: "PB02",
-  REVIEWER: "RB01",
-};
-
-const SIGNATURE_ORDER = {
-  [SIGNATURE_TYPES.PERFORMER_1]: 1,
-  [SIGNATURE_TYPES.PERFORMER_2]: 2,
-  [SIGNATURE_TYPES.REVIEWER]: 3,
-};
+import { SIGNATURE_TYPES } from "./constants/signatures";
+import ChecklistsActivity from "./ChecklistsActivity";
+import ChecklistsContext from "./contexts/ChecklistsContext";
 
 const Checklists = ({
   workorder,
@@ -62,15 +48,10 @@ const Checklists = ({
   const [taskPlansMetadata, setTaskPlansMetadata] = useState([]);
   const [blocking, setBlocking] = useState(true);
   const [createFollowUpActivity, setCreateFollowUpActivity] = useState(null);
-  const [collapsedActivity, setCollapsedActivity] = useState(null);
-  const [activityCode, setActivityCode] = useState(
-    GridTools.getURLParameterByName("activityCode")
-  );
   const [filteredActivity, setFilteredActivity] = useState(
     GridTools.getURLParameterByName("activityCode")
   );
   const [filteredEquipment, setFilteredEquipment] = useState(null);
-  const [signaturesCollapsed, setSignaturesCollapsed] = useState({});
   const [checklistsHidden, setChecklistsHidden] = useState({});
   const [showChecklistOptions, setShowChecklistOptions] = useState(
     parseToBoolean(
@@ -78,134 +59,33 @@ const Checklists = ({
       false
     )
   );
-  const [showFilledItems, setShowFilledItems] = useState(
-    parseToBoolean(GridTools.getURLParameterByName("showFilledItems"), true)
-  );
-  const [expandChecklists, setExpandChecklists] = useState(
-    parseToBoolean(GridTools.getURLParameterByName("expandChecklists"), false)
-  );
-  const [expandActivities, setExpandActivities] = useState(
-    parseToBoolean(GridTools.getURLParameterByName("expandActivities"), false)
+
+  const showFilledItems = useMemo(
+    () =>
+      parseToBoolean(GridTools.getURLParameterByName("showFilledItems"), true),
+    []
   );
 
-  const filteredActivities = useMemo(
+  const activitiesWithChecklists = useMemo(
     () => activities.filter((activity) => activity.checklists?.length),
     [activities]
   );
 
   const isEmptyState = useMemo(
-    () => filteredActivities.length === 0,
-    [filteredActivities]
+    () => activitiesWithChecklists.length === 0,
+    [activitiesWithChecklists]
   );
 
-  const equipments = useMemo(
-    () =>
-      activities.reduce((prev, activity) => {
-        Object.keys(activity.equipments).forEach(
-          (key) => (prev[key] = activity.equipments[key])
-        );
-        return prev;
-      }, {}),
-    [activities]
-  );
-
-  const filteredActivityObject = useMemo(
-    () =>
-      activities.find((activity) => activity.activityCode === filteredActivity),
-    [activities, filteredActivity]
-  );
-
-  const signatures = useMemo(() => {
-    if (!activity?.signatures) return;
-    return Object.values(activity.signatures)
-      .sort(
-        (signature1, signature2) =>
-          SIGNATURE_ORDER[signature1.type] - SIGNATURE_ORDER[signature2.type]
-      )
-      .filter((signature) => {
-        if (!signature) return false;
-        if (signature.signer) return true;
-        switch (signature.type) {
-          case SIGNATURE_TYPES.PERFORMER_1:
-            return signature.viewAsPerformer || signature.viewAsReviewer;
-          case SIGNATURE_TYPES.PERFORMER_2:
-            if (
-              !activity.signatures[SIGNATURE_TYPES.PERFORMER_1] ||
-              activity.signatures[SIGNATURE_TYPES.PERFORMER_1]
-                .responsibilityCode !== signature.responsibilityCode
-            )
-              return signature.viewAsPerformer || signature.viewAsReviewer;
-            else return activity.signatures[SIGNATURE_TYPES.PERFORMER_1].signer;
-          case SIGNATURE_TYPES.REVIEWER:
-            return signature.viewAsReviewer;
-        }
-        return true;
-      });
-  }, [activity?.signatures]);
-
-  const toggleExpandActivities = useCallback(() => {
-    setExpandActivities((prev) => !prev);
-    setActivities((prev) =>
-      prev.map((activity) => ({
-        ...activity,
-        collapsed: expandActivities,
-      }))
-    );
-  }, [expandActivities]);
-
-  const toggleExpandChecklists = useCallback(() => {
-    setExpandChecklists((prev) => !prev);
-    setActivities((prev) =>
-      prev.map((activity) => ({
-        ...activity,
-        equipments: Object.fromEntries(
-          Object.entries(activity.equipments).map(
-            ([equipmentCode, equipment]) => {
-              return [
-                equipmentCode,
-                { ...equipment, collapsed: expandChecklists },
-              ];
-            }
-          )
-        ),
-      }))
-    );
-  }, [expandChecklists]);
-
-  const toggleShowChecklistOptions = useCallback(() => {
-    setShowChecklistOptions((prev) => !prev);
-  }, []);
-
-  const toggleFilledFilter = useCallback(() => {
-    setChecklistsHidden((prev) =>
-      Object.keys(prev).length > 0
-        ? {}
-        : Object.fromEntries(
-            activities
-              .map((activity) => activity.checklists)
-              .flat(1)
-              .map(
-                ({
-                  checkListCode,
-                  result,
-                  finding,
-                  numericValue,
-                  freeText,
-                  date,
-                  dateTime,
-                  entityCode,
-                }) => [
-                  checkListCode,
-                  result ||
-                    finding ||
-                    numericValue ||
-                    date ||
-                    dateTime ||
-                    entityCode ||
-                    freeText,
-                ]
-              )
-          )
+  const filteredActivities = useMemo(() => {
+    return activities.filter(
+      (activity) =>
+        activity.checklists &&
+        activity.checklists.length > 0 &&
+        !(
+          filteredEquipment &&
+          activity.equipments[filteredEquipment] === undefined
+        ) &&
+        !(filteredActivity && activity.activityCode !== filteredActivity)
     );
   }, [activities]);
 
@@ -304,6 +184,39 @@ const Checklists = ({
     setCreateFollowUpActivity(null);
   }, []);
 
+  const toggleFilledFilter = useCallback(() => {
+    setChecklistsHidden((prev) =>
+      Object.keys(prev).length > 0
+        ? {}
+        : Object.fromEntries(
+            activities
+              .map((activity) => activity.checklists)
+              .flat(1)
+              .map(
+                ({
+                  checkListCode,
+                  result,
+                  finding,
+                  numericValue,
+                  freeText,
+                  date,
+                  dateTime,
+                  entityCode,
+                }) => [
+                  checkListCode,
+                  result ||
+                    finding ||
+                    numericValue ||
+                    date ||
+                    dateTime ||
+                    entityCode ||
+                    freeText,
+                ]
+              )
+          )
+    );
+  }, [activities]);
+
   const readActivities = useCallback(
     (workorder, refreshCollapse = true) => {
       getWorkOrderActivities(workorder).then((response) => {
@@ -385,62 +298,6 @@ const Checklists = ({
       });
   }, [createFollowUpActivity, readActivities, showError, showSuccess]);
 
-  const collapseActivity = useCallback((collapsed, index) => {
-    setCollapsedActivity({ index, collapsed });
-    setActivities((prev) => {
-      const activities = [...prev];
-      activities[index].collapsed = collapsed;
-      return activities;
-    });
-  }, []);
-
-  const collapseEquipment = useCallback(
-    (collapsed, activityIndex, equipmentCode) => {
-      setActivities((prev) => {
-        const activities = [...prev];
-        const activity = { ...activities[activityIndex] };
-        const equipments = { ...activity.equipments };
-        const equipment = {
-          ...equipments[equipmentCode],
-          collapsed,
-        };
-        equipments[equipmentCode] = equipment;
-        activity.equipments = equipments;
-        activities[activityIndex] = activity;
-        return activities;
-      });
-    },
-    []
-  );
-
-  const setSignature = useCallback((activityCode, type, signer, time) => {
-    setActivities((prev) => {
-      const activities = [...prev];
-      const activityIndex = activities.findIndex(
-        (activity) => activityCode === activity.activityCode
-      );
-      const activity = { ...activities[activityIndex] };
-      activities[activityIndex] = activity;
-      if (activity.signatures && activity.signatures[type]) {
-        activity.signatures = { ...activity.signatures };
-        activity.signatures[type] = {
-          ...activity.signatures[type],
-          signer,
-          time,
-        };
-      }
-      return activities;
-    });
-  }, []);
-
-  const resetSignatures = useCallback(
-    (activityCode) => {
-      const types = ["PB01", "PB02", "RB01"];
-      types.forEach((type) => setSignature(activityCode, type, null, null));
-    },
-    [setSignature]
-  );
-
   const onUpdateChecklistItem = useCallback(
     (checklistItem) => {
       if (checklistItem.conditional) {
@@ -484,28 +341,9 @@ const Checklists = ({
     [disabled]
   );
 
-  const expandSignature = useCallback((activity, expanded) => {
-    setSignaturesCollapsed((prev) => {
-      const signaturesCollapsed = { ...prev };
-      signaturesCollapsed[activity.activityCode] = !expanded;
-      return signaturesCollapsed;
-    });
-  }, []);
-
   useEffect(() => {
     readActivities(workorder);
   }, [workorder, version]);
-
-  useEffect(() => {
-    if (!collapsedActivity) return;
-    const { index, collapsed } = collapsedActivity;
-    const activity = activities[index];
-    const equipmentKeys = Object.keys(activity.equipments);
-    if (equipmentKeys.length === 1) {
-      // also do the same to the equipment if there's only a single one
-      collapseEquipment(collapsed, activity.index, equipmentKeys[0]);
-    }
-  }, [collapsedActivity?.index, collapsedActivity?.collapsed, activities]);
 
   useEffect(() => {
     if (Object.keys(checklistsHidden).length === 0) {
@@ -521,119 +359,81 @@ const Checklists = ({
   }
 
   return (
-    <div
-      style={
-        readonly ? { width: "100%", pointerEvents: "none" } : { width: "100%" }
-      }
+    <ChecklistsContext.Provider
+      value={{
+        activities,
+        setActivities,
+        checklistsHidden,
+        taskPlansMetadata,
+        filteredEquipment,
+        showChecklistOptions,
+        showError,
+        disabled,
+        hideFollowUpProp,
+        updateChecklistItem,
+        minFindingsDropdown,
+        handleError,
+        getWoLink,
+        eqpToOtherId,
+        register,
+      }}
     >
-      <BlockUi blocking={blocking}>
-        <div
-          style={{ display: "flex", gap: "20px", justifyContent: "flex-end" }}
-        >
-          <Collapse in={expandChecklistsOptions}>
-            <ChecklistsOptions
-              blocking={blocking}
-              expandActivities={expandActivities}
-              expandChecklists={expandChecklists}
-              showChecklistOptions={showChecklistOptions}
-              checklistsHidden={checklistsHidden}
-              toggleExpandActivities={toggleExpandActivities}
-              toggleExpandChecklists={toggleExpandChecklists}
-              toggleShowChecklistOptions={toggleShowChecklistOptions}
-              toggleFilledFilter={toggleFilledFilter}
-            />
-          </Collapse>
-        </div>
-        <ChecklistsSelectors
-          activityCode={activityCode}
-          activities={activities}
-          equipments={equipments}
-          filteredActivity={filteredActivity}
-          filteredEquipment={filteredEquipment}
-          filteredActivities={filteredActivities}
-          setNewFilter={setNewFilter}
-          filteredActivityObject={filteredActivityObject}
-        />
-        {activities
-          .filter(
-            (activity) =>
-              activity.checklists &&
-              activity.checklists.length > 0 &&
-              !(
-                filteredEquipment &&
-                activity.equipments[filteredEquipment] === undefined
-              ) &&
-              !(filteredActivity && activity.activityCode !== filteredActivity)
-          )
-          .map((activity) => (
-            <ChecklistsActivityExpansionPanel
-              key={activity.activityCode}
-              expanded={!activity.collapsed}
-              TransitionProps={{ unmountOnExit: true, timeout: 0 }}
-              onChange={(_, expanded) =>
-                collapseActivity(!expanded, activity.index)
-              }
-              style={{ marginTop: "10px" }}
-            >
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <ChecklistsActivitySummary
-                  activity={activity}
-                  setCreateFollowUpActivity={setCreateFollowUpActivity}
-                  disabled={disabled}
-                  hideFollowUpProp={hideFollowUpProp}
-                  isCernMode={isCernMode}
-                  taskPlansMetadata={taskPlansMetadata}
-                />
-              </AccordionSummary>
-              <AccordionDetails style={{ marginTop: "-5px", padding: "0px" }}>
-                <div style={{ width: "100%" }}>
-                  <ChecklistsActivityDetails
-                    activity={activity}
-                    filteredEquipment={filteredEquipment}
-                    eqpToOtherId={eqpToOtherId}
-                    onResetSignatures={resetSignatures}
-                    onUpdateChecklistItem={onUpdateChecklistItem}
-                    updateChecklistItem={updateChecklistItem}
-                    handleError={handleError}
-                    showError={showError}
-                    minFindingsDropdown={minFindingsDropdown}
-                    getWoLink={getWoLink}
-                    hideFollowUpProp={hideFollowUpProp}
-                    showChecklistOptions={showChecklistOptions}
-                    register={register}
-                    onCollapseEquipment={collapseEquipment}
-                    checklistsHidden={checklistsHidden}
-                    checklistsEquipmentDisabled={handleChecklistsEquipmentDisabled(
-                      activity
-                    )}
-                  />
-                </div>
-              </AccordionDetails>
-              <ChecklistsSignature
-                activity={activity}
-                signatures={signatures}
-                signaturesCollapsed={signaturesCollapsed}
-                expandSignature={expandSignature}
-                setSignature={setSignature}
-                showError={showError}
-                disabled={disabled}
+      <div
+        style={
+          readonly
+            ? { width: "100%", pointerEvents: "none" }
+            : { width: "100%" }
+        }
+      >
+        <BlockUi blocking={blocking}>
+          <div
+            style={{ display: "flex", gap: "20px", justifyContent: "flex-end" }}
+          >
+            <Collapse in={expandChecklistsOptions}>
+              <ChecklistsOptions
+                blocking={blocking}
+                showChecklistOptions={showChecklistOptions}
+                setChecklistsHidden={setChecklistsHidden}
+                setShowChecklistOptions={setShowChecklistOptions}
+                toggleFilledFilter={toggleFilledFilter}
               />
-            </ChecklistsActivityExpansionPanel>
+            </Collapse>
+          </div>
+          <ChecklistsSelectors
+            activities={activities}
+            filteredActivity={filteredActivity}
+            filteredEquipment={filteredEquipment}
+            filteredActivities={activitiesWithChecklists}
+            setNewFilter={setNewFilter}
+          />
+          {filteredActivities.map((activity) => (
+            <ChecklistsActivity
+              key={activity.activityCode}
+              activity={activity}
+              activities={activities}
+              setActivities={setActivities}
+              setCreateFollowUpActivity={setCreateFollowUpActivity}
+              onUpdateChecklistItem={onUpdateChecklistItem}
+              checklistsEquipmentDisabled={handleChecklistsEquipmentDisabled(
+                activity
+              )}
+            />
           ))}
-        {bottomSlot}
-      </BlockUi>
-      <FollowUpActivityDialog
-        createFollowUpActivity={createFollowUpActivity}
-        hideCreateFollowUpWODialog={hideCreateFollowUpWODialog}
-        createFollowUpWOs={createFollowUpWOs}
-      />
-      {isCernMode && (
-        <iframe
-          src={edmsLoginServletLink}
-          style={{ width: 0, height: 0, display: "none" }}
+          {bottomSlot}
+        </BlockUi>
+        <FollowUpActivityDialog
+          createFollowUpActivity={createFollowUpActivity}
+          hideCreateFollowUpWODialog={hideCreateFollowUpWODialog}
+          createFollowUpWOs={createFollowUpWOs}
         />
-      )}
-    </div>
+        {isCernMode && (
+          <iframe
+            src={edmsLoginServletLink}
+            style={{ width: 0, height: 0, display: "none" }}
+          />
+        )}
+      </div>
+    </ChecklistsContext.Provider>
   );
 };
 

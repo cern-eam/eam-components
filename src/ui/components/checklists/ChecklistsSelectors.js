@@ -1,17 +1,37 @@
-import React from "react";
+import React, { useMemo } from "react";
 import EAMSelect from "../inputs-ng/EAMSelect";
+import GridTools from "../grids/GridTools";
 
 const ChecklistsSelectors = ({
-  activityCode,
   activities,
-  equipments,
   filteredActivity,
   filteredEquipment,
   filteredActivities,
   setNewFilter,
-  filteredActivityObject,
 }) => {
+  const activityCode = useMemo(
+    () => GridTools.getURLParameterByName("activityCode"),
+    []
+  );
+
   if (activityCode) return null;
+
+  const equipments = useMemo(
+    () =>
+      activities.reduce((prev, activity) => {
+        Object.keys(activity.equipments).forEach(
+          (key) => (prev[key] = activity.equipments[key])
+        );
+        return prev;
+      }, {}),
+    [activities]
+  );
+
+  const filteredActivityObject = useMemo(
+    () =>
+      activities.find((activity) => activity.activityCode === filteredActivity),
+    [activities, filteredActivity]
+  );
 
   return (
     <div>

@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
+import ChecklistsContext from "./contexts/ChecklistsContext";
 
 const ChecklistsFollowUpWoButton = ({
   activity,
   setCreateFollowUpActivity,
-  disabled,
 }) => {
+  const { disabled } = useContext(ChecklistsContext);
+
   return (
     <Button
       key={`${activity.activityCode}$createfuwo`}

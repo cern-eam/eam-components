@@ -1,19 +1,52 @@
-import React from "react";
+import React, { useCallback, useContext, useMemo, useState } from "react";
 import ChecklistsActivityExpansionPanel from "./ChecklistsActivityExpansionPanel";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ChecklistSignature from "./ChecklistSignature";
+import ChecklistsContext from "./contexts/ChecklistsContext";
+import { SIGNATURE_ORDER, SIGNATURE_TYPES } from "./constants/signatures";
 
-const ChecklistsSignature = ({
-  activity,
-  signatures,
-  signaturesCollapsed,
-  expandSignature,
-  setSignature,
-  showError,
-  disabled,
-}) => {
+const ChecklistsSignature = ({ activity, setSignature }) => {
+  const [signaturesCollapsed, setSignaturesCollapsed] = useState({});
+  const { showError, disabled } = useContext(ChecklistsContext);
+
+  const signatures = useMemo(() => {
+    if (!activity?.signatures) return;
+    return Object.values(activity.signatures)
+      .sort(
+        (signature1, signature2) =>
+          SIGNATURE_ORDER[signature1.type] - SIGNATURE_ORDER[signature2.type]
+      )
+      .filter((signature) => {
+        if (!signature) return false;
+        if (signature.signer) return true;
+        switch (signature.type) {
+          case SIGNATURE_TYPES.PERFORMER_1:
+            return signature.viewAsPerformer || signature.viewAsReviewer;
+          case SIGNATURE_TYPES.PERFORMER_2:
+            if (
+              !activity.signatures[SIGNATURE_TYPES.PERFORMER_1] ||
+              activity.signatures[SIGNATURE_TYPES.PERFORMER_1]
+                .responsibilityCode !== signature.responsibilityCode
+            )
+              return signature.viewAsPerformer || signature.viewAsReviewer;
+            else return activity.signatures[SIGNATURE_TYPES.PERFORMER_1].signer;
+          case SIGNATURE_TYPES.REVIEWER:
+            return signature.viewAsReviewer;
+        }
+        return true;
+      });
+  }, [activity?.signatures]);
+
+  const expandSignature = useCallback((activity, expanded) => {
+    setSignaturesCollapsed((prev) => {
+      const signaturesCollapsed = { ...prev };
+      signaturesCollapsed[activity.activityCode] = !expanded;
+      return signaturesCollapsed;
+    });
+  }, []);
+
   if (!activity.signatures || !signatures?.length) {
     return null;
   }

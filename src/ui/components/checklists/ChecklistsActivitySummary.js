@@ -1,15 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import DocumentsInstructionsDialog from "./dialogs/DocumentsInstructionsDialog";
 import ChecklistsFollowUpWoButton from "./ChecklistsFollowUpWoButton";
+import ChecklistsContext from "./contexts/ChecklistsContext";
+import { isCernMode } from "../../../tools/CERNMode";
 
-const ChecklistsActivitySummary = ({
-  activity,
-  setCreateFollowUpActivity,
-  disabled,
-  hideFollowUpProp,
-  isCernMode,
-  taskPlansMetadata,
-}) => {
+const ChecklistsActivitySummary = ({ activity, setCreateFollowUpActivity }) => {
+  const { taskPlansMetadata, hideFollowUpProp } = useContext(ChecklistsContext);
+
   return (
     <div
       style={{
@@ -51,7 +48,6 @@ const ChecklistsActivitySummary = ({
             <ChecklistsFollowUpWoButton
               activity={activity}
               setCreateFollowUpActivity={setCreateFollowUpActivity}
-              disabled={disabled}
             />
           </div>
         )}

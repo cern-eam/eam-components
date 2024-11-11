@@ -1,24 +1,21 @@
-import React, { useMemo } from "react";
+import React, { useContext, useMemo } from "react";
 import ChecklistsEquipment from "./ChecklistsEquipment";
+import ChecklistsContext from "./contexts/ChecklistsContext";
 
 const ChecklistsActivityDetails = ({
   activity,
-  filteredEquipment,
-  eqpToOtherId,
   onResetSignatures,
   onUpdateChecklistItem,
-  updateChecklistItem,
-  handleError,
-  showError,
-  minFindingsDropdown,
-  getWoLink,
-  hideFollowUpProp,
-  showChecklistOptions,
-  register,
   onCollapseEquipment,
-  checklistsHidden,
   checklistsEquipmentDisabled,
 }) => {
+  const {
+    filteredEquipment,
+    checklistsHidden,
+    showChecklistOptions,
+    showError,
+  } = useContext(ChecklistsContext);
+
   const checklists = useMemo(
     () =>
       activity.checklists.filter(
@@ -73,17 +70,10 @@ const ChecklistsActivityDetails = ({
         checklists={checklists.slice(start, end)}
         activity={activity}
         isDisabled={checklistsEquipmentDisabled}
-        eqpToOtherId={eqpToOtherId}
         onResetSignatures={onResetSignatures}
         onUpdateChecklistItem={onUpdateChecklistItem}
-        updateChecklistItem={updateChecklistItem}
-        handleError={handleError}
         showError={showError}
-        minFindingsDropdown={minFindingsDropdown}
-        getWoLink={getWoLink}
-        hideFollowUpProp={hideFollowUpProp}
         showChecklistOptions={showChecklistOptions}
-        register={register}
         onCollapseEquipment={onCollapseEquipment}
       />
     );

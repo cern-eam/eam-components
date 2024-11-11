@@ -1,29 +1,33 @@
-import React, { useMemo } from "react";
+import React, { useContext, useMemo } from "react";
 import ChecklistEquipment from "./ChecklistEquipment";
 import ChecklistItem from "./ChecklistItem";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ChecklistsEquipmentExpansionPanel from "./ChecklistsEquipmentExpansionPanel";
+import ChecklistsContext from "./contexts/ChecklistsContext";
 
 const ChecklistsEquipment = ({
   key,
   checklists,
   activity,
   isDisabled = false,
-  eqpToOtherId,
   onResetSignatures,
   onUpdateChecklistItem,
-  updateChecklistItem,
-  handleError,
   showError,
-  minFindingsDropdown,
-  getWoLink,
-  hideFollowUpProp,
   showChecklistOptions,
-  register,
   onCollapseEquipment,
 }) => {
+  const {
+    hideFollowUpProp,
+    updateChecklistItem,
+    minFindingsDropdown,
+    handleError,
+    getWoLink,
+    eqpToOtherId,
+    register,
+  } = useContext(ChecklistsContext);
+
   const firstChecklist = useMemo(() => checklists[0], [checklists]);
 
   if (firstChecklist === undefined) {
