@@ -1,5 +1,5 @@
 import GridTools from "../../../../components/grids/GridTools";
-import { SIGNATURE_TYPES } from "../constants/signatures";
+import { SIGNATURE_ORDER, SIGNATURE_TYPES } from "../constants/signatures";
 
 export const parseToBoolean = (value, defaultValue) => {
   return value.length === 0 ? defaultValue : value !== "false";
@@ -232,4 +232,31 @@ export const getTaskPlansMetadata = (
       return acc;
     }, {});
   });
+};
+
+export const getSignatures = (signatures) => {
+  return Object.values(signatures)
+    .sort(
+      (signature1, signature2) =>
+        SIGNATURE_ORDER[signature1.type] - SIGNATURE_ORDER[signature2.type]
+    )
+    .filter((signature) => {
+      if (!signature) return false;
+      if (signature.signer) return true;
+      switch (signature.type) {
+        case SIGNATURE_TYPES.PERFORMER_1:
+          return signature.viewAsPerformer || signature.viewAsReviewer;
+        case SIGNATURE_TYPES.PERFORMER_2:
+          if (
+            !signatures[SIGNATURE_TYPES.PERFORMER_1] ||
+            signatures[SIGNATURE_TYPES.PERFORMER_1].responsibilityCode !==
+              signature.responsibilityCode
+          )
+            return signature.viewAsPerformer || signature.viewAsReviewer;
+          else return signatures[SIGNATURE_TYPES.PERFORMER_1].signer;
+        case SIGNATURE_TYPES.REVIEWER:
+          return signature.viewAsReviewer;
+      }
+      return true;
+    });
 };

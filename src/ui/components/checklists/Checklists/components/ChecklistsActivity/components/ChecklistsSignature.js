@@ -5,10 +5,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ChecklistSignature from "../../../../ChecklistSignature";
 import ChecklistsContext from "../../../contexts/ChecklistsContext";
-import {
-  SIGNATURE_ORDER,
-  SIGNATURE_TYPES,
-} from "../../../constants/signatures";
+import { getSignatures } from "../../../utils";
 
 const ChecklistsSignature = ({ activity, setSignature }) => {
   const [signaturesCollapsed, setSignaturesCollapsed] = useState({});
@@ -16,30 +13,7 @@ const ChecklistsSignature = ({ activity, setSignature }) => {
 
   const signatures = useMemo(() => {
     if (!activity?.signatures) return;
-    return Object.values(activity.signatures)
-      .sort(
-        (signature1, signature2) =>
-          SIGNATURE_ORDER[signature1.type] - SIGNATURE_ORDER[signature2.type]
-      )
-      .filter((signature) => {
-        if (!signature) return false;
-        if (signature.signer) return true;
-        switch (signature.type) {
-          case SIGNATURE_TYPES.PERFORMER_1:
-            return signature.viewAsPerformer || signature.viewAsReviewer;
-          case SIGNATURE_TYPES.PERFORMER_2:
-            if (
-              !activity.signatures[SIGNATURE_TYPES.PERFORMER_1] ||
-              activity.signatures[SIGNATURE_TYPES.PERFORMER_1]
-                .responsibilityCode !== signature.responsibilityCode
-            )
-              return signature.viewAsPerformer || signature.viewAsReviewer;
-            else return activity.signatures[SIGNATURE_TYPES.PERFORMER_1].signer;
-          case SIGNATURE_TYPES.REVIEWER:
-            return signature.viewAsReviewer;
-        }
-        return true;
-      });
+    return getSignatures(activity.signatures);
   }, [activity?.signatures]);
 
   const expandSignature = useCallback((activity, expanded) => {
