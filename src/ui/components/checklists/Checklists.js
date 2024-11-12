@@ -34,6 +34,10 @@ import ChecklistsOptions from "./ChecklistsOptions";
 import ChecklistsSelectors from "./ChecklistsSelectors";
 import ChecklistsActivity from "./ChecklistsActivity";
 import ChecklistsContext from "./contexts/ChecklistsContext";
+import {
+  FOLLOW_UP_WO_ERROR_MESSAGE,
+  FOLLOW_UP_WO_SUCCESS_MESSAGE,
+} from "./constants/followUpDialog";
 
 const Checklists = ({
   workorder,
@@ -197,10 +201,10 @@ const Checklists = ({
     WSChecklists.createFolowUpWorkOrders(activity)
       .then(() => {
         readActivities(activity.workOrderNumber);
-        showSuccess("Follow-up workorders successfully created.");
+        showSuccess(FOLLOW_UP_WO_SUCCESS_MESSAGE);
       })
       .catch(() => {
-        showError("Could not create follow-up workorders.");
+        showError(FOLLOW_UP_WO_ERROR_MESSAGE);
       });
   }, [createFollowUpActivity, readActivities, showError, showSuccess]);
 
