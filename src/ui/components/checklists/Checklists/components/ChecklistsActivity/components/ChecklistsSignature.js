@@ -3,9 +3,12 @@ import ChecklistsActivityExpansionPanel from "./ChecklistsActivityExpansionPanel
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AccordionDetails from "@mui/material/AccordionDetails";
-import ChecklistSignature from "./ChecklistSignature";
-import ChecklistsContext from "./contexts/ChecklistsContext";
-import { SIGNATURE_ORDER, SIGNATURE_TYPES } from "./constants/signatures";
+import ChecklistSignature from "../../../../ChecklistSignature";
+import ChecklistsContext from "../../../contexts/ChecklistsContext";
+import {
+  SIGNATURE_ORDER,
+  SIGNATURE_TYPES,
+} from "../../../constants/signatures";
 
 const ChecklistsSignature = ({ activity, setSignature }) => {
   const [signaturesCollapsed, setSignaturesCollapsed] = useState({});

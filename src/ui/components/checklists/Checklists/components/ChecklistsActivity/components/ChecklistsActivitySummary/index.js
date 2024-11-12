@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
-import DocumentsInstructionsDialog from "./dialogs/DocumentsInstructionsDialog";
-import ChecklistsFollowUpWoButton from "./ChecklistsFollowUpWoButton";
-import ChecklistsContext from "./contexts/ChecklistsContext";
-import { isCernMode } from "../../../tools/CERNMode";
+import DocumentsInstructionsDialog from "../../../../../dialogs/DocumentsInstructionsDialog";
+import ChecklistsFollowUpWoButton from "./components/ChecklistsFollowUpWoButton";
+import ChecklistsContext from "../../../../contexts/ChecklistsContext";
+import { isCernMode } from "../../../../../../../../tools/CERNMode";
 
 const ChecklistsActivitySummary = ({ activity, setCreateFollowUpActivity }) => {
   const { taskPlansMetadata, hideFollowUpProp } = useContext(ChecklistsContext);

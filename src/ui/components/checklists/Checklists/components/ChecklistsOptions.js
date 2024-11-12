@@ -1,9 +1,9 @@
 import React, { useCallback, useContext, useState } from "react";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import ChecklistsContext from "./contexts/ChecklistsContext";
-import GridTools from "../grids/GridTools";
-import { parseToBoolean } from "./utils/checklists";
+import ChecklistsContext from "../../../../components/checklists/Checklists/contexts/ChecklistsContext";
+import GridTools from "../../../../components/grids/GridTools";
+import { parseToBoolean } from "../utils/index";
 
 const ChecklistsOptions = ({
   blocking,

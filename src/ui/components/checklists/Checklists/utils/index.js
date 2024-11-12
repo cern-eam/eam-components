@@ -1,4 +1,4 @@
-import GridTools from "../../grids/GridTools";
+import GridTools from "../../../../components/grids/GridTools";
 import { SIGNATURE_TYPES } from "../constants/signatures";
 
 export const parseToBoolean = (value, defaultValue) => {

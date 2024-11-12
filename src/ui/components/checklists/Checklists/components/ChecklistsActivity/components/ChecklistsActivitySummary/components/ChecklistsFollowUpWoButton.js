@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
-import ChecklistsContext from "./contexts/ChecklistsContext";
+import ChecklistsContext from "../../../../../contexts/ChecklistsContext";
 
 const ChecklistsFollowUpWoButton = ({
   activity,

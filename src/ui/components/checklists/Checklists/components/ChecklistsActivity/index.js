@@ -2,10 +2,10 @@ import React, { useCallback, useEffect, useState } from "react";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AccordionDetails from "@mui/material/AccordionDetails";
-import ChecklistsSignature from "./ChecklistsSignature";
-import ChecklistsActivityExpansionPanel from "./ChecklistsActivityExpansionPanel";
-import ChecklistsActivityDetails from "./ChecklistsActivityDetails";
-import ChecklistsActivitySummary from "./ChecklistsActivitySummary";
+import ChecklistsSignature from "./components/ChecklistsSignature";
+import ChecklistsActivityExpansionPanel from "./components/ChecklistsActivityExpansionPanel";
+import ChecklistsActivityDetails from "./components/ChecklistsActivityDetails";
+import ChecklistsActivitySummary from "./components/ChecklistsActivitySummary";
 
 const ChecklistsActivity = ({
   activity,

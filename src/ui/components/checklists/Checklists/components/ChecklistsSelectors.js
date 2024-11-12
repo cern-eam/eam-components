@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
-import EAMSelect from "../inputs-ng/EAMSelect";
-import GridTools from "../grids/GridTools";
+import EAMSelect from "../../../../components/inputs-ng/EAMSelect";
+import GridTools from "../../../../components/grids/GridTools";
 
 const ChecklistsSelectors = ({
   activities,

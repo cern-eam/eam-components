@@ -5,6 +5,18 @@ import React, {
   useMemo,
   useState,
 } from "react";
+import SimpleEmptyState from "../../emptystates/SimpleEmptyState";
+import BlockUi from "react-block-ui";
+import Collapse from "@mui/material/Collapse";
+import { isCernMode } from "../../../../tools/CERNMode";
+import WSChecklists from "../../../../tools/WSChecklists";
+
+import FollowUpActivityDialog from "./components/FollowUpActivityDialog";
+import ChecklistsOptions from "./components/ChecklistsOptions";
+import ChecklistsSelectors from "./components/ChecklistsSelectors";
+import ChecklistsActivity from "./components/ChecklistsActivity";
+import ChecklistsContext from "./contexts/ChecklistsContext";
+
 import {
   concatActivityChecklistsToChecklists,
   filterActivitiesWithChecklists,
@@ -22,18 +34,7 @@ import {
   getTaskPlansMetadata,
   getUpdatedChecklistsActivities,
   parseToBoolean,
-} from "./utils/checklists";
-import SimpleEmptyState from "../emptystates/SimpleEmptyState";
-import BlockUi from "react-block-ui";
-import Collapse from "@mui/material/Collapse";
-import { isCernMode } from "../../../tools/CERNMode";
-import WSChecklists from "../../../tools/WSChecklists";
-
-import FollowUpActivityDialog from "./dialogs/FollowUpActivityDialog";
-import ChecklistsOptions from "./ChecklistsOptions";
-import ChecklistsSelectors from "./ChecklistsSelectors";
-import ChecklistsActivity from "./ChecklistsActivity";
-import ChecklistsContext from "./contexts/ChecklistsContext";
+} from "./utils";
 import {
   FOLLOW_UP_WO_ERROR_MESSAGE,
   FOLLOW_UP_WO_SUCCESS_MESSAGE,

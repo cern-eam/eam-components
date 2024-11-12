@@ -1,6 +1,6 @@
 import React, { useContext, useMemo } from "react";
-import ChecklistsEquipment from "./ChecklistsEquipment";
-import ChecklistsContext from "./contexts/ChecklistsContext";
+import ChecklistsEquipment from "./components/ChecklistsEquipment";
+import ChecklistsContext from "../../../../contexts/ChecklistsContext";
 
 const ChecklistsActivityDetails = ({
   activity,
@@ -26,26 +26,16 @@ const ChecklistsActivityDetails = ({
     [activity.checklists, checklistsHidden, filteredEquipment]
   );
 
-  if (checklists.length === 0) {
-    return (
-      <p style={{ textAlign: "center" }}>
-        All checklists in this activity are hidden.
-      </p>
-    );
-  }
-
   const equipmentBoundaries = useMemo(() => {
     // this stores the index of the checklists that are related to a different equipment than the one before them
     // this includes the first checklist item since it has no equipment before it
-    const boundaries = [];
-
     let equipmentCode;
-    checklists.forEach((checklist, i) => {
-      if (equipmentCode === checklist.equipmentCode) return;
 
+    const boundaries = checklists.reduce((acc, checklist, i) => {
+      if (equipmentCode === checklist.equipmentCode) return acc;
       equipmentCode = checklist.equipmentCode;
-      boundaries.push(i);
-    });
+      return [...acc, i];
+    }, []);
 
     // include the index after the last checklist as a boundary
     // this makes the next section of the code much simpler, since we can loop over pairs of boundaries
@@ -54,17 +44,19 @@ const ChecklistsActivityDetails = ({
     return boundaries;
   }, [checklists]);
 
-  const result = [];
+  if (checklists.length === 0) {
+    return (
+      <p style={{ textAlign: "center" }}>
+        All checklists in this activity are hidden.
+      </p>
+    );
+  }
 
-  // now that we have the equipment boundaries, we can make arrays of checklists
-  // for each equipment in the activity, and render a collapsible menu
-
-  for (let i = 1; i < equipmentBoundaries.length; ++i) {
-    const start = equipmentBoundaries[i - 1];
-    const end = equipmentBoundaries[i];
+  return equipmentBoundaries.slice(1).map((end, i) => {
+    const start = equipmentBoundaries[i];
     const equipmentCode = checklists[start].equipmentCode;
 
-    result.push(
+    return (
       <ChecklistsEquipment
         key={equipmentCode + start}
         checklists={checklists.slice(start, end)}
@@ -77,8 +69,7 @@ const ChecklistsActivityDetails = ({
         onCollapseEquipment={onCollapseEquipment}
       />
     );
-  }
-
-  return result;
+  });
 };
+
 export default ChecklistsActivityDetails;

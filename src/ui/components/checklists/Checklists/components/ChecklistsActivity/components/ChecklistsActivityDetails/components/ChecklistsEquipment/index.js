@@ -1,11 +1,11 @@
 import React, { useContext, useMemo } from "react";
-import ChecklistEquipment from "./ChecklistEquipment";
-import ChecklistItem from "./ChecklistItem";
+import ChecklistEquipment from "./components/ChecklistEquipment";
+import ChecklistItem from "../../../../../../../ChecklistItem";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AccordionDetails from "@mui/material/AccordionDetails";
-import ChecklistsEquipmentExpansionPanel from "./ChecklistsEquipmentExpansionPanel";
-import ChecklistsContext from "./contexts/ChecklistsContext";
+import ChecklistsEquipmentExpansionPanel from "./components/ChecklistsEquipmentExpansionPanel";
+import ChecklistsContext from "../../../../../../contexts/ChecklistsContext";
 
 const ChecklistsEquipment = ({
   key,
