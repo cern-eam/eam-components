@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -6,16 +6,17 @@ import ChecklistsSignature from "./components/ChecklistsSignature";
 import ChecklistsActivityExpansionPanel from "./components/ChecklistsActivityExpansionPanel";
 import ChecklistsActivityDetails from "./components/ChecklistsActivityDetails";
 import ChecklistsActivitySummary from "./components/ChecklistsActivitySummary";
+import ChecklistsContext from "../../contexts/ChecklistsContext";
 
 const ChecklistsActivity = ({
   activity,
-  activities,
-  setActivities,
   setCreateFollowUpActivity,
   onUpdateChecklistItem,
   checklistsEquipmentDisabled,
 }) => {
   const [collapsedActivity, setCollapsedActivity] = useState(null);
+
+  const { activities, setActivities } = useContext(ChecklistsContext);
 
   const collapseActivity = useCallback((collapsed, index) => {
     setCollapsedActivity({ index, collapsed });

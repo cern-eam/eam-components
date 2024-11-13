@@ -1,14 +1,15 @@
-import React, { useMemo } from "react";
+import React, { useContext, useMemo } from "react";
 import EAMSelect from "../../../../components/inputs-ng/EAMSelect";
 import GridTools from "../../../../components/grids/GridTools";
+import ChecklistsContext from "../contexts/ChecklistsContext";
 
 const ChecklistsSelectors = ({
-  activities,
   filteredActivity,
-  filteredEquipment,
   filteredActivities,
   setNewFilter,
 }) => {
+  const { activities, filteredEquipment } = useContext(ChecklistsContext);
+
   const activityCode = useMemo(
     () => GridTools.getURLParameterByName("activityCode"),
     []

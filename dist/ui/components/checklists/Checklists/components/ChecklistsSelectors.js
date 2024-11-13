@@ -4,15 +4,17 @@ function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t =
 function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-import React, { useMemo } from "react";
+import React, { useContext, useMemo } from "react";
 import EAMSelect from "../../../../components/inputs-ng/EAMSelect";
 import GridTools from "../../../../components/grids/GridTools";
+import ChecklistsContext from "../contexts/ChecklistsContext";
 var ChecklistsSelectors = function ChecklistsSelectors(_ref) {
-  var activities = _ref.activities,
-    filteredActivity = _ref.filteredActivity,
-    filteredEquipment = _ref.filteredEquipment,
+  var filteredActivity = _ref.filteredActivity,
     filteredActivities = _ref.filteredActivities,
     setNewFilter = _ref.setNewFilter;
+  var _useContext = useContext(ChecklistsContext),
+    activities = _useContext.activities,
+    filteredEquipment = _useContext.filteredEquipment;
   var activityCode = useMemo(function () {
     return GridTools.getURLParameterByName("activityCode");
   }, []);

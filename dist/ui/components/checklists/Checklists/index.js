@@ -235,22 +235,17 @@ var Checklists = function Checklists(_ref) {
     "in": expandChecklistsOptions
   }, /*#__PURE__*/React.createElement(ChecklistsOptions, {
     blocking: blocking,
-    showChecklistOptions: showChecklistOptions,
     setChecklistsHidden: setChecklistsHidden,
     setShowChecklistOptions: setShowChecklistOptions,
     toggleFilledFilter: toggleFilledFilter
   }))), /*#__PURE__*/React.createElement(ChecklistsSelectors, {
-    activities: activities,
     filteredActivity: filteredActivity,
-    filteredEquipment: filteredEquipment,
     filteredActivities: activitiesWithChecklists,
     setNewFilter: setNewFilter
   }), filteredActivities.map(function (activity) {
     return /*#__PURE__*/React.createElement(ChecklistsActivity, {
       key: activity.activityCode,
       activity: activity,
-      activities: activities,
-      setActivities: setActivities,
       setCreateFollowUpActivity: setCreateFollowUpActivity,
       onUpdateChecklistItem: onUpdateChecklistItem,
       checklistsEquipmentDisabled: handleChecklistsEquipmentDisabled(activity)

@@ -276,7 +276,6 @@ const Checklists = ({
             <Collapse in={expandChecklistsOptions}>
               <ChecklistsOptions
                 blocking={blocking}
-                showChecklistOptions={showChecklistOptions}
                 setChecklistsHidden={setChecklistsHidden}
                 setShowChecklistOptions={setShowChecklistOptions}
                 toggleFilledFilter={toggleFilledFilter}
@@ -284,9 +283,7 @@ const Checklists = ({
             </Collapse>
           </div>
           <ChecklistsSelectors
-            activities={activities}
             filteredActivity={filteredActivity}
-            filteredEquipment={filteredEquipment}
             filteredActivities={activitiesWithChecklists}
             setNewFilter={setNewFilter}
           />
@@ -294,8 +291,6 @@ const Checklists = ({
             <ChecklistsActivity
               key={activity.activityCode}
               activity={activity}
-              activities={activities}
-              setActivities={setActivities}
               setCreateFollowUpActivity={setCreateFollowUpActivity}
               onUpdateChecklistItem={onUpdateChecklistItem}
               checklistsEquipmentDisabled={handleChecklistsEquipmentDisabled(

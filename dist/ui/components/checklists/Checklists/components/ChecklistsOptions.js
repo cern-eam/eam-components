@@ -18,7 +18,6 @@ import GridTools from "../../../../components/grids/GridTools";
 import { parseToBoolean } from "../utils/index";
 var ChecklistsOptions = function ChecklistsOptions(_ref) {
   var blocking = _ref.blocking,
-    showChecklistOptions = _ref.showChecklistOptions,
     setShowChecklistOptions = _ref.setShowChecklistOptions,
     toggleFilledFilter = _ref.toggleFilledFilter;
   var _useState = useState(parseToBoolean(GridTools.getURLParameterByName("expandActivities"), false)),
@@ -31,7 +30,8 @@ var ChecklistsOptions = function ChecklistsOptions(_ref) {
     setExpandChecklists = _useState4[1];
   var _useContext = useContext(ChecklistsContext),
     setActivities = _useContext.setActivities,
-    checklistsHidden = _useContext.checklistsHidden;
+    checklistsHidden = _useContext.checklistsHidden,
+    showChecklistOptions = _useContext.showChecklistOptions;
   var toggleExpandActivities = useCallback(function () {
     setExpandActivities(function (prev) {
       return !prev;

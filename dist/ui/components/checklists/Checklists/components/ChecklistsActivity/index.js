@@ -14,7 +14,7 @@ function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) 
 function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
 function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
 function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -22,10 +22,9 @@ import ChecklistsSignature from "./components/ChecklistsSignature";
 import ChecklistsActivityExpansionPanel from "./components/ChecklistsActivityExpansionPanel";
 import ChecklistsActivityDetails from "./components/ChecklistsActivityDetails";
 import ChecklistsActivitySummary from "./components/ChecklistsActivitySummary";
+import ChecklistsContext from "../../contexts/ChecklistsContext";
 var ChecklistsActivity = function ChecklistsActivity(_ref) {
   var activity = _ref.activity,
-    activities = _ref.activities,
-    setActivities = _ref.setActivities,
     setCreateFollowUpActivity = _ref.setCreateFollowUpActivity,
     onUpdateChecklistItem = _ref.onUpdateChecklistItem,
     checklistsEquipmentDisabled = _ref.checklistsEquipmentDisabled;
@@ -33,6 +32,9 @@ var ChecklistsActivity = function ChecklistsActivity(_ref) {
     _useState2 = _slicedToArray(_useState, 2),
     collapsedActivity = _useState2[0],
     setCollapsedActivity = _useState2[1];
+  var _useContext = useContext(ChecklistsContext),
+    activities = _useContext.activities,
+    setActivities = _useContext.setActivities;
   var collapseActivity = useCallback(function (collapsed, index) {
     setCollapsedActivity({
       index: index,

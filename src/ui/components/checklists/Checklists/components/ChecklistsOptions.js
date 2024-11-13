@@ -7,7 +7,6 @@ import { parseToBoolean } from "../utils/index";
 
 const ChecklistsOptions = ({
   blocking,
-  showChecklistOptions,
   setShowChecklistOptions,
   toggleFilledFilter,
 }) => {
@@ -18,7 +17,8 @@ const ChecklistsOptions = ({
     parseToBoolean(GridTools.getURLParameterByName("expandChecklists"), false)
   );
 
-  const { setActivities, checklistsHidden } = useContext(ChecklistsContext);
+  const { setActivities, checklistsHidden, showChecklistOptions } =
+    useContext(ChecklistsContext);
 
   const toggleExpandActivities = useCallback(() => {
     setExpandActivities((prev) => !prev);
