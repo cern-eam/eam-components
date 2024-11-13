@@ -1,7 +1,7 @@
 import React, { useContext, useMemo } from "react";
 import EAMSelect from "../../../../components/inputs-ng/EAMSelect";
-import GridTools from "../../../../components/grids/GridTools";
 import ChecklistsContext from "../contexts/ChecklistsContext";
+import { getActivityCodeUrlParam } from "../utils";
 
 const ChecklistsSelectors = ({
   filteredActivity,
@@ -10,10 +10,7 @@ const ChecklistsSelectors = ({
 }) => {
   const { activities, filteredEquipment } = useContext(ChecklistsContext);
 
-  const activityCode = useMemo(
-    () => GridTools.getURLParameterByName("activityCode"),
-    []
-  );
+  const activityCode = useMemo(() => getActivityCodeUrlParam(), []);
 
   if (activityCode) return null;
 

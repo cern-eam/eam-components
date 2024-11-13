@@ -41,6 +41,12 @@ export const getShowChecklistOptsUrlParam = () =>
 export const getShowFilledItemsUrlParam = () =>
   GridTools.getURLParameterByName("showFilledItems");
 
+export const getExpandActivitiesUrlParam = () =>
+  GridTools.getURLParameterByName("expandActivities");
+
+export const getExpandChecklistsUrlParam = () =>
+  GridTools.getURLParameterByName("expandChecklists");
+
 export const filterActivitiesWithChecklists = (activities) =>
   activities.filter((activity) => activity.checklists.length > 0);
 

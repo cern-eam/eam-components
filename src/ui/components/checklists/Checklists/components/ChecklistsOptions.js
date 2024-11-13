@@ -2,8 +2,11 @@ import React, { useCallback, useContext, useState } from "react";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import ChecklistsContext from "../../../../components/checklists/Checklists/contexts/ChecklistsContext";
-import GridTools from "../../../../components/grids/GridTools";
-import { parseToBoolean } from "../utils/index";
+import {
+  parseToBoolean,
+  getExpandActivitiesUrlParam,
+  getExpandChecklistsUrlParam,
+} from "../utils/index";
 
 const ChecklistsOptions = ({
   blocking,
@@ -11,10 +14,10 @@ const ChecklistsOptions = ({
   toggleFilledFilter,
 }) => {
   const [expandActivities, setExpandActivities] = useState(
-    parseToBoolean(GridTools.getURLParameterByName("expandActivities"), false)
+    parseToBoolean(getExpandActivitiesUrlParam(), false)
   );
   const [expandChecklists, setExpandChecklists] = useState(
-    parseToBoolean(GridTools.getURLParameterByName("expandChecklists"), false)
+    parseToBoolean(getExpandChecklistsUrlParam(), false)
   );
 
   const { setActivities, checklistsHidden, showChecklistOptions } =

@@ -6,8 +6,8 @@ function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" 
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 import React, { useContext, useMemo } from "react";
 import EAMSelect from "../../../../components/inputs-ng/EAMSelect";
-import GridTools from "../../../../components/grids/GridTools";
 import ChecklistsContext from "../contexts/ChecklistsContext";
+import { getActivityCodeUrlParam } from "../utils";
 var ChecklistsSelectors = function ChecklistsSelectors(_ref) {
   var filteredActivity = _ref.filteredActivity,
     filteredActivities = _ref.filteredActivities,
@@ -16,7 +16,7 @@ var ChecklistsSelectors = function ChecklistsSelectors(_ref) {
     activities = _useContext.activities,
     filteredEquipment = _useContext.filteredEquipment;
   var activityCode = useMemo(function () {
-    return GridTools.getURLParameterByName("activityCode");
+    return getActivityCodeUrlParam();
   }, []);
   if (activityCode) return null;
   var equipments = useMemo(function () {

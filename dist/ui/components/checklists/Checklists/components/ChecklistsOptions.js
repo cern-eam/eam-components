@@ -14,17 +14,16 @@ import React, { useCallback, useContext, useState } from "react";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import ChecklistsContext from "../../../../components/checklists/Checklists/contexts/ChecklistsContext";
-import GridTools from "../../../../components/grids/GridTools";
-import { parseToBoolean } from "../utils/index";
+import { parseToBoolean, getExpandActivitiesUrlParam, getExpandChecklistsUrlParam } from "../utils/index";
 var ChecklistsOptions = function ChecklistsOptions(_ref) {
   var blocking = _ref.blocking,
     setShowChecklistOptions = _ref.setShowChecklistOptions,
     toggleFilledFilter = _ref.toggleFilledFilter;
-  var _useState = useState(parseToBoolean(GridTools.getURLParameterByName("expandActivities"), false)),
+  var _useState = useState(parseToBoolean(getExpandActivitiesUrlParam(), false)),
     _useState2 = _slicedToArray(_useState, 2),
     expandActivities = _useState2[0],
     setExpandActivities = _useState2[1];
-  var _useState3 = useState(parseToBoolean(GridTools.getURLParameterByName("expandChecklists"), false)),
+  var _useState3 = useState(parseToBoolean(getExpandChecklistsUrlParam(), false)),
     _useState4 = _slicedToArray(_useState3, 2),
     expandChecklists = _useState4[0],
     setExpandChecklists = _useState4[1];

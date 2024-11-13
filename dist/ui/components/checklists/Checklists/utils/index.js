@@ -52,6 +52,12 @@ export var getShowChecklistOptsUrlParam = function getShowChecklistOptsUrlParam(
 export var getShowFilledItemsUrlParam = function getShowFilledItemsUrlParam() {
   return GridTools.getURLParameterByName("showFilledItems");
 };
+export var getExpandActivitiesUrlParam = function getExpandActivitiesUrlParam() {
+  return GridTools.getURLParameterByName("expandActivities");
+};
+export var getExpandChecklistsUrlParam = function getExpandChecklistsUrlParam() {
+  return GridTools.getURLParameterByName("expandChecklists");
+};
 export var filterActivitiesWithChecklists = function filterActivitiesWithChecklists(activities) {
   return activities.filter(function (activity) {
     return activity.checklists.length > 0;
