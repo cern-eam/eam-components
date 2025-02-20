@@ -107,13 +107,17 @@ export var createOnChangeHandler = function createOnChangeHandler(valueKey, desc
     if (_typeof(value) === 'object') {
       if (value.code !== undefined) {
         updatingFunction?.(valueKey, value.code, ...additionalArgs);
-        onChange?.(value.code);
       }
       if (descKey && value.desc !== undefined) {
         updatingFunction.apply(void 0, [descKey, value.desc].concat(_toConsumableArray(additionalArgs)));
       }
       if (orgKey && value.organization !== undefined) {
         updatingFunction.apply(void 0, [orgKey, value.organization].concat(_toConsumableArray(additionalArgs)));
+      }
+
+      // Fire the onChange only at the end
+      if (value.code !== undefined) {
+        onChange?.(value.code, value);
       }
     } else {
       // When receiving a non-object value, we assume it corresponds to

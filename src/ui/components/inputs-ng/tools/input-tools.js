@@ -123,7 +123,6 @@ export const createOnChangeHandler =
         if (typeof value === 'object') {
             if (value.code !== undefined) {
                 updatingFunction?.(valueKey, value.code, ...additionalArgs);
-                onChange?.(value.code);
             }
 
             if (descKey && value.desc !== undefined) {
@@ -132,6 +131,11 @@ export const createOnChangeHandler =
 
             if (orgKey && value.organization !== undefined) {
                 updatingFunction(orgKey, value.organization, ...additionalArgs);
+            }
+
+            // Fire the onChange only at the end
+            if (value.code !== undefined) {
+                onChange?.(value.code, value);
             }
         } else {
             // When receiving a non-object value, we assume it corresponds to
