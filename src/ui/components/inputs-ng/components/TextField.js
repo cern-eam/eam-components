@@ -2,6 +2,7 @@ import React from 'react';
 import EAMBarcodeScanner from './EAMBarcodeScanner';
 import EAMLink from './EAMLink';
 import TextFieldInput from './TextFieldInput';
+import TextAreaInput from './TextAreaInput';
 import TextFieldTextAdornment from './TextFieldTextAdornment';
 import TextFieldDescription from './TextFieldDescription';
 
@@ -41,7 +42,7 @@ const TextField = (props) => {
         inputProps,
         inputRef,
         endTextAdornment, endAdornment,
-        hideDescription, disabled, maxLength, uppercase, errorText, style, type, rightAlign} = props;
+        hideDescription, disabled, maxLength, uppercase, errorText, style, type, rightAlign, textarea = false} = props;
 
     const onInputUpperCaseHandler = event => {
         var input = event.target;
@@ -51,11 +52,13 @@ const TextField = (props) => {
         input.setSelectionRange(start, end);
     }
 
+    const InputComponent = textarea ? TextAreaInput : TextFieldInput;
+
     return (
         <div style={{...divRootContainerStyle, ...style}}>
             <div style={divInputContainerStyle}>
                 <div style={{...divInputStyle, ...(errorText ? fieldInvalid : {})}} ref={props.InputProps?.ref}>
-                    <TextFieldInput type={type === 'password' ? 'password' : 'text'}
+                    <InputComponent type={type === 'password' ? 'password' : 'text'}
                                     ref={inputRef}
                                     {...inputProps}
                                     readOnly={props.selectOnlyMode}

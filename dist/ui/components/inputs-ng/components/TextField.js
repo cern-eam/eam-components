@@ -9,6 +9,7 @@ import React from 'react';
 import EAMBarcodeScanner from './EAMBarcodeScanner';
 import EAMLink from './EAMLink';
 import TextFieldInput from './TextFieldInput';
+import TextAreaInput from './TextAreaInput';
 import TextFieldTextAdornment from './TextFieldTextAdornment';
 import TextFieldDescription from './TextFieldDescription';
 var divInputStyle = {
@@ -51,7 +52,9 @@ var TextField = function TextField(props) {
     errorText = props.errorText,
     style = props.style,
     type = props.type,
-    rightAlign = props.rightAlign;
+    rightAlign = props.rightAlign,
+    _props$textarea = props.textarea,
+    textarea = _props$textarea === void 0 ? false : _props$textarea;
   var onInputUpperCaseHandler = function onInputUpperCaseHandler(event) {
     var input = event.target;
     var start = input.selectionStart;
@@ -59,6 +62,7 @@ var TextField = function TextField(props) {
     input.value = input.value.toLocaleUpperCase();
     input.setSelectionRange(start, end);
   };
+  var InputComponent = textarea ? TextAreaInput : TextFieldInput;
   return /*#__PURE__*/React.createElement("div", {
     style: _objectSpread({}, divRootContainerStyle, {}, style)
   }, /*#__PURE__*/React.createElement("div", {
@@ -66,7 +70,7 @@ var TextField = function TextField(props) {
   }, /*#__PURE__*/React.createElement("div", {
     style: _objectSpread({}, divInputStyle, {}, errorText ? fieldInvalid : {}),
     ref: props.InputProps?.ref
-  }, /*#__PURE__*/React.createElement(TextFieldInput, _extends({
+  }, /*#__PURE__*/React.createElement(InputComponent, _extends({
     type: type === 'password' ? 'password' : 'text',
     ref: inputRef
   }, inputProps, {

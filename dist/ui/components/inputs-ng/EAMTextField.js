@@ -16,7 +16,9 @@ var EAMTextField = function EAMTextField(props) {
     validator = props.validator,
     _onBlur = props.onBlur,
     autoFocus = props.autoFocus,
-    onKeyUp = props.onKeyUp;
+    onKeyUp = props.onKeyUp,
+    _props$textarea = props.textarea,
+    textarea = _props$textarea === void 0 ? false : _props$textarea;
   var valueOrEmptyString = value || "";
   var _useState = useState(valueOrEmptyString),
     _useState2 = _slicedToArray(_useState, 2),
@@ -49,7 +51,8 @@ var EAMTextField = function EAMTextField(props) {
     autoFocus: autoFocus
   };
   return /*#__PURE__*/React.createElement(EAMBaseInput, props, /*#__PURE__*/React.createElement(TextField, _extends({}, props, {
-    inputProps: inputProps
+    inputProps: inputProps,
+    textarea: textarea
   })));
 };
 export default React.memo(EAMTextField, areEqual);

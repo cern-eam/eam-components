@@ -12,6 +12,7 @@ const EAMTextField = (props) => {
         onBlur,
         autoFocus,
         onKeyUp,
+        textarea = false
     } = props;
     const valueOrEmptyString = value || "";
     const [inputValue, setInputValue] = useState(valueOrEmptyString);
@@ -43,7 +44,7 @@ const EAMTextField = (props) => {
 
     return (
         <EAMBaseInput {...props}>
-            <TextField {...props} inputProps={inputProps} />
+            <TextField {...props} inputProps={inputProps} textarea={textarea} />
         </EAMBaseInput>
     );
 };
