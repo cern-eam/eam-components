@@ -333,18 +333,25 @@ const EAMFilterField = ({ column, getDefaultValue = getEAMDefaultFilterValue }) 
         e => updateFilter({ ...localFilter, fieldValue: e.target.value })
     , [localFilter, updateFilter]);
     
-    const handleMultiFilterCheckboxChange = React.useCallback((event, value, label) => {
-        if (event.target.checked) {
-            const multiSelectValues = multiSelectFilter.fieldValue ?? [];
-            multiSelectValues.push(value);
-            setMultiFilterLabel((prev) => ([...prev, label]))
+const handleMultiFilterCheckboxChange = React.useCallback((event, value, label) => {
+
+    if (event.target.checked) {
+        setMultiSelectFilter((prev) => {
+            const multiSelectValues = prev.fieldValue ?? [];
+            updateMultiSelectFilter([...multiSelectValues, value]);
+            return { ...prev, fieldValue: multiSelectValues, joiner: "OR" };
+        });
+        setMultiFilterLabel((prev) => ([...prev, label]));
+    } else {
+        setMultiSelectFilter((prev) => {
+
+            const multiSelectValues = prev.fieldValue.filter(item => item !== value);
             updateMultiSelectFilter(multiSelectValues);
-        }
-        else {
-            setMultiFilterLabel((prev) => prev.filter(item => item !== label))
-            updateMultiSelectFilter(multiSelectFilter.fieldValue.filter(item => item !== value));
-        }
-    }, [multiSelectFilter, updateMultiSelectFilter])
+            return { ...prev, fieldValue: multiSelectValues, joiner: "OR" };
+        });
+        setMultiFilterLabel((prev) => prev.filter(item => item !== label));
+    }
+}, [updateMultiSelectFilter]);
 
     const handleCheckboxChange = React.useCallback(() => {
         const values = [CHECKBOX_FILTERS.CHECKED, CHECKBOX_FILTERS.UNCHECKED, CHECKBOX_FILTERS.INDETERMINATE];
@@ -469,7 +476,6 @@ const EAMFilterField = ({ column, getDefaultValue = getEAMDefaultFilterValue }) 
                     renderValue={() => multiFilterLabel.filter(Boolean).join(',')}
                     MenuProps={{ variant: "menu", style: { top: 54, width: '100%', display: 'flex', flexDirection: 'column' } }}
                 >
-                    <>
                         <div style={{display: 'flex', justifyContent: 'center', justifyItems: 'center',  padding: '5px 20px'}}>
                             <Button
                                 variant="text"
@@ -502,7 +508,6 @@ const EAMFilterField = ({ column, getDefaultValue = getEAMDefaultFilterValue }) 
                             </MenuItem>
                         ))}
                         </div>
-                    </>
                 </Select>
             )
         default:
