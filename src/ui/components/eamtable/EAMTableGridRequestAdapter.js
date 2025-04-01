@@ -3,7 +3,7 @@ import GridWS from "../eamgrid/lib/GridWS";
 import EAMTableDataAdapter from "./EAMTableDataAdapter";
 
 const EAMTableGridRequestAdapter = props => {
-    const { gridRequest, headers } = props;
+    const { gridRequest, headers, localizeResults } = props;
 
     const convertRowData = (responseBody) => {
         return flattenGridRow((responseBody.data || {}).row || [])
@@ -15,7 +15,7 @@ const EAMTableGridRequestAdapter = props => {
 
     return (
         <EAMTableDataAdapter
-            fetchData={async () => GridWS.getGridData(gridRequest)}
+            fetchData={async () => GridWS.getGridData(gridRequest, {headers: localizeResults ? {INFOR_LOCALIZE_RESULTS: true} : {}})}
             equipmentCode={gridRequest?.params.obj_code}
             convertRowData={convertRowData}
             convertColumnMetadata={convertColumnMetadata} >
@@ -41,5 +41,6 @@ const getGridFieldsColumns = (gridFields, headers) =>
     gridFields.map(gf => ({
         id: gf.name,
         header: headers ? headers[gf.name] : gf.label,
+        dataType: gf.dataType,
         width: gf.width
     }));
