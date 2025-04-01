@@ -70,7 +70,7 @@ const EAMGridTab = (props) => {
             />
         </EAMGridContextProvider>
         : 
-        <EAMTableGridRequestAdapter gridRequest={gridRequest}>
+        <EAMTableGridRequestAdapter gridRequest={gridRequest} localizeResults={true}>
             {({ loading, requestError, rows, columnsMetadata, totalCount }) =>
                 <EAMTable
                     loading={loading}

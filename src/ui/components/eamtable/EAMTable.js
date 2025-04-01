@@ -4,6 +4,7 @@ import { MUITableHeader, MUITableBody } from "../datagrid/presentation/table";
 import { Table, TableCell, TableContainer, Checkbox, Fade } from "@mui/material";
 import withStyles from '@mui/styles/withStyles';
 import BlockUi from 'react-block-ui';
+import { EAMCellField } from "../grids/eam/utils";
 
 
 const CustomCellComponent = withStyles(theme => ({
@@ -54,7 +55,7 @@ const EAMTable = (props) => {
                 </CellComponent>
             ) : null;
         }
-        return (cellRenderer && cellRenderer({ row, columnMetadata, getDisplayValue, CellComponent })) || <CellComponent style={cellStyle}>{getDisplayValue()}</CellComponent>
+        return (cellRenderer && cellRenderer({ row, columnMetadata, getDisplayValue, CellComponent })) || <CellComponent style={cellStyle}>{EAMCellField({column: columnMetadata, value: getDisplayValue()})}</CellComponent>
     }
 
     let computedColumnsMetadata = columnsMetadata;
