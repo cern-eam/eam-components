@@ -24,11 +24,15 @@ const customGridRenderer = ({ value, column, customRenderers }) => {
 };
 
 
-const EAMGridTab = (props) => {
+const EAMGridTab = React.forwardRef((props, ref) => {
     const { screenCode, tabName, objectCode, customRenderers, paramNames, showGrid, rowCount = 100, gridContainerStyle} = props;
 
     const gridName = screenCode + '_' + tabName;
+    const { handleOnSearch } = useContext(EAMGridContext);
 
+    useImperativeHandle(ref, () => ({
+        refresh: () => handleOnSearch(),
+    }));
     const getParams = () => {
         return Object.fromEntries(paramNames.map(paramName => [paramName, objectCode]))
     }
@@ -53,7 +57,7 @@ const EAMGridTab = (props) => {
             }
         }
     }
-    
+
     return (
         showGrid ?
         <EAMGridContextProvider
@@ -68,7 +72,7 @@ const EAMGridTab = (props) => {
                 gridContainerStyle={{...gridContainerStyle}}
             />
         </EAMGridContextProvider>
-        : 
+        :
         <EAMTableGridRequestAdapter gridRequest={gridRequest}>
             {({ loading, requestError, rows, columnsMetadata, totalCount }) =>
                 <EAMTable
@@ -89,8 +93,8 @@ const EAMGridTab = (props) => {
                     } />
             }
         </EAMTableGridRequestAdapter>
-        
+
     );
-}
+})
 
 export default EAMGridTab
