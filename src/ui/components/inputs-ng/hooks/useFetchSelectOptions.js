@@ -1,7 +1,7 @@
 import {useState, useEffect, useRef} from "react"
 import { extractOptions } from "./tools";
 
-const useFetchSelectOptions = (autocompleteHandler, autocompleteHandlerParams = [], value, desc, options, optionsTransformer) => {
+const useFetchSelectOptions = (autocompleteHandler, autocompleteHandlerParams = [], value, desc, options, optionsTransformer, renderDependencies = []) => {
   
     const [fetchedOptions, setFetchedOptions] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -17,10 +17,9 @@ const useFetchSelectOptions = (autocompleteHandler, autocompleteHandlerParams = 
         abortController.current?.abort();
         abortController.current = new AbortController();
 
-        autocompleteHandler(...autocompleteHandlerParams, { signal: abortController.current.signal })
+        autocompleteHandler({handlerParams: autocompleteHandlerParams}, { signal: abortController.current.signal })
         .then(result => {
             let fetchedOptionsTemp = optionsTransformer ? optionsTransformer(extractOptions(result)) : extractOptions(result);
-            
             // Add value to list of options if it's not there
             if (value && !fetchedOptionsTemp.some(o => o.code === value)) {
                 fetchedOptionsTemp.push({code: value, desc})
@@ -31,7 +30,7 @@ const useFetchSelectOptions = (autocompleteHandler, autocompleteHandlerParams = 
         .catch(error => {
             setLoading(false);
         }) 
-    }, [...autocompleteHandlerParams, options]) // Execute only when it renders 
+    }, [...autocompleteHandlerParams, ...renderDependencies, options]) // Execute only when it renders 
 
     
     // RETURN

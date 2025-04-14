@@ -8,14 +8,14 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 const EAMSelect = (props) => {
    
-  let {autocompleteHandler, autocompleteHandlerParams, 
+  let {autocompleteHandler, autocompleteHandlerParams, renderDependencies,
     value, desc, onChange,
     options, optionsTransformer,
     required, id, disabled,
     renderValue, endTextAdornment, validate = true, selectOnlyMode} = props;
 
     let [inputValue, setInputValue] = useState("")
-    let [fetchedOptions, loading] = useFetchSelectOptions(autocompleteHandler, autocompleteHandlerParams, value, desc, options, optionsTransformer)
+    let [fetchedOptions, loading] = useFetchSelectOptions(autocompleteHandler, autocompleteHandlerParams, value, desc, options, optionsTransformer, renderDependencies)
   
     const getOptionLabelHandler = option => {
         if (typeof option === 'object') {

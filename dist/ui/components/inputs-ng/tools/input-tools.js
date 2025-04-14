@@ -39,10 +39,19 @@ export var processElementInfo = function processElementInfo(elementInfo) {
   if (elementInfo.maxLength) {
     data.maxLength = elementInfo.maxLength;
   }
-  if (elementInfo.fieldType === 'currency' || elementInfo.fieldType === 'number') {
-    data.type = 'number';
-  } else {
-    data.type = 'text';
+  switch (elementInfo.fieldType) {
+    case "currency":
+    case "number":
+      data.type = 'number';
+      break;
+    case "date":
+      data.type = 'date';
+      break;
+    case "datetime":
+      data.type = 'datetime';
+      break;
+    default:
+      data.type = 'text';
   }
   if (elementInfo.characterCase === 'uppercase') {
     data.uppercase = true;

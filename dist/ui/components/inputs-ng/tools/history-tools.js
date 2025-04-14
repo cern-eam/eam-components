@@ -10,7 +10,7 @@ export var HISTORY_ID_PREFIX = 'INPUT_HISTORY_';
  * Type 'H' is used to indicate that a history icon should be shown in
  * each item of the rendered list.
  */
-export var saveHistory = function saveHistory(key, value, desc) {
+export var saveHistory = function saveHistory(key, value, desc, organization) {
   var MAX_LENGTH = 5;
 
   // Sanity check
@@ -42,6 +42,7 @@ export var saveHistory = function saveHistory(key, value, desc) {
   history.unshift({
     code: value,
     desc: desc,
+    organization: organization,
     type: 'H'
   });
 

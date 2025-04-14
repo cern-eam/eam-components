@@ -10,7 +10,7 @@ export const HISTORY_ID_PREFIX = 'INPUT_HISTORY_';
  * Type 'H' is used to indicate that a history icon should be shown in
  * each item of the rendered list.
  */
-export const saveHistory = (key, value, desc) => {
+export const saveHistory = (key, value, desc, organization) => {
     const MAX_LENGTH = 5;
 
     // Sanity check
@@ -37,7 +37,7 @@ export const saveHistory = (key, value, desc) => {
     }
 
     // Add new entry to beginning of history structure
-    history.unshift({code: value, desc: desc, type: 'H'});
+    history.unshift({code: value, desc: desc, organization, type: 'H'});
 
     // Remove oldest entry from history 
     if (history.length > MAX_LENGTH) {

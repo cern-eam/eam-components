@@ -16,6 +16,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 var EAMSelect = function EAMSelect(props) {
   var autocompleteHandler = props.autocompleteHandler,
     autocompleteHandlerParams = props.autocompleteHandlerParams,
+    renderDependencies = props.renderDependencies,
     value = props.value,
     desc = props.desc,
     onChange = props.onChange,
@@ -33,7 +34,7 @@ var EAMSelect = function EAMSelect(props) {
     _useState2 = _slicedToArray(_useState, 2),
     inputValue = _useState2[0],
     setInputValue = _useState2[1];
-  var _useFetchSelectOption = useFetchSelectOptions(autocompleteHandler, autocompleteHandlerParams, value, desc, options, optionsTransformer),
+  var _useFetchSelectOption = useFetchSelectOptions(autocompleteHandler, autocompleteHandlerParams, value, desc, options, optionsTransformer, renderDependencies),
     _useFetchSelectOption2 = _slicedToArray(_useFetchSelectOption, 2),
     fetchedOptions = _useFetchSelectOption2[0],
     loading = _useFetchSelectOption2[1];

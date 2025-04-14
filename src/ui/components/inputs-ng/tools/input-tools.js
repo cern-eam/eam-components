@@ -39,12 +39,21 @@ export const processElementInfo = (elementInfo) => {
                 data.maxLength = elementInfo.maxLength;
         }
 
-        if (elementInfo.fieldType === 'currency' || elementInfo.fieldType === 'number') {
+        switch (elementInfo.fieldType) {
+            case "currency":
+            case "number":
                 data.type = 'number';
-        } else {
-                data.type = 'text';
+                break;
+            case "date":
+                data.type = 'date'
+                break;
+            case "datetime":
+                data.type = 'datetime'
+                break;
+            default:
+                data.type = 'text'
         }
-
+        
         if (elementInfo.characterCase === 'uppercase') {
                 data.uppercase = true;
         }

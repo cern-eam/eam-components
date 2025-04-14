@@ -41,7 +41,7 @@ const useFetchAutocompleteOptions = (autocompleteHandler, autocompleteHandlerPar
 
     const fetchOptions = (autocompleteHandlerParams, inputValue) => {
         setLoading(true);
-        callHandler(...autocompleteHandlerParams, inputValue, { signal: abortController.current.signal })
+        callHandler({handlerParams: autocompleteHandlerParams, filter: inputValue}, { signal: abortController.current.signal })
     }
 
     // HELPER

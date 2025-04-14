@@ -32,11 +32,12 @@ const EAMAutocomplete = (props) => {
     }, [])
 
     const fetchDesc = async (hint) => {
-      autocompleteHandler(...autocompleteHandlerParams, hint)
+      autocompleteHandler({handlerParams: autocompleteHandlerParams, filter: hint, operator: "="})
         .then(result => {
             let option = result.body.data.find(o => o.code === hint);
             if (option) {
-              updateDesc && onChange({desc: option.desc})
+              delete option.code
+              updateDesc && onChange({desc: option.desc, organization: option.organization, ...option})
               setDescription(option.desc)
             } else {
               setValid(!validate || false)
@@ -63,7 +64,7 @@ const EAMAutocomplete = (props) => {
         return;
       }
 
-      saveHistory(HISTORY_ID_PREFIX + id, newValue.code, newValue.desc)
+      saveHistory(HISTORY_ID_PREFIX + id, newValue.code, newValue.desc, newValue.organization)
       onChange(newValue, newValue);
       setDescription(newValue.desc)
 

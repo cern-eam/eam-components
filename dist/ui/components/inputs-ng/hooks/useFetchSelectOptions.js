@@ -16,6 +16,7 @@ var useFetchSelectOptions = function useFetchSelectOptions(autocompleteHandler) 
   var desc = arguments.length > 3 ? arguments[3] : undefined;
   var options = arguments.length > 4 ? arguments[4] : undefined;
   var optionsTransformer = arguments.length > 5 ? arguments[5] : undefined;
+  var renderDependencies = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : [];
   var _useState = useState([]),
     _useState2 = _slicedToArray(_useState, 2),
     fetchedOptions = _useState2[0],
@@ -34,11 +35,12 @@ var useFetchSelectOptions = function useFetchSelectOptions(autocompleteHandler) 
     }
     abortController.current?.abort();
     abortController.current = new AbortController();
-    autocompleteHandler.apply(void 0, _toConsumableArray(autocompleteHandlerParams).concat([{
+    autocompleteHandler({
+      handlerParams: autocompleteHandlerParams
+    }, {
       signal: abortController.current.signal
-    }])).then(function (result) {
+    }).then(function (result) {
       var fetchedOptionsTemp = optionsTransformer ? optionsTransformer(extractOptions(result)) : extractOptions(result);
-
       // Add value to list of options if it's not there
       if (value && !fetchedOptionsTemp.some(function (o) {
         return o.code === value;
@@ -53,7 +55,7 @@ var useFetchSelectOptions = function useFetchSelectOptions(autocompleteHandler) 
     })["catch"](function (error) {
       setLoading(false);
     });
-  }, [].concat(_toConsumableArray(autocompleteHandlerParams), [options])); // Execute only when it renders 
+  }, [].concat(_toConsumableArray(autocompleteHandlerParams), _toConsumableArray(renderDependencies), [options])); // Execute only when it renders 
 
   // RETURN
   return [fetchedOptions, loading];
