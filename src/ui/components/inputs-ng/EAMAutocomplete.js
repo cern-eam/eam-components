@@ -9,7 +9,7 @@ import { saveHistory, HISTORY_ID_PREFIX } from './tools/history-tools';
 const EAMAutocomplete = (props) => {
 
   let {autocompleteHandler, autocompleteHandlerParams = [],
-       value, desc, id, renderValue, onChange, validate, updateDesc = true} = props;
+       value, desc, id, renderValue, onChange, validate = true, updateDesc = true} = props;
 
     let [inputValue, setInputValue] = useState("")
     let [description, setDescription] = useState("")
@@ -19,8 +19,6 @@ const EAMAutocomplete = (props) => {
     const skipNextFetchRef = useRef(false);
     
     useEffect(() => {
-      setValid(true)
-
       if (skipNextFetchRef.current) {
         skipNextFetchRef.current = false; // Don't fetch/validate after we have selected a valid value an autocomplete
         return;
@@ -120,7 +118,7 @@ const EAMAutocomplete = (props) => {
             renderInput={(params) => <TextField {...params}
                                                 {...props}
                                                 desc={description}
-                                                errorText={valid ? props.errorText : "Wrong entry"} />}
+                                                errorText={valid ? "" : props.errorText ?? "Wrong entry"} />}
 
           />
       </EAMBaseInput>

@@ -28,7 +28,8 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
     id = props.id,
     renderValue = props.renderValue,
     onChange = props.onChange,
-    validate = props.validate,
+    _props$validate = props.validate,
+    validate = _props$validate === void 0 ? true : _props$validate,
     _props$updateDesc = props.updateDesc,
     updateDesc = _props$updateDesc === void 0 ? true : _props$updateDesc;
   var _useState = useState(""),
@@ -53,6 +54,7 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
     setValid = _useState8[1];
   var skipNextFetchRef = useRef(false);
   useEffect(function () {
+    console.log('effect');
     setValid(true);
     if (skipNextFetchRef.current) {
       skipNextFetchRef.current = false; // Don't fetch/validate after we have selected a valid value an autocomplete
@@ -71,12 +73,12 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
     return _regeneratorRuntime().async(function fetchDesc$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
-          console.log('fetch desc', hint);
           autocompleteHandler({
             handlerParams: autocompleteHandlerParams,
             filter: hint,
             operator: "="
           }).then(function (result) {
+            console.log('r', result);
             var option = result.body.data.find(function (o) {
               return o.code === hint;
             });
@@ -88,10 +90,11 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
               }, option));
               setDescription(option.desc);
             } else {
+              console.log('e', !validate || false);
               setValid(!validate || false);
             }
           })["catch"](console.error);
-        case 2:
+        case 1:
         case "end":
           return _context.stop();
       }
@@ -177,7 +180,7 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
     renderInput: function renderInput(params) {
       return /*#__PURE__*/React.createElement(TextField, _extends({}, params, props, {
         desc: description,
-        errorText: valid ? props.errorText : "Wrong entry"
+        errorText: valid ? "" : props.errorText ?? "Wrong entry"
       }));
     }
   }));
