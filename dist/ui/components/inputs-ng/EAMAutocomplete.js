@@ -52,20 +52,27 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
     valid = _useState8[0],
     setValid = _useState8[1];
   useEffect(function () {
+    console.log('hook');
     setValid(true);
+    if (value) {
+      fetchDesc(value);
+    }
   }, [value]);
   useEffect(function () {
     setDescription(desc);
   }, [desc]);
-  useEffect(function () {
-    if (!desc && value) {
-      fetchDesc(value);
-    }
-  }, []);
+
+  // useEffect(() => {
+  //   if (!desc && value) {
+  //     fetchDesc(value);
+  //   }
+  // }, [])
+
   var fetchDesc = function fetchDesc(hint) {
     return _regeneratorRuntime().async(function fetchDesc$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
+          console.log('fetch desc', hint);
           autocompleteHandler({
             handlerParams: autocompleteHandlerParams,
             filter: hint,
@@ -85,7 +92,7 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
               setValid(!validate || false);
             }
           })["catch"](console.error);
-        case 1:
+        case 2:
         case "end":
           return _context.stop();
       }
@@ -127,7 +134,7 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
         code: inputValue,
         desc: ''
       });
-      fetchDesc(inputValue);
+      //fetchDesc(inputValue);
     }
   };
   return /*#__PURE__*/React.createElement(EAMBaseInput, props, /*#__PURE__*/React.createElement(Autocomplete

@@ -19,19 +19,25 @@ const EAMAutocomplete = (props) => {
 
     useEffect(() => {
       setValid(true)
+      if (value) {
+        fetchDesc(value)
+      } else {
+        setDescription('')
+      }
     }, [value])
 
     useEffect(() => {
       setDescription(desc)
     }, [desc])
 
-    useEffect(() => {
-      if (!desc && value) {
-        fetchDesc(value);
-      }
-    }, [])
+    // useEffect(() => {
+    //   if (!desc && value) {
+    //     fetchDesc(value);
+    //   }
+    // }, [])
 
     const fetchDesc = async (hint) => {
+      console.log('fetch desc', hint)
       autocompleteHandler({handlerParams: autocompleteHandlerParams, filter: hint, operator: "="})
         .then(result => {
             let option = result.body.data.find(o => o.code === hint);
@@ -73,13 +79,12 @@ const EAMAutocomplete = (props) => {
       event.preventDefault();
     }
 
-
     const onCloseHandler = (event, reason) => {
       setOpen(false)
       // Only to be fired when we blur, press ESC or hit enter and the inputValue is different than the original value
       if ( reason === 'blur' && inputValue !== value) {
         onChange({code: inputValue, desc: ''})
-        fetchDesc(inputValue);
+        //fetchDesc(inputValue);
       }
     }
 
