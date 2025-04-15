@@ -70,7 +70,8 @@ const EAMAutocomplete = (props) => {
       }
 
       saveHistory(HISTORY_ID_PREFIX + id, newValue.code, newValue.desc, newValue.organization)
-      skipNextFetchRef.current = true;
+      skipNextFetchRef.current = true
+      setValid(true)
       onChange(newValue, newValue)
       setDescription(newValue.desc)
 

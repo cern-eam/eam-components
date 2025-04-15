@@ -86,6 +86,7 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
                 organization: option.organization
               }, option));
               setDescription(option.desc);
+              setValid(true);
             } else {
               setValid(!validate || false);
             }
@@ -119,6 +120,7 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
     }
     saveHistory(HISTORY_ID_PREFIX + id, newValue.code, newValue.desc, newValue.organization);
     skipNextFetchRef.current = true;
+    setValid(true);
     onChange(newValue, newValue);
     setDescription(newValue.desc);
 
