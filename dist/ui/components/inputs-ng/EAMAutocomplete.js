@@ -54,8 +54,6 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
     setValid = _useState8[1];
   var skipNextFetchRef = useRef(false);
   useEffect(function () {
-    console.log('effect');
-    setValid(true);
     if (skipNextFetchRef.current) {
       skipNextFetchRef.current = false; // Don't fetch/validate after we have selected a valid value an autocomplete
       return;
@@ -78,7 +76,6 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
             filter: hint,
             operator: "="
           }).then(function (result) {
-            console.log('r', result);
             var option = result.body.data.find(function (o) {
               return o.code === hint;
             });
@@ -90,7 +87,6 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
               }, option));
               setDescription(option.desc);
             } else {
-              console.log('e', !validate || false);
               setValid(!validate || false);
             }
           })["catch"](console.error);
