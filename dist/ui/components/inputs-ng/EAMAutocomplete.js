@@ -62,6 +62,7 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
       fetchDesc(value);
     } else {
       setDescription('');
+      setValid(true);
     }
   }, [value]);
   useEffect(function () {
@@ -136,7 +137,6 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
         code: inputValue,
         desc: ''
       });
-      //fetchDesc(inputValue);
     }
   };
   return /*#__PURE__*/React.createElement(EAMBaseInput, props, /*#__PURE__*/React.createElement(Autocomplete
@@ -178,7 +178,7 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
     renderInput: function renderInput(params) {
       return /*#__PURE__*/React.createElement(TextField, _extends({}, params, props, {
         desc: description,
-        errorText: valid ? "" : props.errorText ?? "Wrong entry"
+        errorText: props.errorText ?? (valid ? "" : "Wrong entry")
       }));
     }
   }));

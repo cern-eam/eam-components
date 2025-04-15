@@ -28,6 +28,7 @@ const EAMAutocomplete = (props) => {
         fetchDesc(value)
       } else {
         setDescription('')
+        setValid(true)
       }
     }, [value])
 
@@ -85,7 +86,6 @@ const EAMAutocomplete = (props) => {
       // Only to be fired when we blur, press ESC or hit enter and the inputValue is different than the original value
       if ( reason === 'blur' && inputValue !== value) {
         onChange({code: inputValue, desc: ''})
-        //fetchDesc(inputValue);
       }
     }
 
@@ -120,7 +120,7 @@ const EAMAutocomplete = (props) => {
             renderInput={(params) => <TextField {...params}
                                                 {...props}
                                                 desc={description}
-                                                errorText={valid ? "" : props.errorText ?? "Wrong entry"} />}
+                                                errorText = {props.errorText ?? (valid ? "" : "Wrong entry")}/>}
 
           />
       </EAMBaseInput>
