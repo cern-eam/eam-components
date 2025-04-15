@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import useFetchAutocompleteOptions from './hooks/useFetchAutocompleteOptions';
 import {areEqual, componentsProps, renderOptionHandler} from './tools/input-tools'
@@ -16,9 +16,16 @@ const EAMAutocomplete = (props) => {
     let [open, setOpen] = useState(false)
     let [fetchedOptions, loading] = useFetchAutocompleteOptions(autocompleteHandler, autocompleteHandlerParams, inputValue, value, open, id)
     let [valid, setValid] = useState(true)
-
+    const skipNextFetchRef = useRef(false);
+    
     useEffect(() => {
       setValid(true)
+
+      if (skipNextFetchRef.current) {
+        skipNextFetchRef.current = false; // Don't fetch/validate after we have selected a valid value an autocomplete
+        return;
+      }
+
       if (value) {
         fetchDesc(value)
       } else {
@@ -30,14 +37,7 @@ const EAMAutocomplete = (props) => {
       setDescription(desc)
     }, [desc])
 
-    // useEffect(() => {
-    //   if (!desc && value) {
-    //     fetchDesc(value);
-    //   }
-    // }, [])
-
     const fetchDesc = async (hint) => {
-      console.log('fetch desc', hint)
       autocompleteHandler({handlerParams: autocompleteHandlerParams, filter: hint, operator: "="})
         .then(result => {
             let option = result.body.data.find(o => o.code === hint);
@@ -66,12 +66,13 @@ const EAMAutocomplete = (props) => {
 
     const onChangeHandler = (event, newValue, reason) => {
       if (reason === 'clear') {
-        onChange({code: '', desc: ''})
+        onChange({code: '', desc: '', organization: ''})
         return;
       }
 
       saveHistory(HISTORY_ID_PREFIX + id, newValue.code, newValue.desc, newValue.organization)
-      onChange(newValue, newValue);
+      skipNextFetchRef.current = true;
+      onChange(newValue, newValue)
       setDescription(newValue.desc)
 
       // Don't bubble up any events (won't trigger a save when we select something by pressing enter)
