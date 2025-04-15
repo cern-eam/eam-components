@@ -43,6 +43,7 @@ const EAMAutocomplete = (props) => {
               delete option.code
               updateDesc && onChange({desc: option.desc, organization: option.organization, ...option})
               setDescription(option.desc)
+              setValid(true)
             } else {
               setValid(!validate || false)
             }
