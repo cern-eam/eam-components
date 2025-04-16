@@ -22,7 +22,7 @@ const NAN_ERROR = ' must be a valid number'
  */
 const useFieldsValidator = (
     fieldsData,
-    formValues,
+    entity,
     emptyValueError = BLANK_ERROR,
     nanError = NAN_ERROR
 ) => {
@@ -39,7 +39,7 @@ const useFieldsValidator = (
                 return errorMessagesAcc;
             }
 
-            let value = get(formValues, fieldKey);
+            let value = get(entity, fieldLayout.xpath);
 
             if (isRequired(fieldLayout) && !value) {
                 errorMessagesAcc[fieldKey] = fieldLayout.text + emptyValueError;
@@ -50,10 +50,9 @@ const useFieldsValidator = (
                 errorMessagesAcc[fieldKey] = fieldLayout.text + nanError;
                 allFieldsAreValid = false;
             }
-
+            
             return errorMessagesAcc;
         }, {});
-
         setErrorMessages(generatedErrorMessages);
 
         return allFieldsAreValid;

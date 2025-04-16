@@ -25,7 +25,7 @@ var NAN_ERROR = ' must be a valid number';
  * `validateFields` is the validation function to be used before submitting the form.
  * `resetErrorMessages` is a function that clears the generated error messages.
  */
-var useFieldsValidator = function useFieldsValidator(fieldsData, formValues) {
+var useFieldsValidator = function useFieldsValidator(fieldsData, entity) {
   var emptyValueError = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : BLANK_ERROR;
   var nanError = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : NAN_ERROR;
   var _useState = useState({}),
@@ -44,7 +44,7 @@ var useFieldsValidator = function useFieldsValidator(fieldsData, formValues) {
       if (isHidden(fieldLayout)) {
         return errorMessagesAcc;
       }
-      var value = get(formValues, fieldKey);
+      var value = get(entity, fieldLayout.xpath);
       if (isRequired(fieldLayout) && !value) {
         errorMessagesAcc[fieldKey] = fieldLayout.text + emptyValueError;
         allFieldsAreValid = false;
