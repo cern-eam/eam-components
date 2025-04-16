@@ -9,7 +9,7 @@ import { saveHistory, HISTORY_ID_PREFIX } from './tools/history-tools';
 const EAMAutocomplete = (props) => {
 
   let {autocompleteHandler, autocompleteHandlerParams = [],
-       value, desc, id, renderValue, onChange, validate = true, updateDesc = true} = props;
+       value, desc, id, renderValue, onChange, validate = true, updateDesc = true, onSelect} = props;
 
     let [inputValue, setInputValue] = useState("")
     let [description, setDescription] = useState("")
@@ -23,7 +23,6 @@ const EAMAutocomplete = (props) => {
         skipNextFetchRef.current = false; // Don't fetch/validate after we have selected a valid value an autocomplete
         return;
       }
-
       if (value) {
         fetchDesc(value)
       } else {
@@ -41,7 +40,8 @@ const EAMAutocomplete = (props) => {
         .then(result => {
             let option = result.body.data.find(o => o.code === hint);
             if (option) {
-              delete option.code
+              onSelect?.(option)
+              delete option.code // Don't fire the updateProperty for 'code' 
               updateDesc && onChange({desc: option.desc, organization: option.organization, ...option})
               setDescription(option.desc)
               setValid(true)
@@ -67,12 +67,14 @@ const EAMAutocomplete = (props) => {
     const onChangeHandler = (event, newValue, reason) => {
       if (reason === 'clear') {
         onChange({code: '', desc: '', organization: ''})
+        onSelect?.(null)
         return;
       }
 
       saveHistory(HISTORY_ID_PREFIX + id, newValue.code, newValue.desc, newValue.organization)
       skipNextFetchRef.current = true
       setValid(true)
+      onSelect?.(newValue)
       onChange(newValue, newValue)
       setDescription(newValue.desc)
 

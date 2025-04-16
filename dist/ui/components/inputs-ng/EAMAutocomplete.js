@@ -31,7 +31,8 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
     _props$validate = props.validate,
     validate = _props$validate === void 0 ? true : _props$validate,
     _props$updateDesc = props.updateDesc,
-    updateDesc = _props$updateDesc === void 0 ? true : _props$updateDesc;
+    updateDesc = _props$updateDesc === void 0 ? true : _props$updateDesc,
+    onSelect = props.onSelect;
   var _useState = useState(""),
     _useState2 = _slicedToArray(_useState, 2),
     inputValue = _useState2[0],
@@ -81,7 +82,8 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
               return o.code === hint;
             });
             if (option) {
-              delete option.code;
+              onSelect?.(option);
+              delete option.code; // Don't fire the updateProperty for 'code' 
               updateDesc && onChange(_objectSpread({
                 desc: option.desc,
                 organization: option.organization
@@ -117,11 +119,13 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
         desc: '',
         organization: ''
       });
+      onSelect?.(null);
       return;
     }
     saveHistory(HISTORY_ID_PREFIX + id, newValue.code, newValue.desc, newValue.organization);
     skipNextFetchRef.current = true;
     setValid(true);
+    onSelect?.(newValue);
     onChange(newValue, newValue);
     setDescription(newValue.desc);
 
