@@ -27,7 +27,8 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
     desc = props.desc,
     id = props.id,
     renderValue = props.renderValue,
-    onChange = props.onChange,
+    _props$onChange = props.onChange,
+    onChange = _props$onChange === void 0 ? function () {} : _props$onChange,
     _props$validate = props.validate,
     validate = _props$validate === void 0 ? true : _props$validate,
     _props$updateDesc = props.updateDesc,
@@ -82,7 +83,7 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
               return o.code === hint;
             });
             if (option) {
-              onSelect?.(option);
+              //onSelect?.(option)
               delete option.code; // Don't fire the updateProperty for 'code' 
               updateDesc && onChange(_objectSpread({
                 desc: option.desc,
@@ -136,11 +137,12 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
   var onCloseHandler = function onCloseHandler(event, reason) {
     setOpen(false);
     // Only to be fired when we blur, press ESC or hit enter and the inputValue is different than the original value
-    if (reason === 'blur' && inputValue !== value) {
+    if (reason === 'blur' && (inputValue ?? '') !== (value ?? '')) {
       onChange({
         code: inputValue,
         desc: ''
       });
+      onSelect?.(inputValue);
     }
   };
   return /*#__PURE__*/React.createElement(EAMBaseInput, props, /*#__PURE__*/React.createElement(Autocomplete

@@ -44,15 +44,17 @@ var useFieldsValidator = function useFieldsValidator(fieldsData, entity) {
       if (isHidden(fieldLayout)) {
         return errorMessagesAcc;
       }
-      var value = get(entity, fieldLayout.xpath);
+      var value = get(entity, fieldLayout.xpath) ?? get(entity, fieldKey);
       if (isRequired(fieldLayout) && !value) {
         errorMessagesAcc[fieldKey] = fieldLayout.text + emptyValueError;
         allFieldsAreValid = false;
       }
-      if ((fieldLayout.fieldType === 'number' || fieldLayout.fieldType === 'currency') && isNaN(value ?? 0)) {
-        errorMessagesAcc[fieldKey] = fieldLayout.text + nanError;
-        allFieldsAreValid = false;
-      }
+
+      // if ((fieldLayout.fieldType === 'number' || fieldLayout.fieldType === 'currency') && isNaN(value ?? 0)) {
+      //     errorMessagesAcc[fieldKey] = fieldLayout.text + nanError;
+      //     allFieldsAreValid = false;
+      // }
+
       return errorMessagesAcc;
     }, {});
     setErrorMessages(generatedErrorMessages);

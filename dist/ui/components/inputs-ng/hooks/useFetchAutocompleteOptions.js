@@ -35,7 +35,6 @@ var useFetchAutocompleteOptions = function useFetchAutocompleteOptions(autocompl
     if (!open) {
       return;
     }
-
     // If there is a value and nothing new was typed do nothing 
     if (value && value === inputValue) {
       return;

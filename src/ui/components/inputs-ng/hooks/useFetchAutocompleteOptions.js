@@ -20,7 +20,6 @@ const useFetchAutocompleteOptions = (autocompleteHandler, autocompleteHandlerPar
         if (!open) {
             return;
         }
-
         // If there is a value and nothing new was typed do nothing 
         if (value && value === inputValue) {
             return;

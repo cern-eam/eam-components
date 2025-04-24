@@ -9,7 +9,7 @@ import { saveHistory, HISTORY_ID_PREFIX } from './tools/history-tools';
 const EAMAutocomplete = (props) => {
 
   let {autocompleteHandler, autocompleteHandlerParams = [],
-       value, desc, id, renderValue, onChange, validate = true, updateDesc = true, onSelect} = props;
+       value, desc, id, renderValue, onChange = () => {}, validate = true, updateDesc = true, onSelect} = props;
 
     let [inputValue, setInputValue] = useState("")
     let [description, setDescription] = useState("")
@@ -40,7 +40,7 @@ const EAMAutocomplete = (props) => {
         .then(result => {
             let option = result.body.data.find(o => o.code === hint);
             if (option) {
-              onSelect?.(option)
+              //onSelect?.(option)
               delete option.code // Don't fire the updateProperty for 'code' 
               updateDesc && onChange({desc: option.desc, organization: option.organization, ...option})
               setDescription(option.desc)
@@ -68,6 +68,7 @@ const EAMAutocomplete = (props) => {
       if (reason === 'clear') {
         onChange({code: '', desc: '', organization: ''})
         onSelect?.(null)
+        
         return;
       }
 
@@ -86,8 +87,9 @@ const EAMAutocomplete = (props) => {
     const onCloseHandler = (event, reason) => {
       setOpen(false)
       // Only to be fired when we blur, press ESC or hit enter and the inputValue is different than the original value
-      if ( reason === 'blur' && inputValue !== value) {
+      if ( reason === 'blur' && (inputValue ?? '') !== (value ?? '')) {
         onChange({code: inputValue, desc: ''})
+        onSelect?.(inputValue)
       }
     }
 
