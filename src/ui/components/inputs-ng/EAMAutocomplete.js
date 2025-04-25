@@ -9,7 +9,7 @@ import { saveHistory, HISTORY_ID_PREFIX } from './tools/history-tools';
 const EAMAutocomplete = (props) => {
 
   let {autocompleteHandler, autocompleteHandlerParams = [],
-       value, desc, id, renderValue, onChange = () => {}, validate = true, updateDesc = true, onSelect} = props;
+       value, desc, id, renderValue, onChange, validate = true, updateDesc = true, onSelect} = props;
 
     let [inputValue, setInputValue] = useState("")
     let [description, setDescription] = useState("")
@@ -20,7 +20,7 @@ const EAMAutocomplete = (props) => {
     
     useEffect(() => {
       if (skipNextFetchRef.current) {
-        skipNextFetchRef.current = false; // Don't fetch/validate after we have selected a valid value an autocomplete
+        skipNextFetchRef.current = false; // Don't fetch/validate after we have selected a valid value from autocomplete
         return;
       }
       if (value) {
@@ -35,14 +35,14 @@ const EAMAutocomplete = (props) => {
       setDescription(desc)
     }, [desc])
 
-    const fetchDesc = async (hint) => {
+    const fetchDesc = async (hint, fireOnSelect = false) => {
       autocompleteHandler({handlerParams: autocompleteHandlerParams, filter: hint, operator: "="})
         .then(result => {
             let option = result.body.data.find(o => o.code === hint);
             if (option) {
-              //onSelect?.(option)
+              fireOnSelect && onSelect?.(option)
               delete option.code // Don't fire the updateProperty for 'code' 
-              updateDesc && onChange({desc: option.desc, organization: option.organization, ...option})
+              updateDesc && onChange?.({desc: option.desc, organization: option.organization, ...option})
               setDescription(option.desc)
               setValid(true)
             } else {
@@ -59,24 +59,25 @@ const EAMAutocomplete = (props) => {
     const onInputChangeHandler = (event, newInputValue) => {
      setInputValue(newInputValue);
      if (newInputValue !== value) {
-      desc && updateDesc && onChange({desc: ''})
+      desc && updateDesc && onChange?.({desc: ''})
       setDescription('');
      }
     }
 
     const onChangeHandler = (event, newValue, reason) => {
       if (reason === 'clear') {
-        onChange({code: '', desc: '', organization: ''})
+        onChange?.({code: '', desc: '', organization: ''})
         onSelect?.(null)
-        
+        setValid(true)
         return;
       }
 
       saveHistory(HISTORY_ID_PREFIX + id, newValue.code, newValue.desc, newValue.organization)
-      skipNextFetchRef.current = true
+      
       setValid(true)
+      skipNextFetchRef.current = true
       onSelect?.(newValue)
-      onChange(newValue, newValue)
+      onChange?.(newValue, newValue)
       setDescription(newValue.desc)
 
       // Don't bubble up any events (won't trigger a save when we select something by pressing enter)
@@ -88,11 +89,13 @@ const EAMAutocomplete = (props) => {
       setOpen(false)
       // Only to be fired when we blur, press ESC or hit enter and the inputValue is different than the original value
       if ( reason === 'blur' && (inputValue ?? '') !== (value ?? '')) {
-        onChange({code: inputValue, desc: ''})
-        onSelect?.(inputValue)
+        onChange?.({code: inputValue, desc: ''})
+        if (!onChange) {
+          fetchDesc(inputValue, true)
+        }
       }
     }
-
+    
     return (
       <EAMBaseInput {...props}>
           <Autocomplete

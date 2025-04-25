@@ -27,8 +27,7 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
     desc = props.desc,
     id = props.id,
     renderValue = props.renderValue,
-    _props$onChange = props.onChange,
-    onChange = _props$onChange === void 0 ? function () {} : _props$onChange,
+    onChange = props.onChange,
     _props$validate = props.validate,
     validate = _props$validate === void 0 ? true : _props$validate,
     _props$updateDesc = props.updateDesc,
@@ -57,7 +56,7 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
   var skipNextFetchRef = useRef(false);
   useEffect(function () {
     if (skipNextFetchRef.current) {
-      skipNextFetchRef.current = false; // Don't fetch/validate after we have selected a valid value an autocomplete
+      skipNextFetchRef.current = false; // Don't fetch/validate after we have selected a valid value from autocomplete
       return;
     }
     if (value) {
@@ -71,9 +70,12 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
     setDescription(desc);
   }, [desc]);
   var fetchDesc = function fetchDesc(hint) {
+    var fireOnSelect,
+      _args = arguments;
     return _regeneratorRuntime().async(function fetchDesc$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
+          fireOnSelect = _args.length > 1 && _args[1] !== undefined ? _args[1] : false;
           autocompleteHandler({
             handlerParams: autocompleteHandlerParams,
             filter: hint,
@@ -83,9 +85,9 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
               return o.code === hint;
             });
             if (option) {
-              //onSelect?.(option)
+              fireOnSelect && onSelect?.(option);
               delete option.code; // Don't fire the updateProperty for 'code' 
-              updateDesc && onChange(_objectSpread({
+              updateDesc && onChange?.(_objectSpread({
                 desc: option.desc,
                 organization: option.organization
               }, option));
@@ -95,7 +97,7 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
               setValid(!validate || false);
             }
           })["catch"](console.error);
-        case 1:
+        case 2:
         case "end":
           return _context.stop();
       }
@@ -107,7 +109,7 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
   var onInputChangeHandler = function onInputChangeHandler(event, newInputValue) {
     setInputValue(newInputValue);
     if (newInputValue !== value) {
-      desc && updateDesc && onChange({
+      desc && updateDesc && onChange?.({
         desc: ''
       });
       setDescription('');
@@ -115,19 +117,20 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
   };
   var onChangeHandler = function onChangeHandler(event, newValue, reason) {
     if (reason === 'clear') {
-      onChange({
+      onChange?.({
         code: '',
         desc: '',
         organization: ''
       });
       onSelect?.(null);
+      setValid(true);
       return;
     }
     saveHistory(HISTORY_ID_PREFIX + id, newValue.code, newValue.desc, newValue.organization);
-    skipNextFetchRef.current = true;
     setValid(true);
+    skipNextFetchRef.current = true;
     onSelect?.(newValue);
-    onChange(newValue, newValue);
+    onChange?.(newValue, newValue);
     setDescription(newValue.desc);
 
     // Don't bubble up any events (won't trigger a save when we select something by pressing enter)
@@ -138,11 +141,13 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
     setOpen(false);
     // Only to be fired when we blur, press ESC or hit enter and the inputValue is different than the original value
     if (reason === 'blur' && (inputValue ?? '') !== (value ?? '')) {
-      onChange({
+      onChange?.({
         code: inputValue,
         desc: ''
       });
-      onSelect?.(inputValue);
+      if (!onChange) {
+        fetchDesc(inputValue, true);
+      }
     }
   };
   return /*#__PURE__*/React.createElement(EAMBaseInput, props, /*#__PURE__*/React.createElement(Autocomplete
