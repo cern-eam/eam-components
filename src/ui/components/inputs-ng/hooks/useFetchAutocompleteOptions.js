@@ -3,7 +3,7 @@ import debounce from 'lodash/debounce';
 import { fetchHistory, HISTORY_ID_PREFIX } from "../tools/history-tools";
 import { extractOptions } from "./tools";
 
-const useFetchAutocompleteOptions = (autocompleteHandler, autocompleteHandlerParams = [], inputValue, value, open, fieldId) => {
+const useFetchAutocompleteOptions = (autocompleteHandler, autocompleteHandlerParams = [], renderDependencies = [], inputValue, value, open, fieldId) => {
   
     const [options, setOptions] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -21,7 +21,7 @@ const useFetchAutocompleteOptions = (autocompleteHandler, autocompleteHandlerPar
             return;
         }
         // If there is a value and nothing new was typed do nothing 
-        if (value && value === inputValue) {
+        if (value && (value === inputValue)) {
             return;
         }
 
@@ -35,7 +35,7 @@ const useFetchAutocompleteOptions = (autocompleteHandler, autocompleteHandlerPar
 
     // Memoizing as we always need the same instance of the function that remembers and debounces previous requests 
     const fetchOptionsDebounced = useMemo(
-        () => debounce( (...args) => fetchOptions(...args), 200), []
+        () => debounce( (...args) => fetchOptions(...args), 200), [...autocompleteHandlerParams, ...renderDependencies]
     );
 
     const fetchOptions = (autocompleteHandlerParams, inputValue) => {

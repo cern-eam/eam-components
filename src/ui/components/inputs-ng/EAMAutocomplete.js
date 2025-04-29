@@ -8,13 +8,13 @@ import { saveHistory, HISTORY_ID_PREFIX } from './tools/history-tools';
 
 const EAMAutocomplete = (props) => {
 
-  let {autocompleteHandler, autocompleteHandlerParams = [],
+  let {autocompleteHandler, autocompleteHandlerParams = [], renderDependencies = [],
        value, desc, id, renderValue, onChange, validate = true, updateDesc = true, onSelect} = props;
 
     let [inputValue, setInputValue] = useState("")
     let [description, setDescription] = useState("")
     let [open, setOpen] = useState(false)
-    let [fetchedOptions, loading] = useFetchAutocompleteOptions(autocompleteHandler, autocompleteHandlerParams, inputValue, value, open, id)
+    let [fetchedOptions, loading] = useFetchAutocompleteOptions(autocompleteHandler, autocompleteHandlerParams, renderDependencies, inputValue, value, open, id)
     let [valid, setValid] = useState(true)
     const skipNextFetchRef = useRef(false);
     

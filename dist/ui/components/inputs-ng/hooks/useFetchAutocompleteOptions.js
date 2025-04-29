@@ -1,3 +1,7 @@
+function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _iterableToArray(r) { if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r); }
+function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(r); }
 function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
@@ -10,10 +14,11 @@ import { fetchHistory, HISTORY_ID_PREFIX } from "../tools/history-tools";
 import { extractOptions } from "./tools";
 var useFetchAutocompleteOptions = function useFetchAutocompleteOptions(autocompleteHandler) {
   var autocompleteHandlerParams = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
-  var inputValue = arguments.length > 2 ? arguments[2] : undefined;
-  var value = arguments.length > 3 ? arguments[3] : undefined;
-  var open = arguments.length > 4 ? arguments[4] : undefined;
-  var fieldId = arguments.length > 5 ? arguments[5] : undefined;
+  var renderDependencies = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
+  var inputValue = arguments.length > 3 ? arguments[3] : undefined;
+  var value = arguments.length > 4 ? arguments[4] : undefined;
+  var open = arguments.length > 5 ? arguments[5] : undefined;
+  var fieldId = arguments.length > 6 ? arguments[6] : undefined;
   var _useState = useState([]),
     _useState2 = _slicedToArray(_useState, 2),
     options = _useState2[0],
@@ -52,7 +57,7 @@ var useFetchAutocompleteOptions = function useFetchAutocompleteOptions(autocompl
     return debounce(function () {
       return fetchOptions.apply(void 0, arguments);
     }, 200);
-  }, []);
+  }, [].concat(_toConsumableArray(autocompleteHandlerParams), _toConsumableArray(renderDependencies)));
   var fetchOptions = function fetchOptions(autocompleteHandlerParams, inputValue) {
     setLoading(true);
     callHandler({

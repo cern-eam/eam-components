@@ -23,6 +23,8 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
   var autocompleteHandler = props.autocompleteHandler,
     _props$autocompleteHa = props.autocompleteHandlerParams,
     autocompleteHandlerParams = _props$autocompleteHa === void 0 ? [] : _props$autocompleteHa,
+    _props$renderDependen = props.renderDependencies,
+    renderDependencies = _props$renderDependen === void 0 ? [] : _props$renderDependen,
     value = props.value,
     desc = props.desc,
     id = props.id,
@@ -45,7 +47,7 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
     _useState6 = _slicedToArray(_useState5, 2),
     open = _useState6[0],
     setOpen = _useState6[1];
-  var _useFetchAutocomplete = useFetchAutocompleteOptions(autocompleteHandler, autocompleteHandlerParams, inputValue, value, open, id),
+  var _useFetchAutocomplete = useFetchAutocompleteOptions(autocompleteHandler, autocompleteHandlerParams, renderDependencies, inputValue, value, open, id),
     _useFetchAutocomplete2 = _slicedToArray(_useFetchAutocomplete, 2),
     fetchedOptions = _useFetchAutocomplete2[0],
     loading = _useFetchAutocomplete2[1];
