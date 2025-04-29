@@ -9,7 +9,7 @@ import { saveHistory, HISTORY_ID_PREFIX } from './tools/history-tools';
 const EAMAutocomplete = (props) => {
 
   let {autocompleteHandler, autocompleteHandlerParams = [],
-       value, desc, id, renderValue, onChange, validate, updateDesc = true} = props;
+       value, desc, id, renderValue, onChange, validate, updateDesc = true, updateObject} = props;
 
     let [inputValue, setInputValue] = useState("")
     let [description, setDescription] = useState("")
@@ -36,7 +36,7 @@ const EAMAutocomplete = (props) => {
         .then(result => {
             let option = result.body.data.find(o => o.code === hint);
             if (option) {
-              updateDesc && onChange({desc: option.desc})
+              updateObject ? onChange(option) : updateDesc ? onChange({desc: option.desc}) : null;
               setDescription(option.desc)
             } else {
               setValid(!validate || false)
