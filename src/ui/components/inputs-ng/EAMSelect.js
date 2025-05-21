@@ -74,10 +74,11 @@ const EAMSelect = (props) => {
 
     const onCloseHandler = (event, reason) => {
       if ( (reason === 'blur' || reason === 'escape') && inputValue) {
-        if (getOptions().some(o => o.code === inputValue)) {
-            onChange(getOptions().find(o => o.code === inputValue))
+        const optionMatch = getOptions().find(o => o.code === inputValue || getOptionLabelHandler(o) === inputValue)
+        if (optionMatch) {
+            onChange(optionMatch)
         } else {
-            !validate && onChange({code: inputValue, desc: ''})
+          !validate && onChange({code: inputValue, desc: ''})
         }
       }
     }

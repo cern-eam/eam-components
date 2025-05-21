@@ -99,12 +99,11 @@ var EAMSelect = function EAMSelect(props) {
   };
   var onCloseHandler = function onCloseHandler(event, reason) {
     if ((reason === 'blur' || reason === 'escape') && inputValue) {
-      if (getOptions().some(function (o) {
-        return o.code === inputValue;
-      })) {
-        onChange(getOptions().find(function (o) {
-          return o.code === inputValue;
-        }));
+      var optionMatch = getOptions().find(function (o) {
+        return o.code === inputValue || getOptionLabelHandler(o) === inputValue;
+      });
+      if (optionMatch) {
+        onChange(optionMatch);
       } else {
         !validate && onChange({
           code: inputValue,

@@ -9,7 +9,7 @@ import { saveHistory, HISTORY_ID_PREFIX } from './tools/history-tools';
 const EAMAutocomplete = (props) => {
 
   let {autocompleteHandler, autocompleteHandlerParams = [], renderDependencies = [],
-       value, desc, id, renderValue, onChange, validate = true, updateDesc = true, onSelect} = props;
+       value, desc, id, renderValue, onChange, validate = true, updateDesc = true, onSelect, onClear} = props;
 
     let [inputValue, setInputValue] = useState("")
     let [description, setDescription] = useState("")
@@ -68,6 +68,7 @@ const EAMAutocomplete = (props) => {
       if (reason === 'clear') {
         onChange?.({code: '', desc: '', organization: ''})
         onSelect?.(null)
+        onClear?.()
         setValid(true)
         return;
       }
@@ -90,6 +91,7 @@ const EAMAutocomplete = (props) => {
       // Only to be fired when we blur, press ESC or hit enter and the inputValue is different than the original value
       if ( reason === 'blur' && (inputValue ?? '') !== (value ?? '')) {
         onChange?.({code: inputValue, desc: ''})
+
         if (!onChange) {
           fetchDesc(inputValue, true)
         }

@@ -34,7 +34,8 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
     validate = _props$validate === void 0 ? true : _props$validate,
     _props$updateDesc = props.updateDesc,
     updateDesc = _props$updateDesc === void 0 ? true : _props$updateDesc,
-    onSelect = props.onSelect;
+    onSelect = props.onSelect,
+    onClear = props.onClear;
   var _useState = useState(""),
     _useState2 = _slicedToArray(_useState, 2),
     inputValue = _useState2[0],
@@ -125,6 +126,7 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
         organization: ''
       });
       onSelect?.(null);
+      onClear?.();
       setValid(true);
       return;
     }
