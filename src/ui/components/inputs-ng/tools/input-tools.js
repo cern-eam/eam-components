@@ -50,6 +50,9 @@ export const processElementInfo = (elementInfo) => {
             case "datetime":
                 data.type = 'datetime'
                 break;
+            case "checkbox":
+                data.type = 'checkbox'
+                break;
             default:
                 data.type = 'text'
         }
