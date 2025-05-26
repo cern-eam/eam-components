@@ -4,7 +4,7 @@ import withStyles from '@mui/styles/withStyles';
 import FilterIcon from "@mui/icons-material/FilterList";
 import SearchIcon from "@mui/icons-material/Search";
 import Autocomplete from '@mui/material/Autocomplete';
-import React, { createRef, useCallback, useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 
 import DataspyAutocompleteInput from "./DataspyAutocompleteInput";
 
@@ -40,7 +40,7 @@ const EAMGridHead = ({
     onResetFilters,
 }) => {
     const classes = useStyles();
-    const showDataspyChips = useMemo(() => dataspies.length < 4, [dataspies]);
+    const showDataspyChips = useMemo(() => dataspies.length < 6, [dataspies]);
 
     return (
         <Box component={ContainerGrid}>
@@ -49,9 +49,9 @@ const EAMGridHead = ({
                 spacing={1}
                 direction="row"
                 alignItems="center">
-                <Grid item xs={12} sm={12} md={showDataspyChips ? 7 : 5}>
+                <Grid item xs={12} sm={12} md={showDataspyChips ? true : 5}>
                         {showDataspyChips ?
-                            <Box display="flex" alignItems="center">
+                            <Box flexGrow={1} display="flex" alignItems="center">
                                 {dataspies.length ? <Typography variant="body2" color="textSecondary">Dataspy:</Typography> : null}
                                 <Box className={classes.dataspyChip}>
                                     {dataspies.filter(Boolean).map((dataspy, i) =>
@@ -82,7 +82,7 @@ const EAMGridHead = ({
                             </Box>
                         }
                 </Grid>
-                <Grid item xs={12} sm={12} md={showDataspyChips ? 5 : 7}>
+                <Grid item xs={12} sm={12} md={showDataspyChips ? "auto" : 7}>
                     <Grid
                         container
                         spacing={1}
