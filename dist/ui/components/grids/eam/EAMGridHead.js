@@ -10,7 +10,7 @@ import withStyles from '@mui/styles/withStyles';
 import FilterIcon from "@mui/icons-material/FilterList";
 import SearchIcon from "@mui/icons-material/Search";
 import Autocomplete from '@mui/material/Autocomplete';
-import React, { createRef, useCallback, useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import DataspyAutocompleteInput from "./DataspyAutocompleteInput";
 var ContainerGrid = withStyles(function (theme) {
   return {
@@ -46,7 +46,7 @@ var EAMGridHead = function EAMGridHead(_ref) {
     onResetFilters = _ref.onResetFilters;
   var classes = useStyles();
   var showDataspyChips = useMemo(function () {
-    return dataspies.length < 4;
+    return dataspies.length < 6;
   }, [dataspies]);
   return /*#__PURE__*/React.createElement(Box, {
     component: ContainerGrid
@@ -59,8 +59,9 @@ var EAMGridHead = function EAMGridHead(_ref) {
     item: true,
     xs: 12,
     sm: 12,
-    md: showDataspyChips ? 7 : 5
+    md: showDataspyChips ? true : 5
   }, showDataspyChips ? /*#__PURE__*/React.createElement(Box, {
+    flexGrow: 1,
     display: "flex",
     alignItems: "center"
   }, dataspies.length ? /*#__PURE__*/React.createElement(Typography, {
@@ -101,7 +102,7 @@ var EAMGridHead = function EAMGridHead(_ref) {
     item: true,
     xs: 12,
     sm: 12,
-    md: showDataspyChips ? 5 : 7
+    md: showDataspyChips ? "auto" : 7
   }, /*#__PURE__*/React.createElement(Grid, {
     container: true,
     spacing: 1,
