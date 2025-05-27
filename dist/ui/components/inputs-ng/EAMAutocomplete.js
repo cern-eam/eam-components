@@ -29,7 +29,8 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
     onChange = props.onChange,
     validate = props.validate,
     _props$updateDesc = props.updateDesc,
-    updateDesc = _props$updateDesc === void 0 ? true : _props$updateDesc;
+    updateDesc = _props$updateDesc === void 0 ? true : _props$updateDesc,
+    updateObject = props.updateObject;
   var _useState = useState(""),
     _useState2 = _slicedToArray(_useState, 2),
     inputValue = _useState2[0],
@@ -70,9 +71,9 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
               return o.code === hint;
             });
             if (option) {
-              updateDesc && onChange({
+              updateObject ? onChange(option) : updateDesc ? onChange({
                 desc: option.desc
-              });
+              }) : null;
               setDescription(option.desc);
             } else {
               setValid(!validate || false);

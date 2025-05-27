@@ -81,7 +81,8 @@ var EAMGridTab = function EAMGridTab(props) {
   }, props), /*#__PURE__*/React.createElement(EAMGrid, {
     gridContainerStyle: _objectSpread({}, gridContainerStyle)
   })) : /*#__PURE__*/React.createElement(EAMTableGridRequestAdapter, {
-    gridRequest: gridRequest
+    gridRequest: gridRequest,
+    localizeResults: true
   }, function (_ref3) {
     var loading = _ref3.loading,
       requestError = _ref3.requestError,

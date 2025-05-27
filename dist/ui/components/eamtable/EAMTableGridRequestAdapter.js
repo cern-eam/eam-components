@@ -10,7 +10,8 @@ import GridWS from "../eamgrid/lib/GridWS";
 import EAMTableDataAdapter from "./EAMTableDataAdapter";
 var EAMTableGridRequestAdapter = function EAMTableGridRequestAdapter(props) {
   var gridRequest = props.gridRequest,
-    headers = props.headers;
+    headers = props.headers,
+    localizeResults = props.localizeResults;
   var convertRowData = function convertRowData(responseBody) {
     return flattenGridRow((responseBody.data || {}).row || []);
   };
@@ -22,7 +23,11 @@ var EAMTableGridRequestAdapter = function EAMTableGridRequestAdapter(props) {
       return _regeneratorRuntime().async(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
-            return _context.abrupt("return", GridWS.getGridData(gridRequest));
+            return _context.abrupt("return", GridWS.getGridData(gridRequest, {
+              headers: localizeResults ? {
+                INFOR_LOCALIZE_RESULTS: true
+              } : {}
+            }));
           case 1:
           case "end":
             return _context.stop();
@@ -49,6 +54,7 @@ var getGridFieldsColumns = function getGridFieldsColumns(gridFields, headers) {
     return {
       id: gf.name,
       header: headers ? headers[gf.name] : gf.label,
+      dataType: gf.dataType,
       width: gf.width
     };
   });

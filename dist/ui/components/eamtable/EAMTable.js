@@ -11,6 +11,7 @@ import { MUITableHeader, MUITableBody } from "../datagrid/presentation/table";
 import { Table, TableCell, TableContainer, Checkbox, Fade } from "@mui/material";
 import withStyles from '@mui/styles/withStyles';
 import BlockUi from 'react-block-ui';
+import { EAMCellField } from "../grids/eam/utils";
 var CustomCellComponent = withStyles(function (theme) {
   return {
     head: {
@@ -74,7 +75,10 @@ var EAMTable = function EAMTable(props) {
       CellComponent: CellComponent
     }) || /*#__PURE__*/React.createElement(CellComponent, {
       style: cellStyle
-    }, getDisplayValue());
+    }, EAMCellField({
+      column: columnMetadata,
+      value: getDisplayValue()
+    }));
   };
   var computedColumnsMetadata = columnsMetadata;
   if (selectRowsEnabled) {
