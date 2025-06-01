@@ -42,7 +42,7 @@ const TextField = (props) => {
         inputProps,
         inputRef,
         endTextAdornment, endAdornment,
-        hideDescription, disabled, maxLength, uppercase, errorText, style, type, rightAlign, textarea = false} = props;
+        hideDescription, disabled, maxLength, uppercase, errorText, style, type, rightAlign, valid = true, textarea = false} = props;
 
     const onInputUpperCaseHandler = event => {
         var input = event.target;
@@ -57,7 +57,7 @@ const TextField = (props) => {
     return (
         <div style={{...divRootContainerStyle, ...style}}>
             <div style={divInputContainerStyle}>
-                <div style={{...divInputStyle, ...(errorText ? fieldInvalid : {})}} ref={props.InputProps?.ref}>
+                <div style={{...divInputStyle, ...((errorText || !valid) ? fieldInvalid : {})}} ref={props.InputProps?.ref}>
                     <InputComponent type={type === 'password' ? 'password' : 'text'}
                                     ref={inputRef}
                                     {...inputProps}

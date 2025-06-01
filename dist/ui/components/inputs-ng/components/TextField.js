@@ -53,6 +53,8 @@ var TextField = function TextField(props) {
     style = props.style,
     type = props.type,
     rightAlign = props.rightAlign,
+    _props$valid = props.valid,
+    valid = _props$valid === void 0 ? true : _props$valid,
     _props$textarea = props.textarea,
     textarea = _props$textarea === void 0 ? false : _props$textarea;
   var onInputUpperCaseHandler = function onInputUpperCaseHandler(event) {
@@ -68,7 +70,7 @@ var TextField = function TextField(props) {
   }, /*#__PURE__*/React.createElement("div", {
     style: divInputContainerStyle
   }, /*#__PURE__*/React.createElement("div", {
-    style: _objectSpread({}, divInputStyle, {}, errorText ? fieldInvalid : {}),
+    style: _objectSpread({}, divInputStyle, {}, errorText || !valid ? fieldInvalid : {}),
     ref: props.InputProps?.ref
   }, /*#__PURE__*/React.createElement(InputComponent, _extends({
     type: type === 'password' ? 'password' : 'text',

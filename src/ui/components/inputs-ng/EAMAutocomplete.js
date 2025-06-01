@@ -129,7 +129,8 @@ const EAMAutocomplete = (props) => {
             renderInput={(params) => <TextField {...params}
                                                 {...props}
                                                 desc={description}
-                                                errorText = {props.errorText ?? (valid ? "" : "Wrong entry")}/>}
+                                                errorText = {props.errorText}
+                                                valid = {valid}/>}
 
           />
       </EAMBaseInput>

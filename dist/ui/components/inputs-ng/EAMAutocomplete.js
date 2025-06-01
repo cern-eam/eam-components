@@ -193,7 +193,8 @@ var EAMAutocomplete = function EAMAutocomplete(props) {
     renderInput: function renderInput(params) {
       return /*#__PURE__*/React.createElement(TextField, _extends({}, params, props, {
         desc: description,
-        errorText: props.errorText ?? (valid ? "" : "Wrong entry")
+        errorText: props.errorText,
+        valid: valid
       }));
     }
   }));
