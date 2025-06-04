@@ -68,7 +68,7 @@ var EAMGridTab = function EAMGridTab(props) {
   return showGrid ? /*#__PURE__*/React.createElement(EAMGridContextProvider, _extends({
     searchOnMount: true,
     gridName: gridName,
-    useNative: false,
+    useNative: true,
     gridRequestAdapter: function gridRequestAdapter(gridRequest) {
       return paramRequestAdapter(gridRequest);
     },
