@@ -60,7 +60,7 @@ const EAMGridTab = (props) => {
         <EAMGridContextProvider
             searchOnMount
             gridName={gridName}
-            useNative={false}
+            useNative={true}
             gridRequestAdapter={gridRequest => paramRequestAdapter(gridRequest)}
             cellRenderer={(props) => customGridRenderer({...props, customRenderers})}
             initialShowFilters={false}
