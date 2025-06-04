@@ -22,7 +22,11 @@ var EAMTableGridRequestAdapter = function EAMTableGridRequestAdapter(props) {
       return _regeneratorRuntime().async(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
-            return _context.abrupt("return", GridWS.getGridData(gridRequest));
+            return _context.abrupt("return", GridWS.getGridData(gridRequest, {
+              headers: {
+                INFOR_LOCALIZE_RESULTS: true
+              }
+            }));
           case 1:
           case "end":
             return _context.stop();

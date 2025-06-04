@@ -15,7 +15,7 @@ const EAMTableGridRequestAdapter = props => {
 
     return (
         <EAMTableDataAdapter
-            fetchData={async () => GridWS.getGridData(gridRequest)}
+            fetchData={async () => GridWS.getGridData(gridRequest, {headers: {INFOR_LOCALIZE_RESULTS: true}})}
             equipmentCode={gridRequest?.params.obj_code}
             convertRowData={convertRowData}
             convertColumnMetadata={convertColumnMetadata} >
