@@ -10,13 +10,8 @@ export const HISTORY_ID_PREFIX = 'INPUT_HISTORY_';
  * Type 'H' is used to indicate that a history icon should be shown in
  * each item of the rendered list.
  */
-export const saveHistory = (key, value, desc, organization) => {
+export const saveHistory = (key, option) => {
     const MAX_LENGTH = 5;
-
-    // Sanity check
-    if (!key || !value || !desc) {
-        return;
-    }
 
     // Create item in local storage if it doesn't exist already
     if (!localStorage.getItem(key)) {
@@ -27,7 +22,7 @@ export const saveHistory = (key, value, desc, organization) => {
     const history = JSON.parse(localStorage.getItem(key));
 
     // Check if entry is already in the history
-    const existingIndex = history.findIndex((elem) => elem.code === value );
+    const existingIndex = history.findIndex((elem) => elem.code === option.code );
 
     // If the entry already existed, update history chronologically
     if (existingIndex !== -1) {
@@ -37,7 +32,7 @@ export const saveHistory = (key, value, desc, organization) => {
     }
 
     // Add new entry to beginning of history structure
-    history.unshift({code: value, desc: desc, organization, type: 'H'});
+    history.unshift({...option, type: 'H'});
 
     // Remove oldest entry from history 
     if (history.length > MAX_LENGTH) {

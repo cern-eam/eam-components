@@ -13,6 +13,7 @@ import EAMBaseInput from './components/EAMBaseInput';
 import TextField from './components/TextField';
 import useFetchSelectOptions from './hooks/useFetchSelectOptions';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import ArrowAdornment from './components/ArrowAdornment';
 var EAMSelect = function EAMSelect(props) {
   var autocompleteHandler = props.autocompleteHandler,
     autocompleteHandlerParams = props.autocompleteHandlerParams,
@@ -139,15 +140,7 @@ var EAMSelect = function EAMSelect(props) {
       return /*#__PURE__*/React.createElement(TextField, _extends({
         hideDescription: true
       }, params, props, {
-        endAdornment: !disabled && /*#__PURE__*/React.createElement(KeyboardArrowDownIcon, {
-          style: {
-            marginRight: endTextAdornment ? 76 : 6,
-            marginLeft: endTextAdornment ? -100 : -30,
-            zIndex: 999,
-            color: "#cbcbcb",
-            pointerEvents: "none"
-          }
-        })
+        selectMode: true
       }));
     }
   }));

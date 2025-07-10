@@ -1,48 +1,52 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
-import useFetchAutocompleteOptions from './hooks/useFetchAutocompleteOptions';
 import {areEqual, componentsProps, renderOptionHandler} from './tools/input-tools'
 import EAMBaseInput from './components/EAMBaseInput';
 import TextField from './components/TextField';
 import { saveHistory, HISTORY_ID_PREFIX } from './tools/history-tools';
+import useComboAutocompleteOptions from './hooks/useComboAutocompleteOptions';
+import useFetchAutocompleteOptions from './hooks/useFetchAutocompleteOptions';
 
-const EAMAutocomplete = (props) => {
+const EAMComboAutocomplete = (props) => {
 
   let {autocompleteHandler, autocompleteHandlerParams = [], renderDependencies = [],
-       value, desc, id, renderValue, onChange, validate = true, updateDesc = true, onSelect, onClear} = props;
+       value, desc, id, renderValue, onChange, validate = true, onClear, selectMode} = props;
 
     let [inputValue, setInputValue] = useState("")
     let [description, setDescription] = useState("")
     let [open, setOpen] = useState(false)
-    let [fetchedOptions, loading] = useFetchAutocompleteOptions(autocompleteHandler, autocompleteHandlerParams, renderDependencies, inputValue, value, open, id)
+    let [fetchedOptions, loading] = 
+    selectMode ? 
+     useComboAutocompleteOptions(autocompleteHandler, autocompleteHandlerParams, renderDependencies, inputValue, value, open, id)
+     :
+     useFetchAutocompleteOptions(autocompleteHandler, autocompleteHandlerParams, renderDependencies, inputValue, value, open, id)
     let [valid, setValid] = useState(true)
-    const skipNextFetchRef = useRef(false);
-    
+
     useEffect(() => {
-      if (skipNextFetchRef.current) {
-        skipNextFetchRef.current = false; // Don't fetch/validate after we have selected a valid value from autocomplete
-        return;
-      }
-      if (value) {
-        fetchDesc(value)
-      } else {
+      // if the value remains in fetchedOptions, that means it was already updated in onChangeHandler, so there's no need to proceed.
+      if (fetchedOptions.find(o => o.code === value)) return
+
+      setValid(true)
+
+      if (!value) {
         setDescription('')
-        setValid(true)
       }
+
+      if (value && !desc) {
+        fetchDesc(value)
+      } 
     }, [value])
 
     useEffect(() => {
       setDescription(desc)
     }, [desc])
 
-    const fetchDesc = async (hint, fireOnSelect = false) => {
+    const fetchDesc = async (hint) => {
       autocompleteHandler({handlerParams: autocompleteHandlerParams, filter: hint, operator: "="})
         .then(result => {
             let option = result.body.data.find(o => o.code === hint);
             if (option) {
-              fireOnSelect && onSelect?.(option)
-              delete option.code // Don't fire the updateProperty for 'code' 
-              updateDesc && onChange?.({desc: option.desc, organization: option.organization, ...option})
+              onChange(option)
               setDescription(option.desc)
               setValid(true)
             } else {
@@ -59,15 +63,14 @@ const EAMAutocomplete = (props) => {
     const onInputChangeHandler = (event, newInputValue) => {
      setInputValue(newInputValue);
      if (newInputValue !== value) {
-      desc && updateDesc && onChange?.({desc: ''})
+      //desc && updateDesc && onChange?.({desc: ''})
       setDescription('');
      }
     }
 
     const onChangeHandler = (event, newValue, reason) => {
       if (reason === 'clear') {
-        onChange?.({code: '', desc: '', organization: ''})
-        onSelect?.(null)
+        onChange({code: '', desc: '', organization: ''})
         onClear?.()
         setValid(true)
         return;
@@ -76,9 +79,7 @@ const EAMAutocomplete = (props) => {
       saveHistory(HISTORY_ID_PREFIX + id, newValue)
       
       setValid(true)
-      skipNextFetchRef.current = true
-      onSelect?.(newValue)
-      onChange?.(newValue, newValue)
+      onChange(newValue, newValue)
       setDescription(newValue.desc)
 
       // Don't bubble up any events (won't trigger a save when we select something by pressing enter)
@@ -90,11 +91,7 @@ const EAMAutocomplete = (props) => {
       setOpen(false)
       // Only to be fired when we blur, press ESC or hit enter and the inputValue is different than the original value
       if ( reason === 'blur' && (inputValue ?? '') !== (value ?? '')) {
-        onChange?.({code: inputValue, desc: ''})
-
-        if (!onChange) {
-          fetchDesc(inputValue, true)
-        }
+        fetchDesc(inputValue, true)
       }
     }
     
@@ -137,8 +134,4 @@ const EAMAutocomplete = (props) => {
       );
 };
 
-EAMAutocomplete.defaultProps = {
-
-}
-
-export default React.memo(EAMAutocomplete, areEqual);
+export default React.memo(EAMComboAutocomplete, areEqual);

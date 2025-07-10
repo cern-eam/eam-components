@@ -5,6 +5,7 @@ import EAMBaseInput from './components/EAMBaseInput';
 import TextField from './components/TextField';
 import useFetchSelectOptions from './hooks/useFetchSelectOptions';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import ArrowAdornment from './components/ArrowAdornment';
 
 const EAMSelect = (props) => {
    
@@ -104,12 +105,7 @@ const EAMSelect = (props) => {
             loading = {loading}
             size="small"
             fullWidth
-            renderInput={(params) => <TextField hideDescription = {true} {...params} {...props} 
-                                                endAdornment={!disabled && <KeyboardArrowDownIcon style={{marginRight: endTextAdornment? 76 : 6,
-                                                                                                  marginLeft: endTextAdornment ? -100 : -30, 
-                                                                                                  zIndex: 999,
-                                                                                                  color: "#cbcbcb",
-                                                                                                  pointerEvents: "none"}}/>}/>}
+            renderInput={(params) => <TextField hideDescription = {true} {...params} {...props} selectMode={true}/>}
           />
       </EAMBaseInput>
       );
