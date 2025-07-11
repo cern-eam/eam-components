@@ -23,7 +23,7 @@ const EAMComboAutocomplete = (props) => {
   let [valid, setValid] = useState(true)
 
   useEffect(() => {
-
+    
     if (!value) {
       setDescription('')
       return;
@@ -48,7 +48,7 @@ const EAMComboAutocomplete = (props) => {
 
   const fetchExtraInformation = async (filter) => {
     try {
-      const result = await autocompleteHandler({ autocompleteHandlerParams, filter, operator: "=" });
+      const result = await autocompleteHandler({ handlerParams: autocompleteHandlerParams, filter, operator: "=" });
       const option = result.body?.data?.find(o => o.code === filter);
       return option || null;
     } catch (error) {

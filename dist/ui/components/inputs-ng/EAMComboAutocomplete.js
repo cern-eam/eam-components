@@ -88,7 +88,7 @@ var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
           _context2.prev = 0;
           _context2.next = 3;
           return _regeneratorRuntime().awrap(autocompleteHandler({
-            autocompleteHandlerParams: autocompleteHandlerParams,
+            handlerParams: autocompleteHandlerParams,
             filter: filter,
             operator: "="
           }));
