@@ -13,7 +13,7 @@ import { areEqual, componentsProps, renderOptionHandler } from './tools/input-to
 import EAMBaseInput from './components/EAMBaseInput';
 import TextField from './components/TextField';
 import { saveHistory, HISTORY_ID_PREFIX } from './tools/history-tools';
-import useComboAutocompleteOptions from './hooks/useComboAutocompleteOptions';
+import useComboSelectOptions from './hooks/useComboSelectOptions';
 import useFetchAutocompleteOptions from './hooks/useFetchAutocompleteOptions';
 var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
   var autocompleteHandler = props.autocompleteHandler,
@@ -42,7 +42,7 @@ var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
     _useState6 = _slicedToArray(_useState5, 2),
     open = _useState6[0],
     setOpen = _useState6[1];
-  var _ref = selectMode ? useComboAutocompleteOptions(autocompleteHandler, autocompleteHandlerParams, renderDependencies, inputValue, value, open, id) : useFetchAutocompleteOptions(autocompleteHandler, autocompleteHandlerParams, renderDependencies, inputValue, value, open, id),
+  var _ref = selectMode ? useComboSelectOptions(autocompleteHandler, autocompleteHandlerParams, renderDependencies, inputValue, value, open, id) : useFetchAutocompleteOptions(autocompleteHandler, autocompleteHandlerParams, renderDependencies, inputValue, value, open, id),
     _ref2 = _slicedToArray(_ref, 2),
     fetchedOptions = _ref2[0],
     loading = _ref2[1];
@@ -51,46 +51,63 @@ var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
     valid = _useState8[0],
     setValid = _useState8[1];
   useEffect(function () {
-    // if the value remains in fetchedOptions, that means it was already updated in onChangeHandler, so there's no need to proceed.
-    if (fetchedOptions.find(function (o) {
-      return o.code === value;
-    })) return;
-    setValid(true);
     if (!value) {
       setDescription('');
+      return;
     }
-    if (value && !desc) {
-      fetchDesc(value);
+    if (desc === undefined) {
+      fetchDescription(value);
     }
   }, [value]);
   useEffect(function () {
     setDescription(desc);
   }, [desc]);
-  var fetchDesc = function fetchDesc(hint) {
-    return _regeneratorRuntime().async(function fetchDesc$(_context) {
+  var fetchDescription = function fetchDescription(filter) {
+    var extraInformation;
+    return _regeneratorRuntime().async(function fetchDescription$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
-          autocompleteHandler({
-            handlerParams: autocompleteHandlerParams,
-            filter: hint,
-            operator: "="
-          }).then(function (result) {
-            var option = result.body.data.find(function (o) {
-              return o.code === hint;
-            });
-            if (option) {
-              onChange(option);
-              setDescription(option.desc);
-              setValid(true);
-            } else {
-              setValid(!validate || false);
-            }
-          })["catch"](console.error);
-        case 1:
+          _context.next = 2;
+          return _regeneratorRuntime().awrap(fetchExtraInformation(filter));
+        case 2:
+          extraInformation = _context.sent;
+          if (extraInformation) {
+            setDescription(extraInformation.desc);
+          }
+        case 4:
         case "end":
           return _context.stop();
       }
     }, null, null, null, Promise);
+  };
+  var fetchExtraInformation = function fetchExtraInformation(filter) {
+    var result, option;
+    return _regeneratorRuntime().async(function fetchExtraInformation$(_context2) {
+      while (1) switch (_context2.prev = _context2.next) {
+        case 0:
+          _context2.prev = 0;
+          _context2.next = 3;
+          return _regeneratorRuntime().awrap(autocompleteHandler({
+            autocompleteHandlerParams: autocompleteHandlerParams,
+            filter: filter,
+            operator: "="
+          }));
+        case 3:
+          result = _context2.sent;
+          option = result.body?.data?.find(function (o) {
+            return o.code === filter;
+          });
+          return _context2.abrupt("return", option || null);
+        case 8:
+          _context2.prev = 8;
+          _context2.t0 = _context2["catch"](0);
+          console.error(_context2.t0);
+          return _context2.abrupt("return", null);
+        case 12:
+        case "end":
+          return _context2.stop();
+      }
+    }, null, null, [[0, 8]], Promise);
   };
   var getOptionLabelHandler = function getOptionLabelHandler(option) {
     return option.code ?? option;
@@ -98,7 +115,6 @@ var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
   var onInputChangeHandler = function onInputChangeHandler(event, newInputValue) {
     setInputValue(newInputValue);
     if (newInputValue !== value) {
-      //desc && updateDesc && onChange?.({desc: ''})
       setDescription('');
     }
   };
@@ -122,12 +138,43 @@ var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
     event.stopPropagation();
     event.preventDefault();
   };
+
+  //
+  // ON CLOSE HANDLER
+  //
   var onCloseHandler = function onCloseHandler(event, reason) {
     setOpen(false);
     // Only to be fired when we blur, press ESC or hit enter and the inputValue is different than the original value
     if (reason === 'blur' && (inputValue ?? '') !== (value ?? '')) {
-      fetchDesc(inputValue, true);
+      applyExtraInformation(inputValue, true);
     }
+  };
+  var applyExtraInformation = function applyExtraInformation(filter) {
+    var extraInformation;
+    return _regeneratorRuntime().async(function applyExtraInformation$(_context3) {
+      while (1) switch (_context3.prev = _context3.next) {
+        case 0:
+          _context3.next = 2;
+          return _regeneratorRuntime().awrap(fetchExtraInformation(filter));
+        case 2:
+          extraInformation = _context3.sent;
+          if (extraInformation) {
+            onChange(extraInformation);
+            setDescription(extraInformation.desc);
+            setValid(true);
+          } else {
+            onChange({
+              code: filter,
+              desc: '',
+              organization: ''
+            });
+            setValid(!validate || false);
+          }
+        case 4:
+        case "end":
+          return _context3.stop();
+      }
+    }, null, null, null, Promise);
   };
   return /*#__PURE__*/React.createElement(EAMBaseInput, props, /*#__PURE__*/React.createElement(Autocomplete
   // Options
