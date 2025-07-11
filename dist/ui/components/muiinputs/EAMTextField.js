@@ -14,19 +14,19 @@ function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t =
 function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-import React, { Component } from 'react';
-import TextField from '@mui/material/TextField';
+import React, { Component } from "react";
+import TextField from "@mui/material/TextField";
 var DEFAULTS = {
   fullWidth: true,
-  margin: 'dense'
+  margin: "dense"
 };
 var DEFAULT_NESTED_OBJECTS = {
   FormHelperTextProps: {},
   InputLabelProps: {
     shrink: true,
     style: {
-      fontSize: '1.125rem',
-      color: '#145886'
+      fontSize: "1.125rem",
+      color: "#145886"
     }
   },
   InputProps: {},
@@ -34,7 +34,7 @@ var DEFAULT_NESTED_OBJECTS = {
   SelectProps: {}
 };
 var generateCustomProps = function generateCustomProps(props) {
-  return _objectSpread({}, DEFAULTS, {}, props, {}, generateCustomNestedObjectProps(props));
+  return _objectSpread({}, DEFAULTS, {}, generateCustomNestedObjectProps(props), {}, props);
 };
 var generateCustomNestedObjectProps = function generateCustomNestedObjectProps(props) {
   return Object.keys(DEFAULT_NESTED_OBJECTS).reduce(function (customObjectProps, defaultObjectKey) {
@@ -51,6 +51,8 @@ var EAMTextField = /*#__PURE__*/function (_Component) {
   return _createClass(EAMTextField, [{
     key: "render",
     value: function render() {
+      console.log(generateCustomProps(this.props));
+      return null;
       return /*#__PURE__*/React.createElement(TextField, generateCustomProps(this.props));
     }
   }]);

@@ -1,49 +1,49 @@
-import React, { Component } from 'react';
-import TextField from '@mui/material/TextField';
+import React, { Component } from "react";
+import TextField from "@mui/material/TextField";
 
 const DEFAULTS = {
-    fullWidth: true,
-    margin: 'dense',
+  fullWidth: true,
+  margin: "dense",
 };
 
 const DEFAULT_NESTED_OBJECTS = {
-    FormHelperTextProps: {},
-    InputLabelProps: {
-        shrink: true,
-        style: {
-            fontSize: '1.125rem',
-            color: '#145886'
-        }
+  FormHelperTextProps: {},
+  InputLabelProps: {
+    shrink: true,
+    style: {
+      fontSize: "1.125rem",
+      color: "#145886",
     },
-    InputProps: {},
-    inputProps: {},
-    SelectProps: {}
+  },
+  InputProps: {},
+  inputProps: {},
+  SelectProps: {},
 };
 
 const generateCustomProps = (props) => {
-    return {
-        ...DEFAULTS,
-        ...props,
-        ...generateCustomNestedObjectProps(props)
-    };
+  return {
+    ...DEFAULTS,
+    ...generateCustomNestedObjectProps(props),
+    ...props,
+  };
 };
-
 
 const generateCustomNestedObjectProps = (props) => {
-    return Object.keys(DEFAULT_NESTED_OBJECTS).reduce((customObjectProps, defaultObjectKey) => {
-        customObjectProps[defaultObjectKey] = {
-            ...DEFAULT_NESTED_OBJECTS[defaultObjectKey],
-            ...props[defaultObjectKey]
-        };
-        return customObjectProps;
-    }, {});
+  return Object.keys(DEFAULT_NESTED_OBJECTS).reduce((customObjectProps, defaultObjectKey) => {
+    customObjectProps[defaultObjectKey] = {
+      ...DEFAULT_NESTED_OBJECTS[defaultObjectKey],
+      ...props[defaultObjectKey],
+    };
+    return customObjectProps;
+  }, {});
 };
 
-
 export default class EAMTextField extends Component {
-    render() {
-        return (
-            <TextField {...generateCustomProps(this.props)}></TextField>
-        )
-    }
+  render() {
+    console.log(generateCustomProps(this.props));
+
+    return null;
+
+    return <TextField {...generateCustomProps(this.props)}></TextField>;
+  }
 }
