@@ -51,11 +51,12 @@ var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
     valid = _useState8[0],
     setValid = _useState8[1];
   useEffect(function () {
+    console.log('e', value, desc);
     if (!value) {
       setDescription('');
       return;
     }
-    if (desc === undefined) {
+    if (desc == null) {
       fetchDescription(value);
     }
   }, [value]);

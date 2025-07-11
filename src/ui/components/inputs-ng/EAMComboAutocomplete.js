@@ -23,7 +23,7 @@ const EAMComboAutocomplete = (props) => {
   let [valid, setValid] = useState(true)
 
   useEffect(() => {
-
+    console.log('e', value, desc)
     if (!value) {
       setDescription('')
       return;
