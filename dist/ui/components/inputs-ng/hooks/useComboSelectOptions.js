@@ -54,7 +54,7 @@ var useComboSelectOptions = function useComboSelectOptions(autocompleteHandler) 
   useEffect(function () {
     if (!fetchedOptions.length) return;
     var filtered = fetchedOptions.filter(function (o) {
-      return o?.code?.includes(inputValue);
+      return o?.code?.toString().includes(inputValue);
     });
     setFilteredOptions(filtered);
   }, [inputValue]);

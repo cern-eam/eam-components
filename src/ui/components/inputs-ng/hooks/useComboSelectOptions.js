@@ -35,8 +35,8 @@ const useComboSelectOptions = (autocompleteHandler, autocompleteHandlerParams = 
 
     useEffect( () => {
         if (!fetchedOptions.length) return
-
-        const filtered = fetchedOptions.filter(o => o?.code?.includes(inputValue))
+        
+        const filtered = fetchedOptions.filter(o => o?.code?.toString().includes(inputValue))
 
         setFilteredOptions(filtered)
     }, [inputValue])
