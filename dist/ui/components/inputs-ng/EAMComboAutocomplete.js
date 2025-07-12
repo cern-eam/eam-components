@@ -51,62 +51,43 @@ var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
     valid = _useState8[0],
     setValid = _useState8[1];
   useEffect(function () {
-    console.log('e', value, desc);
     if (!value) {
       setDescription('');
       return;
     }
     if (desc == null) {
-      fetchDescription(value);
+      applyExtraInformation(value);
     }
   }, [value]);
   useEffect(function () {
     setDescription(desc);
   }, [desc]);
-  var fetchDescription = function fetchDescription(filter) {
-    var extraInformation;
-    return _regeneratorRuntime().async(function fetchDescription$(_context) {
-      while (1) switch (_context.prev = _context.next) {
-        case 0:
-          _context.next = 2;
-          return _regeneratorRuntime().awrap(fetchExtraInformation(filter));
-        case 2:
-          extraInformation = _context.sent;
-          if (extraInformation) {
-            setDescription(extraInformation.desc);
-          }
-        case 4:
-        case "end":
-          return _context.stop();
-      }
-    }, null, null, null, Promise);
-  };
   var fetchExtraInformation = function fetchExtraInformation(filter) {
     var result, option;
-    return _regeneratorRuntime().async(function fetchExtraInformation$(_context2) {
-      while (1) switch (_context2.prev = _context2.next) {
+    return _regeneratorRuntime().async(function fetchExtraInformation$(_context) {
+      while (1) switch (_context.prev = _context.next) {
         case 0:
-          _context2.prev = 0;
-          _context2.next = 3;
+          _context.prev = 0;
+          _context.next = 3;
           return _regeneratorRuntime().awrap(autocompleteHandler({
             handlerParams: autocompleteHandlerParams,
             filter: filter,
             operator: "="
           }));
         case 3:
-          result = _context2.sent;
+          result = _context.sent;
           option = result.body?.data?.find(function (o) {
             return o.code === filter;
           });
-          return _context2.abrupt("return", option || null);
+          return _context.abrupt("return", option || null);
         case 8:
-          _context2.prev = 8;
-          _context2.t0 = _context2["catch"](0);
-          console.error(_context2.t0);
-          return _context2.abrupt("return", null);
+          _context.prev = 8;
+          _context.t0 = _context["catch"](0);
+          console.error(_context.t0);
+          return _context.abrupt("return", null);
         case 12:
         case "end":
-          return _context2.stop();
+          return _context.stop();
       }
     }, null, null, [[0, 8]], Promise);
   };
@@ -152,13 +133,13 @@ var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
   };
   var applyExtraInformation = function applyExtraInformation(filter) {
     var extraInformation;
-    return _regeneratorRuntime().async(function applyExtraInformation$(_context3) {
-      while (1) switch (_context3.prev = _context3.next) {
+    return _regeneratorRuntime().async(function applyExtraInformation$(_context2) {
+      while (1) switch (_context2.prev = _context2.next) {
         case 0:
-          _context3.next = 2;
+          _context2.next = 2;
           return _regeneratorRuntime().awrap(fetchExtraInformation(filter));
         case 2:
-          extraInformation = _context3.sent;
+          extraInformation = _context2.sent;
           if (extraInformation) {
             onChange(extraInformation);
             setDescription(extraInformation.desc);
@@ -173,7 +154,7 @@ var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
           }
         case 4:
         case "end":
-          return _context3.stop();
+          return _context2.stop();
       }
     }, null, null, null, Promise);
   };

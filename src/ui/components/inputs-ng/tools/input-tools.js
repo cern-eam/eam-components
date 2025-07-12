@@ -133,17 +133,25 @@ export const createOnChangeHandler =
         // When receiving an object value, we run the updating function for each
         // key that was passed.
         if (typeof value === 'object') {
+            const keys = []
+            const values = []
+
             if (value.code !== undefined) {
-                updatingFunction?.(valueKey, value.code, ...additionalArgs);
+                keys.push(valueKey)
+                values.push(value.code)
             }
 
             if (descKey && value.desc !== undefined) {
-                updatingFunction(descKey, value.desc, ...additionalArgs);
+                keys.push(descKey)
+                values.push(value.desc)
             }
 
             if (orgKey && value.organization !== undefined) {
-                updatingFunction(orgKey, value.organization, ...additionalArgs);
+               keys.push(orgKey)
+                values.push(value.organization)
             }
+
+            updatingFunction(keys, values, ...additionalArgs);
 
             // Fire the onChange only at the end
             if (value.code !== undefined) {

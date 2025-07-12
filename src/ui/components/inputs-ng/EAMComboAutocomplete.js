@@ -23,14 +23,13 @@ const EAMComboAutocomplete = (props) => {
   let [valid, setValid] = useState(true)
 
   useEffect(() => {
-    console.log('e', value, desc)
     if (!value) {
       setDescription('')
       return;
     }
 
     if (desc == null) {
-      fetchDescription(value)
+      applyExtraInformation(value)
     }
 
   }, [value])
@@ -38,13 +37,6 @@ const EAMComboAutocomplete = (props) => {
   useEffect(() => {
     setDescription(desc)
   }, [desc])
-
-  const fetchDescription = async (filter) => {
-    const extraInformation = await fetchExtraInformation(filter);
-    if (extraInformation) {
-      setDescription(extraInformation.desc)
-    }
-  }
 
   const fetchExtraInformation = async (filter) => {
     try {
