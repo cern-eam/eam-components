@@ -2,6 +2,7 @@ import isEqual from 'lodash/isEqual';
 import { Box } from '@mui/material';
 import HistoryIcon from '@mui/icons-material/History';
 import React from 'react';
+import { batch } from 'react-redux';
 
 export const isRequired = elementInfo => elementInfo?.attribute === 'R' || elementInfo?.attribute === 'S';
 
@@ -127,7 +128,8 @@ export const createOnChangeHandler =
         orgKey,
         updatingFunction,
         onChange,
-        additionalArgs = []
+        additionalArgs = [],
+        batchUpdates = false
     ) =>
     (value) => {
         // When receiving an object value, we run the updating function for each
@@ -137,21 +139,24 @@ export const createOnChangeHandler =
             const values = []
 
             if (value.code !== undefined) {
+                !batchUpdates && updatingFunction?.(valueKey, value.code, ...additionalArgs);
                 keys.push(valueKey)
                 values.push(value.code)
             }
 
             if (descKey && value.desc !== undefined) {
+                !batchUpdates && updatingFunction(descKey, value.desc, ...additionalArgs);
                 keys.push(descKey)
                 values.push(value.desc)
             }
 
             if (orgKey && value.organization !== undefined) {
-               keys.push(orgKey)
+                !batchUpdates && updatingFunction(orgKey, value.organization, ...additionalArgs);
+                keys.push(orgKey)
                 values.push(value.organization)
             }
 
-            updatingFunction(keys, values, ...additionalArgs);
+            batchUpdates && updatingFunction(keys, values, ...additionalArgs);
 
             // Fire the onChange only at the end
             if (value.code !== undefined) {

@@ -51,6 +51,7 @@ var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
     valid = _useState8[0],
     setValid = _useState8[1];
   useEffect(function () {
+    setValid(true);
     if (!value) {
       setDescription('');
       return;
@@ -62,35 +63,6 @@ var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
   useEffect(function () {
     setDescription(desc);
   }, [desc]);
-  var fetchExtraInformation = function fetchExtraInformation(filter) {
-    var result, option;
-    return _regeneratorRuntime().async(function fetchExtraInformation$(_context) {
-      while (1) switch (_context.prev = _context.next) {
-        case 0:
-          _context.prev = 0;
-          _context.next = 3;
-          return _regeneratorRuntime().awrap(autocompleteHandler({
-            handlerParams: autocompleteHandlerParams,
-            filter: filter,
-            operator: "="
-          }));
-        case 3:
-          result = _context.sent;
-          option = result.body?.data?.find(function (o) {
-            return o.code === filter;
-          });
-          return _context.abrupt("return", option || null);
-        case 8:
-          _context.prev = 8;
-          _context.t0 = _context["catch"](0);
-          console.error(_context.t0);
-          return _context.abrupt("return", null);
-        case 12:
-        case "end":
-          return _context.stop();
-      }
-    }, null, null, [[0, 8]], Promise);
-  };
   var getOptionLabelHandler = function getOptionLabelHandler(option) {
     return option.code ?? option;
   };
@@ -131,6 +103,35 @@ var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
       applyExtraInformation(inputValue, true);
     }
   };
+  var fetchExtraInformation = function fetchExtraInformation(filter) {
+    var result, option;
+    return _regeneratorRuntime().async(function fetchExtraInformation$(_context) {
+      while (1) switch (_context.prev = _context.next) {
+        case 0:
+          _context.prev = 0;
+          _context.next = 3;
+          return _regeneratorRuntime().awrap(autocompleteHandler({
+            handlerParams: autocompleteHandlerParams,
+            filter: filter,
+            operator: "="
+          }));
+        case 3:
+          result = _context.sent;
+          option = result.body?.data?.find(function (o) {
+            return o.code === filter;
+          });
+          return _context.abrupt("return", option || null);
+        case 8:
+          _context.prev = 8;
+          _context.t0 = _context["catch"](0);
+          console.error(_context.t0);
+          return _context.abrupt("return", null);
+        case 12:
+        case "end":
+          return _context.stop();
+      }
+    }, null, null, [[0, 8]], Promise);
+  };
   var applyExtraInformation = function applyExtraInformation(filter) {
     var extraInformation;
     return _regeneratorRuntime().async(function applyExtraInformation$(_context2) {
@@ -150,7 +151,7 @@ var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
               desc: '',
               organization: ''
             });
-            setValid(!validate || false);
+            //setValid(!validate || false);
           }
         case 4:
         case "end":

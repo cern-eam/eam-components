@@ -23,6 +23,8 @@ const EAMComboAutocomplete = (props) => {
   let [valid, setValid] = useState(true)
 
   useEffect(() => {
+    setValid(true)
+
     if (!value) {
       setDescription('')
       return;
@@ -37,18 +39,6 @@ const EAMComboAutocomplete = (props) => {
   useEffect(() => {
     setDescription(desc)
   }, [desc])
-
-  const fetchExtraInformation = async (filter) => {
-    try {
-      const result = await autocompleteHandler({ handlerParams: autocompleteHandlerParams, filter, operator: "=" });
-      const option = result.body?.data?.find(o => o.code === filter);
-      return option || null;
-    } catch (error) {
-      console.error(error);
-      return null;
-    }
-  };
-
 
   const getOptionLabelHandler = option => {
     return option.code ?? option;
@@ -91,17 +81,28 @@ const EAMComboAutocomplete = (props) => {
     }
   }
 
+  const fetchExtraInformation = async (filter) => {
+    try {
+      const result = await autocompleteHandler({ handlerParams: autocompleteHandlerParams, filter, operator: "=" });
+      const option = result.body?.data?.find(o => o.code === filter);
+      return option || null;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  };
+
   const applyExtraInformation = async (filter) => {
 
     const extraInformation = await fetchExtraInformation(filter);
-
+    
     if (extraInformation) {
       onChange(extraInformation);
       setDescription(extraInformation.desc);
       setValid(true);
     } else {
       onChange({code: filter, desc: '', organization: ''})
-      setValid(!validate || false);
+      //setValid(!validate || false);
     }
   };
 
