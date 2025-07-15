@@ -78,14 +78,14 @@ var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
         code: '',
         desc: '',
         organization: ''
-      });
+      }, true);
       onClear?.();
       setValid(true);
       return;
     }
     saveHistory(HISTORY_ID_PREFIX + id, newValue);
     setValid(true);
-    onChange(newValue, newValue);
+    onChange(newValue, true);
     setDescription(newValue.desc);
 
     // Don't bubble up any events (won't trigger a save when we select something by pressing enter)
@@ -133,16 +133,19 @@ var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
     }, null, null, [[0, 8]], Promise);
   };
   var applyExtraInformation = function applyExtraInformation(filter) {
-    var extraInformation;
+    var manualInput,
+      extraInformation,
+      _args2 = arguments;
     return _regeneratorRuntime().async(function applyExtraInformation$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
-          _context2.next = 2;
+          manualInput = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : false;
+          _context2.next = 3;
           return _regeneratorRuntime().awrap(fetchExtraInformation(filter));
-        case 2:
+        case 3:
           extraInformation = _context2.sent;
           if (extraInformation) {
-            onChange(extraInformation);
+            onChange(extraInformation, manualInput);
             setDescription(extraInformation.desc);
             setValid(true);
           } else {
@@ -150,10 +153,10 @@ var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
               code: filter,
               desc: '',
               organization: ''
-            });
+            }, manualInput);
             //setValid(!validate || false);
           }
-        case 4:
+        case 5:
         case "end":
           return _context2.stop();
       }

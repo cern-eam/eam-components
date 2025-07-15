@@ -23,6 +23,7 @@ const EAMComboAutocomplete = (props) => {
   let [valid, setValid] = useState(true)
 
   useEffect(() => {
+    
     setValid(true)
 
     if (!value) {
@@ -53,7 +54,7 @@ const EAMComboAutocomplete = (props) => {
 
   const onChangeHandler = (event, newValue, reason) => {
     if (reason === 'clear') {
-      onChange({code: '', desc: '', organization: '' })
+      onChange({code: '', desc: '', organization: '' }, true)
       onClear?.()
       setValid(true)
       return;
@@ -62,7 +63,7 @@ const EAMComboAutocomplete = (props) => {
     saveHistory(HISTORY_ID_PREFIX + id, newValue)
 
     setValid(true)
-    onChange(newValue, newValue)
+    onChange(newValue, true)
     setDescription(newValue.desc)
 
     // Don't bubble up any events (won't trigger a save when we select something by pressing enter)
@@ -92,16 +93,16 @@ const EAMComboAutocomplete = (props) => {
     }
   };
 
-  const applyExtraInformation = async (filter) => {
+  const applyExtraInformation = async (filter, manualInput = false) => {
 
     const extraInformation = await fetchExtraInformation(filter);
-    
+
     if (extraInformation) {
-      onChange(extraInformation);
+      onChange(extraInformation, manualInput);
       setDescription(extraInformation.desc);
       setValid(true);
     } else {
-      onChange({code: filter, desc: '', organization: ''})
+      onChange({code: filter, desc: '', organization: ''}, manualInput)
       //setValid(!validate || false);
     }
   };
