@@ -145,7 +145,7 @@ var ChecklistItem = /*#__PURE__*/function (_Component) {
       var handleError = this.props.handleError;
       var DEBOUNCE_TIME_MS = 50;
       var request = function request() {
-        _this2.props.updateChecklistItem(checklistItem).then(function () {
+        _this2.props.updateChecklistItem(checklistItem, _this2.props.taskCode).then(function () {
           _this2.props.resetSignatures(checklistItem.activityCode);
         })["catch"](function (error) {
           handleError(error);

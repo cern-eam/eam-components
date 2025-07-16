@@ -104,7 +104,7 @@ export default class ChecklistItem extends Component {
         const DEBOUNCE_TIME_MS = 50;
 
         const request = () => {
-            this.props.updateChecklistItem(checklistItem)
+            this.props.updateChecklistItem(checklistItem, this.props.taskCode)
                 .then(() =>{
                     this.props.resetSignatures(checklistItem.activityCode);
                 }).catch(error => {
