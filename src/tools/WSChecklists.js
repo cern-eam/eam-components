@@ -13,8 +13,8 @@ class WSChecklists {
     //CHECKLIST
     //
 
-    updateChecklistItem(checklistItem, config = {}) {
-        return WS._put('/checklists/', checklistItem, config);
+    updateChecklistItem(checklistItem, taskPlanCode, config = {}) {
+        return WS._put(`/checklists?taskPlanCode=${encodeURIComponent(taskPlanCode)}`, checklistItem, config);
     }
 
     createFolowUpWorkOrders(activity, config = {}) {

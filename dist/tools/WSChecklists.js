@@ -35,9 +35,9 @@ var WSChecklists = /*#__PURE__*/function () {
     //
   }, {
     key: "updateChecklistItem",
-    value: function updateChecklistItem(checklistItem) {
-      var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      return WS._put('/checklists/', checklistItem, config);
+    value: function updateChecklistItem(checklistItem, taskPlanCode) {
+      var config = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+      return WS._put("/checklists?taskPlanCode=".concat(encodeURIComponent(taskPlanCode)), checklistItem, config);
     }
   }, {
     key: "createFolowUpWorkOrders",
