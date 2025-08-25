@@ -13,9 +13,9 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 import React, { Component } from 'react';
 import './Comments.css';
-import CommentUser from "./CommentUser";
-import CommentBar from "./CommentBar";
-import CommentAvatar from "./CommentAvatar";
+import CommentUser from './CommentUser';
+import CommentBar from './CommentBar';
+import CommentAvatar from './CommentAvatar';
 import TextareaAutosize from 'react-autosize-textarea';
 import ListItem from '@material-ui/core/ListItem';
 import { withStyles } from '@material-ui/core/styles';
@@ -39,7 +39,7 @@ var initialContainerStyle = {
 };
 var styles = {
   root: {
-    alignItems: "start",
+    alignItems: 'start',
     paddingTop: 6,
     paddingBottom: 6
   }
@@ -112,9 +112,13 @@ var Comment = /*#__PURE__*/function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var allowHtml = this.props.allowHtml;
+      var _this$props = this.props,
+        allowHtml = _this$props.allowHtml,
+        restrictEditToCreator = _this$props.restrictEditToCreator,
+        currentUsrCode = _this$props.currentUsrCode;
       var comment = this.state.comment;
-      var a = allowHtml && comment && comment.text && comment.text.startsWith("<html>") && comment.text.endsWith("</html>");
+      var isHTML = allowHtml && comment && comment.text && comment.text.startsWith('<html>') && comment.text.endsWith('</html>');
+      var cannotEdit = restrictEditToCreator && currentUsrCode && currentUsrCode !== comment?.creationUserCode;
       return /*#__PURE__*/React.createElement(ListItem, {
         classes: {
           root: this.props.classes.root
@@ -144,8 +148,8 @@ var Comment = /*#__PURE__*/function (_Component) {
         })
       })), /*#__PURE__*/React.createElement("div", {
         style: {
-          display: "flex",
-          alignItems: "center",
+          display: 'flex',
+          alignItems: 'center',
           height: 25,
           marginRight: 7
         }
@@ -160,7 +164,12 @@ var Comment = /*#__PURE__*/function (_Component) {
       }))), /*#__PURE__*/React.createElement("div", {
         className: "commentTextContainer",
         onKeyDown: this.onKeyDownHandler
-      }, allowHtml && comment && comment.text && comment.text.startsWith("<html>") && comment.text.endsWith("</html>") ? /*#__PURE__*/React.createElement("div", {
+      }, cannotEdit ? /*#__PURE__*/React.createElement(TextareaAutosize, {
+        defaultValue: comment.text,
+        className: "commentText",
+        onInput: this.inputTextArea,
+        disabled: true
+      }) : isHTML ? /*#__PURE__*/React.createElement("div", {
         className: "commentText",
         style: {
           width: '100%',

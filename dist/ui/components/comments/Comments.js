@@ -12,12 +12,12 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 import React, { Component } from 'react';
-import WSComments from "../../../tools/WSComments";
-import Comment from "./Comment";
-import CommentNew from "./CommentNew";
+import WSComments from '../../../tools/WSComments';
+import Comment from './Comment';
+import CommentNew from './CommentNew';
 import EISPanel from '../panel';
 import List from '@material-ui/core/List';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 var datatablePanelStyle = {
   marginLeft: -18,
   marginRight: -18,
@@ -76,24 +76,27 @@ var Comments = /*#__PURE__*/function (_Component) {
       });
     };
     _this.updateComment = function (comment) {
-      //Remove pk property
-      delete comment.pk;
-      delete comment.updateCount;
-      //Update the comment and set the new list
-      _this.props.updateComment(comment).then(function (response) {
-        _this.setState(function () {
-          return {
-            comments: response.body.data
-          };
+      var canUpdate = !_this.props.restrictEditToCreator || _this.props.currentUsrCode && _this.props.currentUsrCode === comment.creationUserCode;
+      if (canUpdate) {
+        //Remove pk property
+        delete comment.pk;
+        delete comment.updateCount;
+        //Update the comment and set the new list
+        _this.props.updateComment(comment).then(function (response) {
+          _this.setState(function () {
+            return {
+              comments: response.body.data
+            };
+          });
+          if (_this.props.onCommentUpdated) {
+            _this.props.onCommentUpdated(comment);
+          }
+        })["catch"](function (reason) {
+          _this.props.handleError(reason);
+          //Try to read comments again
+          _this.readComments(_this.props.entityCode, _this.props.entityKeyCode);
         });
-        if (_this.props.onCommentUpdated) {
-          _this.props.onCommentUpdated(comment);
-        }
-      })["catch"](function (reason) {
-        _this.props.handleError(reason);
-        //Try to read comments again
-        _this.readComments(_this.props.entityCode, _this.props.entityKeyCode);
-      });
+      }
     };
     _this.updateNewCommentText = function (text) {
       _this.setState(function () {
@@ -145,7 +148,7 @@ var Comments = /*#__PURE__*/function (_Component) {
         disabled = _this$props.disabled;
       return /*#__PURE__*/React.createElement(List, {
         style: {
-          width: "100%"
+          width: '100%'
         }
       }, this.state.comments.map(function (comment) {
         return /*#__PURE__*/React.createElement(Comment, {
@@ -155,7 +158,9 @@ var Comments = /*#__PURE__*/function (_Component) {
           updateCommentHandler: _this2.updateComment,
           commentFooter: _this2.props.commentFooterMapper?.({
             comment: comment
-          })
+          }),
+          restrictEditToCreator: _this2.props.restrictEditToCreator,
+          currentUsrCode: _this2.props.currentUsrCode
         });
       }), /*#__PURE__*/React.createElement(CommentNew, {
         userCode: this.props.userCode,
@@ -175,7 +180,8 @@ Comments.defaultProps = {
   title: 'COMMENTS',
   readComments: WSComments.readComments,
   updateComment: WSComments.updateComment,
-  createComment: WSComments.createComment
+  createComment: WSComments.createComment,
+  restrictEditToCreator: false
 };
 Comments.propTypes = {
   entityCode: PropTypes.string,
@@ -188,6 +194,8 @@ Comments.propTypes = {
   updateComment: PropTypes.func,
   createComment: PropTypes.func,
   commentFooterMapper: PropTypes.func,
-  displayPrivateCheck: PropTypes.bool
+  displayPrivateCheck: PropTypes.bool,
+  currentUsrCode: PropTypes.string,
+  restrictEditToCreator: PropTypes.bool
 };
 export default Comments;
