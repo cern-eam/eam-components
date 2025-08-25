@@ -1,12 +1,12 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './Comments.css';
-import CommentUser from "./CommentUser";
-import CommentBar from "./CommentBar";
-import CommentAvatar from "./CommentAvatar"
+import CommentUser from './CommentUser';
+import CommentBar from './CommentBar';
+import CommentAvatar from './CommentAvatar';
 import TextareaAutosize from 'react-autosize-textarea';
 import ListItem from '@material-ui/core/ListItem';
 import { withStyles } from '@material-ui/core/styles';
-import {FlagCheckered, PlusBoxOutline, Pencil} from 'mdi-material-ui';
+import { FlagCheckered, PlusBoxOutline, Pencil } from 'mdi-material-ui';
 
 import CKEditor from '@ckeditor/ckeditor5-react';
 
@@ -20,27 +20,25 @@ import Italic from '@ckeditor/ckeditor5-basic-styles/src/italic';
 import Heading from '@ckeditor/ckeditor5-heading/src/heading';
 import sanitizeHtml from 'sanitize-html';
 
-
-const iconStyle = {height: 15};
-const initialContainerStyle = {opacity: 1.0, pointerEvents: 'all'};
+const iconStyle = { height: 15 };
+const initialContainerStyle = { opacity: 1.0, pointerEvents: 'all' };
 
 const styles = {
     root: {
-        alignItems: "start",
+        alignItems: 'start',
         paddingTop: 6,
-        paddingBottom: 6
-    }
+        paddingBottom: 6,
+    },
 };
 
 class Comment extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
             text: this.props.comment.text,
             displayBar: false,
             comment: this.props.comment,
-            containerStyle: initialContainerStyle
+            containerStyle: initialContainerStyle,
         };
     }
 
@@ -60,119 +58,157 @@ class Comment extends Component {
     };
 
     showUpdating = () => {
-        this.setState(() =>
-            ({containerStyle: {opacity: 0.4, pointerEvents: 'none'}})
-        );
+        this.setState(() => ({
+            containerStyle: { opacity: 0.4, pointerEvents: 'none' },
+        }));
     };
 
     updateState = (text, displayBar, comment, containerStyle) => {
         this.setState(() => ({
-                text: text,
-                displayBar: displayBar,
-                comment: comment,
-                containerStyle: containerStyle
-            }
-        ));
+            text: text,
+            displayBar: displayBar,
+            comment: comment,
+            containerStyle: containerStyle,
+        }));
     };
 
     onKeyDownHandler = (event) => {
         if (event.keyCode === 13 || event.keyCode === 121) {
             event.stopPropagation();
         }
-    }
+    };
 
     render() {
-        const { allowHtml } = this.props;
+        const { allowHtml, restrictEditToCreator, currentUsrCode } = this.props;
         const { comment } = this.state;
 
-        let a = allowHtml && comment && comment.text 
-            && comment.text.startsWith("<html>") 
-            && comment.text.endsWith("</html>")
+        const isHTML =
+            allowHtml &&
+            comment &&
+            comment.text &&
+            comment.text.startsWith('<html>') &&
+            comment.text.endsWith('</html>');
 
+        const cannotEdit = restrictEditToCreator && currentUsrCode && currentUsrCode !== comment?.creationUserCode;
 
         return (
-            <ListItem classes={{root: this.props.classes.root}}>
-
-
+            <ListItem classes={{ root: this.props.classes.root }}>
                 <CommentAvatar name={this.state.comment.creationUserCode} />
 
                 <div className="commentContainer" style={this.state.containerStyle}>
+                    <div className="triangle" />
+                    <div className="innerTriangle" />
 
-                    <div className="triangle"/>
-                    <div className="innerTriangle"/>
-
-                        <div className="commentInfoContainer">
-
-                            <div>
-                                <CommentUser userDesc={comment.creationUserDesc}
-                                             userDate={comment.creationDate}
-                                             icon={<PlusBoxOutline style={iconStyle}/>}
+                    <div className="commentInfoContainer">
+                        <div>
+                            <CommentUser
+                                userDesc={comment.creationUserDesc}
+                                userDate={comment.creationDate}
+                                icon={<PlusBoxOutline style={iconStyle} />}
+                            />
+                            {this.props.comment.updateUserCode && (
+                                <CommentUser
+                                    userDesc={comment.updateUserDesc}
+                                    userDate={comment.updateDate}
+                                    icon={<Pencil style={iconStyle} />}
                                 />
-                                {this.props.comment.updateUserCode &&
-                                <CommentUser userDesc={comment.updateUserDesc}
-                                             userDate={comment.updateDate}
-                                             icon={<Pencil style={iconStyle}/>}
-                                />}
-                            </div>
-
-                            <div style={{display: "flex", alignItems: "center", height: 25, marginRight: 7}}>
-                                <CommentBar saveCommentHandler={this.props.updateCommentHandler}
-                                            displayBar={this.state.displayBar} comment={comment}
-                                            displayClosingCheck={false} showUpdatingHandler={this.showUpdating}/>
-
-                                {this.props.comment.typeCode === '+' && <FlagCheckered color="primary"/>}
-                            </div>
+                            )}
                         </div>
 
-
-                    <div className="commentTextContainer" onKeyDown={this.onKeyDownHandler}>
-                        {(allowHtml && comment && comment.text && comment.text.startsWith("<html>") && comment.text.endsWith("</html>")) ?
-                            <div className="commentText" style={{width: '100%', height: '100%'}}>
-                                <CKEditor 
-                                    onInit={ editor => { console.log( 'Editor is ready to use!', editor) }}
-                                    editor={ BalloonEditor }
-                                    data={this.sanitizeText(comment.text)}
-                                />       
-                            </div>
-                            :  <TextareaAutosize 
-                                    defaultValue={comment.text} 
-                                    className="commentText"
-                                    onInput={this.inputTextArea}
+                        <div
+                            style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                height: 25,
+                                marginRight: 7,
+                            }}
+                        >
+                            <CommentBar
+                                saveCommentHandler={this.props.updateCommentHandler}
+                                displayBar={this.state.displayBar}
+                                comment={comment}
+                                displayClosingCheck={false}
+                                showUpdatingHandler={this.showUpdating}
                             />
-                        }
+
+                            {this.props.comment.typeCode === '+' && <FlagCheckered color="primary" />}
+                        </div>
                     </div>
 
-                    {
-                        this.props.commentFooter && (
-                            <div className="commentFooter">
-                                {this.props.commentFooter}
+                    <div className="commentTextContainer" onKeyDown={this.onKeyDownHandler}>
+                        {cannotEdit ? (
+                            <TextareaAutosize
+                                defaultValue={comment.text}
+                                className="commentText"
+                                onInput={this.inputTextArea}
+                                disabled
+                            />
+                        ) : isHTML ? (
+                            <div className="commentText" style={{ width: '100%', height: '100%' }}>
+                                <CKEditor
+                                    onInit={(editor) => {
+                                        console.log('Editor is ready to use!', editor);
+                                    }}
+                                    editor={BalloonEditor}
+                                    data={this.sanitizeText(comment.text)}
+                                />
                             </div>
-                        )
-                    }
-                    
+                        ) : (
+                            <TextareaAutosize
+                                defaultValue={comment.text}
+                                className="commentText"
+                                onInput={this.inputTextArea}
+                            />
+                        )}
+                    </div>
 
+                    {this.props.commentFooter && <div className="commentFooter">{this.props.commentFooter}</div>}
                 </div>
-
-
             </ListItem>
         );
     }
 
-    sanitizeText = (text) =>        
+    sanitizeText = (text) =>
         sanitizeHtml(text, {
-            allowedTags: [ 'h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul', 'ol',
-                'nl', 'li', 'b', 'i', 'u', 'strong', 'em', 'strike', 'code', 'hr', 'br', 'div',
-                'table', 'thead', 'caption', 'tbody', 'tr', 'th', 'td', 'pre', 'font', 'span'
+            allowedTags: [
+                'h3',
+                'h4',
+                'h5',
+                'h6',
+                'blockquote',
+                'p',
+                'a',
+                'ul',
+                'ol',
+                'nl',
+                'li',
+                'b',
+                'i',
+                'u',
+                'strong',
+                'em',
+                'strike',
+                'code',
+                'hr',
+                'br',
+                'div',
+                'table',
+                'thead',
+                'caption',
+                'tbody',
+                'tr',
+                'th',
+                'td',
+                'pre',
+                'font',
+                'span',
             ],
             allowedAttributes: {
-                font: [ 'color',  'style'],
+                font: ['color', 'style'],
                 div: ['style'],
-                span: ['style']
-            }
-        })
+                span: ['style'],
+            },
+        });
 }
 
-
-
-
-export default withStyles(styles)(Comment)
+export default withStyles(styles)(Comment);
