@@ -127,8 +127,9 @@ var Checklists = function Checklists(_ref) {
     getWorkOrderActivities(workorder).then(function (response) {
       var expActivities = getExpandedActivities(response.body.data);
       if (isCernMode) {
-        var _taskPlansMetadata = getTaskPlansMetadata(expActivities, getTaskPlanInstructions);
-        setTaskPlansMetadata(_taskPlansMetadata);
+        getTaskPlansMetadata(expActivities, getTaskPlanInstructions).then(function (taskPlansMetadata) {
+          setTaskPlansMetadata(taskPlansMetadata);
+        });
       }
       if (refreshCollapse) {
         var checklists = expActivities.reduce(function (checklists, activity) {
