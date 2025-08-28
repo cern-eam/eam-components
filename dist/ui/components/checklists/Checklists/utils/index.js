@@ -170,7 +170,7 @@ export var getTaskPlansMetadata = function getTaskPlansMetadata(expActivities, g
       revision: activity.taskRev
     };
   })));
-  Promise.all(taskCodes.map(function _callee(taskCode) {
+  return Promise.all(taskCodes.map(function _callee(taskCode) {
     return _regeneratorRuntime().async(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:

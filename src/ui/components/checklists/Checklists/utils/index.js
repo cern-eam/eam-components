@@ -226,7 +226,7 @@ export const getTaskPlansMetadata = (
     ),
   ];
 
-  Promise.all(
+  return Promise.all(
     taskCodes.map(
       async (taskCode) =>
         await getTaskPlanInstructions(taskCode.code, taskCode.revision)

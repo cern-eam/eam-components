@@ -151,11 +151,11 @@ const Checklists = ({
         let expActivities = getExpandedActivities(response.body.data);
 
         if (isCernMode) {
-          const taskPlansMetadata = getTaskPlansMetadata(
-            expActivities,
-            getTaskPlanInstructions
-          );
-          setTaskPlansMetadata(taskPlansMetadata);
+            getTaskPlansMetadata(expActivities, getTaskPlanInstructions).then(
+                (taskPlansMetadata) => {
+                    setTaskPlansMetadata(taskPlansMetadata);
+                }
+            );
         }
 
         if (refreshCollapse) {
