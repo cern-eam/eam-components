@@ -161,7 +161,9 @@ class EAMAutocomplete extends EAMBaseInput {
                         }
                     );
                 })
-                .catch((error) => {});
+                .catch((error) => {
+                    this.onChangeHandler("", "");
+                });
         }, 200);
     };
 
