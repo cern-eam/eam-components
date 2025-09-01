@@ -1,10 +1,4 @@
-import React, {
-  forwardRef,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import React, { forwardRef, useCallback, useEffect, useMemo, useState } from "react";
 import SimpleEmptyState from "../../emptystates/SimpleEmptyState";
 import BlockUi from "react-block-ui";
 import Collapse from "@mui/material/Collapse";
@@ -35,10 +29,7 @@ import {
   getUpdatedChecklistsActivities,
   parseToBoolean,
 } from "./utils";
-import {
-  FOLLOW_UP_WO_ERROR_MESSAGE,
-  FOLLOW_UP_WO_SUCCESS_MESSAGE,
-} from "./constants/followUpDialog";
+import { FOLLOW_UP_WO_ERROR_MESSAGE, FOLLOW_UP_WO_SUCCESS_MESSAGE } from "./constants/followUpDialog";
 
 const Checklists = ({
   workorder,
@@ -67,9 +58,7 @@ const Checklists = ({
   const [taskPlansMetadata, setTaskPlansMetadata] = useState([]);
   const [blocking, setBlocking] = useState(true);
   const [createFollowUpActivity, setCreateFollowUpActivity] = useState(null);
-  const [filteredActivity, setFilteredActivity] = useState(
-    getActivityCodeUrlParam()
-  );
+  const [filteredActivity, setFilteredActivity] = useState(getActivityCodeUrlParam());
   const [filteredEquipment, setFilteredEquipment] = useState(null);
   const [checklistsHidden, setChecklistsHidden] = useState({});
   const [showChecklistOptions, setShowChecklistOptions] = useState(
@@ -85,29 +74,15 @@ const Checklists = ({
   }, [activities]);
 
   const filteredActivities = useMemo(() => {
-    return getFilteredActivities(
-      activities,
-      filteredEquipment,
-      filteredActivity
-    );
+    return getFilteredActivities(activities, filteredEquipment, filteredActivity);
   }, [activities]);
 
   const setNewFilter = useCallback(
     ({ activity, equipmentCode }) => {
-      const effectiveActivityCode = getEffectiveActivityCode(
-        filteredActivity,
-        activity?.code
-      );
-      const effectiveEquipmentCode = getEffectiveEquipmentCode(
-        filteredEquipment,
-        equipmentCode
-      );
+      const effectiveActivityCode = getEffectiveActivityCode(filteredActivity, activity?.code);
+      const effectiveEquipmentCode = getEffectiveEquipmentCode(filteredEquipment, equipmentCode);
 
-      const newActivities = getNewFilteredActivities(
-        activities,
-        effectiveActivityCode,
-        effectiveEquipmentCode
-      );
+      const newActivities = getNewFilteredActivities(activities, effectiveActivityCode, effectiveEquipmentCode);
 
       if (!effectiveActivityCode && !effectiveEquipmentCode) {
         const checklists = concatActivityChecklistsToChecklists(activities);
@@ -123,13 +98,8 @@ const Checklists = ({
 
   const collapse = useCallback(
     (checklists, activities) => {
-      const functionToRun = getCollapseFunction(
-        collapseHeuristic,
-        maxExpandedChecklistItems
-      );
-      const filteredChecklists = checklists.filter(
-        ({ checkListCode }) => !checklistsHidden[checkListCode]
-      );
+      const functionToRun = getCollapseFunction(collapseHeuristic, maxExpandedChecklistItems);
+      const filteredChecklists = checklists.filter(({ checkListCode }) => !checklistsHidden[checkListCode]);
       functionToRun(filteredChecklists, activities);
     },
     [collapseHeuristic, checklistsHidden, maxExpandedChecklistItems]
@@ -140,9 +110,7 @@ const Checklists = ({
   }, []);
 
   const toggleFilledFilter = useCallback(() => {
-    setChecklistsHidden((prev) =>
-      getFilledFilterChecklistsHidden(prev, activities)
-    );
+    setChecklistsHidden((prev) => getFilledFilterChecklistsHidden(prev, activities));
   }, [activities]);
 
   const readActivities = useCallback(
@@ -151,18 +119,13 @@ const Checklists = ({
         let expActivities = getExpandedActivities(response.body.data);
 
         if (isCernMode) {
-          const taskPlansMetadata = getTaskPlansMetadata(
-            expActivities,
-            getTaskPlanInstructions
-          );
-          setTaskPlansMetadata(taskPlansMetadata);
+          getTaskPlansMetadata(expActivities, getTaskPlanInstructions).then((taskPlansMetadata) => {
+            setTaskPlansMetadata(taskPlansMetadata);
+          });
         }
 
         if (refreshCollapse) {
-          const checklists = expActivities.reduce(
-            (checklists, activity) => checklists.concat(activity.checklists),
-            []
-          );
+          const checklists = expActivities.reduce((checklists, activity) => checklists.concat(activity.checklists), []);
           collapse(checklists, expActivities);
         } else {
           expActivities = expActivities.map((activity, index) => ({
@@ -215,9 +178,7 @@ const Checklists = ({
         readActivities(checklistItem.workOrderCode, false);
       }
 
-      setActivities((prev) =>
-        getUpdatedChecklistsActivities(prev, checklistItem)
-      );
+      setActivities((prev) => getUpdatedChecklistsActivities(prev, checklistItem));
     },
     [readActivities]
   );
@@ -262,17 +223,9 @@ const Checklists = ({
         register,
       }}
     >
-      <div
-        style={
-          readonly
-            ? { width: "100%", pointerEvents: "none" }
-            : { width: "100%" }
-        }
-      >
+      <div style={readonly ? { width: "100%", pointerEvents: "none" } : { width: "100%" }}>
         <BlockUi blocking={blocking}>
-          <div
-            style={{ display: "flex", gap: "20px", justifyContent: "flex-end" }}
-          >
+          <div style={{ display: "flex", gap: "20px", justifyContent: "flex-end" }}>
             <Collapse in={expandChecklistsOptions}>
               <ChecklistsOptions
                 blocking={blocking}
@@ -293,9 +246,7 @@ const Checklists = ({
               activity={activity}
               setCreateFollowUpActivity={setCreateFollowUpActivity}
               onUpdateChecklistItem={onUpdateChecklistItem}
-              checklistsEquipmentDisabled={handleChecklistsEquipmentDisabled(
-                activity
-              )}
+              checklistsEquipmentDisabled={handleChecklistsEquipmentDisabled(activity)}
             />
           ))}
           {bottomSlot}
@@ -305,12 +256,7 @@ const Checklists = ({
           hideCreateFollowUpWODialog={hideCreateFollowUpWODialog}
           createFollowUpWOs={createFollowUpWOs}
         />
-        {isCernMode && (
-          <iframe
-            src={edmsLoginServletLink}
-            style={{ width: 0, height: 0, display: "none" }}
-          />
-        )}
+        {isCernMode && <iframe src={edmsLoginServletLink} style={{ width: 0, height: 0, display: "none" }} />}
       </div>
     </ChecklistsContext.Provider>
   );
