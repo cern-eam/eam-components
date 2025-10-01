@@ -41,5 +41,6 @@ const getGridFieldsColumns = (gridFields, headers) =>
     gridFields.map(gf => ({
         id: gf.name,
         header: headers ? headers[gf.name] : gf.label,
-        width: gf.width
+        width: gf.width,
+        sortType: gf.dataType,
     }));

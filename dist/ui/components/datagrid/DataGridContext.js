@@ -89,10 +89,25 @@ var getNumericComparator = function getNumericComparator(_ref4) {
     return (direction === DATA_GRID_SORT_DIRECTIONS.DESC ? -1 : 1) * collator.compare(a[property], b[property]);
   };
 };
-var getComparator = function getComparator(_ref5) {
-  var columnMetadata = _ref5.columnMetadata,
-    isSortEnabled = _ref5.isSortEnabled,
-    direction = _ref5.direction;
+var getDateTimeComparator = function getDateTimeComparator(_ref5) {
+  var direction = _ref5.direction,
+    property = _ref5.property;
+  return function (a, b) {
+    var valA = a?.[property];
+    var valB = b?.[property];
+    var dateA = valA instanceof Date ? valA.getTime() : new Date(valA).getTime();
+    var dateB = valB instanceof Date ? valB.getTime() : new Date(valB).getTime();
+    if (isNaN(dateA) && isNaN(dateB)) return 0;
+    if (isNaN(dateA)) return direction === DATA_GRID_SORT_DIRECTIONS.DESC ? 1 : -1;
+    if (isNaN(dateB)) return direction === DATA_GRID_SORT_DIRECTIONS.DESC ? -1 : 1;
+    var result = dateA - dateB;
+    return direction === DATA_GRID_SORT_DIRECTIONS.DESC ? -result : result;
+  };
+};
+var getComparator = function getComparator(_ref6) {
+  var columnMetadata = _ref6.columnMetadata,
+    isSortEnabled = _ref6.isSortEnabled,
+    direction = _ref6.direction;
   if (!isSortEnabled || !isSortEnabled(columnMetadata)) return;
   if (columnMetadata.comparator) {
     return columnMetadata.comparator({
@@ -101,6 +116,11 @@ var getComparator = function getComparator(_ref5) {
     });
   }
   switch (columnMetadata.sortType) {
+    case DATA_GRID_SORT_TYPES.DATETIME:
+      return getDateTimeComparator({
+        direction: direction,
+        property: columnMetadata.id
+      });
     case DATA_GRID_SORT_TYPES.NUMERIC:
       return getNumericComparator({
         direction: direction,

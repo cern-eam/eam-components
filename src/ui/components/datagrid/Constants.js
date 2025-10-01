@@ -1,5 +1,6 @@
 export const DATA_GRID_SORT_TYPES = {
     DEFAULT: "DEFAULT",
+    DATETIME: "DATETIME",
     NUMERIC: "NUMERIC"
 }
 

@@ -53,7 +53,8 @@ var getGridFieldsColumns = function getGridFieldsColumns(gridFields, headers) {
     return {
       id: gf.name,
       header: headers ? headers[gf.name] : gf.label,
-      width: gf.width
+      width: gf.width,
+      sortType: gf.dataType
     };
   });
 };

@@ -60,14 +60,32 @@ const getNumericComparator = ({ direction, property }) => {
     return (a, b) => (direction === DATA_GRID_SORT_DIRECTIONS.DESC ? -1 : 1) * collator.compare(a[property], b[property]);
 }
 
+const getDateTimeComparator = ({ direction, property }) => {
+    return (a, b) => {
+        const valA = a?.[property];
+        const valB = b?.[property];
+
+        const dateA = valA instanceof Date ? valA.getTime() : new Date(valA).getTime();
+        const dateB = valB instanceof Date ? valB.getTime() : new Date(valB).getTime();
+
+        if (isNaN(dateA) && isNaN(dateB)) return 0;
+        if (isNaN(dateA)) return direction === DATA_GRID_SORT_DIRECTIONS.DESC ? 1 : -1;
+        if (isNaN(dateB)) return direction === DATA_GRID_SORT_DIRECTIONS.DESC ? -1 : 1;
+
+        const result = dateA - dateB;
+        return direction === DATA_GRID_SORT_DIRECTIONS.DESC ? -result : result;
+    };
+};
+
 const getComparator = ({ columnMetadata, isSortEnabled, direction }) => {
     if (!isSortEnabled || !isSortEnabled(columnMetadata)) return;
 
     if (columnMetadata.comparator) {
         return columnMetadata.comparator({ direction, property: columnMetadata.id });
     }
-
     switch (columnMetadata.sortType) {
+        case DATA_GRID_SORT_TYPES.DATETIME:
+            return getDateTimeComparator({ direction, property: columnMetadata.id })
         case DATA_GRID_SORT_TYPES.NUMERIC:
             return getNumericComparator({ direction, property: columnMetadata.id })
         case DATA_GRID_SORT_TYPES.DEFAULT:
