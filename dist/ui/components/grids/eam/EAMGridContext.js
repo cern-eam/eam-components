@@ -267,9 +267,10 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
         setGridField(newGridResult.gridField);
       }
       setGridResult(newGridResult);
-      setLoading(false);
     })["catch"](function (error) {
       handleError && handleError(error);
+    })["finally"](function () {
+      setLoading(false);
     });
   }, [fetchDataCancelToken, setFetchDataCancelToken]);
   var fetchDataDebounced = useAsyncDebounce(fetchData, 100);

@@ -247,10 +247,11 @@ export const EAMGridContextProvider = (props) => {
                         setGridField(newGridResult.gridField);
                     }
                     setGridResult(newGridResult);
-                    setLoading(false);
                 })
                 .catch((error) => {
                     handleError && handleError(error);
+                }).finally(() => {
+                    setLoading(false);
                 });
         },
         [fetchDataCancelToken, setFetchDataCancelToken]
