@@ -331,9 +331,16 @@ export default React.memo(EISTable);
 
 const GENERATE_DATE_PARSER = (parseString) => (value) => parse(value, parseString, new Date()).getTime();
 
+const NATIVE_DATE_PARSER = (value) => {
+    if (!value) return 0;
+    const t = new Date(value).getTime();
+    return Number.isNaN(t) ? 0 : t;
+};
+
 export const TRANSFORM_KEYS = {
     DATE_DD_MMM_YYYY: GENERATE_DATE_PARSER('dd-MMM-yyyy'),
     DATE_DD_MMM_YYYY_HH_MM: GENERATE_DATE_PARSER('dd-MMM-yyyy HH:mm'),
     DEFAULT: (value) => (isNaN(value) ? value : +value),
     GENERATE_DATE_PARSER,
+    NATIVE_DATE_PARSER,
 };

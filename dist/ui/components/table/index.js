@@ -370,11 +370,17 @@ var GENERATE_DATE_PARSER = function GENERATE_DATE_PARSER(parseString) {
     return parse(value, parseString, new Date()).getTime();
   };
 };
+var NATIVE_DATE_PARSER = function NATIVE_DATE_PARSER(value) {
+  if (!value) return 0;
+  var t = new Date(value).getTime();
+  return Number.isNaN(t) ? 0 : t;
+};
 export var TRANSFORM_KEYS = {
   DATE_DD_MMM_YYYY: GENERATE_DATE_PARSER('dd-MMM-yyyy'),
   DATE_DD_MMM_YYYY_HH_MM: GENERATE_DATE_PARSER('dd-MMM-yyyy HH:mm'),
   DEFAULT: function DEFAULT(value) {
     return isNaN(value) ? value : +value;
   },
-  GENERATE_DATE_PARSER: GENERATE_DATE_PARSER
+  GENERATE_DATE_PARSER: GENERATE_DATE_PARSER,
+  NATIVE_DATE_PARSER: NATIVE_DATE_PARSER
 };
