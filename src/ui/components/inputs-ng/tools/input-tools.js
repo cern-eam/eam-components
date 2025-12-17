@@ -51,6 +51,9 @@ export const processElementInfo = (elementInfo) => {
             case "datetime":
                 data.type = 'datetime'
                 break;
+            case "uxtimepicker":
+                data.type = 'uxtimepicker'
+                break;
             case "checkbox":
                 data.type = 'checkbox'
                 break;
