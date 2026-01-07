@@ -7,3 +7,9 @@ export const extractOptions = result => {
 
     return result.body.data;
 }
+
+export const MODE = {
+  UNKNOWN: 'unknown',
+  SELECT: 'select',
+  AUTOCOMPLETE: 'autocomplete',
+};

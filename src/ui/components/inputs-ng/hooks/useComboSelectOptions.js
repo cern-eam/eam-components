@@ -1,13 +1,17 @@
 import {useState, useEffect} from "react"
-import { extractOptions } from "./tools";
+import { extractOptions, MODE } from "./tools";
 
-const useComboSelectOptions = (autocompleteHandler, autocompleteHandlerParams = [], renderDependencies = [], inputValue, value, open, fieldId) => {
+const useComboSelectOptions = ({autocompleteHandler, autocompleteHandlerParams = [], renderDependencies = [], inputValue, open, setMode, mode}) => {
   
     const [fetchedOptions, setFetchedOptions] = useState([]);
     const [filteredOptions, setFilteredOptions] = useState([])
     const [loading, setLoading] = useState(false);
 
     useEffect( () => {
+        if (mode === MODE.AUTOCOMPLETE) {
+            return
+        }
+
         if (!open || fetchedOptions.length) {
             setFilteredOptions(fetchedOptions)
             return
@@ -17,11 +21,18 @@ const useComboSelectOptions = (autocompleteHandler, autocompleteHandlerParams = 
     }, [open]) 
 
     const fetchOptions = (autocompleteHandlerParams) => {
+        
         setLoading(true);
         autocompleteHandler({handlerParams: autocompleteHandlerParams})
         .then(result => {
-            setFetchedOptions(extractOptions(result));
-            setFilteredOptions(extractOptions(result))
+            if (!result.body.metadata.NEXTCURSORPOSITION) {
+                setMode(MODE.SELECT)
+                setFetchedOptions(extractOptions(result))
+                setFilteredOptions(extractOptions(result))
+            } else {
+                setMode(MODE.AUTOCOMPLETE)
+            }
+            
             setLoading(false);
         })
         .catch(error => {
@@ -31,6 +42,7 @@ const useComboSelectOptions = (autocompleteHandler, autocompleteHandlerParams = 
 
     useEffect( () => {
         setFetchedOptions([])
+        setFilteredOptions([])
     }, [...renderDependencies])
 
     useEffect( () => {

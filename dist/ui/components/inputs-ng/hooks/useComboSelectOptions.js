@@ -9,14 +9,17 @@ function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length)
 function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
 function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 import { useState, useEffect } from "react";
-import { extractOptions } from "./tools";
-var useComboSelectOptions = function useComboSelectOptions(autocompleteHandler) {
-  var autocompleteHandlerParams = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
-  var renderDependencies = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
-  var inputValue = arguments.length > 3 ? arguments[3] : undefined;
-  var value = arguments.length > 4 ? arguments[4] : undefined;
-  var open = arguments.length > 5 ? arguments[5] : undefined;
-  var fieldId = arguments.length > 6 ? arguments[6] : undefined;
+import { extractOptions, MODE } from "./tools";
+var useComboSelectOptions = function useComboSelectOptions(_ref) {
+  var autocompleteHandler = _ref.autocompleteHandler,
+    _ref$autocompleteHand = _ref.autocompleteHandlerParams,
+    autocompleteHandlerParams = _ref$autocompleteHand === void 0 ? [] : _ref$autocompleteHand,
+    _ref$renderDependenci = _ref.renderDependencies,
+    renderDependencies = _ref$renderDependenci === void 0 ? [] : _ref$renderDependenci,
+    inputValue = _ref.inputValue,
+    open = _ref.open,
+    setMode = _ref.setMode,
+    mode = _ref.mode;
   var _useState = useState([]),
     _useState2 = _slicedToArray(_useState, 2),
     fetchedOptions = _useState2[0],
@@ -30,6 +33,9 @@ var useComboSelectOptions = function useComboSelectOptions(autocompleteHandler) 
     loading = _useState6[0],
     setLoading = _useState6[1];
   useEffect(function () {
+    if (mode === MODE.AUTOCOMPLETE) {
+      return;
+    }
     if (!open || fetchedOptions.length) {
       setFilteredOptions(fetchedOptions);
       return;
@@ -41,8 +47,13 @@ var useComboSelectOptions = function useComboSelectOptions(autocompleteHandler) 
     autocompleteHandler({
       handlerParams: autocompleteHandlerParams
     }).then(function (result) {
-      setFetchedOptions(extractOptions(result));
-      setFilteredOptions(extractOptions(result));
+      if (!result.body.metadata.NEXTCURSORPOSITION) {
+        setMode(MODE.SELECT);
+        setFetchedOptions(extractOptions(result));
+        setFilteredOptions(extractOptions(result));
+      } else {
+        setMode(MODE.AUTOCOMPLETE);
+      }
       setLoading(false);
     })["catch"](function (error) {
       setLoading(false);
@@ -50,6 +61,7 @@ var useComboSelectOptions = function useComboSelectOptions(autocompleteHandler) 
   };
   useEffect(function () {
     setFetchedOptions([]);
+    setFilteredOptions([]);
   }, _toConsumableArray(renderDependencies));
   useEffect(function () {
     if (!fetchedOptions.length) return;

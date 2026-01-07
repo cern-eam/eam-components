@@ -5,23 +5,27 @@ import EAMBaseInput from './components/EAMBaseInput';
 import TextField from './components/TextField';
 import { saveHistory, HISTORY_ID_PREFIX } from './tools/history-tools';
 import useComboSelectOptions from './hooks/useComboSelectOptions';
-import useFetchAutocompleteOptions from './hooks/useFetchAutocompleteOptions';
+import useComboAutocompleteOptions from './hooks/useComboAutocompleteOptions';
+import { MODE } from './hooks/tools';
 
 const EAMComboAutocomplete = (props) => {
 
   let { autocompleteHandler, autocompleteHandlerParams = [], renderDependencies = [],
-    value, desc, id, renderValue, onChange, validate = true, onClear, selectMode } = props;
+    value, desc, id, renderValue, onChange, validate = true, onClear } = props;
 
   let [inputValue, setInputValue] = useState("")
   let [description, setDescription] = useState("")
   let [open, setOpen] = useState(false)
-  let [fetchedOptions, loading] =
-    selectMode ?
-      useComboSelectOptions(autocompleteHandler, autocompleteHandlerParams, renderDependencies, inputValue, value, open, id)
-      :
-      useFetchAutocompleteOptions(autocompleteHandler, autocompleteHandlerParams, renderDependencies, inputValue, value, open, id)
+
+  const [mode, setMode] = useState(MODE.UNKNOWN)  
+
+  let [selectOptions, selectLoading] = useComboSelectOptions({autocompleteHandler, autocompleteHandlerParams, renderDependencies, inputValue, value, open, id, setMode, enabled: mode !== MODE.AUTOCOMPLETE, mode})
+  let [autocompleteOptions, autocompleteLoading] = useComboAutocompleteOptions({autocompleteHandler, autocompleteHandlerParams, renderDependencies, inputValue, value, open, id, enabled: mode !== MODE.SELECT})
   let [valid, setValid] = useState(true)
 
+  const options = mode === MODE.SELECT ? selectOptions : autocompleteOptions
+  const loading = mode === MODE.SELECT ? selectLoading : autocompleteLoading
+  
   useEffect(() => {
     
     setValid(true)
@@ -40,6 +44,10 @@ const EAMComboAutocomplete = (props) => {
   useEffect(() => {
     setDescription(desc)
   }, [desc])
+
+  useEffect( () => {
+    setMode(MODE.UNKNOWN)
+  }, [...renderDependencies])
 
   const getOptionLabelHandler = option => {
     return option.code ?? option;
@@ -60,7 +68,7 @@ const EAMComboAutocomplete = (props) => {
       return;
     }
 
-    saveHistory(HISTORY_ID_PREFIX + id, newValue)
+    (mode === MODE.AUTOCOMPLETE) && saveHistory(HISTORY_ID_PREFIX + id, newValue)
 
     setValid(true)
     onChange(newValue, true)
@@ -111,7 +119,7 @@ const EAMComboAutocomplete = (props) => {
     <EAMBaseInput {...props}>
       <Autocomplete
         // Options
-        options={fetchedOptions}
+        options={options}
         getOptionLabel={getOptionLabelHandler}
         renderOption={renderOptionHandler.bind(null, renderValue)}
         // Open props
@@ -137,6 +145,7 @@ const EAMComboAutocomplete = (props) => {
         fullWidth
         renderInput={(params) => <TextField {...params}
           {...props}
+          selectMode={mode === MODE.SELECT}
           desc={description}
           errorText={props.errorText}
           valid={valid} />}
