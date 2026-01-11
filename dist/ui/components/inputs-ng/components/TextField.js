@@ -93,7 +93,8 @@ var TextField = function TextField(props) {
       return event.stopPropagation();
     } /* If we don't stop the propagation the input focuses on clicking in this area */,
     style: {
-      display: "flex"
+      display: "flex",
+      alignItems: "center"
     }
   }, selectMode && /*#__PURE__*/React.createElement(ArrowAdornment, {
     endTextAdornment: endTextAdornment

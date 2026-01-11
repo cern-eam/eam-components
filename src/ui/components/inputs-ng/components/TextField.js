@@ -73,7 +73,7 @@ const TextField = (props) => {
                     />}
                     {endTextAdornment && <TextFieldTextAdornment>{endTextAdornment}</TextFieldTextAdornment>}
                 </div>
-                <div onClick={event => event.stopPropagation() /* If we don't stop the propagation the input focuses on clicking in this area */ } style={{display: "flex"}}> 
+                <div onClick={event => event.stopPropagation() /* If we don't stop the propagation the input focuses on clicking in this area */ } style={{display: "flex", alignItems: "center"}}> 
                     {selectMode && <ArrowAdornment endTextAdornment={endTextAdornment}/>}
                     {endAdornment}
                     {barcodeScanner && !disabled && <EAMBarcodeScanner rightAlign={rightAlign} onChange={onChange} />}

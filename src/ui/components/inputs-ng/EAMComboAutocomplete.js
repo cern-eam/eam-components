@@ -7,6 +7,8 @@ import { saveHistory, HISTORY_ID_PREFIX } from './tools/history-tools';
 import useComboSelectOptions from './hooks/useComboSelectOptions';
 import useComboAutocompleteOptions from './hooks/useComboAutocompleteOptions';
 import { MODE } from './hooks/tools';
+import SearchAdornment from './components/SearchAdornment';
+import ArrowAdornment from './components/ArrowAdornment';
 
 const EAMComboAutocomplete = (props) => {
 
@@ -68,8 +70,7 @@ const EAMComboAutocomplete = (props) => {
       return;
     }
 
-    (mode === MODE.AUTOCOMPLETE) && saveHistory(HISTORY_ID_PREFIX + id, newValue)
-
+    (mode === MODE.AUTOCOMPLETE) && saveHistory(HISTORY_ID_PREFIX + id, newValue);
     setValid(true)
     onChange(newValue, true)
     setDescription(newValue.desc)
@@ -145,7 +146,7 @@ const EAMComboAutocomplete = (props) => {
         fullWidth
         renderInput={(params) => <TextField {...params}
           {...props}
-          selectMode={mode === MODE.SELECT}
+          endAdornment={(mode === MODE.SELECT) ? <ArrowAdornment/> : <SearchAdornment/>}
           desc={description}
           errorText={props.errorText}
           valid={valid} />}

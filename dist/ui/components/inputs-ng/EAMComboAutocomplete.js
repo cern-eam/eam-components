@@ -20,6 +20,8 @@ import { saveHistory, HISTORY_ID_PREFIX } from './tools/history-tools';
 import useComboSelectOptions from './hooks/useComboSelectOptions';
 import useComboAutocompleteOptions from './hooks/useComboAutocompleteOptions';
 import { MODE } from './hooks/tools';
+import SearchAdornment from './components/SearchAdornment';
+import ArrowAdornment from './components/ArrowAdornment';
 var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
   var autocompleteHandler = props.autocompleteHandler,
     _props$autocompleteHa = props.autocompleteHandlerParams,
@@ -237,7 +239,7 @@ var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
     fullWidth: true,
     renderInput: function renderInput(params) {
       return /*#__PURE__*/React.createElement(TextField, _extends({}, params, props, {
-        selectMode: mode === MODE.SELECT,
+        endAdornment: mode === MODE.SELECT ? /*#__PURE__*/React.createElement(ArrowAdornment, null) : /*#__PURE__*/React.createElement(SearchAdornment, null),
         desc: description,
         errorText: props.errorText,
         valid: valid

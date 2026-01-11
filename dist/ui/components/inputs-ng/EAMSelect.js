@@ -43,7 +43,7 @@ var EAMSelect = function EAMSelect(props) {
     if (_typeof(option) === 'object') {
       return formatLabel(renderValue, option);
     }
-    if (typeof option === 'string') {
+    if (typeof option === 'string' || typeof option === 'number') {
       if (getOptions().some(function (o) {
         return o.code === option;
       })) {

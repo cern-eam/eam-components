@@ -23,7 +23,7 @@ const EAMSelect = (props) => {
             return formatLabel(renderValue, option);
         }
 
-        if (typeof option === 'string') {
+        if (typeof option === 'string' || typeof option === 'number') {
             if (getOptions().some(o => o.code === option)) {
                 return formatLabel(renderValue, getOptions().find(o => o.code === option));
             } else {
