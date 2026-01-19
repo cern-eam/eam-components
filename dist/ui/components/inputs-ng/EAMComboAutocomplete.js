@@ -239,7 +239,7 @@ var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
     fullWidth: true,
     renderInput: function renderInput(params) {
       return /*#__PURE__*/React.createElement(TextField, _extends({}, params, props, {
-        endAdornment: mode === MODE.SELECT ? /*#__PURE__*/React.createElement(ArrowAdornment, null) : /*#__PURE__*/React.createElement(SearchAdornment, null),
+        endAdornment: /*#__PURE__*/React.createElement(React.Fragment, null, mode === MODE.SELECT ? /*#__PURE__*/React.createElement(ArrowAdornment, null) : /*#__PURE__*/React.createElement(SearchAdornment, null), props.endAdornment),
         desc: description,
         errorText: props.errorText,
         valid: valid

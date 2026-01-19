@@ -146,7 +146,11 @@ const EAMComboAutocomplete = (props) => {
         fullWidth
         renderInput={(params) => <TextField {...params}
           {...props}
-          endAdornment={(mode === MODE.SELECT) ? <ArrowAdornment/> : <SearchAdornment/>}
+          endAdornment={
+          <>
+            {mode === MODE.SELECT ? <ArrowAdornment /> : <SearchAdornment />}
+            {props.endAdornment}
+          </>}
           desc={description}
           errorText={props.errorText}
           valid={valid} />}
