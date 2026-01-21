@@ -222,6 +222,12 @@ class Checklists extends Component {
         });
     }
 
+    /**
+     * Checks all checklist items across all activities for unset findings
+     * @returns true if not all items are complete, false otherwise
+     */
+    hasIncompleteChecklists = () => !this.state.activities.map(({checklists}) => checklists.every(({finding}) => finding !== null)).every(Boolean)
+    
     renderChecklistsForEquipment(key, checklists, activity, isDisabled = false) {
         const {
             updateChecklistItem,
