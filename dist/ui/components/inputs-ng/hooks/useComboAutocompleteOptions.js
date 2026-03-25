@@ -48,7 +48,7 @@ var useComboAutocompleteOptions = function useComboAutocompleteOptions(_ref) {
       return;
     }
     // If there is a value and nothing new was typed do nothing 
-    if (value && value === inputValue) {
+    if (value?.code && value?.code === inputValue) {
       return;
     }
     if (!inputValue?.trim()) {
@@ -57,7 +57,7 @@ var useComboAutocompleteOptions = function useComboAutocompleteOptions(_ref) {
     }
     abortController.current = new AbortController();
     fetchOptionsDebounced(autocompleteHandlerParams, inputValue);
-  }, [inputValue, value, open]);
+  }, [inputValue, value?.code, open]);
 
   // Memoizing as we always need the same instance of the function that remembers and debounces previous requests 
   var fetchOptionsDebounced = useMemo(function () {

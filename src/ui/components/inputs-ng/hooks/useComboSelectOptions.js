@@ -1,7 +1,7 @@
 import {useState, useEffect} from "react"
 import { extractOptions, MODE } from "./tools";
 
-const useComboSelectOptions = ({autocompleteHandler, autocompleteHandlerParams = [], renderDependencies = [], inputValue, open, setMode, mode}) => {
+const useComboSelectOptions = ({autocompleteHandler, autocompleteHandlerParams = [], renderDependencies = [], inputValue, value, onChange, open, setMode, mode, lazyLoad, disabled}) => {
   
     const [fetchedOptions, setFetchedOptions] = useState([]);
     const [filteredOptions, setFilteredOptions] = useState([])
@@ -20,15 +20,23 @@ const useComboSelectOptions = ({autocompleteHandler, autocompleteHandlerParams =
         fetchOptions(autocompleteHandlerParams)
     }, [open]) 
 
+    useEffect( () => {
+       !disabled && !lazyLoad && fetchOptions(autocompleteHandlerParams)
+    }, [...autocompleteHandlerParams, ...renderDependencies, disabled, lazyLoad])
+
     const fetchOptions = (autocompleteHandlerParams) => {
-        
         setLoading(true);
         autocompleteHandler({handlerParams: autocompleteHandlerParams})
         .then(result => {
             if (!result.body.metadata.NEXTCURSORPOSITION) {
+                const options = extractOptions(result)
                 setMode(MODE.SELECT)
-                setFetchedOptions(extractOptions(result))
-                setFilteredOptions(extractOptions(result))
+                setFetchedOptions(options)
+                //setFilteredOptions(filterOptions(options, inputValue))
+
+                if (!value && !lazyLoad && options.length === 1) {
+                    onChange?.(options[0], true)
+                }
             } else {
                 setMode(MODE.AUTOCOMPLETE)
             }
@@ -47,11 +55,14 @@ const useComboSelectOptions = ({autocompleteHandler, autocompleteHandlerParams =
 
     useEffect( () => {
         if (!fetchedOptions.length) return
-        
-        const filtered = fetchedOptions.filter(o => o?.code?.toString().includes(inputValue))
 
-        setFilteredOptions(filtered)
-    }, [inputValue])
+        setFilteredOptions(filterOptions(fetchedOptions, inputValue))
+    }, [fetchedOptions, inputValue])
+
+    // put filter as external funciton, case insensitive
+    const filterOptions = (options, inputValue) => {
+        return options.filter(o => o?.code?.toString().toLowerCase().includes(inputValue.toLowerCase()))
+    }
 
     return [filteredOptions, loading];
 };

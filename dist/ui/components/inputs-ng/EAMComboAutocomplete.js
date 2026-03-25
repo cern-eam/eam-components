@@ -29,40 +29,47 @@ var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
     _props$renderDependen = props.renderDependencies,
     renderDependencies = _props$renderDependen === void 0 ? [] : _props$renderDependen,
     value = props.value,
-    desc = props.desc,
     id = props.id,
     renderValue = props.renderValue,
     onChange = props.onChange,
-    _props$validate = props.validate,
-    validate = _props$validate === void 0 ? true : _props$validate,
-    onClear = props.onClear;
-  var _useState = useState(""),
+    onClear = props.onClear,
+    _props$lazyLoad = props.lazyLoad,
+    lazyLoad = _props$lazyLoad === void 0 ? true : _props$lazyLoad,
+    disabled = props.disabled;
+  var _useState = useState(''),
     _useState2 = _slicedToArray(_useState, 2),
     inputValue = _useState2[0],
     setInputValue = _useState2[1];
-  var _useState3 = useState(""),
+  var _useState3 = useState(false),
     _useState4 = _slicedToArray(_useState3, 2),
-    description = _useState4[0],
-    setDescription = _useState4[1];
-  var _useState5 = useState(false),
+    open = _useState4[0],
+    setOpen = _useState4[1];
+  var _useState5 = useState(MODE.UNKNOWN),
     _useState6 = _slicedToArray(_useState5, 2),
-    open = _useState6[0],
-    setOpen = _useState6[1];
-  var _useState7 = useState(MODE.UNKNOWN),
+    mode = _useState6[0],
+    setMode = _useState6[1];
+  var _useState7 = useState(true),
     _useState8 = _slicedToArray(_useState7, 2),
-    mode = _useState8[0],
-    setMode = _useState8[1];
+    valid = _useState8[0],
+    setValid = _useState8[1];
+  var _useState9 = useState(''),
+    _useState10 = _slicedToArray(_useState9, 2),
+    description = _useState10[0],
+    setDescription = _useState10[1];
   var _useComboSelectOption = useComboSelectOptions({
       autocompleteHandler: autocompleteHandler,
       autocompleteHandlerParams: autocompleteHandlerParams,
       renderDependencies: renderDependencies,
       inputValue: inputValue,
       value: value,
+      onChange: onChange,
       open: open,
       id: id,
       setMode: setMode,
       enabled: mode !== MODE.AUTOCOMPLETE,
-      mode: mode
+      mode: mode,
+      lazyLoad: lazyLoad,
+      disabled: disabled
     }),
     _useComboSelectOption2 = _slicedToArray(_useComboSelectOption, 2),
     selectOptions = _useComboSelectOption2[0],
@@ -80,66 +87,56 @@ var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
     _useComboAutocomplete2 = _slicedToArray(_useComboAutocomplete, 2),
     autocompleteOptions = _useComboAutocomplete2[0],
     autocompleteLoading = _useComboAutocomplete2[1];
-  var _useState9 = useState(true),
-    _useState10 = _slicedToArray(_useState9, 2),
-    valid = _useState10[0],
-    setValid = _useState10[1];
   var options = mode === MODE.SELECT ? selectOptions : autocompleteOptions;
   var loading = mode === MODE.SELECT ? selectLoading : autocompleteLoading;
   useEffect(function () {
     setValid(true);
-    if (!value) {
-      setDescription('');
-      return;
+
+    // If parent provides only code, resolve full option for description rendering.
+    if (value?.code && !value?.desc) {
+      applyExtraInformation(value.code);
     }
-    if (desc == null) {
-      applyExtraInformation(value);
-    }
-  }, [value]);
+  }, [value?.code, value?.desc]);
   useEffect(function () {
-    setDescription(desc);
-  }, [desc]);
+    setDescription(value?.desc ?? '');
+  }, [value?.desc]);
   useEffect(function () {
     setMode(MODE.UNKNOWN);
   }, _toConsumableArray(renderDependencies));
   var getOptionLabelHandler = function getOptionLabelHandler(option) {
-    return option.code ?? option;
+    if (typeof option === 'string') {
+      return option;
+    }
+    return option?.code ?? '';
   };
   var onInputChangeHandler = function onInputChangeHandler(event, newInputValue) {
     setInputValue(newInputValue);
-    if (newInputValue !== value) {
-      setDescription('');
-    }
+    setDescription('');
   };
   var onChangeHandler = function onChangeHandler(event, newValue, reason) {
     if (reason === 'clear') {
-      onChange({
-        code: '',
-        desc: '',
-        organization: ''
-      }, true);
+      onChange(null);
       onClear?.();
       setValid(true);
       return;
     }
+    if (typeof newValue === 'string') {
+      applyExtraInformation(newValue);
+      return;
+    }
     mode === MODE.AUTOCOMPLETE && saveHistory(HISTORY_ID_PREFIX + id, newValue);
     setValid(true);
-    onChange(newValue, true);
-    setDescription(newValue.desc);
+    onChange(newValue);
 
     // Don't bubble up any events (won't trigger a save when we select something by pressing enter)
     event.stopPropagation();
     event.preventDefault();
   };
-
-  //
-  // ON CLOSE HANDLER
-  //
   var onCloseHandler = function onCloseHandler(event, reason) {
     setOpen(false);
-    // Only to be fired when we blur, press ESC or hit enter and the inputValue is different than the original value
-    if (reason === 'blur' && (inputValue ?? '') !== (value ?? '')) {
-      applyExtraInformation(inputValue, true);
+    // Only to be fired when we blur and the inputValue differs from selected code.
+    if (reason === 'blur' && (inputValue ?? '') !== (value?.code ?? '')) {
+      applyExtraInformation(inputValue);
     }
   };
   var fetchExtraInformation = function fetchExtraInformation(filter) {
@@ -172,30 +169,32 @@ var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
     }, null, null, [[0, 8]], Promise);
   };
   var applyExtraInformation = function applyExtraInformation(filter) {
-    var manualInput,
-      extraInformation,
-      _args2 = arguments;
+    var extraInformation;
     return _regeneratorRuntime().async(function applyExtraInformation$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
-          manualInput = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : false;
-          _context2.next = 3;
+          console.log('applyExtraInformation 0', filter);
+          if (filter?.trim()) {
+            _context2.next = 5;
+            break;
+          }
+          onChange(null);
+          setValid(true);
+          return _context2.abrupt("return");
+        case 5:
+          _context2.next = 7;
           return _regeneratorRuntime().awrap(fetchExtraInformation(filter));
-        case 3:
+        case 7:
           extraInformation = _context2.sent;
+          console.log('applyExtraInformation 1', extraInformation);
           if (extraInformation) {
-            onChange(extraInformation, manualInput);
             setDescription(extraInformation.desc);
+            //onChange(extraInformation);
             setValid(true);
           } else {
-            onChange({
-              code: filter,
-              desc: '',
-              organization: ''
-            }, manualInput);
-            //setValid(!validate || false);
+            //onChange(null)
           }
-        case 5:
+        case 10:
         case "end":
           return _context2.stop();
       }
@@ -225,7 +224,7 @@ var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
     },
     id: id,
     freeSolo: true,
-    value: value ? value : '',
+    value: value?.code ? value.code : '',
     clearOnEscape: true
     // Visuals
     ,
@@ -240,6 +239,7 @@ var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
     renderInput: function renderInput(params) {
       return /*#__PURE__*/React.createElement(TextField, _extends({}, params, props, {
         endAdornment: /*#__PURE__*/React.createElement(React.Fragment, null, mode === MODE.SELECT ? /*#__PURE__*/React.createElement(ArrowAdornment, null) : /*#__PURE__*/React.createElement(SearchAdornment, null), props.endAdornment),
+        value: value?.code ? value.code : '',
         desc: description,
         errorText: props.errorText,
         valid: valid

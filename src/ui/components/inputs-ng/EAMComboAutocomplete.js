@@ -11,85 +11,114 @@ import SearchAdornment from './components/SearchAdornment';
 import ArrowAdornment from './components/ArrowAdornment';
 
 const EAMComboAutocomplete = (props) => {
+  const {
+    autocompleteHandler,
+    autocompleteHandlerParams = [],
+    renderDependencies = [],
+    value,
+    id,
+    renderValue,
+    onChange,
+    onClear,
+    lazyLoad = true,
+    disabled,
+  } = props;
 
-  let { autocompleteHandler, autocompleteHandlerParams = [], renderDependencies = [],
-    value, desc, id, renderValue, onChange, validate = true, onClear } = props;
+  const [inputValue, setInputValue] = useState('');
+  const [open, setOpen] = useState(false);
+  const [mode, setMode] = useState(MODE.UNKNOWN);
+  const [valid, setValid] = useState(true);
+  const [description, setDescription] = useState('');
 
-  let [inputValue, setInputValue] = useState("")
-  let [description, setDescription] = useState("")
-  let [open, setOpen] = useState(false)
+  const [selectOptions, selectLoading] = useComboSelectOptions({
+    autocompleteHandler,
+    autocompleteHandlerParams,
+    renderDependencies,
+    inputValue,
+    value,
+    onChange,
+    open,
+    id,
+    setMode,
+    enabled: mode !== MODE.AUTOCOMPLETE,
+    mode,
+    lazyLoad,
+    disabled
+  });
+  const [autocompleteOptions, autocompleteLoading] = useComboAutocompleteOptions({
+    autocompleteHandler,
+    autocompleteHandlerParams,
+    renderDependencies,
+    inputValue,
+    value,
+    open,
+    id,
+    enabled: mode !== MODE.SELECT
+  });
 
-  const [mode, setMode] = useState(MODE.UNKNOWN)  
+  const options = mode === MODE.SELECT ? selectOptions : autocompleteOptions;
+  const loading = mode === MODE.SELECT ? selectLoading : autocompleteLoading;
 
-  let [selectOptions, selectLoading] = useComboSelectOptions({autocompleteHandler, autocompleteHandlerParams, renderDependencies, inputValue, value, open, id, setMode, enabled: mode !== MODE.AUTOCOMPLETE, mode})
-  let [autocompleteOptions, autocompleteLoading] = useComboAutocompleteOptions({autocompleteHandler, autocompleteHandlerParams, renderDependencies, inputValue, value, open, id, enabled: mode !== MODE.SELECT})
-  let [valid, setValid] = useState(true)
+  useEffect(() => {
+    setValid(true);
 
-  const options = mode === MODE.SELECT ? selectOptions : autocompleteOptions
-  const loading = mode === MODE.SELECT ? selectLoading : autocompleteLoading
+    // If parent provides only code, resolve full option for description rendering.
+    if (value?.code && !value?.desc) {
+      applyExtraInformation(value.code);
+    }
+
+    
+  }, [value?.code, value?.desc]);
+
+  useEffect(() => {
+    setDescription(value?.desc ?? '');
+  }, [value?.desc]);
   
   useEffect(() => {
-    
-    setValid(true)
+    setMode(MODE.UNKNOWN);
+  }, [...renderDependencies]);
 
-    if (!value) {
-      setDescription('')
-      return;
+  const getOptionLabelHandler = (option) => {
+    if (typeof option === 'string') {
+      return option;
     }
-
-    if (desc == null) {
-      applyExtraInformation(value)
-    }
-
-  }, [value])
-
-  useEffect(() => {
-    setDescription(desc)
-  }, [desc])
-
-  useEffect( () => {
-    setMode(MODE.UNKNOWN)
-  }, [...renderDependencies])
-
-  const getOptionLabelHandler = option => {
-    return option.code ?? option;
-  }
+    return option?.code ?? '';
+  };
 
   const onInputChangeHandler = (event, newInputValue) => {
     setInputValue(newInputValue);
-    if (newInputValue !== value) {
-      setDescription('');
-    }
-  }
+    setDescription('');
+  };
 
   const onChangeHandler = (event, newValue, reason) => {
     if (reason === 'clear') {
-      onChange({code: '', desc: '', organization: '' }, true)
-      onClear?.()
-      setValid(true)
+      onChange(null);
+      onClear?.();
+      setValid(true);
+      return;
+    }
+
+    if (typeof newValue === 'string') {
+      applyExtraInformation(newValue);
       return;
     }
 
     (mode === MODE.AUTOCOMPLETE) && saveHistory(HISTORY_ID_PREFIX + id, newValue);
-    setValid(true)
-    onChange(newValue, true)
-    setDescription(newValue.desc)
+    setValid(true);
+    onChange(newValue);
 
     // Don't bubble up any events (won't trigger a save when we select something by pressing enter)
     event.stopPropagation();
     event.preventDefault();
-  }
+  };
 
-  //
-  // ON CLOSE HANDLER
-  //
   const onCloseHandler = (event, reason) => {
-    setOpen(false)
-    // Only to be fired when we blur, press ESC or hit enter and the inputValue is different than the original value
-    if (reason === 'blur' && (inputValue ?? '') !== (value ?? '')) {
-      applyExtraInformation(inputValue, true)
+    setOpen(false);
+    // Only to be fired when we blur and the inputValue differs from selected code.
+    if (reason === 'blur' && (inputValue ?? '') !== (value?.code ?? '')) {
+      applyExtraInformation(inputValue);
     }
-  }
+  };
 
   const fetchExtraInformation = async (filter) => {
     try {
@@ -102,17 +131,23 @@ const EAMComboAutocomplete = (props) => {
     }
   };
 
-  const applyExtraInformation = async (filter, manualInput = false) => {
+  const applyExtraInformation = async (filter) => {
+    console.log('applyExtraInformation 0', filter)
+    if (!filter?.trim()) {
+      onChange(null);
+      setValid(true);
+      return;
+    }
 
     const extraInformation = await fetchExtraInformation(filter);
+    console.log('applyExtraInformation 1', extraInformation)
 
     if (extraInformation) {
-      onChange(extraInformation, manualInput);
       setDescription(extraInformation.desc);
+      //onChange(extraInformation);
       setValid(true);
     } else {
-      onChange({code: filter, desc: '', organization: ''}, manualInput)
-      //setValid(!validate || false);
+      //onChange(null)
     }
   };
 
@@ -134,7 +169,7 @@ const EAMComboAutocomplete = (props) => {
         filterOptions={x => x}
         id={id}
         freeSolo={true}
-        value={value ? value : ''}
+        value={value?.code ? value.code : ''}
         clearOnEscape
         // Visuals
         openOnFocus // Very important, otherwise onCloseHandler won't be fired for example when we focus a field with a tab and delete its value.
@@ -151,6 +186,7 @@ const EAMComboAutocomplete = (props) => {
             {mode === MODE.SELECT ? <ArrowAdornment /> : <SearchAdornment />}
             {props.endAdornment}
           </>}
+          value={value?.code ? value.code : ''}
           desc={description}
           errorText={props.errorText}
           valid={valid} />}

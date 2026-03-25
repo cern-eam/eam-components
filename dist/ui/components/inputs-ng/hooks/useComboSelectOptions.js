@@ -17,9 +17,13 @@ var useComboSelectOptions = function useComboSelectOptions(_ref) {
     _ref$renderDependenci = _ref.renderDependencies,
     renderDependencies = _ref$renderDependenci === void 0 ? [] : _ref$renderDependenci,
     inputValue = _ref.inputValue,
+    value = _ref.value,
+    onChange = _ref.onChange,
     open = _ref.open,
     setMode = _ref.setMode,
-    mode = _ref.mode;
+    mode = _ref.mode,
+    lazyLoad = _ref.lazyLoad,
+    disabled = _ref.disabled;
   var _useState = useState([]),
     _useState2 = _slicedToArray(_useState, 2),
     fetchedOptions = _useState2[0],
@@ -42,15 +46,23 @@ var useComboSelectOptions = function useComboSelectOptions(_ref) {
     }
     fetchOptions(autocompleteHandlerParams);
   }, [open]);
+  useEffect(function () {
+    !disabled && !lazyLoad && fetchOptions(autocompleteHandlerParams);
+  }, [].concat(_toConsumableArray(autocompleteHandlerParams), _toConsumableArray(renderDependencies), [disabled, lazyLoad]));
   var fetchOptions = function fetchOptions(autocompleteHandlerParams) {
     setLoading(true);
     autocompleteHandler({
       handlerParams: autocompleteHandlerParams
     }).then(function (result) {
       if (!result.body.metadata.NEXTCURSORPOSITION) {
+        var options = extractOptions(result);
         setMode(MODE.SELECT);
-        setFetchedOptions(extractOptions(result));
-        setFilteredOptions(extractOptions(result));
+        setFetchedOptions(options);
+        //setFilteredOptions(filterOptions(options, inputValue))
+
+        if (!value && !lazyLoad && options.length === 1) {
+          onChange?.(options[0], true);
+        }
       } else {
         setMode(MODE.AUTOCOMPLETE);
       }
@@ -65,11 +77,15 @@ var useComboSelectOptions = function useComboSelectOptions(_ref) {
   }, _toConsumableArray(renderDependencies));
   useEffect(function () {
     if (!fetchedOptions.length) return;
-    var filtered = fetchedOptions.filter(function (o) {
-      return o?.code?.toString().includes(inputValue);
+    setFilteredOptions(filterOptions(fetchedOptions, inputValue));
+  }, [fetchedOptions, inputValue]);
+
+  // put filter as external funciton, case insensitive
+  var filterOptions = function filterOptions(options, inputValue) {
+    return options.filter(function (o) {
+      return o?.code?.toString().toLowerCase().includes(inputValue.toLowerCase());
     });
-    setFilteredOptions(filtered);
-  }, [inputValue]);
+  };
   return [filteredOptions, loading];
 };
 export default useComboSelectOptions;

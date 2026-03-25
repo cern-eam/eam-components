@@ -124,6 +124,7 @@ export var createOnChangeHandler = function createOnChangeHandler(valueKey, desc
     if (_typeof(value) === 'object') {
       var keys = [];
       var values = [];
+      console.log('createOnChangeHandler 0', value);
       if (value.code !== undefined) {
         !batchUpdates && updatingFunction?.(valueKey, value.code, ...additionalArgs);
         keys.push(valueKey);

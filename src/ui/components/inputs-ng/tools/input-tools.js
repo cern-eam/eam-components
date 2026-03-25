@@ -140,7 +140,7 @@ export const createOnChangeHandler =
         if (typeof value === 'object') {
             const keys = []
             const values = []
-
+            console.log('createOnChangeHandler 0', value)
             if (value.code !== undefined) {
                 !batchUpdates && updatingFunction?.(valueKey, value.code, ...additionalArgs);
                 keys.push(valueKey)
