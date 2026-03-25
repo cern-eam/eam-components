@@ -5,3 +5,8 @@ export var extractOptions = function extractOptions(result) {
   }
   return result.body.data;
 };
+export var MODE = {
+  UNKNOWN: 'unknown',
+  SELECT: 'select',
+  AUTOCOMPLETE: 'autocomplete'
+};

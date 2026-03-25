@@ -12,6 +12,8 @@ export const isUpperCase = elementInfo => elementInfo?.characterCase === 'upperc
 export const areEqual = (prevProps, nextProps) => {
     return prevProps.value === nextProps.value &&
            prevProps.desc === nextProps.desc &&
+           prevProps.value?.code === nextProps.value?.code &&
+           prevProps.value?.desc === nextProps.value?.desc &&
            prevProps.disabled === nextProps.disabled &&
            prevProps.readonly === nextProps.readonly &&
            prevProps.required === nextProps.required &&

@@ -5,6 +5,7 @@ import TextFieldInput from './TextFieldInput';
 import TextAreaInput from './TextAreaInput';
 import TextFieldTextAdornment from './TextFieldTextAdornment';
 import TextFieldDescription from './TextFieldDescription';
+import ArrowAdornment from './ArrowAdornment';
 
 const divInputStyle = {
     flex: "1 1 auto",
@@ -42,7 +43,7 @@ const TextField = (props) => {
         inputProps,
         inputRef,
         endTextAdornment, endAdornment,
-        hideDescription, disabled, maxLength, uppercase, errorText, style, type, rightAlign, textarea = false} = props;
+        hideDescription, disabled, maxLength, uppercase, errorText, style, type, rightAlign, valid = true, textarea = false, selectMode = false} = props;
 
     const onInputUpperCaseHandler = event => {
         var input = event.target;
@@ -57,7 +58,7 @@ const TextField = (props) => {
     return (
         <div style={{...divRootContainerStyle, ...style}}>
             <div style={divInputContainerStyle}>
-                <div style={{...divInputStyle, ...(errorText ? fieldInvalid : {})}} ref={props.InputProps?.ref}>
+                <div style={{...divInputStyle, ...((errorText || !valid) ? fieldInvalid : {})}} ref={props.InputProps?.ref}>
                     <InputComponent type={type === 'password' ? 'password' : 'text'}
                                     ref={inputRef}
                                     {...inputProps}
@@ -72,7 +73,8 @@ const TextField = (props) => {
                     />}
                     {endTextAdornment && <TextFieldTextAdornment>{endTextAdornment}</TextFieldTextAdornment>}
                 </div>
-                <div onClick={event => event.stopPropagation() /* If we don't stop the propagation the input focuses on clicking in this area */ } style={{display: "flex"}}> 
+                <div onClick={event => event.stopPropagation() /* If we don't stop the propagation the input focuses on clicking in this area */ } style={{display: "flex", alignItems: "center"}}> 
+                    {selectMode && <ArrowAdornment endTextAdornment={endTextAdornment}/>}
                     {endAdornment}
                     {barcodeScanner && !disabled && <EAMBarcodeScanner rightAlign={rightAlign} onChange={onChange} />}
                     {link && <EAMLink link = {link} value = {value}/>}

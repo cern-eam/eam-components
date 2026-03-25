@@ -12,6 +12,7 @@ import TextFieldInput from './TextFieldInput';
 import TextAreaInput from './TextAreaInput';
 import TextFieldTextAdornment from './TextFieldTextAdornment';
 import TextFieldDescription from './TextFieldDescription';
+import ArrowAdornment from './ArrowAdornment';
 var divInputStyle = {
   flex: "1 1 auto",
   position: "relative"
@@ -53,8 +54,12 @@ var TextField = function TextField(props) {
     style = props.style,
     type = props.type,
     rightAlign = props.rightAlign,
+    _props$valid = props.valid,
+    valid = _props$valid === void 0 ? true : _props$valid,
     _props$textarea = props.textarea,
-    textarea = _props$textarea === void 0 ? false : _props$textarea;
+    textarea = _props$textarea === void 0 ? false : _props$textarea,
+    _props$selectMode = props.selectMode,
+    selectMode = _props$selectMode === void 0 ? false : _props$selectMode;
   var onInputUpperCaseHandler = function onInputUpperCaseHandler(event) {
     var input = event.target;
     var start = input.selectionStart;
@@ -68,7 +73,7 @@ var TextField = function TextField(props) {
   }, /*#__PURE__*/React.createElement("div", {
     style: divInputContainerStyle
   }, /*#__PURE__*/React.createElement("div", {
-    style: _objectSpread({}, divInputStyle, {}, errorText ? fieldInvalid : {}),
+    style: _objectSpread({}, divInputStyle, {}, errorText || !valid ? fieldInvalid : {}),
     ref: props.InputProps?.ref
   }, /*#__PURE__*/React.createElement(InputComponent, _extends({
     type: type === 'password' ? 'password' : 'text',
@@ -88,9 +93,12 @@ var TextField = function TextField(props) {
       return event.stopPropagation();
     } /* If we don't stop the propagation the input focuses on clicking in this area */,
     style: {
-      display: "flex"
+      display: "flex",
+      alignItems: "center"
     }
-  }, endAdornment, barcodeScanner && !disabled && /*#__PURE__*/React.createElement(EAMBarcodeScanner, {
+  }, selectMode && /*#__PURE__*/React.createElement(ArrowAdornment, {
+    endTextAdornment: endTextAdornment
+  }), endAdornment, barcodeScanner && !disabled && /*#__PURE__*/React.createElement(EAMBarcodeScanner, {
     rightAlign: rightAlign,
     onChange: onChange
   }), link && /*#__PURE__*/React.createElement(EAMLink, {
