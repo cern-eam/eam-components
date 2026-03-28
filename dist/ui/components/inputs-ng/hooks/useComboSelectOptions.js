@@ -58,6 +58,7 @@ var useComboSelectOptions = function useComboSelectOptions(_ref) {
         var options = extractOptions(result);
         setMode(MODE.SELECT);
         setFetchedOptions(options);
+        setFilteredOptions(options);
         //setFilteredOptions(filterOptions(options, inputValue))
 
         if (!value && !lazyLoad && options.length === 1) {
@@ -76,9 +77,11 @@ var useComboSelectOptions = function useComboSelectOptions(_ref) {
     setFilteredOptions([]);
   }, _toConsumableArray(renderDependencies));
   useEffect(function () {
-    if (!fetchedOptions.length) return;
+    if (!fetchedOptions.length) {
+      return;
+    }
     setFilteredOptions(filterOptions(fetchedOptions, inputValue));
-  }, [fetchedOptions, inputValue]);
+  }, [inputValue]);
 
   // put filter as external funciton, case insensitive
   var filterOptions = function filterOptions(options, inputValue) {

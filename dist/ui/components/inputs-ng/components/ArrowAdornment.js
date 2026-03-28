@@ -6,7 +6,7 @@ var ArrowAdornment = function ArrowAdornment(_ref) {
     marginRight: endTextAdornment ? 76 : 6,
     marginLeft: endTextAdornment ? -100 : -30,
     zIndex: 999,
-    color: '#cbcbcb',
+    color: '#ededed',
     pointerEvents: 'none'
   };
   return /*#__PURE__*/React.createElement(KeyboardArrowDownIcon, {

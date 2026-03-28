@@ -32,6 +32,7 @@ const useComboSelectOptions = ({autocompleteHandler, autocompleteHandlerParams =
                 const options = extractOptions(result)
                 setMode(MODE.SELECT)
                 setFetchedOptions(options)
+                setFilteredOptions(options)
                 //setFilteredOptions(filterOptions(options, inputValue))
 
                 if (!value && !lazyLoad && options.length === 1) {
@@ -54,10 +55,12 @@ const useComboSelectOptions = ({autocompleteHandler, autocompleteHandlerParams =
     }, [...renderDependencies])
 
     useEffect( () => {
-        if (!fetchedOptions.length) return
+        if (!fetchedOptions.length) {
+            return
+        }
 
         setFilteredOptions(filterOptions(fetchedOptions, inputValue))
-    }, [fetchedOptions, inputValue])
+    }, [inputValue])
 
     // put filter as external funciton, case insensitive
     const filterOptions = (options, inputValue) => {

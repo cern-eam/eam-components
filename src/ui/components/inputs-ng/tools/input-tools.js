@@ -11,8 +11,7 @@ export const isHidden = elementInfo => elementInfo?.attribute === 'H' || element
 export const isUpperCase = elementInfo => elementInfo?.characterCase === 'uppercase';
 
 export const areEqual = (prevProps, nextProps) => {
-    return prevProps.value === nextProps.value &&
-           prevProps.desc === nextProps.desc &&
+    return prevProps.desc === nextProps.desc &&
            prevProps.disabled === nextProps.disabled &&
            prevProps.readonly === nextProps.readonly &&
            prevProps.required === nextProps.required &&
@@ -22,7 +21,8 @@ export const areEqual = (prevProps, nextProps) => {
            prevProps.errorText === nextProps.errorText &&
            isEqual(prevProps.autocompleteHandlerParams, nextProps.autocompleteHandlerParams) &&
            isEqual(prevProps.options, nextProps.options) &&
-           isEqual(prevProps.renderDependencies, nextProps.renderDependencies);
+           isEqual(prevProps.renderDependencies, nextProps.renderDependencies) &&
+           isEqual(prevProps.value, nextProps.value);
 }
 
 export const processElementInfo = (elementInfo) => {
