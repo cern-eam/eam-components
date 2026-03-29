@@ -85,7 +85,6 @@ const EAMComboAutocomplete = (props) => {
   }, [...renderDependencies]);
 
 
-
   //
   // HANDLERS
   //
@@ -123,7 +122,7 @@ const EAMComboAutocomplete = (props) => {
     setOpen(false);
     // Only to be fired when we blur and the inputValue differs from selected code.
     if (reason === 'blur' && (inputValue ?? '') !== (value?.code ?? '')) {
-      applyExtraInformation(inputValue);
+      applyExtraInformation(inputValue, true);
     }
   };
 
@@ -131,7 +130,7 @@ const EAMComboAutocomplete = (props) => {
   // UTILS
   //
 
-  const applyExtraInformation = async (filter) => {
+  const applyExtraInformation = async (filter, alwaysExecuteOnChange = false) => {
     if (!filter?.trim()) {
       onChange(null);
       setValid(true);
@@ -148,7 +147,7 @@ const EAMComboAutocomplete = (props) => {
       setDescription(extraInformation.desc);
     }
 
-    if (extraInformation.organization) {
+    if (extraInformation.organization || alwaysExecuteOnChange) {
       onChange(extraInformation);
     }
 
@@ -202,7 +201,9 @@ const EAMComboAutocomplete = (props) => {
           value={value?.code ? value.code : ''}
           desc={description}
           errorText={props.errorText}
-          valid={valid} />}
+          valid={valid} 
+          applyExtraInformation={applyExtraInformation}
+          />}
 
       />
     </EAMBaseInput>

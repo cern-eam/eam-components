@@ -143,7 +143,7 @@ var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
     setOpen(false);
     // Only to be fired when we blur and the inputValue differs from selected code.
     if (reason === 'blur' && (inputValue ?? '') !== (value?.code ?? '')) {
-      applyExtraInformation(inputValue);
+      applyExtraInformation(inputValue, true);
     }
   };
 
@@ -152,35 +152,38 @@ var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
   //
 
   var applyExtraInformation = function applyExtraInformation(filter) {
-    var extraInformation;
+    var alwaysExecuteOnChange,
+      extraInformation,
+      _args = arguments;
     return _regeneratorRuntime().async(function applyExtraInformation$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
+          alwaysExecuteOnChange = _args.length > 1 && _args[1] !== undefined ? _args[1] : false;
           if (filter?.trim()) {
-            _context.next = 4;
+            _context.next = 5;
             break;
           }
           onChange(null);
           setValid(true);
           return _context.abrupt("return");
-        case 4:
-          _context.next = 6;
+        case 5:
+          _context.next = 7;
           return _regeneratorRuntime().awrap(fetchExtraInformation(filter));
-        case 6:
+        case 7:
           extraInformation = _context.sent;
           if (extraInformation) {
-            _context.next = 9;
+            _context.next = 10;
             break;
           }
           return _context.abrupt("return");
-        case 9:
+        case 10:
           if (extraInformation.desc && !value?.desc) {
             setDescription(extraInformation.desc);
           }
-          if (extraInformation.organization) {
+          if (extraInformation.organization || alwaysExecuteOnChange) {
             onChange(extraInformation);
           }
-        case 11:
+        case 12:
         case "end":
           return _context.stop();
       }
@@ -258,7 +261,8 @@ var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
         value: value?.code ? value.code : '',
         desc: description,
         errorText: props.errorText,
-        valid: valid
+        valid: valid,
+        applyExtraInformation: applyExtraInformation
       }));
     }
   }));
