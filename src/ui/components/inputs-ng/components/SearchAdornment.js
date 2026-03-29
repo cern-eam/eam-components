@@ -7,7 +7,7 @@ const SearchAdornment = ({ endTextAdornment }) => {
     marginRight: endTextAdornment ? 76 : 6,
     marginLeft: endTextAdornment ? -100 : -30,
     zIndex: 999,
-    color: 'rgb(218 218 218)',
+    color: '#ededed',
     pointerEvents: 'none',
   };
 

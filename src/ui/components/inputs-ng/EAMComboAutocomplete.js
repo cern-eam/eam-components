@@ -28,6 +28,7 @@ const EAMComboAutocomplete = (props) => {
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState(MODE.UNKNOWN);
   const [valid, setValid] = useState(true);
+  const [description, setDescription] = useState('');
 
   const [selectOptions, selectLoading] = useComboSelectOptions({
     autocompleteHandler,
@@ -58,18 +59,35 @@ const EAMComboAutocomplete = (props) => {
   const options = mode === MODE.SELECT ? selectOptions : autocompleteOptions;
   const loading = mode === MODE.SELECT ? selectLoading : autocompleteLoading;
 
+  //
+  // EFFECTS
+  //
+
   useEffect(() => {
     setValid(true);
 
-    // If parent provides only code, resolve full option for description rendering.
-    if (value?.code && value?.desc == null) {
+    if (!value?.code) {
+      setDescription('');
+    }
+
+    if (value?.code && !value?.desc) {
       applyExtraInformation(value.code);
     }
-  }, [value?.code, value?.desc]);
+    
+  }, [value?.code]);
 
+  useEffect(() => {
+    setDescription(value?.desc ?? '');
+  }, [value?.desc]);
+  
   useEffect(() => {
     setMode(MODE.UNKNOWN);
   }, [...renderDependencies]);
+
+
+  //
+  // HANDLERS
+  //
 
   const getOptionLabelHandler = (option) => {
     if (typeof option === 'string') {
@@ -80,6 +98,7 @@ const EAMComboAutocomplete = (props) => {
 
   const onInputChangeHandler = (event, newInputValue) => {
     setInputValue(newInputValue);
+    setDescription('');
   };
 
   const onChangeHandler = (event, newValue, reason) => {
@@ -90,15 +109,10 @@ const EAMComboAutocomplete = (props) => {
       return;
     }
 
-    if (typeof newValue === 'string') {
-      applyExtraInformation(newValue);
-      return;
-    }
-
     (mode === MODE.AUTOCOMPLETE) && saveHistory(HISTORY_ID_PREFIX + id, newValue);
     setValid(true);
     onChange(newValue);
-
+    setDescription(newValue?.desc ?? '');
     // Don't bubble up any events (won't trigger a save when we select something by pressing enter)
     event.stopPropagation();
     event.preventDefault();
@@ -108,8 +122,35 @@ const EAMComboAutocomplete = (props) => {
     setOpen(false);
     // Only to be fired when we blur and the inputValue differs from selected code.
     if (reason === 'blur' && (inputValue ?? '') !== (value?.code ?? '')) {
-      applyExtraInformation(inputValue);
+      applyExtraInformation(inputValue, true);
     }
+  };
+
+  //
+  // UTILS
+  //
+
+  const applyExtraInformation = async (filter, alwaysExecuteOnChange = false) => {
+    if (!filter?.trim()) {
+      onChange(null);
+      setValid(true);
+      return;
+    }
+
+    const extraInformation = await fetchExtraInformation(filter);
+    
+    if (!extraInformation) {
+      return;
+    }
+
+    if (extraInformation.desc && !value?.desc) {
+      setDescription(extraInformation.desc);
+    }
+
+    if (extraInformation.organization || alwaysExecuteOnChange) {
+      onChange(extraInformation);
+    }
+
   };
 
   const fetchExtraInformation = async (filter) => {
@@ -118,25 +159,7 @@ const EAMComboAutocomplete = (props) => {
       const option = result.body?.data?.find(o => o.code === filter);
       return option || null;
     } catch (error) {
-      console.error(error);
       return null;
-    }
-  };
-
-  const applyExtraInformation = async (filter) => {
-    if (!filter?.trim()) {
-      onChange(null);
-      setValid(true);
-      return;
-    }
-
-    const extraInformation = await fetchExtraInformation(filter);
-
-    if (extraInformation) {
-      onChange(extraInformation);
-      setValid(true);
-    } else {
-      onChange(null)
     }
   };
 
@@ -172,13 +195,15 @@ const EAMComboAutocomplete = (props) => {
           {...props}
           endAdornment={
           <>
-            {mode === MODE.SELECT ? <ArrowAdornment /> : <SearchAdornment />}
+            {<SearchAdornment endTextAdornment={props.endTextAdornment} />} 
             {props.endAdornment}
           </>}
           value={value?.code ? value.code : ''}
-          desc={value?.desc ?? ''}
+          desc={description}
           errorText={props.errorText}
-          valid={valid} />}
+          valid={valid} 
+          applyExtraInformation={applyExtraInformation}
+          />}
 
       />
     </EAMBaseInput>

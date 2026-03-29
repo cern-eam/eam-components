@@ -15,6 +15,7 @@ import isEqual from 'lodash/isEqual';
 import { Box } from '@mui/material';
 import HistoryIcon from '@mui/icons-material/History';
 import React from 'react';
+import { batch } from 'react-redux';
 export var isRequired = function isRequired(elementInfo) {
   return elementInfo?.attribute === 'R' || elementInfo?.attribute === 'S';
 };
@@ -25,7 +26,7 @@ export var isUpperCase = function isUpperCase(elementInfo) {
   return elementInfo?.characterCase === 'uppercase';
 };
 export var areEqual = function areEqual(prevProps, nextProps) {
-  return prevProps.value === nextProps.value && prevProps.desc === nextProps.desc && prevProps.value?.code === nextProps.value?.code && prevProps.value?.desc === nextProps.value?.desc && prevProps.disabled === nextProps.disabled && prevProps.readonly === nextProps.readonly && prevProps.required === nextProps.required && prevProps.uppercase === nextProps.uppercase && prevProps.label === nextProps.label && prevProps.hidden === nextProps.hidden && prevProps.errorText === nextProps.errorText && isEqual(prevProps.autocompleteHandlerParams, nextProps.autocompleteHandlerParams) && isEqual(prevProps.options, nextProps.options) && isEqual(prevProps.renderDependencies, nextProps.renderDependencies);
+  return prevProps.desc === nextProps.desc && prevProps.disabled === nextProps.disabled && prevProps.readonly === nextProps.readonly && prevProps.required === nextProps.required && prevProps.uppercase === nextProps.uppercase && prevProps.label === nextProps.label && prevProps.hidden === nextProps.hidden && prevProps.errorText === nextProps.errorText && isEqual(prevProps.autocompleteHandlerParams, nextProps.autocompleteHandlerParams) && isEqual(prevProps.options, nextProps.options) && isEqual(prevProps.renderDependencies, nextProps.renderDependencies) && isEqual(prevProps.value, nextProps.value);
 };
 export var processElementInfo = function processElementInfo(elementInfo) {
   var data = {
@@ -39,10 +40,25 @@ export var processElementInfo = function processElementInfo(elementInfo) {
   if (elementInfo.maxLength) {
     data.maxLength = elementInfo.maxLength;
   }
-  if (elementInfo.fieldType === 'currency' || elementInfo.fieldType === 'number') {
-    data.type = 'number';
-  } else {
-    data.type = 'text';
+  switch (elementInfo.fieldType) {
+    case "currency":
+    case "number":
+      data.type = 'number';
+      break;
+    case "date":
+      data.type = 'date';
+      break;
+    case "datetime":
+      data.type = 'datetime';
+      break;
+    case "uxtimepicker":
+      data.type = 'uxtimepicker';
+      break;
+    case "checkbox":
+      data.type = 'checkbox';
+      break;
+    default:
+      data.type = 'text';
   }
   if (elementInfo.characterCase === 'uppercase') {
     data.uppercase = true;
@@ -101,19 +117,29 @@ export var componentsProps = {
  */
 export var createOnChangeHandler = function createOnChangeHandler(valueKey, descKey, orgKey, updatingFunction, onChange) {
   var additionalArgs = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : [];
+  var batchUpdates = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : false;
   return function (value) {
     // When receiving an object value, we run the updating function for each
     // key that was passed.
     if (_typeof(value) === 'object') {
+      var keys = [];
+      var values = [];
       if (value.code !== undefined) {
-        updatingFunction?.(valueKey, value.code, ...additionalArgs);
+        !batchUpdates && updatingFunction?.(valueKey, value.code, ...additionalArgs);
+        keys.push(valueKey);
+        values.push(value.code);
       }
       if (descKey && value.desc !== undefined) {
-        updatingFunction.apply(void 0, [descKey, value.desc].concat(_toConsumableArray(additionalArgs)));
+        !batchUpdates && updatingFunction.apply(void 0, [descKey, value.desc].concat(_toConsumableArray(additionalArgs)));
+        keys.push(descKey);
+        values.push(value.desc);
       }
       if (orgKey && value.organization !== undefined) {
-        updatingFunction.apply(void 0, [orgKey, value.organization].concat(_toConsumableArray(additionalArgs)));
+        !batchUpdates && updatingFunction.apply(void 0, [orgKey, value.organization].concat(_toConsumableArray(additionalArgs)));
+        keys.push(orgKey);
+        values.push(value.organization);
       }
+      batchUpdates && updatingFunction.apply(void 0, [keys, values].concat(_toConsumableArray(additionalArgs)));
 
       // Fire the onChange only at the end
       if (value.code !== undefined) {

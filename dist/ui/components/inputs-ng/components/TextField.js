@@ -59,7 +59,8 @@ var TextField = function TextField(props) {
     _props$textarea = props.textarea,
     textarea = _props$textarea === void 0 ? false : _props$textarea,
     _props$selectMode = props.selectMode,
-    selectMode = _props$selectMode === void 0 ? false : _props$selectMode;
+    selectMode = _props$selectMode === void 0 ? false : _props$selectMode,
+    applyExtraInformation = props.applyExtraInformation;
   var onInputUpperCaseHandler = function onInputUpperCaseHandler(event) {
     var input = event.target;
     var start = input.selectionStart;
@@ -100,7 +101,8 @@ var TextField = function TextField(props) {
     endTextAdornment: endTextAdornment
   }), endAdornment, barcodeScanner && !disabled && /*#__PURE__*/React.createElement(EAMBarcodeScanner, {
     rightAlign: rightAlign,
-    onChange: onChange
+    onChange: onChange,
+    applyExtraInformation: applyExtraInformation
   }), link && /*#__PURE__*/React.createElement(EAMLink, {
     link: link,
     value: value

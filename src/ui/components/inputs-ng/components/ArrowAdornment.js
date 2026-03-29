@@ -7,7 +7,7 @@ const ArrowAdornment = ({ endTextAdornment }) => {
     marginRight: endTextAdornment ? 76 : 6,
     marginLeft: endTextAdornment ? -100 : -30,
     zIndex: 999,
-    color: '#cbcbcb',
+    color: '#ededed', 
     pointerEvents: 'none',
   };
 

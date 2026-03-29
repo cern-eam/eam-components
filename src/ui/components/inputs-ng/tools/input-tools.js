@@ -2,6 +2,7 @@ import isEqual from 'lodash/isEqual';
 import { Box } from '@mui/material';
 import HistoryIcon from '@mui/icons-material/History';
 import React from 'react';
+import { batch } from 'react-redux';
 
 export const isRequired = elementInfo => elementInfo?.attribute === 'R' || elementInfo?.attribute === 'S';
 
@@ -10,10 +11,7 @@ export const isHidden = elementInfo => elementInfo?.attribute === 'H' || element
 export const isUpperCase = elementInfo => elementInfo?.characterCase === 'uppercase';
 
 export const areEqual = (prevProps, nextProps) => {
-    return prevProps.value === nextProps.value &&
-           prevProps.desc === nextProps.desc &&
-           prevProps.value?.code === nextProps.value?.code &&
-           prevProps.value?.desc === nextProps.value?.desc &&
+    return prevProps.desc === nextProps.desc &&
            prevProps.disabled === nextProps.disabled &&
            prevProps.readonly === nextProps.readonly &&
            prevProps.required === nextProps.required &&
@@ -23,7 +21,8 @@ export const areEqual = (prevProps, nextProps) => {
            prevProps.errorText === nextProps.errorText &&
            isEqual(prevProps.autocompleteHandlerParams, nextProps.autocompleteHandlerParams) &&
            isEqual(prevProps.options, nextProps.options) &&
-           isEqual(prevProps.renderDependencies, nextProps.renderDependencies);
+           isEqual(prevProps.renderDependencies, nextProps.renderDependencies) &&
+           isEqual(prevProps.value, nextProps.value);
 }
 
 export const processElementInfo = (elementInfo) => {
@@ -41,12 +40,27 @@ export const processElementInfo = (elementInfo) => {
                 data.maxLength = elementInfo.maxLength;
         }
 
-        if (elementInfo.fieldType === 'currency' || elementInfo.fieldType === 'number') {
+        switch (elementInfo.fieldType) {
+            case "currency":
+            case "number":
                 data.type = 'number';
-        } else {
-                data.type = 'text';
+                break;
+            case "date":
+                data.type = 'date'
+                break;
+            case "datetime":
+                data.type = 'datetime'
+                break;
+            case "uxtimepicker":
+                data.type = 'uxtimepicker'
+                break;
+            case "checkbox":
+                data.type = 'checkbox'
+                break;
+            default:
+                data.type = 'text'
         }
-
+        
         if (elementInfo.characterCase === 'uppercase') {
                 data.uppercase = true;
         }
@@ -117,23 +131,34 @@ export const createOnChangeHandler =
         orgKey,
         updatingFunction,
         onChange,
-        additionalArgs = []
+        additionalArgs = [],
+        batchUpdates = false
     ) =>
     (value) => {
         // When receiving an object value, we run the updating function for each
         // key that was passed.
         if (typeof value === 'object') {
+            const keys = []
+            const values = []
             if (value.code !== undefined) {
-                updatingFunction?.(valueKey, value.code, ...additionalArgs);
+                !batchUpdates && updatingFunction?.(valueKey, value.code, ...additionalArgs);
+                keys.push(valueKey)
+                values.push(value.code)
             }
 
             if (descKey && value.desc !== undefined) {
-                updatingFunction(descKey, value.desc, ...additionalArgs);
+                !batchUpdates && updatingFunction(descKey, value.desc, ...additionalArgs);
+                keys.push(descKey)
+                values.push(value.desc)
             }
 
             if (orgKey && value.organization !== undefined) {
-                updatingFunction(orgKey, value.organization, ...additionalArgs);
+                !batchUpdates && updatingFunction(orgKey, value.organization, ...additionalArgs);
+                keys.push(orgKey)
+                values.push(value.organization)
             }
+
+            batchUpdates && updatingFunction(keys, values, ...additionalArgs);
 
             // Fire the onChange only at the end
             if (value.code !== undefined) {

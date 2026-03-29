@@ -52,6 +52,10 @@ var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
     _useState8 = _slicedToArray(_useState7, 2),
     valid = _useState8[0],
     setValid = _useState8[1];
+  var _useState9 = useState(''),
+    _useState10 = _slicedToArray(_useState9, 2),
+    description = _useState10[0],
+    setDescription = _useState10[1];
   var _useComboSelectOption = useComboSelectOptions({
       autocompleteHandler: autocompleteHandler,
       autocompleteHandlerParams: autocompleteHandlerParams,
@@ -85,17 +89,31 @@ var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
     autocompleteLoading = _useComboAutocomplete2[1];
   var options = mode === MODE.SELECT ? selectOptions : autocompleteOptions;
   var loading = mode === MODE.SELECT ? selectLoading : autocompleteLoading;
+
+  //
+  // EFFECTS
+  //
+
   useEffect(function () {
     setValid(true);
-
-    // If parent provides only code, resolve full option for description rendering.
-    if (value?.code && value?.desc == null) {
+    if (!value?.code) {
+      setDescription('');
+    }
+    if (value?.code && !value?.desc) {
       applyExtraInformation(value.code);
     }
-  }, [value?.code, value?.desc]);
+  }, [value?.code]);
+  useEffect(function () {
+    setDescription(value?.desc ?? '');
+  }, [value?.desc]);
   useEffect(function () {
     setMode(MODE.UNKNOWN);
   }, _toConsumableArray(renderDependencies));
+
+  //
+  // HANDLERS
+  //
+
   var getOptionLabelHandler = function getOptionLabelHandler(option) {
     if (typeof option === 'string') {
       return option;
@@ -104,6 +122,7 @@ var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
   };
   var onInputChangeHandler = function onInputChangeHandler(event, newInputValue) {
     setInputValue(newInputValue);
+    setDescription('');
   };
   var onChangeHandler = function onChangeHandler(event, newValue, reason) {
     if (reason === 'clear') {
@@ -112,14 +131,10 @@ var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
       setValid(true);
       return;
     }
-    if (typeof newValue === 'string') {
-      applyExtraInformation(newValue);
-      return;
-    }
     mode === MODE.AUTOCOMPLETE && saveHistory(HISTORY_ID_PREFIX + id, newValue);
     setValid(true);
     onChange(newValue);
-
+    setDescription(newValue?.desc ?? '');
     // Don't bubble up any events (won't trigger a save when we select something by pressing enter)
     event.stopPropagation();
     event.preventDefault();
@@ -128,66 +143,79 @@ var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
     setOpen(false);
     // Only to be fired when we blur and the inputValue differs from selected code.
     if (reason === 'blur' && (inputValue ?? '') !== (value?.code ?? '')) {
-      applyExtraInformation(inputValue);
+      applyExtraInformation(inputValue, true);
     }
+  };
+
+  //
+  // UTILS
+  //
+
+  var applyExtraInformation = function applyExtraInformation(filter) {
+    var alwaysExecuteOnChange,
+      extraInformation,
+      _args = arguments;
+    return _regeneratorRuntime().async(function applyExtraInformation$(_context) {
+      while (1) switch (_context.prev = _context.next) {
+        case 0:
+          alwaysExecuteOnChange = _args.length > 1 && _args[1] !== undefined ? _args[1] : false;
+          if (filter?.trim()) {
+            _context.next = 5;
+            break;
+          }
+          onChange(null);
+          setValid(true);
+          return _context.abrupt("return");
+        case 5:
+          _context.next = 7;
+          return _regeneratorRuntime().awrap(fetchExtraInformation(filter));
+        case 7:
+          extraInformation = _context.sent;
+          if (extraInformation) {
+            _context.next = 10;
+            break;
+          }
+          return _context.abrupt("return");
+        case 10:
+          if (extraInformation.desc && !value?.desc) {
+            setDescription(extraInformation.desc);
+          }
+          if (extraInformation.organization || alwaysExecuteOnChange) {
+            onChange(extraInformation);
+          }
+        case 12:
+        case "end":
+          return _context.stop();
+      }
+    }, null, null, null, Promise);
   };
   var fetchExtraInformation = function fetchExtraInformation(filter) {
     var result, option;
-    return _regeneratorRuntime().async(function fetchExtraInformation$(_context) {
-      while (1) switch (_context.prev = _context.next) {
+    return _regeneratorRuntime().async(function fetchExtraInformation$(_context2) {
+      while (1) switch (_context2.prev = _context2.next) {
         case 0:
-          _context.prev = 0;
-          _context.next = 3;
+          _context2.prev = 0;
+          _context2.next = 3;
           return _regeneratorRuntime().awrap(autocompleteHandler({
             handlerParams: autocompleteHandlerParams,
             filter: filter,
             operator: "="
           }));
         case 3:
-          result = _context.sent;
+          result = _context2.sent;
           option = result.body?.data?.find(function (o) {
             return o.code === filter;
           });
-          return _context.abrupt("return", option || null);
+          return _context2.abrupt("return", option || null);
         case 8:
-          _context.prev = 8;
-          _context.t0 = _context["catch"](0);
-          console.error(_context.t0);
-          return _context.abrupt("return", null);
-        case 12:
-        case "end":
-          return _context.stop();
-      }
-    }, null, null, [[0, 8]], Promise);
-  };
-  var applyExtraInformation = function applyExtraInformation(filter) {
-    var extraInformation;
-    return _regeneratorRuntime().async(function applyExtraInformation$(_context2) {
-      while (1) switch (_context2.prev = _context2.next) {
-        case 0:
-          if (filter?.trim()) {
-            _context2.next = 4;
-            break;
-          }
-          onChange(null);
-          setValid(true);
-          return _context2.abrupt("return");
-        case 4:
-          _context2.next = 6;
-          return _regeneratorRuntime().awrap(fetchExtraInformation(filter));
-        case 6:
-          extraInformation = _context2.sent;
-          if (extraInformation) {
-            onChange(extraInformation);
-            setValid(true);
-          } else {
-            onChange(null);
-          }
-        case 8:
+          _context2.prev = 8;
+          _context2.t0 = _context2["catch"](0);
+          return _context2.abrupt("return", null);
+        case 11:
         case "end":
           return _context2.stop();
       }
-    }, null, null, null, Promise);
+    }, null, null, [[0, 8]], Promise);
   };
   return /*#__PURE__*/React.createElement(EAMBaseInput, props, /*#__PURE__*/React.createElement(Autocomplete
   // Options
@@ -227,11 +255,14 @@ var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
     fullWidth: true,
     renderInput: function renderInput(params) {
       return /*#__PURE__*/React.createElement(TextField, _extends({}, params, props, {
-        endAdornment: /*#__PURE__*/React.createElement(React.Fragment, null, mode === MODE.SELECT ? /*#__PURE__*/React.createElement(ArrowAdornment, null) : /*#__PURE__*/React.createElement(SearchAdornment, null), props.endAdornment),
+        endAdornment: /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(SearchAdornment, {
+          endTextAdornment: props.endTextAdornment
+        }), props.endAdornment),
         value: value?.code ? value.code : '',
-        desc: value?.desc ?? '',
+        desc: description,
         errorText: props.errorText,
-        valid: valid
+        valid: valid,
+        applyExtraInformation: applyExtraInformation
       }));
     }
   }));
