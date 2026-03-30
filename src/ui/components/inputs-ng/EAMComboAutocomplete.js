@@ -8,7 +8,6 @@ import useComboSelectOptions from './hooks/useComboSelectOptions';
 import useComboAutocompleteOptions from './hooks/useComboAutocompleteOptions';
 import { MODE } from './hooks/tools';
 import SearchAdornment from './components/SearchAdornment';
-import ArrowAdornment from './components/ArrowAdornment';
 
 const EAMComboAutocomplete = (props) => {
   const {
@@ -64,10 +63,9 @@ const EAMComboAutocomplete = (props) => {
   //
 
   useEffect(() => {
-    setValid(true);
 
-    if (!value?.code) {
-      setDescription('');
+    if (value?.desc) {
+      setDescription(value?.desc);
     }
 
     if (value?.code && !value?.desc) {
@@ -77,13 +75,8 @@ const EAMComboAutocomplete = (props) => {
   }, [value?.code]);
 
   useEffect(() => {
-    setDescription(value?.desc ?? '');
-  }, [value?.desc]);
-  
-  useEffect(() => {
     setMode(MODE.UNKNOWN);
   }, [...renderDependencies]);
-
 
   //
   // HANDLERS
@@ -130,7 +123,7 @@ const EAMComboAutocomplete = (props) => {
   // UTILS
   //
 
-  const applyExtraInformation = async (filter, alwaysExecuteOnChange = false) => {
+  const applyExtraInformation = async (filter, executeOnChange = false) => {
     if (!filter?.trim()) {
       onChange(null);
       setValid(true);
@@ -138,8 +131,8 @@ const EAMComboAutocomplete = (props) => {
     }
 
     const extraInformation = await fetchExtraInformation(filter);
-    
     if (!extraInformation) {
+      onChange({code: filter});
       return;
     }
 
@@ -147,8 +140,8 @@ const EAMComboAutocomplete = (props) => {
       setDescription(extraInformation.desc);
     }
 
-    if (extraInformation.organization || alwaysExecuteOnChange) {
-      onChange(extraInformation);
+    if (extraInformation.organization || executeOnChange) {
+      onChange({...extraInformation});
     }
 
   };
