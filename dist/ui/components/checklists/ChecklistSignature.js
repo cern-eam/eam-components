@@ -114,7 +114,7 @@ var ChecklistSignature = /*#__PURE__*/function (_Component) {
         required: true,
         onChange: this.onPasswordTextFieldChange,
         id: "standard-password-input",
-        label: "Pasword",
+        label: "Password",
         type: "password",
         autoComplete: "off",
         onKeyDown: this.onEnter

@@ -31,7 +31,7 @@ export default class ChecklistSignature extends Component {
     }
 
     onEnter = (ev) => {
-        if(ev.key === 'Enter'){ 
+        if(ev.key === 'Enter'){
             this.sign();
             ev.stopPropagation();
         }
@@ -40,15 +40,15 @@ export default class ChecklistSignature extends Component {
     openDialogue = () => {
         this.setState({open: true});
     };
-    
+
     onUsercodeTextFieldChange = (textField) => {
         this.setState({username: textField.target.value});
     }
-    
+
     onPasswordTextFieldChange = (textField) => {
         this.setState({password: textField.target.value});
     }
-    
+
     closeDialogue = () => {
         this.setState({username: '',
                        password: '',
@@ -61,7 +61,7 @@ export default class ChecklistSignature extends Component {
                           userCode: this.state.username ? this.state.username.toUpperCase() : null,
                           password: this.state.password,
                           signatureType: this.props.signature.type};
-        WSChecklists.esignChecklist(signature).then((response)=> { 
+        WSChecklists.esignChecklist(signature).then((response)=> {
             this.props.setSignature(this.props.activityCode, this.props.signature.type, response.body.data.signer, response.body.data.timeStamp);
        }).catch((err)=> {
             this.props.showError(err.response.body.errors[0].message);
@@ -75,7 +75,7 @@ export default class ChecklistSignature extends Component {
 
     render() {
         const { signature } = this.props;
-        const label = signature.responsibilityDescription ? 
+        const label = signature.responsibilityDescription ?
                         signature.responsibilityDescription
                         : signatureTypes[signature.type];
 
@@ -83,35 +83,35 @@ export default class ChecklistSignature extends Component {
             <Paper elevation={3} style={modalStyle}>
                 <div style={{fontSize:'25px'}}>E-Signature</div>
                 <div>
-                    <TextField required autoFocus 
-                        onChange={this.onUsercodeTextFieldChange} 
-                        id='standard-required' 
+                    <TextField required autoFocus
+                        onChange={this.onUsercodeTextFieldChange}
+                        id='standard-required'
                         label='Username'
                         autoComplete='off'
                         onKeyDown= {this.onEnter}
                     />
                 </div>
                 <div>
-                    <TextField required 
+                    <TextField required
                         onChange={this.onPasswordTextFieldChange}
                         id='standard-password-input'
-                        label='Pasword' 
+                        label='Password'
                         type='password'
                         autoComplete='off'
                         onKeyDown= {this.onEnter}
                     />
-                </div>    
-                <div> 
+                </div>
+                <div>
                     {<Button type= 'submit' onClick={this.closeDialogue}>
                         Cancel
                     </Button>}
-                    {<Button onClick={this.sign} color='primary'> 
+                    {<Button onClick={this.sign} color='primary'>
                         Sign
                     </Button>}
                 </div>
-            </Paper> 
+            </Paper>
 
-        return <div style={{display: 'flex', 
+        return <div style={{display: 'flex',
                               alignItems: 'stretch',
                               justifyContent: 'space-between',
                               flexWrap: 'wrap',
@@ -123,7 +123,7 @@ export default class ChecklistSignature extends Component {
               <Grid container spacing={1} className="activityDetails">
                 <Grid item xs={10} md={10} lg={10} style={{paddingTop: '6px'}}>
                     <label style={{fontSize: '0.84rem', color: 'rgb(20, 88, 134)'}}>{label}</label>
-                    <Grid style={{display: 'flex', paddingTop: '2px'}} item xs={10} md={10} lg={10}>  
+                    <Grid style={{display: 'flex', paddingTop: '2px'}} item xs={10} md={10} lg={10}>
                         <Grid item xs={6} md={6} lg={6}>{signature.signer}</Grid>
                         <Grid item xs={4} md={4} lg={4}>{signature.time}</Grid>
                     </Grid>
@@ -138,10 +138,10 @@ export default class ChecklistSignature extends Component {
                                 paddingTop: '11px',
                                 float: 'right'
                             }}>Sign</Button>
-                        <Dialog open={this.state.open}>{dialog}</Dialog> 
+                        <Dialog open={this.state.open}>{dialog}</Dialog>
                     </Grid>}
 
-        </Grid>    
+        </Grid>
         </div>
     }
 }
