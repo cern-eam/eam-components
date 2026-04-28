@@ -1,4 +1,5 @@
 // @flow
+import { transformNativeResponse } from 'eam-rest-tools';
 import ajax from './ajax';
 
 /**
@@ -23,6 +24,22 @@ class WS {
 
     _delete(url, config = {}) {
         return ajax.delete(process.env.REACT_APP_BACKEND + url, config);
+    }
+
+    getGridDataNative(gridRequest, config = {}) {
+        return this._post('/proxy/grids', gridRequest, config);
+    }
+
+    getGridData(gridRequest, config = {}) {
+        return this.getGridDataNative(gridRequest, config)
+            .then(transformNativeResponse)
+            .catch((error) => {
+                if (error?.type !== 'REQUEST_CANCELLED') {
+                    console.error('Error when fetching / transforming', gridRequest, error);
+                    return {body: {data: []}};
+                }
+                return Promise.reject(error);
+            });
     }
 
 }

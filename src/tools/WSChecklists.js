@@ -1,10 +1,13 @@
 import WS from './WS';
 import WSCernServices from './WSCernServices';
+import {GridRequest, GridType, transformResponse} from 'eam-rest-tools';
 
 /**
  * Handles all calls to REST Api
  */
 class WSChecklists {
+
+
 
     getWorkOrderActivities(number, config = {timeout: 60000}) {
         return WS._get('/activities/read/?workorder=' + number, config);
@@ -29,8 +32,16 @@ class WSChecklists {
         return WS._get(`/checklists/definition/${taskCode}/${checklistDefinitionCode}`, config);
     }
 
-    autocompleteEntity = (entityType, entityClass, filter, config = {}) => {
-        return WS._get(`/autocomplete/entity?s=${filter}&entityType=${entityType}&entityClass=${entityClass}`, config);
+    autocompleteEntity = ({handlerParams, filter, operator = "BEGINS"}, config = {}) => {
+        const gridRequest = new GridRequest("LVCFE", GridType.LOV)
+            .addFilter("customfieldvalue", filter, "BEGINS");
+
+        //gridRequest.addParam("param.fieldid", "0001");
+        gridRequest.addParam("param.associatedrentity", "EVNT");
+        gridRequest.addParam("param.lookuprentity", handlerParams[0]);
+        gridRequest.addParam("parameter.propentity", handlerParams[0]);
+
+        return WS.getGridData(gridRequest, config).then(response => transformResponse(response, {code: "customfieldvalue", desc: "description"}))
     };
 
     getTaskPlanInstructions = (code, revision, config = {}) => {
