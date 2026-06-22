@@ -152,7 +152,7 @@ var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
       if (findOption(options, inputValue)) {
         applyExtraInformation(inputValue, true);
       } else {
-        onChange(null);
+        setInputValue('');
       }
     }
   };
@@ -269,6 +269,7 @@ var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
     id: id,
     freeSolo: true,
     value: value?.code ? value.code : '',
+    inputValue: inputValue,
     clearOnEscape: true
     // Visuals
     ,

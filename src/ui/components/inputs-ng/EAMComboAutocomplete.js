@@ -118,7 +118,7 @@ const EAMComboAutocomplete = (props) => {
       if (findOption(options, inputValue)) {
         applyExtraInformation(inputValue, true);
       } else {
-        onChange(null);
+        setInputValue('');
       }
     }
   };
@@ -185,6 +185,7 @@ const EAMComboAutocomplete = (props) => {
         id={id}
         freeSolo={true}
         value={value?.code ? value.code : ''}
+        inputValue={inputValue}
         clearOnEscape
         // Visuals
         openOnFocus // Very important, otherwise onCloseHandler won't be fired for example when we focus a field with a tab and delete its value.
