@@ -115,7 +115,11 @@ const EAMComboAutocomplete = (props) => {
     setOpen(false);
     // Only to be fired when we blur and the inputValue differs from selected code.
     if (reason === 'blur' && (inputValue ?? '') !== (value?.code ?? '')) {
-      applyExtraInformation(inputValue, true);
+      if (findOption(options, inputValue)) {
+        applyExtraInformation(inputValue, true);
+      } else {
+        onChange(null);
+      }
     }
   };
 
@@ -130,7 +134,7 @@ const EAMComboAutocomplete = (props) => {
       return;
     }
 
-    const extraInformation = await fetchExtraInformation(filter);
+    const extraInformation = findOption(options, filter) ? findOption(options, filter) : await fetchExtraInformation(filter);
     if (!extraInformation) {
       onChange({code: filter});
       return;
@@ -149,12 +153,18 @@ const EAMComboAutocomplete = (props) => {
   const fetchExtraInformation = async (filter) => {
     try {
       const result = await autocompleteHandler({ handlerParams: autocompleteHandlerParams, filter, operator: "=" });
-      const option = result.body?.data?.find(o => o.code === filter);
-      return option || null;
+      return findOption(result.body?.data, filter);
     } catch (error) {
       return null;
     }
   };
+
+  const findOption = (options = [], filter) => {
+    if (options && Array.isArray(options)) {
+      return options.find(o => o.code === filter);
+    }
+    return null;
+  }
 
   return (
     <EAMBaseInput {...props}>
