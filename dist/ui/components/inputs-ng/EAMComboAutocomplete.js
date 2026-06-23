@@ -152,6 +152,7 @@ var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
       if (findOption(options, inputValue)) {
         applyExtraInformation(inputValue, true);
       } else {
+        onChange(null);
         setInputValue('');
       }
     }
