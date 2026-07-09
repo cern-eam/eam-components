@@ -103,6 +103,7 @@ const ChecklistFieldNumeric = props => {
                        inputProps={inputProps}
                        endTextAdornment={UOM}
                        errorText={numericError}
+                       type={'number'}
             />
             {(slider && minimumValue != null && maximumValue != null) &&  <div style={outerSliderStyle}>
                 <Slider
