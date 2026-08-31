@@ -197,9 +197,11 @@ var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
             _context.n = 5;
             break;
           }
-          onChange({
-            code: filter
-          });
+          if (value?.code !== filter) {
+            onChange({
+              code: filter
+            });
+          }
           return _context.a(2);
         case 5:
           if (extraInformation.desc && !value?.desc) {

@@ -136,8 +136,11 @@ const EAMComboAutocomplete = (props) => {
     }
 
     const extraInformation = findOption(options, filter) ? findOption(options, filter) : await fetchExtraInformation(filter);
+
     if (!extraInformation) {
-      onChange({code: filter});
+      if (value?.code !== filter) {
+        onChange({code: filter});
+      }
       return;
     }
 

@@ -33,7 +33,8 @@ export const processElementInfo = (elementInfo) => {
                 uppercase: isUpperCase(elementInfo),
                 label: elementInfo.text,
                 disabled: elementInfo.readonly,
-                id: getElementKey(elementInfo)
+                id: getElementKey(elementInfo),
+                revisionControl: elementInfo.revisionControl,
         }
 
         if (elementInfo.maxLength) {

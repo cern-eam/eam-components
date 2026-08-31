@@ -5,7 +5,7 @@ import ChecklistFieldFinding from './fields/ChecklistFieldFinding';
 import ChecklistFieldAlphaNumeric from './fields/ChecklistFieldAlphaNumeric';
 import EAMDatePicker from "../inputs-ng/EAMDatePicker";
 import EAMDateTimePicker from "../inputs-ng/EAMDateTimePicker";
-import EAMAutocomplete from "../inputs-ng/EAMAutocomplete"
+import EAMComboAutocomplete from "../inputs-ng/EAMComboAutocomplete"
 import WSChecklists from '../../../tools/WSChecklists';
 import ChecklistFieldRadio from './fields/ChecklistFieldRadio';
 
@@ -161,11 +161,11 @@ export default class ChecklistItemInput extends Component {
                     style={{marginRight: "0px"}}
                 />
             case ChecklistItemInput.FIELD.ENTITY:
-                return <EAMAutocomplete
+                return <EAMComboAutocomplete
                     style={{minWidth: '240px', marginLeft: '10px'}}
                     barcodeScanner
-                    value={checklistItem.entityCode}
-                    onChange={entity => this.handleChange(ChecklistItemInput.FIELD.ENTITY, entity.code, () => {entity.desc = ''})}
+                    value={checklistItem.entityCode ? {code: checklistItem.entityCode} : null}
+                    onChange={entity => this.handleChange(ChecklistItemInput.FIELD.ENTITY, entity?.code ?? null, () => { if (entity) entity.desc = ''; })}
                     rightAlign
                     autocompleteHandler={WSChecklists.autocompleteEntity}
                     autocompleteHandlerParams={[checklistItem.entityType, checklistItem.entityClass]}

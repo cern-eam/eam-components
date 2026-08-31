@@ -24,7 +24,7 @@ import ChecklistFieldFinding from './fields/ChecklistFieldFinding';
 import ChecklistFieldAlphaNumeric from './fields/ChecklistFieldAlphaNumeric';
 import EAMDatePicker from "../inputs-ng/EAMDatePicker";
 import EAMDateTimePicker from "../inputs-ng/EAMDateTimePicker";
-import EAMAutocomplete from "../inputs-ng/EAMAutocomplete";
+import EAMComboAutocomplete from "../inputs-ng/EAMComboAutocomplete";
 import WSChecklists from '../../../tools/WSChecklists';
 import ChecklistFieldRadio from './fields/ChecklistFieldRadio';
 var ChecklistItemInput = /*#__PURE__*/function (_Component) {
@@ -210,16 +210,18 @@ var ChecklistItemInput = /*#__PURE__*/function (_Component) {
             }
           });
         case ChecklistItemInput.FIELD.ENTITY:
-          return /*#__PURE__*/React.createElement(EAMAutocomplete, {
+          return /*#__PURE__*/React.createElement(EAMComboAutocomplete, {
             style: {
               minWidth: '240px',
               marginLeft: '10px'
             },
             barcodeScanner: true,
-            value: checklistItem.entityCode,
+            value: checklistItem.entityCode ? {
+              code: checklistItem.entityCode
+            } : null,
             onChange: function onChange(entity) {
-              return _this2.handleChange(ChecklistItemInput.FIELD.ENTITY, entity.code, function () {
-                entity.desc = '';
+              return _this2.handleChange(ChecklistItemInput.FIELD.ENTITY, entity?.code ?? null, function () {
+                if (entity) entity.desc = '';
               });
             },
             rightAlign: true,
