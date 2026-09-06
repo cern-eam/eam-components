@@ -105,7 +105,7 @@ var EAMComboAutocomplete = function EAMComboAutocomplete(props) {
   //
 
   useEffect(function () {
-    if (value?.desc) {
+    if (value?.code && value?.desc) {
       setDescription(value?.desc);
     }
     if (value?.code && !value?.desc) {
