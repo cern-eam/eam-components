@@ -44,6 +44,7 @@ export const processElementInfo = (elementInfo) => {
         switch (elementInfo.fieldType) {
             case "currency":
             case "number":
+            case "integer":
                 data.type = 'number';
                 break;
             case "date":
