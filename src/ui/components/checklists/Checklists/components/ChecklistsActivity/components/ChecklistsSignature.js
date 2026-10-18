@@ -9,7 +9,7 @@ import { getSignatures } from "../../../utils";
 
 const ChecklistsSignature = ({ activity, setSignature }) => {
   const [signaturesCollapsed, setSignaturesCollapsed] = useState({});
-  const { showError, disabled } = useContext(ChecklistsContext);
+  const { showError, disabled, userCode } = useContext(ChecklistsContext);
 
   const signatures = useMemo(() => {
     if (!activity?.signatures) return;
@@ -57,6 +57,7 @@ const ChecklistsSignature = ({ activity, setSignature }) => {
               showError={showError}
               setSignature={setSignature}
               disabled={disabled}
+              userCode={userCode}
             />
           ))}
         </div>

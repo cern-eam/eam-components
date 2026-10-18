@@ -53,6 +53,7 @@ const Checklists = ({
   getWoLink,
   eqpToOtherId,
   register,
+  userCode,
 }) => {
   const [activities, setActivities] = useState([]);
   const [taskPlansMetadata, setTaskPlansMetadata] = useState([]);
@@ -221,6 +222,7 @@ const Checklists = ({
         getWoLink,
         eqpToOtherId,
         register,
+        userCode,
       }}
     >
       <div style={readonly ? { width: "100%", pointerEvents: "none" } : { width: "100%" }}>

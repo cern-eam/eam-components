@@ -50,7 +50,8 @@ var Checklists = function Checklists(_ref) {
     handleError = _ref.handleError,
     getWoLink = _ref.getWoLink,
     eqpToOtherId = _ref.eqpToOtherId,
-    register = _ref.register;
+    register = _ref.register,
+    userCode = _ref.userCode;
   var _useState = useState([]),
     _useState2 = _slicedToArray(_useState, 2),
     activities = _useState2[0],
@@ -215,7 +216,8 @@ var Checklists = function Checklists(_ref) {
       handleError: handleError,
       getWoLink: getWoLink,
       eqpToOtherId: eqpToOtherId,
-      register: register
+      register: register,
+      userCode: userCode
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: readonly ? {

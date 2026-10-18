@@ -27,7 +27,8 @@ var ChecklistsSignature = function ChecklistsSignature(_ref) {
     setSignaturesCollapsed = _useState2[1];
   var _useContext = useContext(ChecklistsContext),
     showError = _useContext.showError,
-    disabled = _useContext.disabled;
+    disabled = _useContext.disabled,
+    userCode = _useContext.userCode;
   var signatures = useMemo(function () {
     if (!activity?.signatures) return;
     return getSignatures(activity.signatures);
@@ -85,7 +86,8 @@ var ChecklistsSignature = function ChecklistsSignature(_ref) {
       activityCode: activity.activityCode,
       showError: showError,
       setSignature: setSignature,
-      disabled: disabled
+      disabled: disabled,
+      userCode: userCode
     });
   }))));
 };
