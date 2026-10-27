@@ -7,6 +7,7 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import WSChecklists from '../../../tools/WSChecklists';
 import Grid from '@mui/material/Grid';
+import { broadcastException, broadcastMessage } from '../../../tools/MessageBroadcast';
 
 const modalStyle = {
     padding: '28px 32px 20px',
@@ -63,9 +64,17 @@ const ChecklistSignature = ({ signature, workOrderCode, activityCode, showError,
         };
         WSChecklists.esignChecklist(payload).then((response) => {
             setSignature(activityCode, signature.type, response.body.data.signer, response.body.data.timeStamp);
+            broadcastMessage({
+                code: 'CHECKLIST_SIGNED',
+                data: response
+            });
             closeDialogue();
         }).catch((err) => {
             showError(err.response.body.errors[0].message);
+            broadcastException({
+                code: 'CHECKLIST_SIGNED',
+                message: err.response.body.errors[0].message
+            });
         });
     };
 

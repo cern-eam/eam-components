@@ -13,6 +13,7 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import WSChecklists from '../../../tools/WSChecklists';
 import Grid from '@mui/material/Grid';
+import { broadcastException, broadcastMessage } from '../../../tools/MessageBroadcast';
 var modalStyle = {
   padding: '28px 32px 20px',
   minWidth: 320,
@@ -81,9 +82,17 @@ var ChecklistSignature = function ChecklistSignature(_ref) {
     };
     WSChecklists.esignChecklist(payload).then(function (response) {
       setSignature(activityCode, signature.type, response.body.data.signer, response.body.data.timeStamp);
+      broadcastMessage({
+        code: 'CHECKLIST_SIGNED',
+        data: response
+      });
       closeDialogue();
     })["catch"](function (err) {
       showError(err.response.body.errors[0].message);
+      broadcastException({
+        code: 'CHECKLIST_SIGNED',
+        message: err.response.body.errors[0].message
+      });
     });
   };
   var onEnter = function onEnter(ev) {
