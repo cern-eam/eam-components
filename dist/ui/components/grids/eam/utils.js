@@ -369,16 +369,30 @@ var EAMFilterField = function EAMFilterField(_ref6) {
     _useState4 = _slicedToArray(_useState3, 2),
     localFilter = _useState4[0],
     setLocalFilter = _useState4[1];
+  var pendingCommitRef = React.useRef(false);
   useMountedLayoutEffect(function () {
-    return setLocalFilter(filter || getDefaultValue(column));
+    if (!pendingCommitRef.current) setLocalFilter(filter || getDefaultValue(column));
   }, [filter]);
   var debouncedSetFilter = useAsyncDebounce(function (filter) {
     return setFilter(filter);
   }, process.env.NODE_ENV === 'development' ? 100 : 0);
   var updateFilter = React.useCallback(function (filter) {
     setLocalFilter(filter);
-    debouncedSetFilter(filter);
+    pendingCommitRef.current = true;
+    debouncedSetFilter(filter).then(function () {
+      pendingCommitRef.current = false;
+    });
   }, [debouncedSetFilter]);
+  var updateFilterNow = React.useCallback(function (filter) {
+    updateFilter(filter);
+    setFilter(filter);
+  }, [updateFilter, setFilter]);
+  var flushFilter = React.useCallback(function () {
+    if (localFilter !== filter) setFilter(localFilter);
+  }, [filter, localFilter, setFilter]);
+  var handleFilterKeyDown = React.useCallback(function (e) {
+    if (e.key === 'Enter' || e.key === 'F8') flushFilter();
+  }, [flushFilter]);
   var handleFilterTextFieldChange = React.useCallback(function (e) {
     return updateFilter(_objectSpread({}, localFilter, {
       fieldValue: e.target.value
@@ -390,10 +404,10 @@ var EAMFilterField = function EAMFilterField(_ref6) {
       return e === getCurrentCheckboxValue(event);
     }) + 1) % operators.length;
     var nextOperator = operators[nextOperatorIndex];
-    updateFilter(_objectSpread({}, localFilter, {
+    updateFilterNow(_objectSpread({}, localFilter, {
       operator: nextOperator
     }));
-  }, [localFilter, updateFilter]);
+  }, [localFilter, updateFilterNow]);
   var handleDatePickersChange = React.useCallback(function (value) {
     updateFilter(_objectSpread({}, localFilter, {
       fieldValue: value ? formatDate(value, 'dd-MMM-yyyy') : '',
@@ -404,15 +418,17 @@ var EAMFilterField = function EAMFilterField(_ref6) {
     var InputProps = props.InputProps;
     return /*#__PURE__*/React.createElement(FilterTextField, _extends({}, props, {
       size: "small",
+      onKeyDown: handleFilterKeyDown,
+      onBlur: flushFilter,
       InputProps: _objectSpread({}, InputProps, {
         startAdornment: /*#__PURE__*/React.createElement(QualifierMenuAdornment, {
           column: column,
           localFilter: localFilter,
-          setLocalFilter: updateFilter
+          setLocalFilter: updateFilterNow
         }),
         endAdornment: localFilter?._dateValue ? /*#__PURE__*/React.createElement(DateFilterAdornment, {
           localFilter: localFilter,
-          setLocalFilter: updateFilter
+          setLocalFilter: updateFilterNow
         }) : InputProps?.endAdornment
       })
     }));
@@ -426,13 +442,15 @@ var EAMFilterField = function EAMFilterField(_ref6) {
       return /*#__PURE__*/React.createElement(FilterTextField, {
         value: localFilter.fieldValue || '',
         onChange: handleFilterTextFieldChange,
+        onKeyDown: handleFilterKeyDown,
+        onBlur: flushFilter,
         disabled: [OPERATORS.IS_EMPTY, OPERATORS.NOT_EMPTY].includes(localFilter.operator),
         size: "small",
         InputProps: {
           startAdornment: /*#__PURE__*/React.createElement(QualifierMenuAdornment, {
             column: column,
             localFilter: localFilter,
-            setLocalFilter: updateFilter
+            setLocalFilter: updateFilterNow
           })
         }
       });

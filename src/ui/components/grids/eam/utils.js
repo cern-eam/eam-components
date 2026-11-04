@@ -307,14 +307,31 @@ const EAMFilterField = ({ column, getDefaultValue = getEAMDefaultFilterValue }) 
     const { dataType, filterValue: filter, setFilter } = column;
     const [localFilter, setLocalFilter] = useState(filter || getDefaultValue(column));
 
-    useMountedLayoutEffect(() => setLocalFilter(filter || getDefaultValue(column)), [filter])
+    const pendingCommitRef = React.useRef(false);
+    useMountedLayoutEffect(() => {
+        if (!pendingCommitRef.current) setLocalFilter(filter || getDefaultValue(column));
+    }, [filter])
 
     const debouncedSetFilter = useAsyncDebounce(filter => setFilter(filter), process.env.NODE_ENV === 'development' ? 100 : 0);
 
     const updateFilter = React.useCallback((filter) => {
         setLocalFilter(filter);
-        debouncedSetFilter(filter);
+        pendingCommitRef.current = true;
+        debouncedSetFilter(filter).then(() => { pendingCommitRef.current = false; });
     }, [debouncedSetFilter]);
+
+    const updateFilterNow = React.useCallback((filter) => {
+        updateFilter(filter);
+        setFilter(filter);
+    }, [updateFilter, setFilter]);
+
+    const flushFilter = React.useCallback(() => {
+        if (localFilter !== filter) setFilter(localFilter);
+    }, [filter, localFilter, setFilter]);
+
+    const handleFilterKeyDown = React.useCallback((e) => {
+        if (e.key === 'Enter' || e.key === 'F8') flushFilter();
+    }, [flushFilter]);
 
     const handleFilterTextFieldChange = React.useCallback(
         e => updateFilter({ ...localFilter, fieldValue: e.target.value })
@@ -324,11 +341,11 @@ const EAMFilterField = ({ column, getDefaultValue = getEAMDefaultFilterValue }) 
         const operators = Object.values(CHECKBOX_FILTERS);
         const nextOperatorIndex = (operators.findIndex(e => e === getCurrentCheckboxValue(event)) + 1) % operators.length;
         const nextOperator = operators[nextOperatorIndex];
-        updateFilter({
+        updateFilterNow({
             ...localFilter,
             operator: nextOperator,
         });
-    }, [localFilter, updateFilter]);
+    }, [localFilter, updateFilterNow]);
 
     const handleDatePickersChange = React.useCallback(
         (value) => {
@@ -348,19 +365,21 @@ const EAMFilterField = ({ column, getDefaultValue = getEAMDefaultFilterValue }) 
                 <FilterTextField
                     {...props}
                     size="small"
+                    onKeyDown={handleFilterKeyDown}
+                    onBlur={flushFilter}
                     InputProps={{
                         ...InputProps,
                         startAdornment: (
                             <QualifierMenuAdornment
                                 column={column}
                                 localFilter={localFilter}
-                                setLocalFilter={updateFilter}
+                                setLocalFilter={updateFilterNow}
                             />
                         ),
                         endAdornment: localFilter?._dateValue ? (
                             <DateFilterAdornment
                                 localFilter={localFilter}
-                                setLocalFilter={updateFilter}
+                                setLocalFilter={updateFilterNow}
                             />
                         ) : (
                             InputProps?.endAdornment
@@ -381,6 +400,8 @@ const EAMFilterField = ({ column, getDefaultValue = getEAMDefaultFilterValue }) 
                 <FilterTextField
                     value={localFilter.fieldValue || ''}
                     onChange={handleFilterTextFieldChange}
+                    onKeyDown={handleFilterKeyDown}
+                    onBlur={flushFilter}
                     disabled={[OPERATORS.IS_EMPTY, OPERATORS.NOT_EMPTY].includes(localFilter.operator)}
                     size="small"
                     InputProps={{
@@ -388,7 +409,7 @@ const EAMFilterField = ({ column, getDefaultValue = getEAMDefaultFilterValue }) 
                             <QualifierMenuAdornment
                                 column={column}
                                 localFilter={localFilter}
-                                setLocalFilter={updateFilter} />
+                                setLocalFilter={updateFilterNow} />
                         )
                     }}
                 />
