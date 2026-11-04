@@ -57,9 +57,12 @@ const processFilters = (filters, filterProcessor) => {
         })
         .filter(
             (filter) =>
-                filter.fieldValue !== undefined ||
-                filter.fieldValue !== "" ||
-                ["IS EMPTY", "NOT EMPTY"].includes(filter.operator)
+                (filter.fieldValue !== undefined &&
+                    filter.fieldValue !== null &&
+                    filter.fieldValue !== "") ||
+                ["IS EMPTY", "NOT EMPTY", "SELECTED", "NOT_SELECTED"].includes(
+                    filter.operator
+                )
         )
         .map(filterProcessor);
 };
@@ -255,6 +258,7 @@ export const EAMGridContextProvider = (props) => {
         setPageIndex(0);
         const newGridRequest = {
             ...gridRequest,
+            gridFilter: processFilters(filters, filterProcessor),
             cursorPosition: 1,
         };
         setGridRequest(newGridRequest);
@@ -264,7 +268,7 @@ export const EAMGridContextProvider = (props) => {
         if (isEmptySearch) {
             setIsEmptySearch(false);
         }
-    }, [tableInstance, fetchDataDebounced, gridRequest]);
+    }, [tableInstance, fetchDataDebounced, gridRequest, filters]);
 
     const handleExportToCSV = useCallback(() => {
         setLoadingExportToCSV(true);
@@ -412,10 +416,10 @@ export const EAMGridContextProvider = (props) => {
 
     useEffect(() => {
         if (columns.length > 0 && !hasCustomFieldColumn(columns)) {
-            setGridRequest({
-                ...gridRequest,
+            setGridRequest((prev) => ({
+                ...prev,
                 includeMetadata: false,
-            });
+            }));
         }
     }, [columns]);
 
