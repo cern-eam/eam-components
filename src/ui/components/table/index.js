@@ -22,12 +22,20 @@ const greyBackground = {
     backgroundColor: '#eeeeee',
 };
 
+const stickyHeaderCellStyle = {
+    position: 'sticky',
+    top: 0,
+    zIndex: 1,
+    backgroundColor: '#ffffff',
+};
+
 /**
  * Receive as props:
  * data: Containing all the results from the server
  * headers: Headers to display
  * propCodes: Properties of the data to be displayed (In the desired order)
  * linksMap: Information of the columns that will be displayed as links
+ * stickyHeader (optional): scroll the table vertically inside maxHeight (default 500) and keep the header visible
  */
 class EISTable extends Component {
     constructor(props) {
@@ -93,7 +101,7 @@ class EISTable extends Component {
         this.setState({ order, orderBy: property });
     };
 
-    renderContent = (propCode, content) => {
+    renderDefaultContent = (propCode, content) => {
         //Normal content
         if (!this.props.linksMap.get(propCode)) {
             if (content[propCode] === 'true' || content[propCode] === 'false') {
@@ -121,6 +129,14 @@ class EISTable extends Component {
             /*Dynamic link*/
             return <Link to={{ pathname: `${link.linkPrefix}${content[link.linkValue]}` }}>{content[propCode]}</Link>;
         }
+    };
+
+    renderContent = (propCode, content) => {
+        if (this.props.cellRenderer) {
+            const custom = this.props.cellRenderer({ propCode, row: content });
+            if (custom !== undefined) return custom;      // undefined = use the default rendering
+        }
+        return this.renderDefaultContent(propCode, content);
     };
 
     renderSortByValuesMobile = () => {
@@ -168,7 +184,7 @@ class EISTable extends Component {
 
     render() {
         const { data, order, orderBy, windowWidth } = this.state;
-        const { headers, maxMobileSize, onRowClick, propCodes, selectedRowIndexes, stylesMap, keyMap } = this.props;
+        const { headers, maxMobileSize, onRowClick, propCodes, selectedRowIndexes, stylesMap, keyMap, stickyHeader, maxHeight } = this.props;
         const isMobile = windowWidth < maxMobileSize;
         const rowsSelectable = selectedRowIndexes && onRowClick;
         const tableData = this.getSortedData({ data, orderBy, order, propCode: propCodes[orderBy], keyMap });
@@ -240,13 +256,18 @@ class EISTable extends Component {
             );
         }
 
+        // With stickyHeader the table gets its own scroll area, and the header cells stay pinned to its top
+        const Wrapper = stickyHeader ? 'div' : React.Fragment;
+        const wrapperProps = stickyHeader ? { style: { maxHeight, overflow: 'auto' } } : {};
+        const headerCellStyle = stickyHeader ? stickyHeaderCellStyle : undefined;
+
         return (
-            <React.Fragment>
+            <Wrapper {...wrapperProps}>
                 <Table className="responsiveTable" style={{ overflow: 'visible' }}>
                     <TableHead>
                         <TableRow key={'key'}>
                             {headers.map((header, index) => (
-                                <TableCell key={header} sortDirection={orderBy === index ? order : false}>
+                                <TableCell key={header} sortDirection={orderBy === index ? order : false} style={headerCellStyle}>
                                     <Tooltip title="Sort" placement={'bottom-end'} enterDelay={300}>
                                         <TableSortLabel
                                             active={orderBy === index}
@@ -303,7 +324,7 @@ class EISTable extends Component {
                         })}
                     </TableBody>
                 </Table>
-            </React.Fragment>
+            </Wrapper>
         );
     }
 }
@@ -319,12 +340,17 @@ EISTable.propTypes = {
     keyMap: PropTypes.object,
     defaultOrderBy: PropTypes.string,
     defaultOrder: PropTypes.string,
+    cellRenderer: PropTypes.func,
+    stickyHeader: PropTypes.bool,
+    maxHeight: PropTypes.number,
 };
 
 EISTable.defaultProps = {
     linksMap: new Map(),
     maxMobileSize: 540,
     keyMap: {},
+    stickyHeader: false,
+    maxHeight: 500,
 };
 
 export default React.memo(EISTable);
