@@ -294,10 +294,10 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
     });
   }, [fetchDataCancelToken, setFetchDataCancelToken]);
   var fetchDataDebounced = useAsyncDebounce(fetchData, 100);
-  var handleOnSearch = useCallback(function () {
+  var searchWithFilters = useCallback(function (gridFilter) {
     setPageIndex(0);
     var newGridRequest = _objectSpread({}, gridRequest, {
-      gridFilter: processFilters(filters, filterProcessor),
+      gridFilter: gridFilter,
       cursorPosition: 1
     });
     setGridRequest(newGridRequest);
@@ -307,7 +307,10 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
     if (isEmptySearch) {
       setIsEmptySearch(false);
     }
-  }, [tableInstance, fetchDataDebounced, gridRequest, filters]);
+  }, [tableInstance, fetchDataDebounced, gridRequest]);
+  var handleOnSearch = useCallback(function () {
+    return searchWithFilters(processFilters(filters, filterProcessor));
+  }, [searchWithFilters, filters]);
   var handleExportToCSV = useCallback(function () {
     setLoadingExportToCSV(true);
     return GridWS.exportDataToCSV(gridRequestAdapter(gridRequest), {
@@ -389,7 +392,11 @@ export var EAMGridContextProvider = function EAMGridContextProvider(props) {
   }, [fetchDataDebounced, gridRequest, resetFilters, tableInstance, onChangeDataspy]);
   var handleResetFilters = useCallback(function () {
     tableInstance.setAllFilters([]);
-  }, [resetFilters, tableInstance]);
+    searchWithFilters([]);
+    if (gridRequest.gridFilter.length > 0) {
+      onChangeFilters && onChangeFilters([]);
+    }
+  }, [tableInstance, searchWithFilters, gridRequest, onChangeFilters]);
   useEffect(function () {
     if (onChangeSelectedRows) {
       selectedFlatRows.forEach(prepareRow);

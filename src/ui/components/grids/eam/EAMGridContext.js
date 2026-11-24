@@ -254,11 +254,11 @@ export const EAMGridContextProvider = (props) => {
 
     const fetchDataDebounced = useAsyncDebounce(fetchData, 100);
 
-    const handleOnSearch = useCallback(() => {
+    const searchWithFilters = useCallback((gridFilter) => {
         setPageIndex(0);
         const newGridRequest = {
             ...gridRequest,
-            gridFilter: processFilters(filters, filterProcessor),
+            gridFilter,
             cursorPosition: 1,
         };
         setGridRequest(newGridRequest);
@@ -268,7 +268,12 @@ export const EAMGridContextProvider = (props) => {
         if (isEmptySearch) {
             setIsEmptySearch(false);
         }
-    }, [tableInstance, fetchDataDebounced, gridRequest, filters]);
+    }, [tableInstance, fetchDataDebounced, gridRequest]);
+
+    const handleOnSearch = useCallback(
+        () => searchWithFilters(processFilters(filters, filterProcessor)),
+        [searchWithFilters, filters]
+    );
 
     const handleExportToCSV = useCallback(() => {
         setLoadingExportToCSV(true);
@@ -405,7 +410,11 @@ export const EAMGridContextProvider = (props) => {
 
     const handleResetFilters = useCallback(() => {
         tableInstance.setAllFilters([]);
-    }, [resetFilters, tableInstance]);
+        searchWithFilters([]);
+        if (gridRequest.gridFilter.length > 0) {
+            onChangeFilters && onChangeFilters([]);
+        }
+    }, [tableInstance, searchWithFilters, gridRequest, onChangeFilters]);
 
     useEffect(() => {
         if (onChangeSelectedRows) {
